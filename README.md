@@ -1,16 +1,24 @@
-#### 介绍
+<p align="center">
+  <a href="https://midwayjs.org/" target="blank"><img src="https://admin.cool-js.com/logo.png" width="200" alt="cool-admin Logo" /></a>
+</p>
 
-配置化编码，单表 CRUD 只需少量配置;写更少的代码，实现更多的功能;简洁、高效、可扩展、高度解耦
+<p align="center">cool-admin 一个很酷的后台权限管理系统，开源免费，模块化、插件化、极速开发 CRUD，方便快速构建迭代后台管理系统， 到论坛 进一步了解</p>
 
-#### 浏览器兼容性
+<p align="center">
+    <a href="https://github.com/cool-team-official/cool-admin-vue/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="GitHub license" />
+    <a href=""><img src="https://img.shields.io/github/package-json/v/cool-team-official/cool-admin-vue?style=flat-square" alt="GitHub tag"></a>
+    <img src="https://img.shields.io/github/last-commit/cool-team-official/cool-admin-vue?style=flat-square" alt="GitHub tag"></a>
+</p>
+
+## 浏览器兼容性
 
 支持所有符合 ES5 标准的浏览器(不支持 IE8 及以下版本）.
 
-#### 在线社区
+## 在线社区
 
 [传送门](https://bbs.cool-js.com/)
 
-## 先决条件
+## 条件
 
 请确保您的操作系统上安装了 Node.js（> = 8.9.0）、@vue/cli。
 
