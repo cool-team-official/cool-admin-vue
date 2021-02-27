@@ -1,0 +1,126 @@
+// customize style
+.scroller1 {
+	overflow: hidden auto;
+	position: relative;
+	z-index: 9;
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba(144, 147, 153, 0.3);
+		border-radius: 6px;
+	}
+
+	&::-webkit-scrollbar {
+		height: 6px;
+		width: 6px;
+	}
+}
+
+// Element-ui theme
+.el-input-number {
+	.el-input-number__decrease,
+	.el-input-number__increase {
+		border: 0 !important;
+		background-color: transparent;
+	}
+}
+
+.el-dialog {
+	.el-dialog__header {
+		padding: 10px;
+		text-align: center;
+		border-bottom: 1px solid #f7f7f7;
+
+		.el-dialog__title {
+			font-size: 15px;
+			letter-spacing: 0.5px;
+		}
+
+		.el-dialog__headerbtn {
+			top: 13px;
+
+			.el-dialog__close {
+				font-size: 18px;
+			}
+		}
+	}
+
+	.el-dialog__body {
+		padding: 20px;
+	}
+
+	.el-dialog__footer {
+		padding-bottom: 15px;
+	}
+}
+
+.el-message {
+	&.el-message--success,
+	&.el-message--error,
+	&.el-message--info,
+	&.el-message--warning {
+		min-width: auto;
+		background-color: #fff;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		border: 0;
+		padding: 12px 20px 12px 15px;
+
+		.el-message__icon {
+			font-size: 16px;
+		}
+
+		.el-message__content {
+			color: #999;
+		}
+	}
+}
+
+.el-table {
+	&__header {
+		th {
+			padding: 0 !important;
+			background-color: #ebeef5 !important;
+			height: 36px;
+			line-height: 36px;
+		}
+
+		.cell {
+			color: $color-main;
+			font-weight: normal;
+		}
+	}
+
+	&__body {
+		&-wrapper {
+			@media only screen and (max-width: 768px) {
+				&::-webkit-scrollbar {
+					height: 6px;
+					width: 6px;
+				}
+			}
+		}
+	}
+
+	&__column {
+		&-filter-trigger {
+			margin-left: 5px;
+		}
+	}
+
+	&-column--selection {
+		.cell {
+			padding: 0 14px !important;
+		}
+	}
+}
+
+.el-table-filter {
+	margin-top: 5px !important;
+
+	.el-checkbox__label {
+		font-size: 12px;
+	}
+}

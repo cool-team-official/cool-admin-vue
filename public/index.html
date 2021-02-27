@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="referer" content="never" />
+		<meta name="renderer" content="webkit" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0"
+		/>
+		<link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+		<title>COOL-ADMIN</title>
+		<% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.css) { %>
+		<link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet" />
+		<% } %>
+		<style>
+			html,
+			body,
+			#app {
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}
+
+			.preload {
+				display: flex;
+				flex-direction: column;
+				height: 100%;
+				letter-spacing: 1px;
+				background-color: #2f3447;
+			}
+
+			.preload .container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+				width: 100%;
+				user-select: none;
+				flex-grow: 1;
+			}
+
+			.preload .name {
+				font-size: 30px;
+				color: #fff;
+				letter-spacing: 5px;
+				font-weight: bold;
+			}
+
+			.preload .title {
+				color: #fff;
+				font-size: 14px;
+				margin-bottom: 10px;
+			}
+
+			.preload .sub-title {
+				color: #ababab;
+				font-size: 12px;
+			}
+
+			.preload .footer {
+				text-align: center;
+				padding: 10px 0 20px 0;
+			}
+
+			.preload .footer a {
+				font-size: 12px;
+				color: #ababab;
+				text-decoration: none;
+			}
+		</style>
+	</head>
+	<body>
+		<noscript>
+			<strong
+				>We're sorry but cool-admin doesn't work properly without JavaScript enabled. Please
+				enable it to continue.</strong
+			>
+		</noscript>
+		<div id="app">
+			<div class="preload">
+				<div class="container">
+					<p class="name">COOL-ADMIN</p>
+					<p class="title">正在加载资源...</p>
+					<p class="sub-title">初次加载资源可能需要较多时间 请耐心等待</p>
+				</div>
+
+				<div class="footer">
+					<a href="https://cool-js.com/" target="_blank"> https://cool-js.com </a>
+				</div>
+			</div>
+		</div>
+
+		<% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
+		<script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+		<% } %>
+	</body>
+</html>

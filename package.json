@@ -1,0 +1,53 @@
+{
+	"name": "cool-admin-vue",
+	"version": "3.0.0",
+	"private": true,
+	"scripts": {
+		"serve": "vue-cli-service serve",
+		"build": "vue-cli-service build",
+		"report": "vue-cli-service build --report",
+		"lint": "vue-cli-service lint"
+	},
+	"dependencies": {
+		"axios": "^0.21.1",
+		"cl-admin": "^1.1.13",
+		"cl-admin-crud": "^1.2.7",
+		"cl-admin-export": "^1.0.5",
+		"core-js": "^3.9.0",
+		"dayjs": "^1.10.3",
+		"echarts": "^4.5.0",
+		"element-ui": "^2.13.0",
+		"nprogress": "^0.2.0",
+		"qs": "^6.9.1",
+		"store": "^2.0.12",
+		"vue": "^2.6.10",
+		"vue-echarts": "^5.0.0-beta.0",
+		"vue-router": "^3.5.1",
+		"vuex": "^3.6.2"
+	},
+	"devDependencies": {
+		"@typescript-eslint/parser": "^3.0.0",
+		"@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
+		"@vue/babel-preset-jsx": "^1.1.2",
+		"@vue/cli-plugin-babel": "^4.1.0",
+		"@vue/cli-plugin-eslint": "^4.1.0",
+		"@vue/cli-plugin-router": "^4.1.0",
+		"@vue/cli-plugin-vuex": "^4.1.0",
+		"@vue/cli-service": "^4.1.0",
+		"@vue/eslint-config-prettier": "^6.0.0",
+		"babel-eslint": "^10.0.3",
+		"babel-plugin-component": "^1.1.1",
+		"babel-plugin-jsx-v-model": "^2.0.3",
+		"clean-webpack-plugin": "^3.0.0",
+		"eslint": "^7.0.0",
+		"eslint-plugin-prettier": "^3.1.1",
+		"eslint-plugin-vue": "^6.2.2",
+		"node-sass": "^4.13.0",
+		"prettier": "^2.0.5",
+		"sass-loader": "^8.0.0",
+		"svg-sprite-loader": "^5.0.0",
+		"typescript": "^3.9.3",
+		"vue-template-compiler": "^2.6.10",
+		"webpack-cli": "^3.3.12"
+	}
+}
