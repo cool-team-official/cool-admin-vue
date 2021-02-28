@@ -29,24 +29,28 @@ export default [
 		moduleName: "sys.task",
 		label: "任务列表",
 		path: "/sys/task",
+		icon: "icon-menu",
 		component: () => import("./task")
 	},
 	{
 		moduleName: "sys.perf",
 		label: "状态监控",
 		path: "/sys/perf",
+		icon: "icon-warn",
 		component: () => import("./perf")
 	},
 	{
 		moduleName: "sys.param",
 		label: "参数列表",
 		path: "/sys/param",
+		icon: "icon-menu",
 		component: () => import("./param")
 	},
 	{
 		moduleName: "sys.log",
 		label: "请求日志",
 		path: "/sys/log",
+		icon: "icon-log",
 		component: () => import("./log")
 	},
 	{
