@@ -1,20 +1,13 @@
-import Base from "./components/base";
-import Upload from "./components/upload";
-import Chat from "./components/chat";
-import Codemirror from "./components/codemirror";
-import Copy from "./components/copy";
-import Demo from "./components/demo";
-import Distpicker from "./components/distpicker";
-import EditorQuill from "./components/editor-quill";
-import Log from "./components/log";
-import Param from "./components/param";
-import Perf from "./components/perf";
-import Task from "./components/task";
+import Base from "./modules/base";
+import Upload from "./modules/upload";
+import Copy from "./modules/copy";
+import Demo from "./modules/demo";
+import Distpicker from "./modules/distpicker";
 import Crud from "cl-admin-crud";
 import Export from "cl-admin-export";
 
 export default {
-	components: [
+	modules: [
 		["base", Base],
 		[
 			"upload",
@@ -41,15 +34,8 @@ export default {
 			}
 		],
 		["export", Export],
-		// ["chat", Chat],
-		["codemirror", Codemirror],
 		["copy", Copy],
-		["demo", Demo],
 		["distpicker", Distpicker],
-		["editor-quill", EditorQuill],
-		["log", Log],
-		["param", Param],
-		["perf", Perf],
-		["task", Task]
+		["demo", Demo]
 	]
 };

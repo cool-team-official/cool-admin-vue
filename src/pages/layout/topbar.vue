@@ -18,7 +18,7 @@
 
 		<!-- 工具栏 -->
 		<ul class="app-topbar__tools">
-			<cl-chat-notice v-if="components.chat" />
+			<cl-chat-notice v-if="modules.chat" />
 		</ul>
 
 		<!-- 用户信息 -->
@@ -44,7 +44,7 @@ import { href } from "cl-admin/utils";
 
 export default {
 	computed: {
-		...mapGetters(["userInfo", "menuCollapse", "conf", "components"])
+		...mapGetters(["userInfo", "menuCollapse", "conf", "modules"])
 	},
 
 	methods: {

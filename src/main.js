@@ -1,7 +1,6 @@
 import Vue from "vue";
 import App from "./App.vue";
-import { bootstrap } from "cool/core";
-// import { bootstrap } from "cl-admin";
+import { bootstrap } from "cl-admin";
 import "./element";
 
 // 路由

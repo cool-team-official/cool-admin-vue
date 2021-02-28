@@ -36,7 +36,7 @@ yarn
 yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 ```
 
-## 安装扩展组件的依赖
+## 安装 cool/modules 模块的依赖
 
 安装 `cl-admin-cli` 脚手架：
 
@@ -44,7 +44,7 @@ yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 npm install cl-admin-cli -g
 ```
 
-安装扩展组件依赖：
+安装模块依赖：
 
 ```shell
 cl install

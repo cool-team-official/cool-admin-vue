@@ -33,6 +33,14 @@ module.exports = {
 		disableHostCheck: true,
 		proxy: {
 			"/dev": {
+				target: "http://127.0.0.1:8001",
+				changeOrigin: true,
+				pathRewrite: {
+					"^/dev": ""
+				}
+			},
+
+			"/test": {
 				target: "https://admin.cn.utools.club",
 				changeOrigin: true,
 				pathRewrite: {
