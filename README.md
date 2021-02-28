@@ -10,6 +10,19 @@
     <img src="https://img.shields.io/github/last-commit/cool-team-official/cool-admin-vue?style=flat-square" alt="GitHub tag"></a>
 </p>
 
+## 演示
+
+[https://show.cool-admin.com](https://show.cool-admin.com)
+
+-   账户：admin
+-   密码：123456
+
+<img src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/home-mini.png" alt="Admin Home"></a>
+
+#### 项目前端
+
+[https://github.com/cool-team-official/cool-admin-vue](https://github.com/cool-team-official/cool-admin-vue)
+
 ## 浏览器兼容性
 
 支持所有符合 ES5 标准的浏览器(不支持 IE8 及以下版本）.
