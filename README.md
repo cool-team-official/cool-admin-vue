@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://midwayjs.org/" target="blank"><img src="https://admin.cool-js.com/logo.png" width="200" alt="cool-admin Logo" /></a>
+  <a href="https://show.cool-admin.com/" target="blank"><img src="https://admin.cool-js.com/logo.png" width="200" alt="cool-admin Logo" /></a>
 </p>
 
 <p align="center">cool-admin 一个很酷的后台权限管理系统，开源免费，模块化、插件化、极速开发 CRUD，方便快速构建迭代后台管理系统， 到论坛 进一步了解</p>
@@ -19,21 +19,17 @@
 
 <img src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/home-mini.png" alt="Admin Home"></a>
 
-#### 项目前端
+## 前端项目
 
 [https://github.com/cool-team-official/cool-admin-vue](https://github.com/cool-team-official/cool-admin-vue)
 
-## 浏览器兼容性
-
-支持所有符合 ES5 标准的浏览器(不支持 IE8 及以下版本）.
-
 ## 在线社区
 
-[传送门](https://bbs.cool-js.com/)
+[https://bbs.cool-js.com/](https://bbs.cool-js.com/)
 
 ## 条件
 
-请确保您的操作系统上安装了 Node.js（> = 8.9.0）、@vue/cli。
+请确保您的操作系统上安装了 Node.js（> = 8.9.0）、@vue/cli （> 3.0.0）。
 
 ## 安装项目依赖
 
