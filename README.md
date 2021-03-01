@@ -19,15 +19,23 @@
 
 <img src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/home-mini.png" alt="Admin Home"></a>
 
-## 前端项目
+## 项目后端
 
-[https://github.com/cool-team-official/cool-admin-vue](https://github.com/cool-team-official/cool-admin-vue)
+[https://github.com/cool-team-official/cool-admin-midway](https://github.com/cool-team-official/cool-admin-midway)
+
+## 微信群
+
+<img width="260" src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/wechat.jpeg" alt="Admin Wechat"></a>
+
+## 微信公众号
+
+<img width="260" src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/mp.jpg" alt="Admin Wechat"></a>
 
 ## 在线社区
 
 [https://bbs.cool-js.com/](https://bbs.cool-js.com/)
 
-## 条件
+## 使用条件
 
 请确保您的操作系统上安装了 Node.js（> = 8.9.0）、@vue/cli （> 3.0.0）。
 
