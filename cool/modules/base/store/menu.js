@@ -1,7 +1,7 @@
 import store from "store";
 import { Message } from "element-ui";
 import { deepTree, revDeepTree, isArray, isEmpty } from "cl-admin/utils";
-import { revisePath } from "cool/modules/base/utils";
+import { revisePath } from "../utils";
 import router from "@/router";
 import { menuList } from "@/config/env";
 
