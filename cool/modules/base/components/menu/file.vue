@@ -2,7 +2,13 @@
 	<div class="cl-menu-file">
 		<el-row :gutter="10">
 			<el-col :span="16">
-				<el-select v-model="newValue" filterable clearable placeholder="请选择">
+				<el-select
+					v-model="newValue"
+					allow-create
+					filterable
+					clearable
+					placeholder="请选择"
+				>
 					<el-option
 						v-for="(item, index) in list"
 						:key="index"

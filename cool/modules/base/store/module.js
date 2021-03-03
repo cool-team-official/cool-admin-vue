@@ -11,7 +11,7 @@ export default {
 		// 模块列表
 		moduleList: (state) => state.list,
 		// 模块视图
-		moduleViews: (state) => state.moduleViews
+		moduleViews: (state) => state.views
 	},
 
 	mutations: {
@@ -27,7 +27,7 @@ export default {
 		},
 
 		SET_MODULE_VIEWS(state, list) {
-			state.moduleViews = list;
+			state.views = list;
 		}
 	}
 };

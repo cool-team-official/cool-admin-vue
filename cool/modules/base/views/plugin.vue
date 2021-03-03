@@ -3,6 +3,8 @@
 		<el-row type="flex" align="middle">
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn />
+			<!-- 提示 -->
+			<p class="tips">修改完配置如无生效则需要重启 <i class="el-icon-warning"></i></p>
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
 			<cl-search-key />
@@ -27,7 +29,7 @@
 		<el-row type="flex">
 			<cl-flex1 />
 			<!-- 分页控件 -->
-			<cl-pagination layout="total" />
+			<cl-pagination :props="{ layout: 'total' }" />
 		</el-row>
 	</cl-crud>
 </template>
@@ -73,43 +75,35 @@ export default {
 				columns: [
 					{
 						label: "名称",
-						prop: "name",
-						align: "center"
+						prop: "name"
 					},
 					{
 						label: "作者",
-						prop: "author",
-						align: "center"
+						prop: "author"
 					},
 					{
 						label: "联系方式",
-						prop: "contact",
-						align: "center"
+						prop: "contact"
 					},
 					{
 						label: "功能描述",
-						prop: "description",
-						align: "center"
+						prop: "description"
 					},
 					{
 						label: "版本号",
-						prop: "version",
-						align: "center"
+						prop: "version"
 					},
 					{
 						label: "是否启用",
-						prop: "enable",
-						align: "center"
+						prop: "enable"
 					},
 					{
 						label: "命名空间",
-						prop: "namespace",
-						align: "center"
+						prop: "namespace"
 					},
 					{
 						label: "状态",
 						prop: "status",
-						align: "center",
 						dict: [
 							{
 								label: "缺少配置",
@@ -136,13 +130,11 @@ export default {
 					{
 						label: "创建时间",
 						prop: "createTime",
-						align: "center",
 						width: 150,
 						sortable: "custom"
 					},
 					{
 						type: "op",
-						align: "center",
 						buttons: [
 							({ scope }) => {
 								return (
@@ -236,3 +228,11 @@ export default {
 	}
 };
 </script>
+
+<style lang="scss" scoped>
+.tips {
+	font-size: 13px;
+	margin-left: 10px;
+	color: $color-warning;
+}
+</style>

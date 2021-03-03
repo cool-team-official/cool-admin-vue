@@ -45,8 +45,7 @@ export default {
 						.filter((e) => e.type != 2)
 						.map((e) => {
 							let r = {
-								moduleName:
-									e.moduleName || (e.router || "").substr(1).replace(/\//g, "-"),
+								moduleName: e.moduleName,
 								id: e.id,
 								parentId: e.parentId,
 								path: revisePath(e.router || e.id),

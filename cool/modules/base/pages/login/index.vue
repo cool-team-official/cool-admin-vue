@@ -164,7 +164,7 @@ export default {
 					border: 0;
 					border-bottom: 0.5px solid #999;
 					border-radius: 0;
-					padding: 0;
+					padding: 0 5px;
 					background-color: transparent;
 					color: #ccc;
 					transition: border-color 0.3s;

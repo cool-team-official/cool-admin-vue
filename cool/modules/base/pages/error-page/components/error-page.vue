@@ -3,7 +3,7 @@
 		<h1 class="code">{{ code }}</h1>
 		<p class="desc">{{ desc }}</p>
 
-		<template v-if="token">
+		<template v-if="token || isLogout">
 			<div class="router">
 				<el-select size="medium" filterable prefix-icon="el-icon-search" v-model="url">
 					<el-option v-for="(item, index) in routes" :key="index" :value="item.path">
@@ -18,7 +18,7 @@
 			<div class="link">
 				<el-link class="to-home" @click="home">回到首页</el-link>
 				<el-link class="to-back" @click="back">返回上一页</el-link>
-				<el-link class="to-login" @click="login">重新登录</el-link>
+				<el-link class="to-login" @click="reLogin">重新登录</el-link>
 			</div>
 		</template>
 
@@ -34,6 +34,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { href } from "cl-admin/utils";
 
 export default {
 	props: {
@@ -43,7 +44,8 @@ export default {
 
 	data() {
 		return {
-			url: ""
+			url: "",
+			isLogout: false
 		};
 	},
 
@@ -60,20 +62,20 @@ export default {
 			this.$router.push("/login");
 		},
 
+		reLogin() {
+			this.isLogout = true;
+
+			this.$store.dispatch("userLogout").done(() => {
+				href("/login");
+			});
+		},
+
 		back() {
 			history.back();
 		},
 
 		home() {
 			this.$router.push("/");
-		},
-
-		login() {
-			this.$store.dispatch("userLogout");
-
-			setTimeout(() => {
-				this.$router.push("/login");
-			}, 30);
 		}
 	}
 };

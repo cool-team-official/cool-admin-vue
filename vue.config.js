@@ -44,7 +44,7 @@ module.exports = {
 				target: "https://admin.cn.utools.club",
 				changeOrigin: true,
 				pathRewrite: {
-					"^/dev": ""
+					"^/test": ""
 				}
 			},
 

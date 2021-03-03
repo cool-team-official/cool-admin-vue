@@ -12,17 +12,17 @@ NProgress.configure({
 	showSpinner: false
 });
 
-// 请求队列
-let requests = [];
-
-// Token 是否刷新中
-let isRefreshing = false;
-
 // 忽略规则
 const ignore = {
 	NProgress: ["/sys/info/record"],
 	token: ["/login", "/captcha"]
 };
+
+// 请求队列
+let requests = [];
+
+// Token 是否刷新中
+let isRefreshing = false;
 
 // Request
 axios.interceptors.request.use(
@@ -134,7 +134,11 @@ axios.interceptors.response.use(
 					break;
 
 				case 502:
-					href("/502");
+					if (isDev) {
+						return Promise.reject("服务异常！！");
+					} else {
+						href("/502");
+					}
 					break;
 
 				default:
