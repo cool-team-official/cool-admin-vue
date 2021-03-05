@@ -1,6 +1,6 @@
 import { BaseService, Service, Permission } from "cl-admin";
 
-@Service("sys/task")
+@Service("task/info")
 class SysTask extends BaseService {
 	@Permission("stop")
 	stop(data) {

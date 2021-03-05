@@ -1,6 +1,6 @@
 import { BaseService, Service, Permission } from "cl-admin";
 
-@Service("sys/info")
+@Service("base/sys/info")
 class SysInfo extends BaseService {
 	@Permission("record")
 	record() {

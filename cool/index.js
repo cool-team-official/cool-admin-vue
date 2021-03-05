@@ -1,4 +1,5 @@
 import Base from "./modules/base";
+import Task from "./modules/task";
 import Upload from "./modules/upload";
 import Copy from "./modules/copy";
 import Demo from "./modules/demo";
@@ -9,6 +10,7 @@ import Export from "cl-admin-export";
 export default {
 	modules: [
 		["base", Base],
+		["task", Task],
 		[
 			"upload",
 			Upload,

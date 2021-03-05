@@ -40,14 +40,6 @@ module.exports = {
 				}
 			},
 
-			"/test": {
-				target: "https://admin.cn.utools.club",
-				changeOrigin: true,
-				pathRewrite: {
-					"^/test": ""
-				}
-			},
-
 			"/oss-upload": {
 				target: "https://cool-admin-pro.oss-cn-shanghai.aliyuncs.com",
 				changeOrigin: true,

@@ -1,6 +1,6 @@
 import { BaseService, Service, Permission } from "cl-admin";
 
-@Service("plugin/info")
+@Service("base/plugin/info")
 class PluginInfo extends BaseService {
 	@Permission("config")
 	config(data) {

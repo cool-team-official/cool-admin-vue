@@ -26,13 +26,6 @@ export default [
 		component: () => import("./role")
 	},
 	{
-		moduleName: "sys.task",
-		label: "任务列表",
-		path: "/sys/task",
-		icon: "icon-menu",
-		component: () => import("./task")
-	},
-	{
 		moduleName: "sys.perf",
 		label: "状态监控",
 		path: "/sys/perf",

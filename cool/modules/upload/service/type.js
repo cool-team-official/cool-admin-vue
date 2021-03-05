@@ -1,6 +1,6 @@
 import { BaseService, Service } from "cl-admin";
 
-@Service("app/space/type")
+@Service("space/type")
 class SpaceType extends BaseService { }
 
 export default SpaceType;

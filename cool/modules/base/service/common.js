@@ -1,6 +1,6 @@
 import { BaseService, Service } from "cl-admin";
 
-@Service("comm")
+@Service("base/comm")
 class Common extends BaseService {
 	/**
 	 * 文件上传模式

@@ -1,6 +1,6 @@
 import { BaseService, Service, Permission } from "cl-admin";
 
-@Service("sys/user")
+@Service("base/sys/user")
 class SysUser extends BaseService {
 	@Permission("move")
 	move(data) {

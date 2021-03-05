@@ -1,6 +1,6 @@
 import { BaseService, Service, Permission } from "cl-admin";
 
-@Service("sys/department")
+@Service("base/sys/department")
 class SysDepartment extends BaseService {
 	@Permission("order")
 	order(data) {

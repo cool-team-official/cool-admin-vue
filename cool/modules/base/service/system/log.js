@@ -1,6 +1,6 @@
 import { BaseService, Service, Permission } from "cl-admin";
 
-@Service("sys/log")
+@Service("base/sys/log")
 class SysLog extends BaseService {
 	@Permission("clear")
 	clear() {

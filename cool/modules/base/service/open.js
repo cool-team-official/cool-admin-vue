@@ -1,6 +1,6 @@
 import { BaseService, Service } from "cl-admin";
 
-@Service("open")
+@Service("base/open")
 class Open extends BaseService {
 	/**
 	 * 用户登录

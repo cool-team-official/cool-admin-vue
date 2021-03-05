@@ -296,7 +296,7 @@ export default {
 
 	computed: {
 		perm() {
-			return this.$service.system.task.permission;
+			return this.$service.task.info.permission;
 		}
 	},
 
@@ -323,7 +323,7 @@ export default {
 					label: "立即执行",
 					perm: ["once"],
 					"suffix-icon": "el-icon-video-play",
-					callback: (e, close) => {
+					callback: (_, close) => {
 						this.once({ id });
 						close();
 					}
@@ -332,7 +332,7 @@ export default {
 					label: "编辑",
 					perm: ["update", "info"],
 					"suffix-icon": "el-icon-edit",
-					callback: (e, close) => {
+					callback: (_, close) => {
 						this.edit({ id, type });
 						close();
 					}
@@ -341,7 +341,7 @@ export default {
 					label: "删除",
 					perm: ["delete"],
 					"suffix-icon": "el-icon-delete",
-					callback: (e, close) => {
+					callback: (_, close) => {
 						this.delete({ id });
 						close();
 					}
@@ -350,7 +350,7 @@ export default {
 					label: "查看日志",
 					perm: ["log"],
 					"suffix-icon": "el-icon-tickets",
-					callback: (e, close) => {
+					callback: (_, close) => {
 						this.findLog({ id, name });
 						close();
 					}
@@ -362,7 +362,7 @@ export default {
 					label: "暂停",
 					perm: ["stop"],
 					"suffix-icon": "el-icon-video-pause",
-					callback: (e, close) => {
+					callback: (_, close) => {
 						this.stop({ id, type });
 						close();
 					}
@@ -372,7 +372,7 @@ export default {
 					label: "开始",
 					perm: ["start"],
 					"suffix-icon": "el-icon-video-play",
-					callback: (e, close) => {
+					callback: (_, close) => {
 						this.start({ id, type });
 						close();
 					}
@@ -399,7 +399,7 @@ export default {
 			};
 
 			if (id) {
-				info = await this.$service.system.task.info({ id });
+				info = await this.$service.task.info.info({ id });
 			}
 
 			if (info.every) {
@@ -581,7 +581,7 @@ export default {
 							data.limit = null;
 						}
 
-						this.$service.system.task[id ? "update" : "add"]({
+						this.$service.task.info[id ? "update" : "add"]({
 							...info,
 							...data,
 							every: data.every * 1000
@@ -607,7 +607,7 @@ export default {
 				type: "warning"
 			})
 				.then(() => {
-					this.$service.system.task.delete({ ids: id }).then(() => {
+					this.$service.task.info.delete({ ids: id }).then(() => {
 						this.refreshTask();
 					});
 				})
@@ -616,7 +616,7 @@ export default {
 
 		// 开始任务
 		start({ id, type }) {
-			this.$service.system.task
+			this.$service.task.info
 				.start({ id, type })
 				.then(() => {
 					this.refreshTask();
@@ -628,7 +628,7 @@ export default {
 
 		// 停止任务
 		stop({ id }) {
-			this.$service.system.task
+			this.$service.task.info
 				.stop({ id })
 				.then(() => {
 					this.refreshTask();
@@ -640,7 +640,7 @@ export default {
 
 		// 任务执行一次
 		once({ id }) {
-			this.$service.system.task
+			this.$service.task.info
 				.once({ id })
 				.then(() => {
 					this.refreshTask();
@@ -670,7 +670,7 @@ export default {
 
 				this.$set(item, "loading", true);
 
-				let res = await this.$service.system.task.page(item.params);
+				let res = await this.$service.task.info.page(item.params);
 
 				this.moreList(res, item);
 
@@ -707,7 +707,7 @@ export default {
 
 			this.logs.loading = true;
 
-			let res = await this.$service.system.task.log(params);
+			let res = await this.$service.task.info.log(params);
 
 			this.moreList(res, this.logs);
 
