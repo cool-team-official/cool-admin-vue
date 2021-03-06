@@ -607,7 +607,7 @@ export default {
 				type: "warning"
 			})
 				.then(() => {
-					this.$service.task.info.delete({ ids: id }).then(() => {
+					this.$service.task.info.delete({ ids: [id] }).then(() => {
 						this.refreshTask();
 					});
 				})
