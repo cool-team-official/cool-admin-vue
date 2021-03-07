@@ -51,6 +51,15 @@ export default {
 						order: "descending"
 					}
 				},
+				"context-menu": [
+					{
+						label: "清空",
+						callback: (_, done) => {
+							this.clear();
+							done();
+						}
+					}
+				],
 				columns: [
 					{
 						type: "index",
