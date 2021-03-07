@@ -1,37 +1,41 @@
 <template>
-	<cl-crud ref="crud" :on-refresh="onRefresh" @load="onLoad">
-		<el-row type="flex" align="middle">
-			<!-- 刷新按钮 -->
-			<cl-refresh-btn />
-			<!-- 提示 -->
-			<p class="tips">修改完配置如无生效则需要重启 <i class="el-icon-warning"></i></p>
-			<cl-flex1 />
-			<!-- 关键字搜索 -->
-			<cl-search-key />
-		</el-row>
+	<div>
+		<cl-crud ref="crud" :on-refresh="onRefresh" @load="onLoad">
+			<el-row type="flex" align="middle">
+				<!-- 刷新按钮 -->
+				<cl-refresh-btn />
+				<!-- 提示 -->
+				<p class="tips">修改完配置如无生效则需要重启 <i class="el-icon-warning"></i></p>
+				<cl-flex1 />
+				<!-- 关键字搜索 -->
+				<cl-search-key />
+			</el-row>
 
-		<el-row>
-			<!-- 数据表格 -->
-			<cl-table v-bind="table">
-				<template #column-enable="{ scope }">
-					<el-switch
-						v-model="scope.row.enable"
-						size="mini"
-						:inactive-value="0"
-						:active-value="1"
-						:disabled="!perms.enable"
-						@change="onEnableChange($event, scope.row)"
-					></el-switch>
-				</template>
-			</cl-table>
-		</el-row>
+			<el-row>
+				<!-- 数据表格 -->
+				<cl-table v-bind="table">
+					<template #column-enable="{ scope }">
+						<el-switch
+							v-model="scope.row.enable"
+							size="mini"
+							:inactive-value="0"
+							:active-value="1"
+							:disabled="!perms.enable"
+							@change="onEnableChange($event, scope.row)"
+						></el-switch>
+					</template>
+				</cl-table>
+			</el-row>
 
-		<el-row type="flex">
-			<cl-flex1 />
-			<!-- 分页控件 -->
-			<cl-pagination :props="{ layout: 'total' }" />
-		</el-row>
-	</cl-crud>
+			<el-row type="flex">
+				<cl-flex1 />
+				<!-- 分页控件 -->
+				<cl-pagination :props="{ layout: 'total' }" />
+			</el-row>
+		</cl-crud>
+
+		<cl-form ref="form"></cl-form>
+	</div>
 </template>
 
 <script>
@@ -189,7 +193,7 @@ export default {
 				});
 		},
 		async openConf(item) {
-			let form = await this.$service.plugin.info.getConfig({
+			const form = await this.$service.plugin.info.getConfig({
 				namespace: item.namespace
 			});
 
@@ -202,7 +206,7 @@ export default {
 				console.error(e);
 			}
 
-			this.$crud.openForm({
+			this.$refs.form.open({
 				title: `${item.name}配置`,
 				items,
 				form,
