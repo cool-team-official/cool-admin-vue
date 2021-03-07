@@ -65,7 +65,7 @@ export default {
 						return {
 							label: "配置",
 							hidden: !perms.edit,
-							callback: (item, done) => {
+							callback: (_, done) => {
 								this.openConf(scope);
 								done();
 							}

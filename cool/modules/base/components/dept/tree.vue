@@ -96,7 +96,7 @@ export default {
 					label: "新增",
 					"suffix-icon": "el-icon-plus",
 					hidden: n && n.level >= this.level,
-					callback: (item, done) => {
+					callback: (_, done) => {
 						this.rowEdit({
 							name: "",
 							parentName: d.name,
@@ -108,7 +108,7 @@ export default {
 				{
 					label: "编辑",
 					"suffix-icon": "el-icon-edit",
-					callback: (item, done) => {
+					callback: (_, done) => {
 						this.rowEdit(d);
 						done();
 					}
@@ -123,7 +123,7 @@ export default {
 				list.push({
 					label: "删除",
 					"suffix-icon": "el-icon-delete",
-					callback: (item, done) => {
+					callback: (_, done) => {
 						this.rowDel(d);
 						done();
 					}
@@ -133,7 +133,7 @@ export default {
 			list.push({
 				label: "新增成员",
 				"suffix-icon": "el-icon-user",
-				callback: (item, done) => {
+				callback: (_, done) => {
 					this.$emit("user-add", d);
 					done();
 				}

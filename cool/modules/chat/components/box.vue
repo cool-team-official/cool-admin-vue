@@ -314,7 +314,7 @@ export default {
 					{
 						label: "删除",
 						icon: "el-icon-delete",
-						callback: (item, done) => {
+						callback: (_, done) => {
 							this.$service.im.session.delete({
 								ids: id
 							});

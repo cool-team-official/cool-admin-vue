@@ -467,7 +467,7 @@ export default {
 					{
 						label: "编辑",
 						"suffix-icon": "el-icon-edit",
-						callback: (item, done) => {
+						callback: (_, done) => {
 							done();
 							this.editCategory({ id, name });
 						}
@@ -475,7 +475,7 @@ export default {
 					{
 						label: "删除",
 						"suffix-icon": "el-icon-delete",
-						callback: (item, done) => {
+						callback: (_, done) => {
 							done();
 
 							this.$confirm(`此操作将删除【${name}】下的文件, 是否继续?`, "提示", {
@@ -515,7 +515,7 @@ export default {
 					{
 						label: data.selected ? "取消选中" : "选中",
 						"suffix-icon": data.selected ? "el-icon-close" : "el-icon-check",
-						callback: (item, done) => {
+						callback: (_, done) => {
 							this.selectFile(data);
 							done();
 						}
@@ -523,7 +523,7 @@ export default {
 					{
 						label: "删除",
 						"suffix-icon": "el-icon-delete",
-						callback: (item, done) => {
+						callback: (_, done) => {
 							this.deleteFile(data);
 							done();
 						}

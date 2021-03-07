@@ -86,7 +86,7 @@ export default {
 						return {
 							label: "新增",
 							hidden: row.type == 2,
-							callback: (item, done) => {
+							callback: (_, done) => {
 								this.upsertAppend(row);
 								done();
 							}
@@ -98,7 +98,7 @@ export default {
 						return {
 							label: "权限",
 							hidden: row.type != 1,
-							callback: (item, done) => {
+							callback: (_, done) => {
 								this.setPermission(row);
 								done();
 							}

@@ -40,6 +40,22 @@ module.exports = {
 				}
 			},
 
+			"/ap": {
+				target: "https://admin.cn.utools.club",
+				changeOrigin: true,
+				pathRewrite: {
+					"^/ap": ""
+				}
+			},
+
+			"/fz": {
+				target: "http://xfz520231.utools.club",
+				changeOrigin: true,
+				pathRewrite: {
+					"^/fz": ""
+				}
+			},
+
 			"/oss-upload": {
 				target: "https://cool-admin-pro.oss-cn-shanghai.aliyuncs.com",
 				changeOrigin: true,
