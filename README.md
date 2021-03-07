@@ -53,20 +53,6 @@ yarn
 yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 ```
 
-## 安装 cool/modules 模块的依赖
-
-安装 `cl-admin-cli` 脚手架：
-
-```shell
-npm install cl-admin-cli -g
-```
-
-安装模块依赖：
-
-```shell
-cl install
-```
-
 ## 运行应用程序
 
 安装过程完成后，运行以下命令启动服务。您可以在浏览器中预览网站 [http://localhost:9000](http://localhost:9000)
