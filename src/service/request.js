@@ -26,15 +26,15 @@ let isRefreshing = false;
 
 // Request
 axios.interceptors.request.use(
-	(config) => {
+	config => {
 		const token = store.getters.token || "";
 
 		if (config.url) {
-			if (!ignore.token.some((e) => config.url.includes(e))) {
+			if (!ignore.token.some(e => config.url.includes(e))) {
 				config.headers["Authorization"] = token;
 			}
 
-			if (!ignore.NProgress.some((e) => config.url.includes(e))) {
+			if (!ignore.NProgress.some(e => config.url.includes(e))) {
 				NProgress.start();
 			}
 		}
@@ -65,16 +65,16 @@ axios.interceptors.request.use(
 				if (!isRefreshing) {
 					isRefreshing = true;
 
-					store.dispatch("refreshToken").then((token) => {
-						requests.forEach((cb) => cb(token));
+					store.dispatch("refreshToken").then(token => {
+						requests.forEach(cb => cb(token));
 						requests = [];
 						isRefreshing = false;
 					});
 				}
 
-				return new Promise((resolve) => {
+				return new Promise(resolve => {
 					// 继续请求
-					requests.push((token) => {
+					requests.push(token => {
 						// 重新设置 token
 						config.headers["Authorization"] = token;
 						resolve(config);
@@ -85,14 +85,14 @@ axios.interceptors.request.use(
 
 		return config;
 	},
-	(error) => {
+	error => {
 		return Promise.reject(error);
 	}
 );
 
 // Response
 axios.interceptors.response.use(
-	(res) => {
+	res => {
 		NProgress.done();
 		const { code, data, message } = res.data;
 
@@ -107,7 +107,7 @@ axios.interceptors.response.use(
 				return Promise.reject(message);
 		}
 	},
-	async (error) => {
+	async error => {
 		NProgress.done();
 
 		if (error.response) {

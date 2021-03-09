@@ -20,9 +20,9 @@ bootstrap()
 		new Vue({
 			router,
 			store,
-			render: (h) => h(App)
+			render: h => h(App)
 		}).$mount("#app");
 	})
-	.catch((err) => {
+	.catch(err => {
 		console.error("COOL-ADMIN 启动失败", err);
 	});

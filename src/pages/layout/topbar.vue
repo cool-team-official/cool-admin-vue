@@ -4,21 +4,29 @@
 			<icon-svg name="icon-menu"></icon-svg>
 		</div>
 
-		<!-- 路由导航 -->
-		<div class="app-topbar__route-nav" v-if="conf.showRouteNav">
-			<cl-route-nav />
-		</div>
-
 		<!-- 一级菜单 -->
 		<div class="app-topbar__menu" v-if="conf.showAMenu">
 			<cl-menu-topbar />
+		</div>
+
+		<!-- 路由导航 -->
+		<div class="app-topbar__route-nav" v-if="conf.showRouteNav">
+			<cl-route-nav />
 		</div>
 
 		<div class="flex1"></div>
 
 		<!-- 工具栏 -->
 		<ul class="app-topbar__tools">
-			<cl-chat-notice v-if="modules.chat" />
+			<!-- 消息通知 -->
+			<li v-if="modules.chat">
+				<cl-chat-notice />
+			</li>
+
+			<!-- 主题 -->
+			<li>
+				<cl-theme />
+			</li>
 		</ul>
 
 		<!-- 用户信息 -->
@@ -99,9 +107,10 @@ export default {
 	}
 
 	&__tools {
+		display: flex;
 		margin-right: 20px;
 
-		/deep/li {
+		li {
 			list-style: none;
 			height: 45px;
 			width: 45px;
@@ -111,7 +120,7 @@ export default {
 			cursor: pointer;
 
 			i {
-				font-size: 16px;
+				font-size: 18px;
 
 				&:hover {
 					opacity: 0.8;

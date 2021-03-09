@@ -1,0 +1,50 @@
+// customize style
+.scroller1 {
+	overflow: hidden auto;
+	position: relative;
+	z-index: 9;
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: rgba(144, 147, 153, 0.3);
+		border-radius: 6px;
+	}
+
+	&::-webkit-scrollbar {
+		height: 6px;
+		width: 6px;
+	}
+}
+
+// Element-ui theme
+.el-input-number {
+	.el-input-number__decrease,
+	.el-input-number__increase {
+		border: 0 !important;
+		background-color: transparent;
+	}
+}
+
+.el-message {
+	&.el-message--success,
+	&.el-message--error,
+	&.el-message--info,
+	&.el-message--warning {
+		min-width: auto;
+		background-color: #fff;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		border: 0;
+		padding: 12px 20px 12px 15px;
+
+		.el-message__icon {
+			font-size: 16px;
+		}
+
+		.el-message__content {
+			color: #999;
+		}
+	}
+}

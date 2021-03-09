@@ -2,16 +2,19 @@ import store from "store";
 import { getUrlParam } from "cl-admin/utils";
 
 // 路由模式
-const routerMode = "history";
+export const routerMode = "history";
 
 // 开发模式
-const isDev = process.env.NODE_ENV == "development";
+export const isDev = process.env.NODE_ENV == "development";
 
 // Host
-const host = "https://show.cool-admin.com";
+export const host = "https://show.cool-admin.com";
+
+// Socket
+export const socketUrl = (isDev ? `${host}` : "") + "/socket";
 
 // 请求地址
-const baseUrl = (function () {
+export const baseUrl = (function() {
 	let proxy = getUrlParam("proxy");
 
 	if (proxy) {
@@ -20,24 +23,14 @@ const baseUrl = (function () {
 		proxy = store.get("proxy") || "dev";
 	}
 
-	switch (process.env.NODE_ENV) {
-		case "development":
-			return `/${proxy}/admin`;
-		case "production":
-			return `/api/admin`;
-		default:
-			return "";
-	}
+	return isDev ? `/${proxy}/admin` : `/api/admin`;
 })();
 
-// Socket
-const socketUrl = (isDev ? `${host}` : "") + "/socket";
-
 // 阿里字体图标库 https://at.alicdn.com/t/**.css
-const iconfontUrl = ``;
+export const iconfontUrl = ``;
 
 // 程序配置参数
-const app = {
+export const app = {
 	name: "cool-admin",
 
 	conf: {
@@ -53,6 +46,4 @@ const app = {
 };
 
 // 自定义菜单列表
-const menuList = [];
-
-export { routerMode, baseUrl, socketUrl, iconfontUrl, app, isDev, menuList };
+export const menuList = [];

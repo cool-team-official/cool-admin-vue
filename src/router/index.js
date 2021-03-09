@@ -19,7 +19,7 @@ const routes = [
 			{
 				path: "/",
 				name: "数据统计",
-				component: () => import("@/pages/home/index.vue")
+				component: () => import("@/views/home/index.vue")
 			}
 		]
 	}
