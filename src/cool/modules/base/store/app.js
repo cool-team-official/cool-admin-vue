@@ -47,13 +47,17 @@ export default {
 		}
 	},
 	mutations: {
+		// 设置浏览器信息
 		SET_BROWSER(state) {
 			state.browser = getBrowser();
 		},
 
+		// 收起左侧菜单
 		COLLAPSE_MENU(state, val = false) {
 			state.collapse = val;
 		},
+
+		// 更新应用配置
 		UPDATE_CONF(state, val) {
 			deepMerge(state.conf, val);
 		}

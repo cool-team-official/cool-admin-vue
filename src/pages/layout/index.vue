@@ -75,7 +75,6 @@ export default {
 	overflow: hidden;
 
 	&__left {
-		background-color: $color-main;
 		overflow: hidden;
 		height: 100%;
 		width: 255px;

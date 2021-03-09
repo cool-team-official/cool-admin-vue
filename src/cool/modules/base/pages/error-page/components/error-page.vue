@@ -118,8 +118,8 @@ export default {
 
 		.el-button {
 			margin-left: 15px;
-			background-color: $color-main;
-			border-color: $color-main;
+			background-color: $color-primary;
+			border-color: $color-primary;
 			color: #fff;
 			padding: 0 30px;
 			letter-spacing: 1px;
@@ -132,7 +132,6 @@ export default {
 		margin-top: 40px;
 
 		a {
-			color: $color-main;
 			font-weight: 500;
 			transition: all 0.5s;
 			-webkit-transition: all 0.5s;
@@ -140,10 +139,6 @@ export default {
 			font-size: 14px;
 			margin: 0 15px;
 			padding-bottom: 2px;
-
-			&::after {
-				border-color: $color-main;
-			}
 		}
 	}
 

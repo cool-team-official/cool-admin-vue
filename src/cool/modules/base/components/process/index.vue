@@ -213,7 +213,7 @@ export default {
 
 			&:hover {
 				color: #fff;
-				background-color: $color-main;
+				background-color: $color-primary;
 			}
 		}
 
@@ -226,7 +226,7 @@ export default {
 
 		&.active {
 			span {
-				color: $color-main;
+				color: $color-primary;
 			}
 
 			i {
@@ -235,7 +235,7 @@ export default {
 			}
 
 			&:before {
-				background-color: $color-main;
+				background-color: $color-primary;
 			}
 		}
 	}

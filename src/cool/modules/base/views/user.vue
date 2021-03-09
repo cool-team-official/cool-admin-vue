@@ -516,7 +516,6 @@ export default {
 				left: 0;
 				top: 0;
 				font-size: 18px;
-				color: $color-main;
 				cursor: pointer;
 				background-color: #fff;
 				height: 40px;

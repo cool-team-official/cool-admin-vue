@@ -24,7 +24,7 @@
 			</li>
 
 			<!-- 主题 -->
-			<li>
+			<li v-if="modules.theme">
 				<cl-theme />
 			</li>
 		</ul>
@@ -95,6 +95,7 @@ export default {
 		height: 40px;
 		width: 40px;
 		cursor: pointer;
+		margin-right: 10px;
 
 		.icon-svg {
 			height: 22px;

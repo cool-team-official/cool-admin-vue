@@ -1,6 +1,11 @@
 <template>
-	<div class="app-topbar-menu">
-		<el-menu :default-active="index" mode="horizontal" @select="onSelect">
+	<div class="cl-menu-topbar">
+		<el-menu
+			:default-active="index"
+			mode="horizontal"
+			background-color="transparent"
+			@select="onSelect"
+		>
 			<el-menu-item v-for="(item, index) in menuGroup" :index="`${index}`" :key="index">
 				<icon-svg v-if="item.icon" :name="item.icon"></icon-svg>
 				<span>{{ item.name }}</span>
@@ -49,7 +54,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.app-topbar-menu {
+.cl-menu-topbar {
 	/deep/.el-menu {
 		height: 50px;
 		background: transparent;
@@ -72,6 +77,7 @@ export default {
 
 			&.is-active {
 				background: rgba(255, 255, 255, 0.13);
+				color: $color-primary;
 			}
 
 			/deep/.icon-svg {

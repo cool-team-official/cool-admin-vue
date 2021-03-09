@@ -31,17 +31,17 @@ export const iconfontUrl = ``;
 
 // 程序配置参数
 export const app = {
-	name: "cool-admin",
+	name: "COOL-ADMIN",
 
 	conf: {
-		// 是否显示一级菜单栏
-		showAMenu: false,
-		// 是否显示路由导航栏
-		showRouteNav: true,
-		// 是否显示页面进程栏
-		showProcess: true,
-		// 自定义菜单
-		customMenu: false
+		showAMenu: false, // 是否显示一级菜单栏
+		showRouteNav: true, // 是否显示路由导航栏
+		showProcess: true, // 是否显示页面进程栏
+		customMenu: false // 自定义菜单
+	},
+
+	theme: {
+		url: "" // 主题样式地址
 	}
 };
 

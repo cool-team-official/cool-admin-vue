@@ -544,7 +544,7 @@ export default {
 				height: 100%;
 
 				&:hover {
-					border-color: #409eff;
+					border-color: $color-primary;
 				}
 
 				.cl-upload__cover {
@@ -565,6 +565,8 @@ export default {
 
 	&--picture-card {
 		/deep/.el-upload {
+			background-color: #fff;
+
 			.cl-upload__icon {
 				position: relative;
 				top: 4px;

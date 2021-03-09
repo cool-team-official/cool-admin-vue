@@ -134,7 +134,7 @@ export default {
 				cursor: pointer;
 
 				&.active {
-					color: $color-main;
+					color: #000;
 					font-weight: bold;
 				}
 			}
@@ -151,7 +151,7 @@ export default {
 			height: 8px;
 			width: 8px;
 			border-radius: 8px;
-			background-color: $color-main;
+			background-color: #000;
 			position: absolute;
 			left: -15px;
 			top: 4px;

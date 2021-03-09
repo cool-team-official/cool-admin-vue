@@ -252,7 +252,6 @@ export default {
 		height: 50px;
 		font-size: 15px;
 		font-weight: bold;
-		color: $color-main;
 		padding: 0 20px;
 	}
 

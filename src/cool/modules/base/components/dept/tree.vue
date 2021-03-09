@@ -348,14 +348,12 @@ export default {
 
 		div {
 			font-size: 14px;
-			color: $color-main;
 			flex: 1;
 			white-space: nowrap;
 		}
 
 		i {
 			font-size: 18px;
-			color: $color-main;
 			cursor: pointer;
 		}
 	}

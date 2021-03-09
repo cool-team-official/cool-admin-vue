@@ -1,5 +1,6 @@
 import Crud from "cl-admin-crud";
 import Export from "cl-admin-export";
+import Theme from "cl-admin-theme";
 
 export default {
 	modules: [
@@ -36,6 +37,9 @@ export default {
 		"copy",
 		"distpicker",
 		"demo",
-		"theme"
+		{
+			name: "theme",
+			value: Theme
+		}
 	]
 };

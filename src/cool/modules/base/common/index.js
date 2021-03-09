@@ -1,11 +1,14 @@
-import { iconfontUrl } from "@/config/env";
+import { iconfontUrl, app } from "@/config/env";
+import { createLink } from "../utils";
+
+if (app.theme) {
+	if (app.theme.url) {
+		createLink(app.theme.url);
+	}
+}
 
 if (iconfontUrl) {
-	const link = document.createElement("link");
-	link.type = "text/css";
-	link.rel = "stylesheet";
-	link.href = iconfontUrl;
-	document.getElementsByTagName("head")[0].appendChild(link);
+	createLink(iconfontUrl);
 }
 
 const requireAll = requireContext => requireContext.keys().map(requireContext);

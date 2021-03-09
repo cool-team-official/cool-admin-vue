@@ -108,7 +108,6 @@ export default {
 		height: 50px;
 		font-size: 15px;
 		font-weight: bold;
-		color: $color-main;
 		padding: 0 20px;
 	}
 
@@ -133,7 +132,7 @@ export default {
 				color: #d8d8d8;
 
 				&.active {
-					color: $color-main;
+					color: #000;
 				}
 
 				&:not(.active):hover {
@@ -185,7 +184,7 @@ export default {
 			&:nth-last-child(n + 3) {
 				span {
 					&:first-child {
-						background-color: $color-main;
+						background-color: #000;
 						color: #fff;
 					}
 				}

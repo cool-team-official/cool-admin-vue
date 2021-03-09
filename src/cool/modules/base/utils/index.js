@@ -29,3 +29,17 @@ export function firstMenu(list) {
 
 	return path || "/404";
 }
+
+export function createLink(url, id) {
+	const link = document.createElement("link");
+	link.href = url;
+	link.type = "text/css";
+	link.rel = "stylesheet";
+	if (id) {
+		link.id = id;
+	}
+	document
+		.getElementsByTagName("head")
+		.item(0)
+		.appendChild(link);
+}

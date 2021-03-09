@@ -241,7 +241,7 @@ export default {
 
 					.content {
 						border-top-right-radius: 0;
-						background-color: $color-main;
+						background-color: $color-primary;
 						color: #fff;
 					}
 				}

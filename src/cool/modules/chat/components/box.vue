@@ -732,7 +732,7 @@ export default {
 
 				&.is-active {
 					background-color: #eee;
-					border-color: $color-main;
+					border-color: $color-primary;
 				}
 
 				&:hover {
