@@ -122,7 +122,7 @@ export default {
 	height: 100vh;
 	width: 100vw;
 	position: relative;
-	background-color: $color-primary;
+	background-color: #2f3447;
 
 	.box {
 		display: flex;

@@ -158,7 +158,7 @@ export default {
 			font-size: 12px;
 
 			span {
-				background-color: $color-primary;
+				background-color: #2f3447;
 				color: #fff;
 				border-radius: 3px;
 				padding: 2px 5px;
@@ -190,7 +190,7 @@ export default {
 						position: absolute;
 						bottom: -2px;
 						left: 0;
-						background-color: $color-primary;
+						background-color: #2f3447;
 					}
 				}
 			}

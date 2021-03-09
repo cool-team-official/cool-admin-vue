@@ -925,7 +925,7 @@ export default {
 						.date {
 							font-size: 12px;
 							color: #fff;
-							background-color: $color-primary;
+							background-color: #2f3447;
 							border-radius: 2px;
 							margin-left: 40px;
 							padding: 1px 3px;
