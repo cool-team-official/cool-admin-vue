@@ -4,8 +4,6 @@
 			<el-row type="flex" align="middle">
 				<!-- 刷新按钮 -->
 				<cl-refresh-btn />
-				<!-- 提示 -->
-				<p class="tips">修改完配置如无生效则需要重启 <i class="el-icon-warning"></i></p>
 				<cl-flex1 />
 				<!-- 关键字搜索 -->
 				<cl-search-key />
@@ -240,11 +238,3 @@ export default {
 	}
 };
 </script>
-
-<style lang="scss" scoped>
-.tips {
-	font-size: 13px;
-	margin-left: 10px;
-	color: $color-warning;
-}
-</style>
