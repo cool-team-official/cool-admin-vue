@@ -47,8 +47,7 @@
 export default {
 	data() {
 		return {
-			urls:
-				"https://cool-admin.cn.utools.club/uploads//20210226/7102eec0-7787-11eb-9231-515715ba55d0.jpg"
+			urls: ""
 		};
 	},
 

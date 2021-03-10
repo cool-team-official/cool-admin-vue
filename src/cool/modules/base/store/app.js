@@ -1,9 +1,6 @@
 import { app } from "@/config/env";
 import { deepMerge, getBrowser } from "cl-admin/utils";
 import store from "store";
-import common from "@/assets/css/common.scss";
-
-console.log(common);
 
 export default {
 	state: {

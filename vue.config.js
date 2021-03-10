@@ -12,30 +12,6 @@ const PROXY_LIST = {
 		}
 	},
 
-	"/ap": {
-		target: "https://admin.cool-js.cool",
-		changeOrigin: true,
-		pathRewrite: {
-			"^/ap": ""
-		}
-	},
-
-	"/fz": {
-		target: "http://xfz520231.utools.club",
-		changeOrigin: true,
-		pathRewrite: {
-			"^/fz": ""
-		}
-	},
-
-	"/oss-upload": {
-		target: "https://cool-admin-pro.oss-cn-shanghai.aliyuncs.com",
-		changeOrigin: true,
-		pathRewrite: {
-			"^/oss-upload": ""
-		}
-	},
-
 	"/pro": {
 		target: "https://show.cool-admin.com",
 		changeOrigin: true,

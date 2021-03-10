@@ -52,10 +52,24 @@
 	}
 }
 
-.el-menu {
-	&--vertical {
-		.el-submenu {
-			&__title {
+.cl-slider-menu__submenu {
+	background-color: #fff;
+
+	&.el-menu {
+		&--vertical {
+			.el-submenu {
+				&__title {
+					display: flex;
+					align-items: center;
+
+					.icon-svg {
+						font-size: 18px;
+						margin-right: 10px;
+					}
+				}
+			}
+
+			.el-menu-item {
 				display: flex;
 				align-items: center;
 
@@ -63,16 +77,6 @@
 					font-size: 18px;
 					margin-right: 10px;
 				}
-			}
-		}
-
-		.el-menu-item {
-			display: flex;
-			align-items: center;
-
-			.icon-svg {
-				font-size: 18px;
-				margin-right: 10px;
 			}
 		}
 	}

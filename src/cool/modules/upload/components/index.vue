@@ -445,7 +445,7 @@ export default {
 						// 上传
 						this.$service.common
 							.request({
-								url: res._host || res.host,
+								url: res.host,
 								method: "POST",
 								headers: {
 									"Content-Type": "multipart/form-data"
@@ -478,10 +478,6 @@ export default {
 						this.$service.common
 							.upload()
 							.then(res => {
-								if (isDev) {
-									res._host = "@/oss-upload";
-								}
-
 								next(res);
 							})
 							.catch(reject);

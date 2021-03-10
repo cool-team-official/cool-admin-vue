@@ -42,7 +42,7 @@ export const app = store.get("__app__") || {
 
 	theme: {
 		color: "", // 主题色
-		url: "http://192.168.199.148:5000/black/index.css" // 主题样式地址
+		url: "" // 主题样式地址
 	}
 };
 

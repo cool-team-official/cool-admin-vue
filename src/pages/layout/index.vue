@@ -41,27 +41,15 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["menuCollapse", "app", "browser"]),
+		...mapGetters(["menuCollapse", "app"]),
 
 		isKeepAlive() {
 			return isEmpty(this.$route.meta.keepAlive) ? true : this.$route.meta.keepAlive;
 		}
 	},
 
-	created() {
-		const resize = () => {
-			if (document.body.clientWidth < 1000) {
-				this.COLLAPSE_MENU(true);
-			}
-			this.SET_BROWSER();
-		};
-
-		window.addEventListener("resize", resize);
-		resize();
-	},
-
 	methods: {
-		...mapMutations(["COLLAPSE_MENU", "SET_BROWSER"])
+		...mapMutations(["COLLAPSE_MENU"])
 	}
 };
 </script>

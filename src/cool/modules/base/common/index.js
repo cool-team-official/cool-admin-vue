@@ -1,3 +1,4 @@
+import store from "@/store";
 import { iconfontUrl, app } from "@/config/env";
 import { createLink } from "../utils";
 import { colorPrimary } from "@/assets/css/common.scss";
@@ -18,9 +19,9 @@ if (iconfontUrl) {
 	createLink(iconfontUrl);
 }
 
-const requireAll = requireContext => requireContext.keys().map(requireContext);
 const req = require.context("@/icons/svg/", false, /\.svg$/);
-requireAll(req);
+
+req.keys().map(req);
 
 export function iconList() {
 	return req
@@ -30,3 +31,27 @@ export function iconList() {
 		.filter(e => e.includes("icon"))
 		.sort();
 }
+
+export const resize = () => {
+	if (document.body.clientWidth < 1000) {
+		store.commit("COLLAPSE_MENU", true);
+		store.commit("UPDATE_APP", {
+			conf: {
+				showAMenu: false
+			}
+		});
+	}
+	store.commit("SET_BROWSER");
+};
+
+window.onload = () => {
+	const observer = new MutationObserver(resize);
+
+	observer.observe(document.getElementById("app"), {
+		childList: true,
+		subtree: true
+	});
+
+	window.addEventListener("resize", resize);
+	resize();
+};

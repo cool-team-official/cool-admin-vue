@@ -48,7 +48,10 @@ export default {
 
 					if (e.type == 0) {
 						html = (
-							<el-submenu index={String(e.id)} key={e.id}>
+							<el-submenu
+								popper-class="cl-slider-menu__submenu"
+								index={String(e.id)}
+								key={e.id}>
 								<template slot="title">
 									<icon-svg name={e.icon}></icon-svg>
 									<span slot="title">{e.name}</span>
