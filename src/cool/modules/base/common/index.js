@@ -1,10 +1,17 @@
 import { iconfontUrl, app } from "@/config/env";
 import { createLink } from "../utils";
+import { colorPrimary } from "@/assets/css/common.scss";
 
 if (app.theme) {
-	if (app.theme.url) {
-		createLink(app.theme.url);
+	const { url, color } = app.theme;
+
+	if (url) {
+		createLink(url, "theme-style");
 	}
+
+	document
+		.getElementsByTagName("body")[0]
+		.style.setProperty("--color-primary", color || colorPrimary);
 }
 
 if (iconfontUrl) {

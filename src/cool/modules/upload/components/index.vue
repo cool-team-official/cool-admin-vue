@@ -32,8 +32,6 @@
 				:http-request="action ? undefined : httpRequest"
 				:on-remove="_onRemove"
 				:on-preview="_onPreview"
-				:on-success="_onSuccess"
-				:on-error="onError"
 				:on-progress="onProgress"
 				:on-change="onChange"
 				:on-exceed="onExceed"
@@ -188,7 +186,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["token", "modules", "upload"]),
+		...mapGetters(["token", "modules"]),
 
 		conf() {
 			return this.modules.upload.options;
@@ -418,9 +416,9 @@ export default {
 		},
 
 		// 重设上传请求
-		httpRequest(req) {
+		async httpRequest(req) {
 			const isRename = isEmpty(this.rename) ? this.conf.rename : this.rename;
-			const { mode } = this.upload;
+			const mode = await this.uploadMode();
 
 			// 多种上传请求
 			const upload = file => {
@@ -509,6 +507,11 @@ export default {
 				.done(() => {
 					this.loading = false;
 				});
+		},
+
+		// 上传模式
+		uploadMode() {
+			return this.$service.common.uploadMode().then(res => res.mode);
 		}
 	}
 };

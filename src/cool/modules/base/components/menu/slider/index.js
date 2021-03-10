@@ -11,14 +11,14 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["menuList", "menuCollapse", "browser", "conf"])
+		...mapGetters(["menuList", "menuCollapse", "browser", "app"])
 	},
 
 	watch: {
 		menuList() {
 			this.refresh();
 		},
-		"conf.showAMenu"() {
+		"app.conf.showAMenu"() {
 			this.$store.commit("SET_MENU_LIST");
 		}
 	},

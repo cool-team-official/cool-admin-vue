@@ -1,33 +1,27 @@
 import { app } from "@/config/env";
 import { deepMerge, getBrowser } from "cl-admin/utils";
+import store from "store";
+import common from "@/assets/css/common.scss";
+
+console.log(common);
 
 export default {
 	state: {
 		info: {
-			name: app.name
-		},
-		conf: {
-			...app.conf
+			...app
 		},
 		browser: {
 			isMobile: false
 		},
-		collapse: false,
-		upload: {
-			mode: "local"
-		}
+		collapse: false
 	},
 	getters: {
-		// 应用信息
-		appInfo: state => state.info,
 		// 应用配置
-		conf: state => state.conf,
+		app: state => state.info,
 		// 浏览器信息
 		browser: state => state.browser,
 		// 左侧菜单是否收起
-		menuCollapse: state => state.collapse,
-		// 上传配置
-		upload: state => state.upload
+		menuCollapse: state => state.collapse
 	},
 	actions: {
 		appLoad({ getters, dispatch }) {
@@ -36,14 +30,7 @@ export default {
 				dispatch("permMenu");
 				// 获取用户信息
 				dispatch("userInfo");
-				// 设置上传配置
-				dispatch("setUpload");
 			}
-		},
-		setUpload({ state }) {
-			this.$service.common.uploadMode().then(res => {
-				state.upload = res;
-			});
 		}
 	},
 	mutations: {
@@ -58,8 +45,9 @@ export default {
 		},
 
 		// 更新应用配置
-		UPDATE_CONF(state, val) {
-			deepMerge(state.conf, val);
+		UPDATE_APP(state, val) {
+			deepMerge(state.info, val);
+			store.set("__app__", state.info);
 		}
 	}
 };

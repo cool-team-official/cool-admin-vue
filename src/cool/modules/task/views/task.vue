@@ -200,6 +200,7 @@
 import draggable from "vuedraggable";
 import { checkPerm } from "@/cool/modules/base";
 import { Form, ContextMenu } from "cl-admin-crud";
+import Cron from "../components/cron";
 
 export default {
 	name: "system-task",
@@ -467,12 +468,7 @@ export default {
 							return scope.taskType == 1;
 						},
 						value: info.cron,
-						component: {
-							name: "el-input",
-							attrs: {
-								placeholder: "* * * * * *"
-							}
-						},
+						component: Cron,
 						rules: {
 							required: true,
 							message: "cron不能为空"

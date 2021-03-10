@@ -11,7 +11,7 @@
 				<topbar></topbar>
 			</div>
 
-			<div class="page-layout__process" v-if="conf.showProcess">
+			<div class="page-layout__process" v-if="app.conf.showProcess">
 				<cl-process />
 			</div>
 
@@ -41,7 +41,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["menuCollapse", "conf", "browser"]),
+		...mapGetters(["menuCollapse", "app", "browser"]),
 
 		isKeepAlive() {
 			return isEmpty(this.$route.meta.keepAlive) ? true : this.$route.meta.keepAlive;

@@ -2,7 +2,7 @@
 	<div class="app-slider">
 		<div class="app-slider__logo" @click="toHome">
 			<img src="@/assets/icon/logo/silder-simple.png" />
-			<span v-if="!menuCollapse || browser.isMobile">{{ appInfo.name }}</span>
+			<span v-if="!menuCollapse || browser.isMobile">{{ app.name }}</span>
 		</div>
 
 		<div class="app-slider__menu">
@@ -16,7 +16,7 @@ import { mapGetters } from "vuex";
 
 export default {
 	computed: {
-		...mapGetters(["menuCollapse", "browser", "appInfo"])
+		...mapGetters(["menuCollapse", "browser", "app"])
 	},
 
 	methods: {

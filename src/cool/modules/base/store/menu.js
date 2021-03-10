@@ -82,7 +82,7 @@ export default {
 				};
 
 				// 监测自定义菜单
-				if (!getters.conf.customMenu) {
+				if (!getters.app.conf.customMenu) {
 					this.$service.common
 						.permMenu()
 						.then(res => {
@@ -118,7 +118,7 @@ export default {
 
 		// 设置左侧菜单
 		SET_MENU_LIST(state, index) {
-			const { showAMenu } = this.getters.conf;
+			const { showAMenu } = this.getters.app.conf;
 
 			if (isEmpty(index)) {
 				index = state.index;

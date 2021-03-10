@@ -30,7 +30,7 @@ export const baseUrl = (function() {
 export const iconfontUrl = ``;
 
 // 程序配置参数
-export const app = {
+export const app = store.get("__app__") || {
 	name: "COOL-ADMIN",
 
 	conf: {
@@ -41,7 +41,8 @@ export const app = {
 	},
 
 	theme: {
-		url: "" // 主题样式地址
+		color: "", // 主题色
+		url: "http://192.168.199.148:5000/black/index.css" // 主题样式地址
 	}
 };
 

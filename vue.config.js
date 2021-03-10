@@ -13,7 +13,7 @@ const PROXY_LIST = {
 	},
 
 	"/ap": {
-		target: "https://admin.cn.utools.club",
+		target: "https://admin.cool-js.cool",
 		changeOrigin: true,
 		pathRewrite: {
 			"^/ap": ""

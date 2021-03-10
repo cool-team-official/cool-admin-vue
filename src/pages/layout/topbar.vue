@@ -5,12 +5,12 @@
 		</div>
 
 		<!-- 一级菜单 -->
-		<div class="app-topbar__menu" v-if="conf.showAMenu">
+		<div class="app-topbar__menu" v-if="app.conf.showAMenu">
 			<cl-menu-topbar />
 		</div>
 
 		<!-- 路由导航 -->
-		<div class="app-topbar__route-nav" v-if="conf.showRouteNav">
+		<div class="app-topbar__route-nav" v-if="app.conf.showRouteNav">
 			<cl-route-nav />
 		</div>
 
@@ -52,7 +52,7 @@ import { href } from "cl-admin/utils";
 
 export default {
 	computed: {
-		...mapGetters(["userInfo", "menuCollapse", "conf", "modules"])
+		...mapGetters(["userInfo", "menuCollapse", "app", "modules"])
 	},
 
 	methods: {
