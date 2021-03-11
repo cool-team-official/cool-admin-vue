@@ -50,28 +50,28 @@ import {
 	Badge,
 	Card,
 	Rate,
-	Steps,
-	Step,
+	// Steps,
+	// Step,
 	Carousel,
 	CarouselItem,
 	Collapse,
 	CollapseItem,
 	Cascader,
-	ColorPicker,
-	Transfer,
-	Container,
-	Header,
-	Aside,
-	Main,
-	Footer,
-	Timeline,
-	TimelineItem,
+	// ColorPicker,
+	// Transfer,
+	// Container,
+	// Header,
+	// Aside,
+	// Main,
+	// Footer,
+	// Timeline,
+	// TimelineItem,
 	Link,
 	Divider,
 	Image,
 	Calendar,
-	Backtop,
-	PageHeader,
+	// Backtop,
+	// PageHeader,
 	CascaderPanel,
 	Loading,
 	MessageBox,
@@ -134,8 +134,8 @@ Vue.use(Spinner);
 Vue.use(Badge);
 Vue.use(Card);
 Vue.use(Rate);
-Vue.use(Steps);
-Vue.use(Step);
+// Vue.use(Steps);
+// Vue.use(Step);
 Vue.use(Carousel);
 Vue.use(CarouselItem);
 Vue.use(Collapse);
@@ -154,7 +154,7 @@ Vue.use(Link);
 Vue.use(Divider);
 Vue.use(Image);
 Vue.use(Calendar);
-Vue.use(Backtop);
+// Vue.use(Backtop);
 // Vue.use(PageHeader);
 Vue.use(CascaderPanel);
 Vue.use(Drawer);
