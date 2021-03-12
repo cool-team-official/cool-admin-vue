@@ -76,7 +76,7 @@ export const TestService = {
 	info: d => {
 		console.log("GET[info]", d);
 		return new Promise(resolve => {
-			resolve(UserList.find(e.id == d.id));
+			resolve(UserList.find(e => e.id == d.id));
 		});
 	},
 	add: d => {

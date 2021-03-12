@@ -18,7 +18,7 @@ const PROXY_LIST = {
 			"^/pro": "/api"
 		}
 	}
-}
+};
 
 module.exports = {
 	publicPath: "/",
@@ -50,10 +50,10 @@ module.exports = {
 
 	chainWebpack: config => {
 		// 设置环境变量
-		config.plugin('define').tap(args => {
-			args[0]['process.env'].PROXY_LIST = JSON.stringify(PROXY_LIST)
-			return args
-		})
+		config.plugin("define").tap(args => {
+			args[0]["process.env"].PROXY_LIST = JSON.stringify(PROXY_LIST);
+			return args;
+		});
 
 		// 设置 svg
 		config.module.rule("svg").uses.clear();
@@ -88,26 +88,28 @@ module.exports = {
 			// 移除 preload 插件，避免加载多余的资源
 			config.plugins.delete("preload-index");
 
-			config.optimization.minimizer('terser').tap((args) => {
+			config.optimization.minimizer("terser").tap(args => {
 				// 去掉注释
 				args[0].terserOptions.output = {
 					comments: false
 				};
-				return args
-			})
+				return args;
+			});
 
 			// 分割模块
 			config.optimization.splitChunks({
-				chunks: 'all',
+				chunks: "all",
 				maxInitialRequests: Infinity,
 				minSize: 300000,
-				automaticNameDelimiter: '-',
+				automaticNameDelimiter: "-",
 				cacheGroups: {
 					vendor: {
 						test: /[\\/]node_modules[\\/]/,
 						name(module) {
-							const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-							return `chunk.${packageName.replace('@', '')}`;
+							const packageName = module.context.match(
+								/[\\/]node_modules[\\/](.*?)([\\/]|$)/
+							)[1];
+							return `chunk.${packageName.replace("@", "")}`;
 						},
 						priority: 10
 					}

@@ -4,7 +4,6 @@ import SysUser from "./system/user";
 import SysMenu from "./system/menu";
 import SysRole from "./system/role";
 import SysDept from "./system/dept";
-import SysInfo from "./system/info";
 import SysParam from "./system/param";
 import SysLog from "./system/log";
 import PluginInfo from "./plugin/info";
@@ -17,7 +16,6 @@ export default {
 		menu: new SysMenu(),
 		role: new SysRole(),
 		dept: new SysDept(),
-		info: new SysInfo(),
 		param: new SysParam(),
 		log: new SysLog()
 	},
