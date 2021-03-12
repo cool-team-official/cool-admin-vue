@@ -80,7 +80,7 @@ export default {
 
 			fn(this.list);
 
-			this.checked = ids.filter(id => (val || []).includes(id));
+			this.checked = ids.filter(id => (val || []).find(e => e == id));
 		},
 
 		refresh() {

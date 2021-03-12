@@ -95,6 +95,7 @@ export default {
 		},
 
 		onCheckStrictlyChange() {
+			this.form.departmentIdList = [];
 			this.visible = false;
 
 			this.$nextTick(() => {

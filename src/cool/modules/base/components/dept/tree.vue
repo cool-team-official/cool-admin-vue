@@ -91,6 +91,10 @@ export default {
 
 	methods: {
 		openCM(e, d, n) {
+			if (!d) {
+				d = this.list[0] || {};
+			}
+
 			let list = [
 				{
 					label: "新增",
@@ -114,10 +118,6 @@ export default {
 					}
 				}
 			];
-
-			if (!d) {
-				d = this.list[0];
-			}
 
 			if (d.parentId) {
 				list.push({
@@ -148,7 +148,7 @@ export default {
 			return data.parentId;
 		},
 
-		allowDrop(draggingNode, dropNode) {
+		allowDrop(_, dropNode) {
 			return dropNode.data.parentId;
 		},
 
@@ -175,6 +175,7 @@ export default {
 		},
 
 		rowEdit(e) {
+			console.log(e);
 			const method = e.id ? "update" : "add";
 
 			Form.open({
