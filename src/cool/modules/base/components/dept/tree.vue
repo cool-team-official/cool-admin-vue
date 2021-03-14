@@ -95,52 +95,47 @@ export default {
 				d = this.list[0] || {};
 			}
 
-			let list = [
-				{
-					label: "新增",
-					"suffix-icon": "el-icon-plus",
-					hidden: n && n.level >= this.level,
-					callback: (_, done) => {
-						this.rowEdit({
-							name: "",
-							parentName: d.name,
-							parentId: d.id
-						});
-						done();
-					}
-				},
-				{
-					label: "编辑",
-					"suffix-icon": "el-icon-edit",
-					callback: (_, done) => {
-						this.rowEdit(d);
-						done();
-					}
-				}
-			];
-
-			if (d.parentId) {
-				list.push({
-					label: "删除",
-					"suffix-icon": "el-icon-delete",
-					callback: (_, done) => {
-						this.rowDel(d);
-						done();
-					}
-				});
-			}
-
-			list.push({
-				label: "新增成员",
-				"suffix-icon": "el-icon-user",
-				callback: (_, done) => {
-					this.$emit("user-add", d);
-					done();
-				}
-			});
-
 			ContextMenu.open(e, {
-				list
+				list: [
+					{
+						label: "新增",
+						"suffix-icon": "el-icon-plus",
+						hidden: n && n.level >= this.level,
+						callback: (_, done) => {
+							this.rowEdit({
+								name: "",
+								parentName: d.name,
+								parentId: d.id
+							});
+							done();
+						}
+					},
+					{
+						label: "编辑",
+						"suffix-icon": "el-icon-edit",
+						callback: (_, done) => {
+							this.rowEdit(d);
+							done();
+						}
+					},
+					{
+						label: "删除",
+						"suffix-icon": "el-icon-delete",
+						hidden: !Boolean(d.parentId),
+						callback: (_, done) => {
+							this.rowDel(d);
+							done();
+						}
+					},
+					{
+						label: "新增成员",
+						"suffix-icon": "el-icon-user",
+						callback: (_, done) => {
+							this.$emit("user-add", d);
+							done();
+						}
+					}
+				]
 			});
 		},
 
@@ -175,7 +170,6 @@ export default {
 		},
 
 		rowEdit(e) {
-			console.log(e);
 			const method = e.id ? "update" : "add";
 
 			Form.open({
@@ -251,14 +245,17 @@ export default {
 			const del = f => {
 				this.$service.system.dept
 					.delete({
-						ids: e.id,
+						ids: [e.id],
 						deleteUser: f
 					})
 					.then(() => {
 						if (f) {
 							this.$message.success("删除成功");
 						} else {
-							this.$confirm("该部门用户已移动到部门顶级", "删除成功");
+							this.$confirm(
+								`“${e.name}” 部门的用户已成功转移到 “${e.parentName}” 部门。`,
+								"删除成功"
+							);
 						}
 					})
 					.done(() => {
@@ -266,7 +263,7 @@ export default {
 					});
 			};
 
-			this.$confirm("该操作会删除部门下的所有用户，是否确认？", "提示", {
+			this.$confirm(`该操作会删除 “${e.name}” 部门的所有用户，是否确认？`, "提示", {
 				type: "warning",
 				confirmButtonText: "直接删除",
 				cancelButtonText: "保留用户",

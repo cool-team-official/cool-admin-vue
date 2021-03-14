@@ -9,13 +9,7 @@ export default {
 	name: "cl-dept-move",
 
 	methods: {
-		async getDeptList() {
-			return await this.$service.system.dept.list().then(deepTree);
-		},
-
 		async toMove(ids) {
-			let list = await this.getDeptList();
-
 			this.$crud.openForm({
 				title: "部门转移",
 				width: "600px",
@@ -28,6 +22,16 @@ export default {
 						prop: "dept",
 						component: {
 							name: "system-user__dept-move",
+
+							data() {
+								return {
+									list: []
+								};
+							},
+
+							async created() {
+								this.list = await this.$service.system.dept.list().then(deepTree);
+							},
 
 							methods: {
 								selectRow(e) {
@@ -44,7 +48,7 @@ export default {
 											padding: "2px"
 										}}>
 										<el-tree
-											data={list}
+											data={this.list}
 											{...{
 												props: {
 													props: {
