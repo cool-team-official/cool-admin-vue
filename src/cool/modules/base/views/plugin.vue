@@ -78,37 +78,40 @@ export default {
 				columns: [
 					{
 						label: "名称",
-						prop: "name"
+						prop: "name",
+						"min-width": 140
 					},
 					{
 						label: "作者",
 						prop: "author",
-						width: 150
+						"min-width": 120
 					},
 					{
 						label: "联系方式",
 						prop: "contact",
-						"show-overflow-tooltip": true
+						"show-overflow-tooltip": true,
+						"min-width": 180
 					},
 					{
 						label: "功能描述",
 						prop: "description",
-						"show-overflow-tooltip": true
+						"show-overflow-tooltip": true,
+						"min-width": 150
 					},
 					{
 						label: "版本号",
 						prop: "version",
-						width: 120
+						"min-width": 110
 					},
 					{
 						label: "是否启用",
 						prop: "enable",
-						width: 120
+						"min-width": 110
 					},
 					{
 						label: "命名空间",
 						prop: "namespace",
-						width: 150
+						"min-width": 110
 					},
 					{
 						label: "状态",
