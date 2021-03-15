@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="view-plugin">
 		<cl-crud ref="crud" :on-refresh="onRefresh" @load="onLoad">
 			<el-row type="flex" align="middle">
 				<!-- 刷新按钮 -->
@@ -28,7 +28,7 @@
 			<el-row type="flex">
 				<cl-flex1 />
 				<!-- 分页控件 -->
-				<cl-pagination :props="{ layout: 'total' }" />
+				<cl-pagination layout="total" />
 			</el-row>
 		</cl-crud>
 
@@ -67,7 +67,7 @@ export default {
 					scope => {
 						return {
 							label: "配置",
-							hidden: !perms.edit,
+							hidden: !perms.edit || !scope.view,
 							callback: (_, done) => {
 								this.openConf(scope);
 								done();
@@ -148,6 +148,7 @@ export default {
 					},
 					{
 						type: "op",
+						width: 120,
 						buttons: [
 							({ scope }) => {
 								return (
@@ -181,6 +182,8 @@ export default {
 				.done();
 			app.refresh();
 		},
+
+		// 刷新钩子
 		onRefresh(params, { next, render }) {
 			next(params).then(res => {
 				render(res, {
@@ -188,6 +191,8 @@ export default {
 				});
 			});
 		},
+
+		// 开启、关闭
 		onEnableChange(val, item) {
 			this.$service.plugin.info
 				.enable({
@@ -201,29 +206,30 @@ export default {
 					this.$message.error(err);
 				});
 		},
-		async openConf(item) {
+
+		// 打开配置
+		async openConf({ name, namespace, view }) {
 			const form = await this.$service.plugin.info.getConfig({
-				namespace: item.namespace
+				namespace
 			});
 
 			let items = [];
 
 			try {
-				items = JSON.parse(item.view);
+				items = JSON.parse(view);
 			} catch (e) {
 				items = [];
-				console.error(e);
 			}
 
 			this.$refs.form.open({
-				title: `${item.name}配置`,
+				title: `${name}配置`,
 				items,
 				form,
 				on: {
 					submit: (data, { close, done }) => {
 						this.$service.plugin.info
 							.config({
-								namespace: item.namespace,
+								namespace,
 								config: data
 							})
 							.then(() => {
