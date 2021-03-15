@@ -1,6 +1,6 @@
 <template>
 	<div class="app-process">
-		<div class="app-process__left hidden-xs-only" @click="toLeft">
+		<div class="app-process__left hidden-xs-only" @click="toScroll(true)">
 			<i class="el-icon-arrow-left"></i>
 		</div>
 
@@ -11,11 +11,8 @@
 				:key="index"
 				:class="{ active: item.active }"
 				:data-index="index"
-				@mousedown="
-					e => {
-						onTap(e, item);
-					}
-				"
+				@click="onTap(item)"
+				@contextmenu.stop.prevent="openCM($event, item)"
 			>
 				<span>{{ item.label }}</span>
 
@@ -23,125 +20,89 @@
 					class="el-icon-close"
 					v-if="index > 0"
 					:class="{ active: index > 0 }"
-					@mousedown.stop="onDel(index)"
+					@click.stop="onDel(index)"
 				></i>
 			</div>
 		</div>
 
-		<div class="app-process__right hidden-xs-only" @click="toRight">
+		<div class="app-process__right hidden-xs-only" @click="toScroll(false)">
 			<i class="el-icon-arrow-right"></i>
 		</div>
-
-		<ul class="context-menu" v-show="menu.visible" :style="menu.style">
-			<li @click="onClose('current')" v-if="isHit">关闭当前</li>
-			<li @click="onClose('other')">关闭其他</li>
-			<li @click="onClose('all')">关闭所有</li>
-		</ul>
 	</div>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+import { ContextMenu } from "cl-admin-crud";
+import { last } from "cl-admin/utils";
 
 export default {
 	name: "cl-process",
-
-	data() {
-		return {
-			menu: {
-				visible: false,
-				current: {},
-				style: {
-					left: 0,
-					top: 0
-				}
-			},
-
-			isHit: false
-		};
-	},
 
 	computed: {
 		...mapGetters(["processList"])
 	},
 
-	mounted() {
-		this.$el.oncontextmenu = e => {
-			e.returnValue = false;
-		};
-
-		document.body.addEventListener("click", () => {
-			if (this.menu.visible) {
-				this.menu.visible = false;
-			}
-		});
-	},
-
 	methods: {
 		...mapMutations(["ADD_PROCESS", "DEL_PROCESS", "SET_PROCESS"]),
 
-		onTap(e, item) {
-			this.isHit = item.active;
-
-			if (e.button == 0) {
-				this.$router.push(item.value);
-			} else {
-				this.menu = {
-					current: item,
-					visible: true,
-					style: {
-						left: e.layerX + "px",
-						top: e.layerY + "px"
-					}
-				};
-			}
+		onTap(item) {
+			this.$router.push(item.value);
 		},
 
 		onDel(index) {
 			this.DEL_PROCESS(index);
-
 			this.toPath();
 		},
 
-		onClose(cmd) {
-			const { current } = this.menu;
-
-			switch (cmd) {
-				case "current":
-					this.onDel(this.processList.findIndex(e => e.value == current.value));
-					break;
-
-				case "other":
-					this.SET_PROCESS(
-						this.processList.filter(e => e.value == current.value || e.value == "/")
-					);
-					break;
-
-				case "all":
-					this.SET_PROCESS(this.processList.filter(e => e.value == "/"));
-					break;
-			}
-
-			this.toPath();
+		openCM(e, item) {
+			ContextMenu.open(e, {
+				list: [
+					{
+						label: "关闭当前",
+						hidden: this.$route.path !== item.value,
+						callback: (_, done) => {
+							this.onDel(this.processList.findIndex(e => e.value == item.value));
+							done();
+							this.toPath();
+						}
+					},
+					{
+						label: "关闭其他",
+						callback: (_, done) => {
+							this.SET_PROCESS(
+								this.processList.filter(
+									e => e.value == item.value || e.value == "/"
+								)
+							);
+							done();
+							this.toPath();
+						}
+					},
+					{
+						label: "关闭所有",
+						callback: (_, done) => {
+							this.SET_PROCESS(this.processList.filter(e => e.value == "/"));
+							done();
+							this.toPath();
+						}
+					}
+				]
+			});
 		},
 
 		toPath() {
 			const active = this.processList.find(e => e.active);
 
 			if (!active) {
-				const next = this.processList[this.processList.length - 1];
+				const next = last(this.processList);
 				this.$router.push(next ? next.value : "/");
 			}
 		},
 
-		toLeft() {
-			let scroller = this.$el.querySelector(".app-process__scroller");
-			scroller.scrollTo(scroller.scrollLeft - 100, 0);
-		},
-
-		toRight() {
-			let scroller = this.$el.querySelector(".app-process__scroller");
-			scroller.scrollTo(scroller.scrollLeft + 100, 0);
+		toScroll(f) {
+			const scroller = this.$el.querySelector(".app-process__scroller");
+			scroller.scrollTo(scroller.scrollLeft + (f ? -100 : 100), 0);
 		}
 	}
 };
@@ -219,7 +180,7 @@ export default {
 
 		&:hover {
 			.el-icon-close {
-				width: auto;
+				width: 14px;
 				margin-left: 5px;
 			}
 		}
@@ -236,30 +197,6 @@ export default {
 
 			&:before {
 				background-color: $color-primary;
-			}
-		}
-	}
-
-	.context-menu {
-		margin: 0;
-		background: #fff;
-		z-index: 100;
-		position: absolute;
-		list-style-type: none;
-		padding: 5px 0;
-		border-radius: 4px;
-		font-size: 12px;
-		font-weight: 400;
-		color: #333;
-		box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
-
-		li {
-			margin: 0;
-			padding: 7px 16px;
-			cursor: pointer;
-
-			&:hover {
-				background: #eee;
 			}
 		}
 	}
