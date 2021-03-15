@@ -14,7 +14,6 @@ export default {
 				rename: true
 			}
 		},
-
 		{
 			name: "crud",
 			value: Crud,
