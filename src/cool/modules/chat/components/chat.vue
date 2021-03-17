@@ -1,11 +1,11 @@
 <template>
-	<div class="chat-wrap">
+	<div class="cl-chat__wrap">
 		<!-- 聊天窗口 -->
 		<cl-dialog :visible.sync="visible" v-bind="conf">
-			<div class="chat-box">
+			<div class="cl-chat">
 				<!-- 会话区域 -->
-				<div class="chat-box__session">
-					<div class="chat-box__session-search">
+				<div class="cl-chat__session">
+					<div class="cl-chat__session-search">
 						<el-input
 							v-model="session.keyWord"
 							placeholder="搜索"
@@ -18,9 +18,9 @@
 					</div>
 
 					<!-- 会话列表 -->
-					<ul class="chat-box__session-list scroller1">
+					<ul class="cl-chat__session-list scroller1" v-if="sessionList.length > 0">
 						<li
-							class="chat-box__session-item"
+							class="cl-chat__session-item"
 							v-for="(item, index) in sessionList"
 							:key="index"
 							:class="{
@@ -47,18 +47,23 @@
 							</div>
 						</li>
 					</ul>
+
+					<!-- 空态 -->
+					<div class="cl-chat__session-empty" v-else>
+						没有搜索到内容...
+					</div>
 				</div>
 
 				<!-- 会话详情 -->
-				<div class="chat-box__detail">
+				<div class="cl-chat__detail">
 					<template v-if="session.current">
 						<div
-							class="chat-box__detail-container scroller1"
+							class="cl-chat__detail-container scroller1"
 							ref="scroller"
 							v-loading="message.loading"
 						>
 							<!-- 加载更多 -->
-							<div class="chat-box__detail-more" v-if="message.list.length > 0">
+							<div class="cl-chat__detail-more" v-if="message.list.length > 0">
 								<el-button
 									round
 									size="mini"
@@ -72,9 +77,9 @@
 							<message :list="message.list" />
 						</div>
 
-						<div class="chat-box__detail-footer">
+						<div class="cl-chat__detail-footer">
 							<!-- 工具栏 -->
-							<div class="chat-box__opbar">
+							<div class="cl-chat__opbar">
 								<ul>
 									<!-- 表情 -->
 									<li>
@@ -93,7 +98,7 @@
 										</el-popover>
 									</li>
 									<!-- 图片上传 -->
-									<li>
+									<li hidden>
 										<cl-upload
 											accept="image/*"
 											list-type
@@ -103,7 +108,7 @@
 										</cl-upload>
 									</li>
 									<!-- 视频上传 -->
-									<li>
+									<li hidden>
 										<cl-upload
 											accept="video/*"
 											list-type
@@ -126,7 +131,7 @@
 							</div>
 
 							<!-- 输入框，发送按钮 -->
-							<div class="chat-box__input">
+							<div class="cl-chat__input">
 								<el-input
 									v-model="message.value"
 									placeholder="请描述您想咨询的问题"
@@ -158,9 +163,9 @@
 
 <script>
 import dayjs from "dayjs";
-import io from "socket.io-client";
-import { isString, debounce } from "cl-admin/utils";
 import { mapGetters } from "vuex";
+import { isString, debounce } from "cl-admin/utils";
+import io from "socket.io-client";
 import { socketUrl } from "@/config/env";
 import Emoji from "./emoji";
 import Message from "./message";
@@ -180,14 +185,16 @@ export default {
 	data() {
 		return {
 			visible: false,
+			socket: null,
 			conf: {
 				title: "聊天对话框",
+				height: "650px",
+				width: "1000px",
 				props: {
 					modal: true,
-					"custom-class": "chat-box__wrap",
+					customClass: "cl-chat__dialog",
 					"append-to-body": true,
-					"close-on-click-modal": false,
-					width: "1000px"
+					"close-on-click-modal": false
 				}
 			},
 			message: {
@@ -212,8 +219,7 @@ export default {
 			},
 			emoji: {
 				visible: false
-			},
-			socket: null
+			}
 		};
 	},
 
@@ -233,28 +239,26 @@ export default {
 		}
 	},
 
-	mounted() {
-		this.socket = io(`${socketUrl}?isAdmin=true&token=${this.token}`);
-
-		this.socket.on("connect", () => {
-			console.log("socket connect");
-		});
-
-		this.socket.on("admin", msg => {
-			this.onMessage(msg);
-		});
-
-		this.socket.on("error", err => {
-			console.log(err);
-		});
-
-		this.socket.on("disconnect", () => {
-			console.log("disconnect connect");
-		});
+	created() {
+		// this.socket = io(`${socketUrl}?isAdmin=true&token=${this.token}`);
+		// this.socket.on("connect", () => {
+		// 	console.log("socket connect");
+		// });
+		// this.socket.on("admin", msg => {
+		// 	this.onMessage(msg);
+		// });
+		// this.socket.on("error", err => {
+		// 	console.log(err);
+		// });
+		// this.socket.on("disconnect", () => {
+		// 	console.log("disconnect connect");
+		// });
 	},
 
 	destroyed() {
-		this.socket.close();
+		if (this.socket) {
+			this.socket.close();
+		}
 	},
 
 	methods: {
@@ -342,7 +346,7 @@ export default {
 					order: "updateTime",
 					sort: "desc"
 				})
-				.then(async res => {
+				.then(res => {
 					this.session.list = res.list;
 					this.session.pagination = res.pagination;
 
@@ -411,7 +415,10 @@ export default {
 		scrollToBottom: debounce(function() {
 			this.$nextTick(() => {
 				if (this.$refs["scroller"]) {
-					this.$refs["scroller"].scrollTo(0, 999999);
+					this.$refs["scroller"].scrollTo({
+						top: 99999,
+						behavior: "smooth"
+					});
 				}
 			});
 		}, 300),
@@ -580,12 +587,14 @@ export default {
 				content
 			});
 
-			this.socket.emit(`user@${userId}`, {
-				contentType,
-				type: 0,
-				content: JSON.stringify(content),
-				sessionId: id
-			});
+			if (this.socket) {
+				this.socket.emit(`user@${userId}`, {
+					contentType,
+					type: 0,
+					content: JSON.stringify(content),
+					sessionId: id
+				});
+			}
 		},
 
 		/**
@@ -642,22 +651,22 @@ export default {
 </script>
 
 <style lang="scss">
-.chat-box__wrap {
-	height: 650px;
-	min-width: 1000px;
+.cl-chat__dialog {
 	margin-bottom: 0 !important;
+	min-width: 1000px;
 
 	.el-dialog__body {
-		height: calc(100% - 46px);
 		padding: 0;
+	}
 
+	&.is-fullscreen {
 		.cl-dialog__container {
-			height: 100%;
+			height: calc(100vh - 46px) !important;
 		}
 	}
 }
 
-.chat-box {
+.cl-chat {
 	display: flex;
 	height: 100%;
 	background-color: #f7f7f7;
@@ -673,7 +682,7 @@ export default {
 			padding: 10px;
 		}
 
-		ul {
+		&-list {
 			height: calc(100% - 52px);
 			overflow: auto;
 
@@ -684,14 +693,12 @@ export default {
 				border-left: 5px solid #fff;
 
 				.avatar {
-					height: 40px;
-					width: 40px;
 					margin-right: 12px;
 
 					img {
 						display: block;
-						height: 100%;
-						width: 100%;
+						height: 40px;
+						width: 40px;
 						border-radius: 3px;
 						background-color: #eee;
 					}
@@ -741,6 +748,11 @@ export default {
 				}
 			}
 		}
+
+		&-empty {
+			text-align: center;
+			margin-top: 10px;
+		}
 	}
 
 	&__detail {
@@ -779,6 +791,7 @@ export default {
 
 	&__opbar {
 		margin-bottom: 5px;
+
 		ul {
 			display: flex;
 			li {

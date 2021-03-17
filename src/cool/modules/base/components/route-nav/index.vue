@@ -66,7 +66,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["conf", "menuGroup"]),
+		...mapGetters(["menuGroup"]),
 
 		lastName() {
 			return _.last(this.list).name;

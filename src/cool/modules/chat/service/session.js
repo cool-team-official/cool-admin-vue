@@ -1,6 +1,9 @@
 import { BaseService, Service, Permission } from "cl-admin";
 
-@Service("app/im/session")
+@Service({
+	namespace: "im/session",
+	mock: true
+})
 class ImSession extends BaseService {
 	@Permission("unreadCount")
 	unreadCount() {

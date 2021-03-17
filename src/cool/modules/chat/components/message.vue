@@ -12,7 +12,7 @@
 
 			<div class="main">
 				<div class="avatar" @tap="toUserDetail(item)">
-					<el-image :src="item.avatarUrl"></el-image>
+					<img :src="item.avatarUrl" />
 				</div>
 
 				<div class="det">
@@ -185,11 +185,13 @@ export default {
 
 			.avatar {
 				flex-shrink: 0;
-				height: 40px;
-				width: 40px;
 
-				.el-image {
+				img {
+					display: block;
+					height: 40px;
+					width: 40px;
 					border-radius: 3px;
+					background-color: #fff;
 				}
 			}
 

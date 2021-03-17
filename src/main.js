@@ -9,6 +9,9 @@ import router from "@/router";
 // 缓存
 import store from "@/store";
 
+// mock
+import "@/mock";
+
 // 阻止显示生产模式的消息
 Vue.config.productionTip = false;
 

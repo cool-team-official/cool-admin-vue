@@ -25,6 +25,7 @@ export default {
 				}
 			}
 		},
+		"chat",
 		"task",
 		"copy",
 		"distpicker",

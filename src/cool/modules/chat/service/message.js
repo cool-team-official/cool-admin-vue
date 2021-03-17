@@ -1,6 +1,9 @@
 import { BaseService, Service, Permission } from "cl-admin";
 
-@Service("app/im/message")
+@Service({
+	namespace: "im/message",
+	mock: true
+})
 class ImMessage extends BaseService {
 	@Permission("read")
 	read(data) {
