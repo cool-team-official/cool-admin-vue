@@ -1,10 +1,7 @@
 import Cron from "./cron";
-import Base from "./base";
 
 export default {
 	name: "cl-cron",
-
-	mixins: [Base],
 
 	components: {
 		Cron
@@ -15,66 +12,58 @@ export default {
 		placeholder: {
 			type: String,
 			default: "请输入定时策略"
-		}
+		},
+		disabled: Boolean,
+		readonly: Boolean
 	},
 
 	data() {
 		return {
-			cronPopover: false,
+			visible: false,
 			cron: ""
 		};
 	},
 
 	watch: {
-		cron: {
-			handler(val) {
-				this.fieldValue = val;
-				this.$emit("change", val);
-			}
-		},
 		value: {
 			immediate: true,
 			handler(val) {
 				this.cron = val;
 			}
 		},
-		fieldValue: {
-			immediate: true,
+		cron: {
 			handler(val) {
-				this.cron = val;
+				this.$emit("input", val);
+				this.$emit("change", val);
 			}
 		}
 	},
 
 	methods: {
-		changeCron(val) {
-			this.cron = val;
-		},
-		hidePopover() {
-			this.cronPopover = false;
+		close() {
+			this.visible = false;
 		}
 	},
 
 	render() {
-		const vnode = (
-			<el-popover vModel={this.cronPopover} disabled={this.disabled || this.readonly}>
+		return (
+			<el-popover v-model={this.visible} disabled={this.disabled || this.readonly}>
 				<Cron
+					v-model={this.cron}
 					{...{
 						props: { i18n: "cn" },
 						on: {
-							change: this.changeCron,
-							close: this.hidePopover
+							close: this.close
 						}
 					}}></Cron>
 				<el-input
 					slot="reference"
-					clearable={true}
+					clearable
 					disabled={this.disabled}
 					readonly={this.readonly}
-					vModel={this.cron}
+					v-model={this.cron}
 					placeholder={this.placeholder}></el-input>
 			</el-popover>
 		);
-		return this.renderComponent(vnode);
 	}
 };

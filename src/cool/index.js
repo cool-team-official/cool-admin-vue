@@ -4,17 +4,13 @@ import Theme from "cl-admin-theme";
 export default {
 	modules: [
 		"base",
-		"task",
 		{
 			name: "upload",
 			options: {
 				icon: "el-icon-picture",
-				text: "选择图片",
-				limitSize: 1,
-				rename: true
+				text: "选择图片"
 			}
 		},
-
 		{
 			name: "crud",
 			value: Crud,
@@ -29,6 +25,7 @@ export default {
 				}
 			}
 		},
+		"task",
 		"copy",
 		"distpicker",
 		"demo",

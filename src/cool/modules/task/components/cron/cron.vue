@@ -3,7 +3,7 @@
 		<el-tabs type="border-card">
 			<el-tab-pane>
 				<span slot="label"><i class="el-icon-date"></i> {{ text.Seconds.name }}</span>
-				<div class="tabBody">
+				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="second.cronEvery" label="1">{{
 							text.Seconds.every
@@ -59,9 +59,10 @@
 					</el-row>
 				</div>
 			</el-tab-pane>
+
 			<el-tab-pane>
 				<span slot="label"><i class="el-icon-date"></i> {{ text.Minutes.name }}</span>
-				<div class="tabBody">
+				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="minute.cronEvery" label="1">{{
 							text.Minutes.every
@@ -117,9 +118,10 @@
 					</el-row>
 				</div>
 			</el-tab-pane>
+
 			<el-tab-pane>
 				<span slot="label"><i class="el-icon-date"></i> {{ text.Hours.name }}</span>
-				<div class="tabBody">
+				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="hour.cronEvery" label="1">{{
 							text.Hours.every
@@ -175,9 +177,10 @@
 					</el-row>
 				</div>
 			</el-tab-pane>
+
 			<el-tab-pane>
 				<span slot="label"><i class="el-icon-date"></i> {{ text.Day.name }}</span>
-				<div class="tabBody">
+				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="day.cronEvery" label="1">{{ text.Day.every }}</el-radio>
 					</el-row>
@@ -319,9 +322,10 @@
 					</el-row>
 				</div>
 			</el-tab-pane>
+
 			<el-tab-pane>
 				<span slot="label"><i class="el-icon-date"></i> {{ text.Month.name }}</span>
-				<div class="tabBody">
+				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="month.cronEvery" label="1">{{
 							text.Month.every
@@ -378,9 +382,10 @@
 					</el-row>
 				</div>
 			</el-tab-pane>
+
 			<el-tab-pane v-if="showYear || false">
 				<span slot="label"><i class="el-icon-date"></i> {{ text.Year.name }}</span>
-				<div class="tabBody">
+				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="year.cronEvery" label="1">{{
 							text.Year.every
@@ -443,10 +448,10 @@
 				</div>
 			</el-tab-pane>
 		</el-tabs>
-		<div class="bottom">
-			<!-- <span class="value">{{this.cron}}</span> -->
-			<el-button type="primary" @click="change">{{ text.Save }}</el-button>
-			<el-button type="primary" @click="close">{{ text.Close }}</el-button>
+
+		<div class="vue-cron__footer">
+			<el-button @click="close">{{ text.Close }}</el-button>
+			<el-button type="primary" @click="save">{{ text.Save }}</el-button>
 		</div>
 	</div>
 </template>
@@ -457,7 +462,7 @@ import Language from "./cn";
 export default {
 	name: "vue-cron",
 
-	props: ["data", "i18n", "showYear"],
+	props: ["value", "data", "i18n", "showYear"],
 
 	data() {
 		return {
@@ -733,7 +738,8 @@ export default {
 		getValue() {
 			return this.cron;
 		},
-		change() {
+		save() {
+			this.$emit("input", this.cron);
 			this.$emit("change", this.cron);
 			this.close();
 		},
@@ -759,16 +765,24 @@ export default {
 	}
 };
 </script>
-<style lang="scss" scoped>
-.bottom {
-	text-align: center;
-	margin-top: 20px;
-}
-.tabBody /deep/ .el-row {
-	margin: 10px 0;
-}
 
-.vue-cron /deep/ .el-tabs {
-	box-shadow: none;
+<style lang="scss" scoped>
+.vue-cron {
+	/deep/ .el-tabs {
+		box-shadow: none;
+	}
+
+	&__item {
+		/deep/ .el-row {
+			min-height: 32px;
+			line-height: 32px;
+			margin-bottom: 10px;
+		}
+	}
+
+	&__footer {
+		margin-top: 10px;
+		text-align: center;
+	}
 }
 </style>
