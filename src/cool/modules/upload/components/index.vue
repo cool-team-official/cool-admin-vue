@@ -41,26 +41,50 @@
 				v-loading="_loading"
 			>
 				<slot>
-					<!-- picture-card -->
+					<!-- 多图上传 -->
 					<template v-if="listType == 'picture-card'">
 						<i :class="['cl-upload__icon', _icon]"></i>
 						<span class="cl-upload__text" v-if="_text">{{ _text }}</span>
 					</template>
 
-					<!-- text -->
+					<!-- 文件上传 -->
 					<template v-else-if="listType == 'text'">
 						<el-button size="mini" type="primary" :loading="loading"
 							>点击上传</el-button
 						>
 					</template>
 
+					<!-- 默认上传 -->
 					<template v-else>
-						<div class="cl-upload__cover" v-if="_urls[0]">
-							<img v-if="_urls[0].type == 'image'" :src="_urls[0].url" />
+						<template v-if="_file">
+							<div class="cl-upload__cover">
+								<!-- 图片 -->
+								<img v-if="_file.type == 'image'" :src="_file.url" />
 
-							<span v-else>{{ _urls[0].name }}</span>
-						</div>
+								<!-- 文件名 -->
+								<span v-else>{{ _file.name }}</span>
+							</div>
 
+							<!-- 功能按钮 -->
+							<div class="cl-upload__actions">
+								<span
+									class="cl-upload__actions-preview"
+									v-if="_file.type == 'image'"
+									@click.stop="_onPreview(_file)"
+								>
+									<i class="el-icon-zoom-in"></i>
+								</span>
+
+								<span
+									class="cl-upload__actions-delete"
+									@click.stop="_onRemove(_file)"
+								>
+									<i class="el-icon-delete"></i>
+								</span>
+							</div>
+						</template>
+
+						<!-- 空态 -->
 						<template v-else>
 							<i :class="['cl-upload__icon', _icon]"></i>
 							<span class="cl-upload__text" v-if="_text">{{ _text }}</span>
@@ -85,9 +109,8 @@
 <script>
 import { mapGetters } from "vuex";
 import path from "path";
-import { cloneDeep, last, isArray, isNumber, isEmpty } from "cl-admin/utils";
+import { cloneDeep, last, isArray, isNumber, isBoolean } from "cl-admin/utils";
 import { v4 as uuidv4 } from "uuid";
-import { isDev } from "@/config/env";
 
 export default {
 	name: "cl-upload",
@@ -103,13 +126,10 @@ export default {
 		// 是否以 uuid 重命名
 		rename: {
 			type: Boolean,
-			default: true
+			default: undefined
 		},
 		// 最大允许上传文件大小(MB)
-		limitSize: {
-			type: Number,
-			default: 2
-		},
+		limitSize: Number,
 		// 预览图片的宽度
 		previewWidth: {
 			type: String,
@@ -220,7 +240,11 @@ export default {
 		},
 
 		_limitSize() {
-			return this.limitSize || this.conf.limitSize || 2;
+			return this.limitSize || this.conf.limitSize || 10;
+		},
+
+		_rename() {
+			return isBoolean(this.rename) ? this.rename : this.conf.rename;
 		},
 
 		_showFileList() {
@@ -256,6 +280,10 @@ export default {
 					e.type = format.image.includes(suf) ? "image" : null;
 					return e;
 				});
+		},
+
+		_file() {
+			return this._urls[0];
 		},
 
 		_style() {
@@ -417,7 +445,6 @@ export default {
 
 		// 重设上传请求
 		async httpRequest(req) {
-			const isRename = isEmpty(this.rename) ? this.conf.rename : this.rename;
 			const mode = await this.uploadMode();
 
 			// 多种上传请求
@@ -435,7 +462,7 @@ export default {
 						let fileName = file.name;
 
 						// 是否以 uuid 重新命名
-						if (isRename) {
+						if (this._rename) {
 							fileName = uuidv4() + "." + last((file.name || "").split("."));
 						}
 
@@ -542,11 +569,14 @@ export default {
 				overflow: hidden;
 				height: 100%;
 
-				&:hover {
-					border-color: $color-primary;
+				i {
+					font-size: 28px;
+					color: #8c939d;
 				}
 
 				.cl-upload__cover {
+					position: relative;
+
 					img {
 						display: block;
 						height: 100%;
@@ -554,9 +584,53 @@ export default {
 					}
 				}
 
-				i {
-					font-size: 28px;
-					color: #8c939d;
+				.cl-upload__actions {
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					left: 0;
+					top: 0;
+					cursor: default;
+					text-align: center;
+					color: #fff;
+					opacity: 0;
+					font-size: 20px;
+					background-color: rgba(0, 0, 0, 0.5);
+					-webkit-transition: opacity 0.3s;
+					transition: opacity 0.3s;
+
+					&::after {
+						display: inline-block;
+						content: "";
+						height: 100%;
+						vertical-align: middle;
+					}
+
+					span {
+						display: none;
+						cursor: pointer;
+					}
+
+					span + span {
+						margin-left: 15px;
+					}
+
+					i {
+						color: #fff;
+						font-size: 20px;
+					}
+				}
+
+				&:hover {
+					border-color: $color-primary;
+
+					.cl-upload__actions {
+						opacity: 1;
+
+						span {
+							display: inline-block;
+						}
+					}
 				}
 			}
 		}
