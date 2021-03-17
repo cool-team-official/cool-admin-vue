@@ -48,6 +48,10 @@ Mock.mock("/im/session/unreadCount", "get", options => {
 	};
 });
 
+Mock.setup({
+	timeout: "500-1000"
+});
+
 Mock.mock("/im/message/page", "post", options => {
 	const data = Mock.mock({
 		"list|20": [
