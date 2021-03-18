@@ -42,7 +42,7 @@ export default {
 					}
 
 					const routes = res.menus
-						.filter(e => e.type != 2 && e.isShow)
+						.filter(e => e.type != 2)
 						.map(e => {
 							return {
 								moduleName: e.moduleName,

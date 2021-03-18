@@ -6,7 +6,7 @@
 			background-color="transparent"
 			@select="onSelect"
 		>
-			<el-menu-item v-for="(item, index) in menuGroup" :index="`${index}`" :key="index">
+			<el-menu-item v-for="(item, index) in list" :index="`${index}`" :key="index">
 				<icon-svg v-if="item.icon" :name="item.icon"></icon-svg>
 				<span>{{ item.name }}</span>
 			</el-menu-item>
@@ -28,7 +28,11 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["menuGroup"])
+		...mapGetters(["menuGroup"]),
+
+		list() {
+			return this.menuGroup.filter(e => e.isShow);
+		}
 	},
 
 	mounted() {
