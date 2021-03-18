@@ -10,7 +10,7 @@
 					</el-tooltip>
 				</li>
 
-				<li v-if="drag && isPc">
+				<li v-if="drag && !browser.isMini">
 					<el-tooltip content="拖动排序">
 						<i class="el-icon-s-operation" @click="isDrag = true"></i>
 					</el-tooltip>
@@ -46,7 +46,7 @@
 						}}</span>
 						<span
 							class="cl-dept-tree__node-icon"
-							v-if="!isPc"
+							v-if="browser.isMini"
 							@click="openCM($event, data, node)"
 						>
 							<i class="el-icon-more"></i>
@@ -59,8 +59,9 @@
 </template>
 
 <script>
-import { deepTree, isArray, revDeepTree, isPc } from "cl-admin/utils";
+import { deepTree, isArray, revDeepTree } from "cl-admin/utils";
 import { ContextMenu, Form } from "cl-admin-crud";
+import { mapGetters } from "vuex";
 
 export default {
 	name: "cl-dept-tree",
@@ -80,9 +81,12 @@ export default {
 		return {
 			list: [],
 			loading: false,
-			isDrag: false,
-			isPc: isPc()
+			isDrag: false
 		};
+	},
+
+	computed: {
+		...mapGetters(["browser"])
 	},
 
 	created() {

@@ -2,7 +2,7 @@
 	<div class="app-slider">
 		<div class="app-slider__logo" @click="toHome">
 			<img src="@/assets/icon/logo/silder-simple.png" />
-			<span v-if="!menuCollapse || browser.isMobile">{{ app.name }}</span>
+			<span v-if="!menuCollapse || browser.isMini">{{ app.name }}</span>
 		</div>
 
 		<div class="app-slider__menu">

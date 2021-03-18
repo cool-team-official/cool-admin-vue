@@ -5,15 +5,7 @@
 			<ul>
 				<!-- 表情 -->
 				<li>
-					<el-popover
-						v-model="emoji.visible"
-						placement="top-start"
-						width="470"
-						trigger="click"
-					>
-						<emoji @select="onEmojiSelect" />
-						<img slot="reference" src="../static/images/emoji.png" alt="" />
-					</el-popover>
+					<emoji @select="onEmojiSelect" />
 				</li>
 				<!-- 图片上传 -->
 				<li hidden>
@@ -50,6 +42,7 @@
 				v-model="value"
 				placeholder="请描述您想咨询的问题"
 				type="textarea"
+				resize="none"
 				:rows="5"
 				@keyup.enter.native="onTextSend"
 			></el-input>
@@ -71,7 +64,7 @@ export default {
 		Emoji
 	},
 
-	inject: ["socket"],
+	inject: ["chat"],
 
 	data() {
 		return {
@@ -193,22 +186,15 @@ export default {
 			const { id, userId } = this.session;
 
 			// 更新消息
-			// this.updateSession({
-			// 	contentType,
-			// 	content
-			// });
+			this.$store.commit("UPDATE_SESSION", data);
 
-			if (this.socket) {
-				this.socket.emit(`user@${userId}`, {
+			if (this.chat.socket) {
+				this.chat.socket.emit(`user@${userId}`, {
 					contentType: data.contentType,
 					type: 0,
 					content: JSON.stringify(data.content),
 					sessionId: id
 				});
-
-				if (isAppend) {
-					this.append(data);
-				}
 			}
 
 			if (isAppend) {
@@ -235,6 +221,7 @@ export default {
 
 		ul {
 			display: flex;
+
 			li {
 				list-style: none;
 				margin-right: 10px;
@@ -244,7 +231,7 @@ export default {
 					opacity: 0.7;
 				}
 
-				img {
+				/deep/ img {
 					height: 26px;
 					width: 26px;
 				}
@@ -257,7 +244,7 @@ export default {
 
 		.el-button {
 			position: absolute;
-			right: 10px;
+			right: 15px;
 			bottom: 10px;
 		}
 	}

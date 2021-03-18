@@ -7,9 +7,7 @@ export default {
 		info: {
 			...app
 		},
-		browser: {
-			isMobile: false
-		},
+		browser: {},
 		collapse: false
 	},
 	getters: {

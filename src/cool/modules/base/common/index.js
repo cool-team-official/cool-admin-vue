@@ -41,17 +41,11 @@ export const resize = () => {
 			}
 		});
 	}
+
 	store.commit("SET_BROWSER");
 };
 
 window.onload = () => {
-	const observer = new MutationObserver(resize);
-
-	observer.observe(document.getElementById("app"), {
-		childList: true,
-		subtree: true
-	});
-
 	window.addEventListener("resize", resize);
 	resize();
 };

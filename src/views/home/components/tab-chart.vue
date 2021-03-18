@@ -17,14 +17,13 @@
 
 <script>
 import VueEcharts from "vue-echarts";
-import { isPc } from "cl-admin/utils";
-
-const barWidth = isPc() ? 25 : 15;
+import { mapGetters } from "vuex";
 
 export default {
 	components: {
 		VueEcharts
 	},
+
 	data() {
 		return {
 			chartOptions: {
@@ -78,7 +77,7 @@ export default {
 				},
 				series: [
 					{
-						barWidth,
+						barWidth: 25,
 						name: "付款笔数",
 						type: "bar",
 						data: [],
@@ -90,7 +89,7 @@ export default {
 					},
 					{
 						type: "bar",
-						barWidth,
+						barWidth: 25,
 						xAxisIndex: 0,
 						barGap: "-100%",
 						data: [],
@@ -105,6 +104,22 @@ export default {
 			}
 		};
 	},
+
+	computed: {
+		...mapGetters(["browser"])
+	},
+
+	watch: {
+		"browser.isMini": {
+			immediate: true,
+			handler(v) {
+				this.chartOptions.series.map(e => {
+					e.barWidth = v ? 15 : 25;
+				});
+			}
+		}
+	},
+
 	created() {
 		this.chartOptions.xAxis.data = new Array(12).fill(1).map((e, i) => i + 1 + "月");
 		this.chartOptions.series[0].data = new Array(12)

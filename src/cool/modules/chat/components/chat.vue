@@ -6,18 +6,33 @@
 			:title="title"
 			:height="height"
 			:width="width"
-			:props="conf"
+			:props="{
+				modal: true,
+				customClass: 'cl-chat__dialog',
+				'append-to-body': true,
+				'close-on-click-modal': false
+			}"
+			:controls="['slot-session', 'cl-flex1', 'fullscreen', 'close']"
 		>
 			<div class="cl-chat">
-				<!-- 会话区域 -->
 				<chat-session />
 
-				<!-- 会话详情 -->
 				<div class="cl-chat__detail" v-if="session">
 					<chat-message />
 					<chat-input />
 				</div>
 			</div>
+
+			<template #slot-session>
+				<button v-if="session">
+					<i
+						class="el-icon-notebook-2"
+						v-if="sessionVisible"
+						@click="CLOSE_SESSION()"
+					></i>
+					<i class="el-icon-arrow-left" v-else @click="OPEN_SESSION()"></i>
+				</button>
+			</template>
 		</cl-dialog>
 
 		<!-- MP3 -->
@@ -29,18 +44,14 @@
 
 <script>
 import dayjs from "dayjs";
-import { mapGetters } from "vuex";
-import { parseContent } from "../utils";
-
+import { mapGetters, mapMutations } from "vuex";
 import io from "socket.io-client";
 import { socketUrl } from "@/config/env";
-
 import Session from "./session";
 import Message from "./message";
 import Input from "./input";
 import eventBus from "../utils/event-bus";
-
-// 消息模式
+import { parseContent } from "../utils";
 
 export default {
 	name: "cl-chat",
@@ -65,24 +76,18 @@ export default {
 	data() {
 		return {
 			visible: false,
-			socket: null,
-			conf: {
-				modal: true,
-				customClass: "cl-chat__dialog",
-				"append-to-body": true,
-				"close-on-click-modal": false
-			}
+			socket: null
 		};
 	},
 
 	provide() {
 		return {
-			socket: this.socket
+			chat: this
 		};
 	},
 
 	computed: {
-		...mapGetters(["token", "session", "sessionList"]),
+		...mapGetters(["token", "session", "sessionList", "sessionVisible"]),
 
 		title() {
 			return this.session ? `与 ${this.session.nickname} 聊天中` : "聊天对话框";
@@ -90,7 +95,7 @@ export default {
 	},
 
 	created() {
-		// this.socket = io(`${socketUrl}?isAdmin=true&token=${this.token}`);
+		// this.socket = io(`${socketUrl}/?isAdmin=true&token=${token}`);
 		// this.socket.on("connect", () => {
 		// 	console.log("socket connect");
 		// });
@@ -112,6 +117,8 @@ export default {
 	},
 
 	methods: {
+		...mapMutations(["OPEN_SESSION", "CLOSE_SESSION", "UPDATE_SESSION"]),
+
 		open() {
 			this.visible = true;
 		},
@@ -136,7 +143,7 @@ export default {
 
 				if (same) {
 					// 更新消息
-					this.$store.commit("UPDATE_SESSION", {
+					this.UPDATE_SESSION({
 						contentType,
 						content
 					});
@@ -148,10 +155,10 @@ export default {
 						type: 1
 					});
 
-					// 读消息
+					// 阅读消息
 					this.$service.im.message.read({
 						ids: [msgId],
-						session: this.session.current.id
+						session: this.session.id
 					});
 				}
 
@@ -217,17 +224,8 @@ export default {
 
 <style lang="scss">
 .cl-chat__dialog {
-	margin-bottom: 0 !important;
-	min-width: 1000px;
-
 	.el-dialog__body {
 		padding: 0;
-	}
-
-	&.is-fullscreen {
-		.cl-dialog__container {
-			height: calc(100vh - 46px) !important;
-		}
 	}
 }
 
@@ -235,14 +233,14 @@ export default {
 	display: flex;
 	height: 100%;
 	background-color: #f7f7f7;
+	padding: 5px;
+	box-sizing: border-box;
 
 	&__detail {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
 		height: 100%;
-		padding: 5px;
-		box-sizing: border-box;
 	}
 }
 </style>

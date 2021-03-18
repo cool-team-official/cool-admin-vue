@@ -1,5 +1,12 @@
 <template>
-	<div class="cl-chat-session">
+	<div
+		class="cl-chat-session"
+		:class="{
+			'is-position': browser.isMini,
+			'is-show': sessionVisible
+		}"
+	>
+		<!-- 关键字搜索 -->
 		<div class="cl-chat-session__search">
 			<el-input
 				v-model="keyWord"
@@ -46,10 +53,11 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
+import { isEmpty } from "cl-admin/utils";
+import { ContextMenu } from "cl-admin-crud";
 import { parseContent } from "../utils";
 import eventBus from "../utils/event-bus";
-import { ContextMenu } from "cl-admin-crud";
 
 export default {
 	data() {
@@ -65,8 +73,9 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["sessionList", "session"]),
+		...mapGetters(["sessionList", "session", "browser", "sessionVisible"]),
 
+		// 列表数据
 		list() {
 			return this.sessionList
 				.map(e => {
@@ -81,11 +90,20 @@ export default {
 	},
 
 	created() {
+		// 监听列表刷新
 		eventBus.$on("session-refresh", this.refresh);
-		this.refresh();
+
+		// PC 端下首次请求读取第一个消息
+		this.refresh().then(res => {
+			if (!isEmpty(res.list) && !this.browser.isMini) {
+				this.SET_SESSION(res.list[0]);
+			}
+		});
 	},
 
 	methods: {
+		...mapMutations(["SET_SESSION_LIST", "SET_SESSION", "CLEAR_SESSION", "CLOSE_SESSION"]),
+
 		// 右键菜单
 		openCM(e, id, index) {
 			ContextMenu.open(e, {
@@ -115,24 +133,29 @@ export default {
 		refresh(params) {
 			this.loading = true;
 
-			this.$service.im.session
-				.page({
-					...this.pagination,
-					keyWord: this.keyWord,
-					params,
-					order: "updateTime",
-					sort: "desc"
-				})
-				.then(res => {
-					this.$store.commit("SET_SESSION_LIST", res.list);
-					this.pagination = res.pagination;
-				})
-				.catch(err => {
-					this.$message.error(err);
-				})
-				.done(() => {
-					this.loading = false;
-				});
+			return new Promise((resolve, reject) => {
+				this.$service.im.session
+					.page({
+						...this.pagination,
+						keyWord: this.keyWord,
+						params,
+						order: "updateTime",
+						sort: "desc"
+					})
+					.then(res => {
+						this.SET_SESSION_LIST(res.list);
+						this.pagination = res.pagination;
+
+						resolve(res);
+					})
+					.catch(err => {
+						this.$message.error(err);
+						reject(err);
+					})
+					.done(() => {
+						this.loading = false;
+					});
+			});
 		},
 
 		// 搜索关键字
@@ -143,11 +166,15 @@ export default {
 		// 会话详情
 		toDetail(item) {
 			if (item) {
+				// 点击关闭弹窗
+				if (this.browser.isMini) this.CLOSE_SESSION();
+
+				// 设置为当前会话
 				if (!this.session || this.session.id != item.id) {
-					this.$store.commit("SET_SESSION", item);
+					this.SET_SESSION(item);
 				}
 			} else {
-				this.$store.commit("CLEAR_SESSION");
+				this.CLEAR_SESSION();
 			}
 		}
 	}
@@ -156,11 +183,30 @@ export default {
 
 <style lang="scss" scoped>
 .cl-chat-session {
-	height: calc(100% - 10px);
-	width: 250px;
-	margin: 5px 0 5px 5px;
+	height: 100%;
+	width: 0;
+	transition: width 0.2s ease-in-out;
 	border-radius: 5px;
 	background-color: #fff;
+	overflow: hidden;
+
+	&.is-show {
+		width: 250px;
+		max-width: 100%;
+		margin-right: 5px;
+	}
+
+	&.is-position {
+		position: absolute;
+		left: 5px;
+		top: 51px;
+		height: calc(100% - 56px);
+		z-index: 3000;
+
+		&.is-show {
+			width: calc(100% - 10px);
+		}
+	}
 
 	&__search {
 		padding: 10px;

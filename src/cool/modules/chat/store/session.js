@@ -1,16 +1,20 @@
 import eventBus from "../utils/event-bus";
+import { isBoolean } from "cl-admin/utils";
 
 export default {
 	state: {
 		list: [],
-		current: null
+		current: null,
+		visible: true
 	},
 
 	getters: {
 		// 当前会话
 		session: state => state.current,
 		// 会话列表
-		sessionList: state => state.list
+		sessionList: state => state.list,
+		// 是否显示会话列表
+		sessionVisible: state => state.visible
 	},
 
 	mutations: {
@@ -39,6 +43,16 @@ export default {
 		// 清空会话列表
 		CLEAR_SESSION_LIST(state) {
 			state.list = [];
+		},
+
+		// 打开会话列表
+		OPEN_SESSION(state, val) {
+			state.visible = isBoolean(val) ? val : !state.visible;
+		},
+
+		// 关闭会话列表
+		CLOSE_SESSION(state) {
+			state.visible = false;
 		}
 	}
 };

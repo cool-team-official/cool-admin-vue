@@ -81,7 +81,7 @@ export default {
 						default-active={this.$route.path}
 						background-color="transparent"
 						collapse-transition={false}
-						collapse={this.browser.isMobile ? false : this.menuCollapse}
+						collapse={this.browser.isMini ? false : this.menuCollapse}
 						on-select={this.toView}>
 						{el}
 					</el-menu>

@@ -104,12 +104,11 @@
 </template>
 
 <script>
-import { isPc } from "cl-admin/utils";
-
+import { mapGetters } from "vuex";
 export default {
 	data() {
 		return {
-			isExpand: isPc(),
+			isExpand: true,
 			selects: {
 				dept: {},
 				ids: []
@@ -377,6 +376,19 @@ export default {
 		};
 	},
 
+	computed: {
+		...mapGetters(["browser"])
+	},
+
+	watch: {
+		"browser.isMini": {
+			immediate: true,
+			handler(val) {
+				this.isExpand = !val;
+			}
+		}
+	},
+
 	methods: {
 		refresh(params) {
 			this.$refs["crud"].refresh(params);
@@ -406,7 +418,7 @@ export default {
 			this.$refs["upsert"].toggleItem("tips", !isEdit);
 		},
 
-		onUpsertSubmit(isEdit, data, { next }) {
+		onUpsertSubmit(_, data, { next }) {
 			let departmentId = data.departmentId;
 
 			if (!departmentId) {
@@ -435,7 +447,8 @@ export default {
 				departmentIds: ids
 			});
 
-			if (!isPc()) {
+			// 收起
+			if (this.browser.isMini) {
 				this.isExpand = false;
 			}
 		},

@@ -27,11 +27,13 @@
 					</div>
 
 					<div class="main">
+						<!-- 头像 -->
 						<div class="avatar" @tap="toUserDetail(item)">
 							<img :src="item.avatarUrl" />
 						</div>
 
 						<div class="det">
+							<!-- 昵称 -->
 							<span class="name">{{ item.nickName }}</span>
 
 							<div

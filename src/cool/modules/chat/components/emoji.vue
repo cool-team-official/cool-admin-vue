@@ -1,15 +1,32 @@
 <template>
-	<div class="chat-emoji">
-		<div class="scroller">
-			<div class="block" v-for="(item, index) in list" :key="index" @click="select(item)">
-				<img :src="item" />
+	<el-popover
+		v-model="visible"
+		placement="top"
+		:width="popoverWidth"
+		trigger="click"
+		popper-class="popover-emoji"
+	>
+		<div class="tool-emoji">
+			<div class="tool-emoji__scroller scroller1">
+				<div
+					class="tool-emoji__item"
+					v-for="(item, index) in list"
+					:key="index"
+					@click="select(item)"
+				>
+					<img :src="item" />
+				</div>
 			</div>
 		</div>
-	</div>
+
+		<img slot="reference" src="../static/images/emoji.png" alt="" />
+	</el-popover>
 </template>
 
 <script>
-let emoji = {
+import { mapGetters } from "vuex";
+// 表情列表
+const emoji = {
 	url: "https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/",
 	list: [
 		"angry-face.png",
@@ -103,54 +120,66 @@ let emoji = {
 	]
 };
 
-emoji.list = emoji.list.map(e => emoji.url + e);
-
 export default {
 	data() {
 		return {
-			list: emoji.list
+			visible: false,
+			list: emoji.list.map(e => emoji.url + e)
 		};
 	},
 
-	methods: {
-		close() {},
+	computed: {
+		...mapGetters(["browser"]),
 
+		popoverWidth() {
+			return (this.browser.width > 500 ? 500 : this.browser.width) - 24;
+		}
+	},
+
+	methods: {
 		select(e) {
 			this.$emit("select", e);
+			this.visible = false;
 		}
 	}
 };
 </script>
 
+<style lang="scss">
+.popover-emoji {
+	padding: 5px;
+}
+</style>
+
 <style lang="scss" scoped>
-.chat-emoji {
+.tool-emoji {
 	height: 250px;
 	box-sizing: border-box;
 
-	.scroller {
+	&__scroller {
 		display: flex;
 		flex-wrap: wrap;
 		height: 100%;
 		overflow: auto;
+	}
 
-		.block {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 50px;
-			width: 50px;
-			cursor: pointer;
+	&__item {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 50px;
+		width: 50px;
+		cursor: pointer;
 
-			&:hover,
-			&:active {
-				background-color: #f7f7f7;
-			}
+		&:hover,
+		&:active {
+			background-color: #f7f7f7;
+		}
 
-			img {
-				display: inline-block;
-				height: 25px;
-				width: 25px;
-			}
+		img {
+			display: inline-block;
+			height: 25px;
+			width: 25px;
 		}
 	}
 }

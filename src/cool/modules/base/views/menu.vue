@@ -1,83 +1,74 @@
 <template>
-	<div>
-		<cl-crud ref="crud" @load="onLoad" :on-refresh="onRefresh">
-			<el-row type="flex">
-				<cl-refresh-btn />
-				<cl-add-btn />
-			</el-row>
+	<cl-crud ref="crud" @load="onLoad" :on-refresh="onRefresh">
+		<el-row type="flex">
+			<cl-refresh-btn />
+			<cl-add-btn />
+		</el-row>
 
-			<el-row>
-				<cl-table ref="table" v-bind="table" @row-click="onRowClick">
-					<!-- 名称 -->
-					<template #column-name="{ scope }">
-						<span>{{ scope.row.name }}</span>
-						<el-tag
-							size="mini"
-							effect="dark"
-							type="danger"
-							v-if="!scope.row.isShow"
-							style="margin-left: 10px"
-							>隐藏</el-tag
-						>
+		<el-row>
+			<cl-table ref="table" v-bind="table" @row-click="onRowClick">
+				<!-- 名称 -->
+				<template #column-name="{ scope }">
+					<span>{{ scope.row.name }}</span>
+					<el-tag
+						size="mini"
+						effect="dark"
+						type="danger"
+						v-if="!scope.row.isShow"
+						style="margin-left: 10px"
+						>隐藏</el-tag
+					>
+				</template>
+
+				<!-- 图标 -->
+				<template #column-icon="{ scope }">
+					<icon-svg :name="scope.row.icon" size="16px" style="margin-top: 5px"></icon-svg>
+				</template>
+
+				<!-- 权限 -->
+				<template #column-perms="{ scope }">
+					<el-tag
+						v-for="(item, index) in scope.row.permList"
+						:key="index"
+						size="mini"
+						effect="dark"
+						style="margin: 2px; letter-spacing: 0.5px"
+						>{{ item }}</el-tag
+					>
+				</template>
+
+				<!-- 路由 -->
+				<template #column-router="{ scope }">
+					<el-link type="primary" :href="scope.row.router" v-if="scope.row.type == 1">{{
+						scope.row.router
+					}}</el-link>
+					<span v-else>{{ scope.row.router }}</span>
+				</template>
+
+				<!-- 路由缓存 -->
+				<template #column-keepAlive="{ scope }">
+					<template v-if="scope.row.type == 1">
+						<i class="el-icon-check" v-if="scope.row.keepAlive"></i>
+						<i class="el-icon-close" v-else></i>
 					</template>
+				</template>
 
-					<!-- 图标 -->
-					<template #column-icon="{ scope }">
-						<icon-svg
-							:name="scope.row.icon"
-							size="16px"
-							style="margin-top: 5px"
-						></icon-svg>
-					</template>
+				<!-- 行新增 -->
+				<template #slot-add="{ scope }">
+					<el-button
+						type="text"
+						size="mini"
+						@click="upsertAppend(scope.row)"
+						v-if="scope.row.type != 2"
+						>新增</el-button
+					>
+				</template>
+			</cl-table>
+		</el-row>
 
-					<!-- 权限 -->
-					<template #column-perms="{ scope }">
-						<el-tag
-							v-for="(item, index) in scope.row.permList"
-							:key="index"
-							size="mini"
-							effect="dark"
-							style="margin: 2px; letter-spacing: 0.5px"
-							>{{ item }}</el-tag
-						>
-					</template>
-
-					<!-- 路由 -->
-					<template #column-router="{ scope }">
-						<el-link
-							type="primary"
-							:href="scope.row.router"
-							v-if="scope.row.type == 1"
-							>{{ scope.row.router }}</el-link
-						>
-						<span v-else>{{ scope.row.router }}</span>
-					</template>
-
-					<!-- 路由缓存 -->
-					<template #column-keepAlive="{ scope }">
-						<template v-if="scope.row.type == 1">
-							<i class="el-icon-check" v-if="scope.row.keepAlive"></i>
-							<i class="el-icon-close" v-else></i>
-						</template>
-					</template>
-
-					<!-- 行新增 -->
-					<template #slot-add="{ scope }">
-						<el-button
-							type="text"
-							size="mini"
-							@click="upsertAppend(scope.row)"
-							v-if="scope.row.type != 2"
-							>新增</el-button
-						>
-					</template>
-				</cl-table>
-			</el-row>
-
-			<!-- 编辑 -->
-			<cl-upsert ref="upsert" v-bind="upsert" @open="onUpsertOpen"></cl-upsert>
-		</cl-crud>
-	</div>
+		<!-- 编辑 -->
+		<cl-upsert ref="upsert" v-bind="upsert"></cl-upsert>
+	</cl-crud>
 </template>
 
 <script>
@@ -255,7 +246,7 @@ export default {
 						prop: "router",
 						label: "节点路由",
 						span: 24,
-						hidden: true,
+						hidden: ({ scope }) => scope.type != 1,
 						component: {
 							name: "el-input",
 							attrs: {
@@ -268,6 +259,7 @@ export default {
 						value: true,
 						label: "路由缓存",
 						span: 24,
+						hidden: ({ scope }) => scope.type != 1,
 						component: {
 							name: "el-radio-group",
 							options: [
@@ -287,7 +279,7 @@ export default {
 						label: "是否显示",
 						span: 24,
 						value: true,
-						hidden: false,
+						hidden: ({ scope }) => scope.type == 2,
 						flex: false,
 						component: {
 							name: "el-switch"
@@ -297,7 +289,7 @@ export default {
 						prop: "viewPath",
 						label: "文件路径",
 						span: 24,
-						hidden: true,
+						hidden: ({ scope }) => scope.type != 1,
 						component: {
 							name: "cl-menu-file"
 						}
@@ -306,6 +298,7 @@ export default {
 						prop: "icon",
 						label: "节点图标",
 						span: 24,
+						hidden: ({ scope }) => scope.type == 2,
 						component: {
 							name: "cl-menu-icons"
 						}
@@ -329,7 +322,7 @@ export default {
 						prop: "perms",
 						label: "权限",
 						span: 24,
-						hidden: true,
+						hidden: ({ scope }) => scope.type != 2,
 						component: {
 							name: "cl-menu-perms"
 						}
@@ -341,14 +334,12 @@ export default {
 
 	methods: {
 		onLoad({ ctx, app }) {
-			ctx.service(this.$service.system.menu)
-				.set("dict", { api: { page: "list" } })
-				.done();
+			ctx.service(this.$service.system.menu).done();
 
 			app.refresh();
 		},
 
-		onRefresh(params, { render }) {
+		onRefresh(_, { render }) {
 			this.$service.system.menu.list().then(list => {
 				list.map(e => {
 					e.permList = e.perms ? e.perms.split(",") : [];
@@ -364,25 +355,11 @@ export default {
 			}
 		},
 
-		onUpsertOpen(isEdit, data) {
-			this.changeType(data ? data.type : 0);
-		},
-
 		upsertAppend({ type, id }) {
 			this.$refs["crud"].rowAppend({
 				parentId: id,
 				type: type + 1
 			});
-		},
-
-		changeType(index) {
-			const { toggleItem } = this.$refs["upsert"];
-			toggleItem("router", index == 1);
-			toggleItem("viewPath", index == 1);
-			toggleItem("keepAlive", index == 1);
-			toggleItem("icon", index != 2);
-			toggleItem("perms", index == 2);
-			toggleItem("isShow", index != 2);
 		},
 
 		setPermission({ id }) {
