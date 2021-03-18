@@ -2,13 +2,15 @@ import { app } from "@/config/env";
 import { deepMerge, getBrowser } from "cl-admin/utils";
 import store from "store";
 
+const browser = getBrowser();
+
 export default {
 	state: {
 		info: {
 			...app
 		},
-		browser: {},
-		collapse: false
+		browser,
+		collapse: browser.isMini ? true : false
 	},
 	getters: {
 		// 应用配置
