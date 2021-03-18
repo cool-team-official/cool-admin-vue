@@ -210,12 +210,7 @@ export default {
 									label: "权限",
 									value: 2
 								}
-							],
-							on: {
-								change: index => {
-									this.changeType(index);
-								}
-							}
+							]
 						}
 					},
 					{
