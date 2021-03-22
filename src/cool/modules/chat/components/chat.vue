@@ -75,6 +75,7 @@ export default {
 
 	data() {
 		return {
+			modes: ["text", "image", "emoji", "voice", "video"], // 消息类型
 			visible: false,
 			socket: null
 		};
@@ -95,7 +96,7 @@ export default {
 	},
 
 	created() {
-		// this.socket = io(`${socketUrl}/?isAdmin=true&token=${token}`);
+		// this.socket = io(`${socketUrl}?isAdmin=true&token=${token}`);
 		// this.socket.on("connect", () => {
 		// 	console.log("socket connect");
 		// });
@@ -149,7 +150,7 @@ export default {
 					});
 
 					// 追加消息
-					eventBus.$emit("message-append", {
+					this.$store.commit("APPEND_MESSAGE_LIST", {
 						contentType,
 						content: JSON.parse(content),
 						type: 1
@@ -177,7 +178,7 @@ export default {
 					});
 				} else {
 					// 刷新会话列表
-					eventBus.$emit("session-refresh");
+					eventBus.$emit("session.refresh");
 				}
 			} catch (e) {
 				console.error("消息格式异常", e);

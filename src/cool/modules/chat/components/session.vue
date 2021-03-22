@@ -91,7 +91,7 @@ export default {
 
 	created() {
 		// 监听列表刷新
-		eventBus.$on("session-refresh", this.refresh);
+		eventBus.$on("session.refresh", this.refresh);
 
 		// PC 端下首次请求读取第一个消息
 		this.refresh().then(res => {

@@ -1,5 +1,5 @@
 <template>
-	<div class="cl-chat-message" v-loading="loading" element-loading-text="消息加载中">
+	<div class="cl-chat-message" v-loading="!visible && loading" element-loading-text="消息加载中">
 		<div
 			class="cl-chat-message__scroller scroller1"
 			ref="scroller"
@@ -8,7 +8,7 @@
 			}"
 		>
 			<!-- 加载更多 -->
-			<div class="cl-chat-message__more" v-if="list.length > 0">
+			<div class="cl-chat-message__more" v-show="list.length > 0">
 				<el-button round size="mini" :loading="loading" @click="onLoadmore"
 					>加载更多</el-button
 				>
@@ -18,17 +18,19 @@
 			<div class="cl-chat-message__list">
 				<div
 					class="cl-chat-message__item"
-					v-for="item in messageList"
+					v-for="item in list"
 					:key="item.id || item.uid"
 					:class="[item.type == 0 ? `is-right` : `is-left`, `is-${item.mode}`]"
 				>
+					<!-- 日期 -->
 					<div class="date" v-if="item._date">
 						<span>{{ item._date }}</span>
 					</div>
 
+					<!-- 内容 -->
 					<div class="main">
 						<!-- 头像 -->
-						<div class="avatar" @tap="toUserDetail(item)">
+						<div class="avatar">
 							<img :src="item.avatarUrl" />
 						</div>
 
@@ -53,7 +55,17 @@
 										:key="item.uid"
 										:src="item.content.imageUrl"
 										:preview-src-list="[item.content.imageUrl]"
-									></el-image>
+										:z-index="3000"
+										:style="item.style"
+									>
+										<template #placeholder>
+											<img
+												:src="item.content.imageUrl"
+												:style="item.style"
+												alt=""
+											/>
+										</template>
+									</el-image>
 								</template>
 
 								<!-- 表情 -->
@@ -90,7 +102,7 @@
 					</div>
 				</div>
 
-				<!-- voice -->
+				<!-- 音频 -->
 				<div class="voice">
 					<audio style="display: none" ref="voice" :src="voice.url" controls></audio>
 				</div>
@@ -106,19 +118,17 @@ import { isString } from "cl-admin/utils";
 import eventBus from "../utils/event-bus";
 import IconVoice from "./icon-voice";
 
-// 消息类型
-const ModeList = ["text", "image", "emoji", "voice", "video"];
-
 export default {
 	components: {
 		IconVoice
 	},
 
+	inject: ["chat"],
+
 	data() {
 		return {
 			loading: false,
 			visible: false,
-			list: [],
 			pagination: {
 				page: 1,
 				size: 20,
@@ -140,12 +150,12 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["userInfo", "session"]),
+		...mapGetters(["userInfo", "session", "messageList"]),
 
-		messageList() {
+		list() {
 			let date = "";
 
-			return this.list.map(e => {
+			return this.messageList.map(e => {
 				// 时间间隔
 				e._date = date
 					? dayjs(e.createTime).isBefore(dayjs(date).add(1, "minute"))
@@ -178,15 +188,18 @@ export default {
 					...e,
 					avatarUrl,
 					nickName,
-					mode: ModeList[e.contentType]
+					mode: this.chat.modes[e.contentType]
 				};
 			});
 		}
 	},
 
 	created() {
-		eventBus.$on("message-refresh", this.refresh);
-		eventBus.$on("message-append", this.append);
+		// 监听列表刷新
+		eventBus.$on("message.refresh", this.refresh);
+
+		// 滚动到底部
+		eventBus.$on("message.scrollToBottom", this.scrollToBottom);
 
 		if (this.session) {
 			this.refresh();
@@ -196,7 +209,7 @@ export default {
 	destroyed() {
 		clearTimeout(this.voice.timer);
 
-		this.list.map(e => {
+		this.messageList.map(e => {
 			e.isPlay = false;
 		});
 	},
@@ -206,7 +219,7 @@ export default {
 		onTap(item) {
 			// 播放语音
 			if (item.mode == "voice") {
-				this.list.map(e => {
+				this.messageList.map(e => {
 					this.$set(e, "isPlay", e.id == item.id ? e.isPlay : false);
 				});
 
@@ -245,11 +258,13 @@ export default {
 				sort: "desc"
 			};
 
+			// 加载动画
+			this.loading = true;
+
 			// 首页处理
 			if (data.page === 1) {
-				this.loading = true;
 				this.visible = false;
-				this.list = [];
+				this.$store.commit("CLEAR_MESSAGE_LIST");
 			}
 
 			// 完成
@@ -269,7 +284,7 @@ export default {
 					// 分页信息
 					this.pagination = res.pagination;
 					// 追加数据
-					this.prepend.apply(this, res.list);
+					this.$store.commit("PREPEND_MESSAGE_LIST", res.list);
 
 					if (data.page === 1) {
 						this.scrollToBottom();
@@ -301,17 +316,6 @@ export default {
 					});
 				}
 			});
-		},
-
-		// 追加数据到开头
-		prepend(...data) {
-			this.list.unshift(...data.reverse());
-		},
-
-		// 追加数据到结尾
-		append(...data) {
-			this.list.push(...data);
-			this.scrollToBottom();
 		}
 	}
 };
@@ -349,7 +353,7 @@ export default {
 				font-size: 12px;
 				color: #fff;
 				border-radius: 3px;
-				padding: 2px 5px;
+				padding: 3px 5px 2px 5px;
 				letter-spacing: 1px;
 			}
 		}
@@ -474,8 +478,10 @@ export default {
 		&.is-video {
 			.item {
 				video {
+					display: block;
 					max-width: 300px;
 					max-height: 300px;
+					border-radius: 10px;
 				}
 			}
 		}

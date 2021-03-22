@@ -22,7 +22,7 @@ export default {
 		SET_SESSION(state, data) {
 			state.current = data;
 			state.current.serviceUnreadCount = 0;
-			eventBus.$emit("message-refresh", { page: 1 });
+			eventBus.$emit("message.refresh", { page: 1 });
 		},
 
 		// 清空会话信息

@@ -8,13 +8,27 @@
 					<emoji @select="onEmojiSelect" />
 				</li>
 				<!-- 图片上传 -->
-				<li hidden>
-					<cl-upload accept="image/*" list-type :on-success="onImageSelect">
+				<li>
+					<cl-upload
+						accept="image/*"
+						list-type
+						:before-upload="
+							f => {
+								onBeforeUpload(f, 'image');
+							}
+						"
+						:on-progress="onUploadProgress"
+						:on-success="
+							(r, f) => {
+								onUploadSuccess(r, f, 'image');
+							}
+						"
+					>
 						<img src="../static/images/image.png" alt="" />
 					</cl-upload>
 				</li>
 				<!-- 视频上传 -->
-				<li hidden>
+				<li>
 					<cl-upload
 						accept="video/*"
 						list-type
@@ -57,7 +71,6 @@
 <script>
 import { mapGetters } from "vuex";
 import Emoji from "./emoji";
-import eventBus from "../utils/event-bus";
 
 export default {
 	components: {
@@ -76,29 +89,48 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["session"])
+		...mapGetters(["session", "messageList"])
 	},
 
 	methods: {
-		// 上传前
+		// 上传前，获取图片预览地址
 		onBeforeUpload(file, key) {
-			const data = {
-				content: {
-					[`${key}Url`]: ""
-				},
-				type: 0,
-				contentType: MODES.indexOf(key),
-				uid: file.uid,
-				loading: true,
-				progress: "0%"
+			const next = (options = {}) => {
+				const data = {
+					content: {
+						[`${key}Url`]: ""
+					},
+					type: 0,
+					uid: file.uid,
+					loading: true,
+					progress: "0%",
+					contentType: this.chat.modes.indexOf(key),
+					...options
+				};
+
+				this.append(data);
 			};
 
-			this.append(data);
+			if (key == "image") {
+				const fileReader = new FileReader();
+
+				fileReader.onload = e => {
+					next({
+						content: {
+							imageUrl: e.target.result
+						}
+					});
+				};
+
+				fileReader.readAsDataURL(file);
+			} else {
+				next();
+			}
 		},
 
 		// 上传中
 		onUploadProgress(e, file) {
-			const item = this.message.list.find(e => e.uid == file.uid);
+			const item = this.messageList.find(e => e.uid == file.uid);
 
 			if (item) {
 				item.progress = e.percent + "%";
@@ -107,7 +139,7 @@ export default {
 
 		// 上传成功
 		onUploadSuccess(res, file, key) {
-			const item = this.message.list.find(e => e.uid == file.uid);
+			const item = this.messageList.find(e => e.uid == file.uid);
 
 			if (item) {
 				item.loading = false;
@@ -204,7 +236,7 @@ export default {
 
 		// 追加消息
 		append(data) {
-			eventBus.$emit("message-append", data);
+			this.$store.commit("APPEND_MESSAGE_LIST", data);
 		}
 	}
 };
