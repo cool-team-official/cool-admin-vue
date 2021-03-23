@@ -91,7 +91,6 @@
 							ref="upsert"
 							:items="upsert.items"
 							:on-submit="onUpsertSubmit"
-							@open="onUpsertOpen"
 						></cl-upsert>
 					</cl-crud>
 				</div>
@@ -272,7 +271,7 @@ export default {
 						prop: "password",
 						label: "密码",
 						span: 12,
-						hidden: true,
+						hidden: ":isEdit",
 						component: {
 							name: "el-input",
 							attrs: {
@@ -363,7 +362,7 @@ export default {
 					},
 					{
 						prop: "tips",
-						hidden: true,
+						hidden: ":isAdd",
 						component: (
 							<div>
 								<i class="el-icon-warning"></i>
@@ -411,11 +410,6 @@ export default {
 			});
 
 			render(list);
-		},
-
-		onUpsertOpen(isEdit) {
-			this.$refs["upsert"].toggleItem("password", isEdit);
-			this.$refs["upsert"].toggleItem("tips", !isEdit);
 		},
 
 		onUpsertSubmit(_, data, { next }) {

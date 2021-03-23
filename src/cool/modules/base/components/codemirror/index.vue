@@ -1,5 +1,5 @@
 <template>
-	<div class="cl-code">
+	<div class="cl-codemirror">
 		<codemirror
 			ref="code"
 			v-model="value2"
@@ -91,7 +91,7 @@ export default {
 </script>
 
 <style lang="scss">
-.cl-code {
+.cl-codemirror {
 	border-radius: 3px;
 	border: 1px solid #dcdfe6;
 	box-sizing: border-box;

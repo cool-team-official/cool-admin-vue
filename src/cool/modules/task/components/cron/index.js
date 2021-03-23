@@ -48,14 +48,13 @@ export default {
 	render() {
 		return (
 			<el-popover v-model={this.visible} disabled={this.disabled || this.readonly}>
-				<Cron
+				<cron
 					v-model={this.cron}
 					{...{
-						props: { i18n: "cn" },
 						on: {
 							close: this.close
 						}
-					}}></Cron>
+					}}></cron>
 				<el-input
 					slot="reference"
 					clearable

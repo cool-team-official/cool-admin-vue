@@ -462,7 +462,7 @@ import Language from "./cn";
 export default {
 	name: "vue-cron",
 
-	props: ["value", "data", "i18n", "showYear"],
+	props: ["value", "data", "showYear"],
 
 	data() {
 		return {
