@@ -36,11 +36,28 @@ export default {
 	},
 
 	mounted() {
-		this.menuGroup.forEach((e, i) => {
-			if (this.$route.path.includes(e.path) && e.path != "/") {
-				this.index = String(i);
-				this.SET_MENU_LIST(i);
+		const deep = (e, i) => {
+			switch (e.type) {
+				case 0:
+					e.children.forEach(e => {
+						deep(e, i);
+					});
+					break;
+				case 1:
+					if (this.$route.path.includes(e.path)) {
+						this.index = String(i);
+						this.SET_MENU_LIST(i);
+					}
+					break;
+
+				case 2:
+				default:
+					break;
 			}
+		};
+
+		this.menuGroup.forEach((e, i) => {
+			deep(e, i);
 		});
 	},
 

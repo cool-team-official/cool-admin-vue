@@ -1,15 +1,17 @@
 <template>
 	<div class="cl-route-nav">
-		<p class="title">
+		<p class="title" v-if="browser.isMini">
 			{{ lastName }}
 		</p>
 
-		<el-breadcrumb>
-			<el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-			<el-breadcrumb-item v-for="(item, index) in list" :key="index">{{
-				(item.meta && item.meta.label) || item.name
-			}}</el-breadcrumb-item>
-		</el-breadcrumb>
+		<template v-else>
+			<el-breadcrumb>
+				<el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+				<el-breadcrumb-item v-for="(item, index) in list" :key="index">{{
+					(item.meta && item.meta.label) || item.name
+				}}</el-breadcrumb-item>
+			</el-breadcrumb>
+		</template>
 	</div>
 </template>
 
@@ -66,7 +68,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["menuGroup"]),
+		...mapGetters(["menuGroup", "browser"]),
 
 		lastName() {
 			return _.last(this.list).name;
@@ -77,6 +79,8 @@ export default {
 
 <style lang="scss" scoped>
 .cl-route-nav {
+	white-space: nowrap;
+
 	/deep/.el-breadcrumb {
 		margin: 0 10px;
 
@@ -93,16 +97,6 @@ export default {
 		font-size: 15px;
 		font-weight: 500;
 		margin-left: 5px;
-	}
-
-	@media only screen and (max-width: 768px) {
-		.title {
-			display: block;
-		}
-
-		/deep/.el-breadcrumb {
-			display: none;
-		}
 	}
 }
 </style>

@@ -5,8 +5,8 @@ import views from "./views";
 import store from "./store";
 import service from "./service";
 import directives, { checkPerm } from "./directives";
-import { iconList, resize } from "./common";
+import { iconList } from "./common";
 import "./static/css/index.scss";
 
-export { iconList, checkPerm, resize };
+export { iconList, checkPerm };
 export default { components, filters, pages, views, store, service, directives };
