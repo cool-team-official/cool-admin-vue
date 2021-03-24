@@ -7,7 +7,7 @@
 			@select="onSelect"
 		>
 			<el-menu-item v-for="(item, index) in list" :index="`${index}`" :key="index">
-				<icon-svg v-if="item.icon" :name="item.icon"></icon-svg>
+				<icon-svg v-if="item.icon" :name="item.icon" :size="18"></icon-svg>
 				<span>{{ item.name }}</span>
 			</el-menu-item>
 		</el-menu>
@@ -76,6 +76,8 @@ export default {
 
 <style lang="scss" scoped>
 .cl-menu-topbar {
+	margin-right: 10px;
+
 	/deep/.el-menu {
 		height: 50px;
 		background: transparent;
@@ -83,12 +85,12 @@ export default {
 		overflow: hidden;
 
 		.el-menu-item {
-			height: 50px;
 			display: flex;
 			align-items: center;
-			background: transparent;
+			height: 50px;
 			border-bottom: 0;
-			padding: 0 30px;
+			padding: 0 20px;
+			background: transparent;
 
 			span {
 				font-size: 12px;
@@ -97,13 +99,10 @@ export default {
 			}
 
 			&.is-active {
-				background: rgba(255, 255, 255, 0.13);
 				color: $color-primary;
 			}
 
 			/deep/.icon-svg {
-				height: 18px;
-				width: 18px;
 				margin-right: 5px;
 			}
 		}

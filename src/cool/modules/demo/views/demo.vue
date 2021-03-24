@@ -1,26 +1,18 @@
 <template>
 	<el-scrollbar>
 		<div class="demo">
-			<div class="list">
-				<div
-					class="item"
-					:style="{
-						width: `calc(${100 / cols}% - 10px)`
-					}"
-					:ref="`col-${index + 1}`"
-					v-for="(item, index) in layout"
+			<el-row :gutter="10">
+				<el-col
+					v-for="(item, index) in list"
 					:key="index"
+					:xs="24"
+					:sm="12"
+					:md="8"
+					:lg="6"
 				>
-					<transition-group name="fade">
-						<component
-							:ref="item2"
-							:is="item2"
-							:key="item2 + index2"
-							v-for="(item2, index2) in item"
-						></component>
-					</transition-group>
-				</div>
-			</div>
+					<component :is="item"></component>
+				</el-col>
+			</el-row>
 		</div>
 	</el-scrollbar>
 </template>
@@ -58,92 +50,15 @@ export default {
 				"b-cl-context-menu",
 				"b-error-page",
 				"b-cl-editor-quill"
-			],
-			cols: 4,
-			layout: [[], [], [], []]
+			]
 		};
-	},
-
-	mounted() {
-		const width = document.body.clientWidth;
-
-		if (width < 768) {
-			this.cols = 1;
-		} else if (width < 1000) {
-			this.cols = 2;
-		} else if (width < 1500) {
-			this.cols = 3;
-		} else {
-			this.cols = 4;
-		}
-
-		this.append();
-	},
-
-	methods: {
-		getHeight(name) {
-			return this.$refs[name][0].offsetHeight;
-		},
-
-		selectCol() {
-			let arr = new Array(this.cols).fill(1);
-
-			for (let i = 0; i < this.cols; i++) {
-				arr[i] = this.getHeight(`col-${i + 1}`);
-			}
-
-			let min = Math.min.apply(this, arr);
-
-			return arr.indexOf(min);
-		},
-
-		append(index = 0) {
-			const i = this.selectCol();
-			const item = this.list[index];
-
-			if (!item) {
-				return false;
-			}
-
-			this.layout[i].push(item);
-
-			this.$nextTick(() => {
-				setTimeout(() => {
-					this.append(index + 1);
-				}, 100);
-			});
-		}
 	}
 };
 </script>
 
 <style lang="scss">
-.fade-enter-active,
-.fade-leave-active {
-	transition: all 0.5s ease;
-}
-
-.fade-enter,
-.fade-leave-active {
-	opacity: 0;
-}
-
 .demo {
 	overflow: hidden;
-
-	.list {
-		margin: 0 -5px;
-	}
-
-	.item {
-		width: calc(25% - 10px);
-		margin: 0 5px;
-		float: left;
-
-		&:last-child {
-			margin-right: 0;
-		}
-	}
 
 	.scope {
 		background-color: #fff;
@@ -170,6 +85,8 @@ export default {
 
 		.c {
 			padding: 10px;
+			height: 50px;
+			box-sizing: border-box;
 
 			&._svg {
 				.icon-svg {

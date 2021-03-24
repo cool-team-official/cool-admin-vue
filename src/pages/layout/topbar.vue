@@ -1,7 +1,7 @@
 <template>
 	<div class="app-topbar">
 		<div class="app-topbar__collapse" @click="collapse">
-			<icon-svg name="icon-menu"></icon-svg>
+			<i :class="[menuCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold']"></i>
 		</div>
 
 		<!-- 一级菜单 -->
@@ -97,9 +97,9 @@ export default {
 		cursor: pointer;
 		margin-right: 10px;
 
-		.icon-svg {
-			height: 22px;
-			width: 22px;
+		i {
+			font-size: 22px;
+			color: #666;
 		}
 	}
 

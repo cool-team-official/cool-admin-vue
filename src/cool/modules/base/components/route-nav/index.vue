@@ -82,10 +82,8 @@ export default {
 	white-space: nowrap;
 
 	/deep/.el-breadcrumb {
-		margin: 0 10px;
-
 		&__inner {
-			font-size: 12px;
+			font-size: 13px;
 			padding: 0 10px;
 			font-weight: normal;
 			letter-spacing: 1px;
@@ -93,8 +91,7 @@ export default {
 	}
 
 	.title {
-		display: none;
-		font-size: 15px;
+		font-size: 14px;
 		font-weight: 500;
 		margin-left: 5px;
 	}

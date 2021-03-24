@@ -1,20 +1,25 @@
 <template>
 	<div class="page-layout" :class="{ collapse: menuCollapse }">
+		<!-- 遮罩层 -->
 		<div class="page-layout__mask" @click="COLLAPSE_MENU(true)"></div>
 
 		<div class="page-layout__left">
+			<!-- 侧栏 -->
 			<slider></slider>
 		</div>
 
 		<div class="page-layout__right">
+			<!-- 顶栏 -->
 			<div class="page-layout__topbar">
 				<topbar></topbar>
 			</div>
 
+			<!-- 页面进程 -->
 			<div class="page-layout__process" v-if="app.conf.showProcess">
 				<cl-process />
 			</div>
 
+			<!-- 页面视图 -->
 			<div class="page-layout__container">
 				<div class="page-layout__view">
 					<keep-alive>
