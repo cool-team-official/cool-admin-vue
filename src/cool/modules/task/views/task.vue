@@ -853,7 +853,6 @@ export default {
 			margin-bottom: 5px;
 			z-index: 2;
 			position: relative;
-			background-color: #f7f7f7;
 
 			ul {
 				li {

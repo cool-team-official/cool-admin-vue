@@ -13,14 +13,14 @@
 						accept="image/*"
 						list-type
 						:before-upload="
-							f => {
-								onBeforeUpload(f, 'image');
+							file => {
+								onBeforeUpload(file, 'image');
 							}
 						"
 						:on-progress="onUploadProgress"
 						:on-success="
-							(r, f) => {
-								onUploadSuccess(r, f, 'image');
+							(res, file) => {
+								onUploadSuccess(res, file, 'image');
 							}
 						"
 					>
@@ -33,14 +33,14 @@
 						accept="video/*"
 						list-type
 						:before-upload="
-							f => {
-								onBeforeUpload(f, 'video');
+							file => {
+								onBeforeUpload(file, 'video');
 							}
 						"
 						:on-progress="onUploadProgress"
 						:on-success="
-							(r, f) => {
-								onUploadSuccess(r, f, 'video');
+							(res, file) => {
+								onUploadSuccess(res, file, 'video');
 							}
 						"
 					>
@@ -53,7 +53,7 @@
 		<!-- 输入框，发送按钮 -->
 		<div class="cl-chat-input__content">
 			<el-input
-				v-model="value"
+				v-model="text"
 				placeholder="请描述您想咨询的问题"
 				type="textarea"
 				resize="none"
@@ -61,7 +61,7 @@
 				@keyup.enter.native="onTextSend"
 			></el-input>
 
-			<el-button type="primary" size="mini" :disabled="!value" @click="onTextSend"
+			<el-button type="primary" size="mini" :disabled="!text" @click="onTextSend"
 				>发送</el-button
 			>
 		</div>
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapMutations } from "vuex";
 import Emoji from "./emoji";
 
 export default {
@@ -81,20 +81,19 @@ export default {
 
 	data() {
 		return {
-			value: "",
+			text: "",
 			emoji: {
 				visible: false
 			}
 		};
 	},
 
-	computed: {
-		...mapGetters(["session", "messageList"])
-	},
-
 	methods: {
+		...mapMutations(["UPDATE_SESSION", "UPDATE_MESSAGE", "APPEND_MESSAGE_LIST"]),
+
 		// 上传前，获取图片预览地址
 		onBeforeUpload(file, key) {
+			// 先添加到列表中，等待上传
 			const next = (options = {}) => {
 				const data = {
 					content: {
@@ -111,15 +110,35 @@ export default {
 				this.append(data);
 			};
 
+			// 图片预览
 			if (key == "image") {
 				const fileReader = new FileReader();
 
 				fileReader.onload = e => {
-					next({
-						content: {
-							imageUrl: e.target.result
+					const imageUrl = e.target.result;
+					const image = new Image();
+
+					image.onload = () => {
+						let height = 0;
+						let width = 0;
+
+						if (image.width > 200) {
+							width = 200;
+							height = (image.height * 200) / image.width;
 						}
-					});
+
+						next({
+							content: {
+								imageUrl
+							},
+							style: {
+								height: height + "px",
+								width: width + "px"
+							}
+						});
+					};
+
+					image.src = imageUrl;
 				};
 
 				fileReader.readAsDataURL(file);
@@ -130,41 +149,44 @@ export default {
 
 		// 上传中
 		onUploadProgress(e, file) {
-			const item = this.messageList.find(e => e.uid == file.uid);
-
-			if (item) {
-				item.progress = e.percent + "%";
-			}
+			this.UPDATE_MESSAGE({
+				file,
+				data: {
+					progress: e.percent + "%"
+				}
+			});
 		},
 
 		// 上传成功
 		onUploadSuccess(res, file, key) {
-			const item = this.messageList.find(e => e.uid == file.uid);
-
-			if (item) {
-				item.loading = false;
-				item.content[`${key}Url`] = res.data;
-
-				this.send(item);
-			}
+			this.UPDATE_MESSAGE({
+				file,
+				data: {
+					loading: false,
+					content: {
+						[`${key}Url`]: res.data
+					}
+				},
+				callback: this.send
+			});
 		},
 
 		// 发送文本内容
 		onTextSend() {
-			if (this.value) {
-				if (this.value.replace(/\n/g, "") !== "") {
+			if (this.text) {
+				if (this.text.replace(/\n/g, "") !== "") {
 					const data = {
 						type: 0,
 						contentType: 0,
 						content: {
-							text: this.value
+							text: this.text
 						}
 					};
 
 					this.send(data, true);
 
 					this.$nextTick(() => {
-						this.value = "";
+						this.text = "";
 					});
 				}
 			}
@@ -215,11 +237,12 @@ export default {
 
 		// 发送消息
 		send(data, isAppend) {
-			const { id, userId } = this.session;
+			const { id, userId } = this.$store.getters.session;
 
-			// 更新消息
-			this.$store.commit("UPDATE_SESSION", data);
+			// 更新会话消息
+			this.UPDATE_SESSION(data);
 
+			// 发送消息
 			if (this.chat.socket) {
 				this.chat.socket.emit(`user@${userId}`, {
 					contentType: data.contentType,
@@ -229,6 +252,7 @@ export default {
 				});
 			}
 
+			// 是否添加到列表中
 			if (isAppend) {
 				this.append(data);
 			}
@@ -236,7 +260,7 @@ export default {
 
 		// 追加消息
 		append(data) {
-			this.$store.commit("APPEND_MESSAGE_LIST", data);
+			this.APPEND_MESSAGE_LIST(data);
 		}
 	}
 };

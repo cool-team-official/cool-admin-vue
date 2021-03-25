@@ -1,5 +1,5 @@
 <template>
-	<div class="cl-avatar" :class="[size, shape]" :style="[style2]">
+	<div class="cl-avatar" :class="[size, shape]" :style="[style]">
 		<el-image :src="src" alt="">
 			<div slot="error" class="image-slot">
 				<i class="el-icon-picture-outline"></i>
@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import { isNumber } from "cl-admin/utils";
+
 export default {
 	name: "cl-avatar",
 
@@ -24,17 +26,13 @@ export default {
 		}
 	},
 
-	data() {
-		return {
-			style2: {}
-		};
-	},
+	computed: {
+		style() {
+			const size = isNumber(this.size) ? this.size + "px" : this.size;
 
-	mounted() {
-		if (typeof this.size == "number") {
-			this.style2 = {
-				height: this.size + "px",
-				width: this.size + "px"
+			return {
+				height: size,
+				width: size
 			};
 		}
 	}

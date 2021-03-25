@@ -18,39 +18,8 @@ export default {
 
 		// 追加数据
 		APPEND_MESSAGE_LIST(state, data) {
-			const next = options => {
-				state.list.push({
-					...data,
-					...options
-				});
-				eventBus.$emit("message.scrollToBottom");
-			};
-
-			// 图片预览、大小处理
-			if (data.contentType === 1) {
-				const image = new Image();
-
-				image.onload = () => {
-					let height = 0;
-					let width = 0;
-
-					if (image.width > 200) {
-						width = 200;
-						height = (image.height * 200) / image.width;
-					}
-
-					next({
-						style: {
-							height: height + "px",
-							width: width + "px"
-						}
-					});
-				};
-
-				image.src = data.content.imageUrl;
-			} else {
-				next();
-			}
+			state.list.push(data);
+			eventBus.$emit("message.scrollToBottom");
 		},
 
 		// 追加数据到头部
@@ -62,6 +31,23 @@ export default {
 		// 清空列表
 		CLEAR_MESSAGE_LIST(state) {
 			state.list = [];
+		},
+
+		// 更新消息数据
+		UPDATE_MESSAGE(state, { file, data, callback }) {
+			let item = null;
+
+			if (file) {
+				item = state.list.find(e => e.uid === file.uid);
+			}
+
+			if (item) {
+				if (data) {
+					Object.assign(item, data);
+				}
+
+				if (callback) callback(item);
+			}
 		}
 	}
 };
