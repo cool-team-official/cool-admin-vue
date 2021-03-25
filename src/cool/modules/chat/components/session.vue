@@ -89,6 +89,11 @@ export default {
 		}
 	},
 
+	beforeCreate() {
+		// 销毁事件
+		eventBus.$off("session.refresh");
+	},
+
 	created() {
 		// 监听列表刷新
 		eventBus.$on("session.refresh", this.refresh);

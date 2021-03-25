@@ -1,5 +1,5 @@
 <template>
-	<div class="demo-upload">
+	<div class="demo-upload scroller1">
 		<div class="demo-upload__item">
 			<p>普通上传</p>
 			<cl-upload :before-upload="onBeforeUpload"></cl-upload>
@@ -63,8 +63,6 @@ export default {
 
 <style lang="scss" scoped>
 .demo-upload {
-	overflow: hidden auto;
-
 	.demo-upload__item {
 		margin-bottom: 10px;
 		background-color: #fff;

@@ -1,20 +1,11 @@
 <template>
-	<el-scrollbar>
-		<div class="demo">
-			<el-row :gutter="10">
-				<el-col
-					v-for="(item, index) in list"
-					:key="index"
-					:xs="24"
-					:sm="12"
-					:md="8"
-					:lg="6"
-				>
-					<component :is="item"></component>
-				</el-col>
-			</el-row>
-		</div>
-	</el-scrollbar>
+	<div class="demo scroller1">
+		<el-row :gutter="10">
+			<el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="8" :lg="6">
+				<component :is="item"></component>
+			</el-col>
+		</el-row>
+	</div>
 </template>
 
 <script>
@@ -58,8 +49,6 @@ export default {
 
 <style lang="scss">
 .demo {
-	overflow: hidden;
-
 	.scope {
 		background-color: #fff;
 		border-radius: 3px;

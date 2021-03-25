@@ -194,19 +194,22 @@ export default {
 		}
 	},
 
+	beforeCreate() {
+		// 销毁事件
+		eventBus.$off("message.refresh");
+		eventBus.$off("message.scrollToBottom");
+	},
+
 	created() {
 		// 监听列表刷新
 		eventBus.$on("message.refresh", this.refresh);
 
 		// 滚动到底部
 		eventBus.$on("message.scrollToBottom", this.scrollToBottom);
-
-		if (this.session) {
-			this.refresh();
-		}
 	},
 
 	destroyed() {
+		// 清除播放
 		clearTimeout(this.voice.timer);
 
 		this.messageList.map(e => {

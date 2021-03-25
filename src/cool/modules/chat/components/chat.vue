@@ -15,11 +15,17 @@
 			:controls="['slot-session', 'cl-flex1', 'fullscreen', 'close']"
 		>
 			<div class="cl-chat">
+				<!-- 会话列表 -->
 				<chat-session />
 
-				<div class="cl-chat__detail" v-if="session">
+				<div class="cl-chat__detail">
+					<!-- 消息列表 -->
 					<chat-message />
-					<chat-input />
+
+					<template v-if="session">
+						<!-- 输入框 -->
+						<chat-input />
+					</template>
 				</div>
 			</div>
 
