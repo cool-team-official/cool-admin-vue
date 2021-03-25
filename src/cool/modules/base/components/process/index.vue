@@ -4,24 +4,20 @@
 			<i class="el-icon-arrow-left"></i>
 		</div>
 
-		<div class="app-process__scroller">
+		<div class="app-process__scroller" ref="scroller">
 			<div
-				class="block"
+				class="app-process__item"
 				v-for="(item, index) in processList"
 				:key="index"
+				:ref="`item-${index}`"
 				:class="{ active: item.active }"
 				:data-index="index"
-				@click="onTap(item)"
+				@click="onTap(item, index)"
 				@contextmenu.stop.prevent="openCM($event, item)"
 			>
 				<span>{{ item.label }}</span>
 
-				<i
-					class="el-icon-close"
-					v-if="index > 0"
-					:class="{ active: index > 0 }"
-					@click.stop="onDel(index)"
-				></i>
+				<i class="el-icon-close" v-if="index > 0" @click.stop="onDel(index)"></i>
 			</div>
 		</div>
 
@@ -43,10 +39,17 @@ export default {
 		...mapGetters(["processList"])
 	},
 
+	watch: {
+		"$route.path"(val) {
+			this.adScroll(this.processList.findIndex(e => e.value === val) || 0);
+		}
+	},
+
 	methods: {
 		...mapMutations(["ADD_PROCESS", "DEL_PROCESS", "SET_PROCESS"]),
 
-		onTap(item) {
+		onTap(item, index) {
+			this.adScroll(index);
 			this.$router.push(item.value);
 		},
 
@@ -100,9 +103,23 @@ export default {
 			}
 		},
 
+		adScroll(index) {
+			const el = this.$refs[`item-${index}`][0];
+
+			if (el) {
+				this.scrollTo(el.offsetLeft + el.clientWidth - this.$refs["scroller"].clientWidth);
+			}
+		},
+
 		toScroll(f) {
-			const scroller = this.$el.querySelector(".app-process__scroller");
-			scroller.scrollTo(scroller.scrollLeft + (f ? -100 : 100), 0);
+			this.scrollTo(this.$refs["scroller"].scrollLeft + (f ? -100 : 100));
+		},
+
+		scrollTo(left) {
+			this.$refs["scroller"].scrollTo({
+				left,
+				behavior: "smooth"
+			});
 		}
 	}
 };
@@ -149,7 +166,7 @@ export default {
 		}
 	}
 
-	.block {
+	&__item {
 		display: inline-flex;
 		align-items: center;
 		border-radius: 3px;

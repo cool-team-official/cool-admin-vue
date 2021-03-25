@@ -5,23 +5,16 @@
 		</div>
 
 		<div class="category-ratio__container">
-			<vue-echarts :options="chartOptions" autoresize></vue-echarts>
+			<v-chart :option="chartOption" autoresize></v-chart>
 		</div>
 	</div>
 </template>
 
 <script>
-import VueEcharts from "vue-echarts";
-import "echarts";
-
 export default {
-	components: {
-		VueEcharts
-	},
-
 	data() {
 		return {
-			chartOptions: {
+			chartOption: {
 				tooltip: {
 					trigger: "item",
 					formatter: "{a} <br/>{b}: {c} ({d}%)"

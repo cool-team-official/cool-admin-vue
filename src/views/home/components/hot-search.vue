@@ -19,7 +19,7 @@
 							</div>
 						</div>
 
-						<vue-echarts :options="chartOptions" autoresize></vue-echarts>
+						<v-chart :option="chartOption" autoresize></v-chart>
 					</div>
 				</el-col>
 
@@ -36,7 +36,7 @@
 							</div>
 						</div>
 
-						<vue-echarts :options="chartOptions" autoresize></vue-echarts>
+						<v-chart :option="chartOption" autoresize></v-chart>
 					</div>
 				</el-col>
 			</el-row>
@@ -89,17 +89,12 @@
 </template>
 
 <script>
-import VueEcharts from "vue-echarts";
-import echarts from "echarts";
+import * as echarts from "echarts";
 
 export default {
-	components: {
-		VueEcharts
-	},
-
 	data() {
 		return {
-			chartOptions: {
+			chartOption: {
 				grid: {
 					left: 0,
 					top: 0,

@@ -9,6 +9,7 @@
 		"inspect": "vue inspect --mode=production > output.js"
 	},
 	"dependencies": {
+		"@vue/composition-api": "^1.0.0-rc.5",
 		"axios": "^0.21.1",
 		"cl-admin": "^1.5.1",
 		"cl-admin-crud": "^1.6.4",
@@ -17,7 +18,7 @@
 		"codemirror": "^5.59.4",
 		"core-js": "^3.6.5",
 		"dayjs": "^1.10.4",
-		"echarts": "^4.5.0",
+		"echarts": "^5.0.2",
 		"element-ui": "^2.15.1",
 		"js-beautify": "^1.13.5",
 		"mockjs": "^1.1.0",
@@ -30,7 +31,7 @@
 		"vue": "^2.6.11",
 		"vue-codemirror": "^4.0.6",
 		"vue-cron": "^1.0.9",
-		"vue-echarts": "^5.0.0-beta.0",
+		"vue-echarts": "^6.0.0-rc.3",
 		"vue-router": "^3.2.0",
 		"vuedraggable": "^2.24.3",
 		"vuex": "^3.4.0"

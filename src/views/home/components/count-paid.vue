@@ -7,7 +7,7 @@
 			</div>
 
 			<div class="card__container">
-				<vue-echarts :options="chartOptions" autoresize></vue-echarts>
+				<v-chart :option="chartOption" autoresize></v-chart>
 			</div>
 
 			<div class="card__footer">
@@ -19,16 +19,10 @@
 </template>
 
 <script>
-import VueEcharts from "vue-echarts";
-
 export default {
-	components: {
-		VueEcharts
-	},
-
 	data() {
 		return {
-			chartOptions: {
+			chartOption: {
 				grid: {
 					left: "10%",
 					top: 0,

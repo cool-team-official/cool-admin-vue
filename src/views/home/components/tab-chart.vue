@@ -10,23 +10,18 @@
 		</div>
 
 		<div class="tab-chart__container">
-			<vue-echarts :options="chartOptions" autoresize></vue-echarts>
+			<v-chart :option="chartOption" autoresize></v-chart>
 		</div>
 	</div>
 </template>
 
 <script>
-import VueEcharts from "vue-echarts";
 import { mapGetters } from "vuex";
 
 export default {
-	components: {
-		VueEcharts
-	},
-
 	data() {
 		return {
-			chartOptions: {
+			chartOption: {
 				grid: {
 					top: "20px",
 					bottom: "30px",
@@ -113,7 +108,7 @@ export default {
 		"browser.isMini": {
 			immediate: true,
 			handler(v) {
-				this.chartOptions.series.map(e => {
+				this.chartOption.series.map(e => {
 					e.barWidth = v ? 15 : 25;
 				});
 			}
@@ -121,11 +116,11 @@ export default {
 	},
 
 	created() {
-		this.chartOptions.xAxis.data = new Array(12).fill(1).map((e, i) => i + 1 + "月");
-		this.chartOptions.series[0].data = new Array(12)
+		this.chartOption.xAxis.data = new Array(12).fill(1).map((e, i) => i + 1 + "月");
+		this.chartOption.series[0].data = new Array(12)
 			.fill(1)
 			.map(() => parseInt(Math.random() * 100));
-		this.chartOptions.series[1].data = new Array(12).fill(100);
+		this.chartOption.series[1].data = new Array(12).fill(100);
 	}
 };
 </script>

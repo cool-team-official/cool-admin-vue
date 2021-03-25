@@ -6,6 +6,9 @@ const lock = {
 };
 
 function resize() {
+	// 更新数据
+	store.commit("SET_BROWSER");
+
 	const { browser, menuCollapse, app } = store.getters;
 
 	if (browser.isMini) {
@@ -41,8 +44,6 @@ function resize() {
 			lock.menuCollapse = null;
 		}
 	}
-
-	store.commit("SET_BROWSER");
 }
 
 window.onload = function() {
