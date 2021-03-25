@@ -137,7 +137,7 @@ export default {
 		// 监听消息
 		onMessage(msg) {
 			// 回调
-			this.$emit("message", this.visible);
+			this.$emit("message", msg);
 
 			// 消息通知
 			this.notification(msg);

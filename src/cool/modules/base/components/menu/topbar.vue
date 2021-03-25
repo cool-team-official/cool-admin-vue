@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from "vuex";
-import { firstMenu } from "@/cool/modules/base/utils";
+import { mapMutations } from "vuex";
+import { firstMenu } from "../../utils";
 
 export default {
 	name: "cl-menu-topbar",
@@ -28,10 +28,8 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["menuGroup"]),
-
 		list() {
-			return this.menuGroup.filter(e => e.isShow);
+			return this.$store.getters.menuGroup.filter(e => e.isShow);
 		}
 	},
 
@@ -56,7 +54,7 @@ export default {
 			}
 		};
 
-		this.menuGroup.forEach((e, i) => {
+		this.list.forEach((e, i) => {
 			deep(e, i);
 		});
 	},
@@ -67,7 +65,8 @@ export default {
 		onSelect(index) {
 			this.SET_MENU_LIST(index);
 
-			const url = firstMenu(this.menuGroup[index].children);
+			// 获取第一个菜单地址
+			const url = firstMenu(this.list[index].children);
 			this.$router.push(url);
 		}
 	}

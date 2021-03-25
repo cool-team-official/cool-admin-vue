@@ -134,7 +134,6 @@ export default {
 				size: 20,
 				total: 0
 			},
-			player: {},
 			voice: {
 				url: "",
 				timer: null

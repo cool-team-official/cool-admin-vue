@@ -98,7 +98,8 @@
 			title="图片预览"
 			:visible.sync="preview.visible"
 			:props="{
-				width: previewWidth
+				width: previewWidth,
+				'append-to-body': true
 			}"
 		>
 			<img width="100%" :src="preview.url" alt="" />

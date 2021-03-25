@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Message } from "element-ui";
 import store from "@/store";
 import { isDev } from "@/config/env";
 import { href, storage } from "cl-admin/utils";
@@ -120,8 +121,11 @@ axios.interceptors.response.use(
 					break;
 
 				case 403:
-					console.error(`${config.url} 无权限访问！！`);
-					href("/403");
+					if (isDev) {
+						Message.error(`${config.url} 无权限访问！！`);
+					} else {
+						href("/403");
+					}
 					break;
 
 				case 404:
@@ -135,7 +139,7 @@ axios.interceptors.response.use(
 
 				case 502:
 					if (isDev) {
-						return Promise.reject("服务异常！！");
+						Message.error(`${config.url} 服务异常！！`);
 					} else {
 						href("/502");
 					}
