@@ -194,11 +194,11 @@ export default {
 
 	data() {
 		return {
-			visible: true,
+			visible: false,
 			loading: false,
 			category: {
 				id: null,
-				visible: false
+				visible: true
 			},
 			selection: [],
 			list: [],
