@@ -232,8 +232,10 @@ export default {
 
 <style lang="scss">
 .cl-chat__dialog {
-	.el-dialog__body {
-		padding: 0 !important;
+	.el-dialog {
+		&__body {
+			padding: 0 !important;
+		}
 	}
 }
 

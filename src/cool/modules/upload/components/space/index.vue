@@ -387,7 +387,7 @@ export default {
 .dialog-upload-space {
 	.el-dialog {
 		&__body {
-			padding: 0;
+			padding: 0 !important;
 		}
 	}
 }
