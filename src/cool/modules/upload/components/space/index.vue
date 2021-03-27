@@ -198,7 +198,7 @@ export default {
 			loading: false,
 			category: {
 				id: null,
-				visible: true
+				visible: false
 			},
 			selection: [],
 			list: [],
