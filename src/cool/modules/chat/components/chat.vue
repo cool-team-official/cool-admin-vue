@@ -12,7 +12,7 @@
 				'append-to-body': true,
 				'close-on-click-modal': false
 			}"
-			:controls="['slot-session', 'cl-flex1', 'fullscreen', 'close']"
+			:controls="['slot-expand', 'cl-flex1', 'fullscreen', 'close']"
 		>
 			<div class="cl-chat">
 				<!-- 会话列表 -->
@@ -29,7 +29,8 @@
 				</div>
 			</div>
 
-			<template #slot-session>
+			<!-- 展开按钮 -->
+			<template #slot-expand>
 				<button v-if="session">
 					<i
 						class="el-icon-notebook-2"

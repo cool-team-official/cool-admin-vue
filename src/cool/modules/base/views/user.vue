@@ -22,7 +22,7 @@
 				</div>
 
 				<div class="container">
-					<cl-crud ref="crud" @load="onLoad" :on-refresh="onRefresh">
+					<cl-crud ref="crud" :on-refresh="onRefresh" @load="onLoad">
 						<el-row type="flex">
 							<cl-refresh-btn></cl-refresh-btn>
 							<cl-add-btn></cl-add-btn>
@@ -123,36 +123,30 @@ export default {
 				columns: [
 					{
 						type: "selection",
-						align: "center",
-						width: "60"
+						width: 60
 					},
 					{
 						prop: "headImg",
-						label: "头像",
-						align: "center"
+						label: "头像"
 					},
 					{
 						prop: "name",
 						label: "姓名",
-						align: "center",
 						"min-width": 150
 					},
 					{
 						prop: "username",
 						label: "用户名",
-						align: "center",
 						"min-width": 150
 					},
 					{
 						prop: "nickName",
 						label: "昵称",
-						align: "center",
 						"min-width": 150
 					},
 					{
 						prop: "departmentName",
 						label: "部门名称",
-						align: "center",
 						"min-width": 150
 					},
 					{
@@ -164,19 +158,16 @@ export default {
 					{
 						prop: "phone",
 						label: "手机号码",
-						align: "center",
 						"min-width": 150
 					},
 					{
 						prop: "remark",
 						label: "备注",
-						align: "center",
 						"min-width": 150
 					},
 					{
 						prop: "status",
 						label: "状态",
-						align: "center",
 						"min-width": 120,
 						dict: [
 							{
@@ -194,15 +185,13 @@ export default {
 					{
 						prop: "createTime",
 						label: "创建时间",
-						align: "center",
 						sortable: "custom",
 						"min-width": 150
 					},
 					{
-						align: "center",
 						type: "op",
 						buttons: ["slot-move-btn", "edit", "delete"],
-						width: "160px"
+						width: 160
 					}
 				]
 			},
@@ -271,7 +260,7 @@ export default {
 						prop: "password",
 						label: "密码",
 						span: 12,
-						hidden: ":isEdit",
+						hidden: ":isAdd",
 						component: {
 							name: "el-input",
 							attrs: {
@@ -362,7 +351,7 @@ export default {
 					},
 					{
 						prop: "tips",
-						hidden: ":isAdd",
+						hidden: ":isEdit",
 						component: (
 							<div>
 								<i class="el-icon-warning"></i>

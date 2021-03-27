@@ -9,7 +9,7 @@ export default {
 		list: [fMenu]
 	},
 	getters: {
-		// 窗口列表
+		// 页面进程列表
 		processList: state => state.list
 	},
 	mutations: {
