@@ -1,97 +1,121 @@
 <template>
-	<el-cascader
-		:options="options"
-		:props="{ multiple: true }"
-		separator=":"
-		clearable
-		filterable
-		v-model="newValue"
-		@change="onChange"
-	></el-cascader>
+	<div class="cl-menu-perms">
+		<el-cascader
+			v-model="value"
+			separator=":"
+			clearable
+			filterable
+			:options="options"
+			:props="{ multiple: true }"
+			@change="onChange"
+		></el-cascader>
+	</div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, inject, ref, watch } from "vue";
+
+export default defineComponent({
 	name: "cl-menu-perms",
 
 	props: {
-		value: [String, Number, Array]
-	},
-
-	data() {
-		return {
-			options: [],
-			newValue: []
-		};
-	},
-
-	watch: {
-		value() {
-			this.parse();
+		modelValue: {
+			type: String,
+			default: ""
 		}
 	},
 
-	created() {
-		let options = [];
-		let list = [];
+	emits: ["update:modelValue"],
 
-		const flat = obj => {
-			for (let i in obj) {
-				let { permission } = obj[i];
+	setup(props, { emit }) {
+		const $service = inject("$service");
 
-				if (permission) {
-					list = [...list, Object.values(permission)].flat();
-				} else {
-					flat(obj[i]);
-				}
-			}
-		};
+		// 绑定值
+		const value = ref<any[]>([]);
 
-		flat(this.$service);
+		// 权限列表
+		const options = ref<any[]>([]);
 
-		list.filter(e => e.includes(":"))
-			.map(e => e.split(":"))
-			.forEach(arr => {
-				const col = (i, d) => {
-					let key = arr[i];
+		// 监听改变
+		function onChange(row: any) {
+			emit("update:modelValue", row.map((e: any) => e.join(":")).join(","));
+		}
 
-					let index = d.findIndex(e => e.label == key);
+		// 解析权限
+		(function parsePerm() {
+			const list: any[] = [];
+			let perms: any[] = [];
 
-					if (index >= 0) {
-						col(i + 1, d[index].children);
+			const flat = (obj: any) => {
+				for (const i in obj) {
+					const { permission } = obj[i];
+
+					if (permission) {
+						perms = [...perms, Object.values(permission)].flat();
 					} else {
-						let isLast = i == arr.length - 1;
-
-						d.push({
-							label: key,
-							value: key,
-							children: isLast ? null : []
-						});
-
-						if (!isLast) {
-							col(i + 1, d[d.length - 1].children || []);
-						}
+						flat(obj[i]);
 					}
-				};
+				}
+			};
 
-				col(0, options);
-			});
+			flat($service);
 
-		this.options = options;
-	},
+			perms
+				.filter(e => e.includes(":"))
+				.map(e => e.split(":"))
+				.forEach(arr => {
+					const col = (i: number, d: any[]) => {
+						const key = arr[i];
 
-	mounted() {
-		this.parse();
-	},
+						const index = d.findIndex((e: any) => e.label == key);
 
-	methods: {
-		parse() {
-			this.newValue = this.value ? this.value.split(",").map(e => e.split(":")) : [];
-		},
+						if (index >= 0) {
+							col(i + 1, d[index].children);
+						} else {
+							const isLast = i == arr.length - 1;
 
-		onChange(row) {
-			this.$emit("input", row.map(e => e.join(":")).join(","));
-		}
+							d.push({
+								label: key,
+								value: key,
+								children: isLast ? null : []
+							});
+
+							if (!isLast) {
+								col(i + 1, d[d.length - 1].children || []);
+							}
+						}
+					};
+
+					col(0, list);
+				});
+
+			options.value = list;
+		})();
+
+		// 监听值
+		watch(
+			() => props.modelValue,
+			(val: string) => {
+				value.value = val ? val.split(",").map((e: string) => e.split(":")) : [];
+			},
+			{
+				immediate: true
+			}
+		);
+
+		return {
+			value,
+			options,
+			onChange
+		};
 	}
-};
+});
 </script>
+
+<style lang="scss" scoped>
+.cl-menu-perms {
+	:deep(.el-cascader) {
+		width: 100%;
+	}
+}
+</style>

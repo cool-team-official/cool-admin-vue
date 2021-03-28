@@ -16,12 +16,12 @@
 
 		<div class="demo-upload__item">
 			<p>普通上传</p>
-			<cl-upload :before-upload="onBeforeUpload"></cl-upload>
+			<cl-upload></cl-upload>
 		</div>
 
 		<div class="demo-upload__item">
 			<p>指定类型上传 accept=.jpg,.png</p>
-			<cl-upload accept=".jpg,.png" :before-upload="onBeforeUpload"></cl-upload>
+			<cl-upload accept=".jpg,.png"></cl-upload>
 		</div>
 
 		<div class="demo-upload__item">
@@ -50,26 +50,17 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import { computed, ref } from "vue";
+
 export default {
-	data() {
-		return {
-			urls: ""
-		};
-	},
+	name: "upload",
 
-	computed: {
-		urlList() {
-			return this.urls.split(",").filter(Boolean);
-		}
-	},
+	setup() {
+		const urls = ref<string>("");
+		const urlList = computed(() => urls.value.split(",").filter(Boolean));
 
-	methods: {
-		onBeforeUpload(file, { done }) {
-			done();
-
-			return true;
-		}
+		return { urls, urlList };
 	}
 };
 </script>

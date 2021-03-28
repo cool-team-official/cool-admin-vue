@@ -2,7 +2,7 @@
 	<div class="vue-cron">
 		<el-tabs type="border-card">
 			<el-tab-pane>
-				<span slot="label"><i class="el-icon-date"></i> {{ text.Seconds.name }}</span>
+				<template #label> <i class="el-icon-date"></i> {{ text.Seconds.name }} </template>
 				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="second.cronEvery" label="1">{{
@@ -59,9 +59,11 @@
 					</el-row>
 				</div>
 			</el-tab-pane>
-
 			<el-tab-pane>
-				<span slot="label"><i class="el-icon-date"></i> {{ text.Minutes.name }}</span>
+				<template #label>
+					<i class="el-icon-date"></i>
+					{{ text.Minutes.name }}
+				</template>
 				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="minute.cronEvery" label="1">{{
@@ -118,9 +120,8 @@
 					</el-row>
 				</div>
 			</el-tab-pane>
-
 			<el-tab-pane>
-				<span slot="label"><i class="el-icon-date"></i> {{ text.Hours.name }}</span>
+				<template #label> <i class="el-icon-date"></i> {{ text.Hours.name }} </template>
 				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="hour.cronEvery" label="1">{{
@@ -177,9 +178,8 @@
 					</el-row>
 				</div>
 			</el-tab-pane>
-
 			<el-tab-pane>
-				<span slot="label"><i class="el-icon-date"></i> {{ text.Day.name }}</span>
+				<template #label> <i class="el-icon-date"></i> {{ text.Day.name }} </template>
 				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="day.cronEvery" label="1">{{ text.Day.every }}</el-radio>
@@ -322,9 +322,11 @@
 					</el-row>
 				</div>
 			</el-tab-pane>
-
 			<el-tab-pane>
-				<span slot="label"><i class="el-icon-date"></i> {{ text.Month.name }}</span>
+				<template #label>
+					<i class="el-icon-date"></i>
+					{{ text.Month.name }}
+				</template>
 				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="month.cronEvery" label="1">{{
@@ -382,9 +384,8 @@
 					</el-row>
 				</div>
 			</el-tab-pane>
-
 			<el-tab-pane v-if="showYear || false">
-				<span slot="label"><i class="el-icon-date"></i> {{ text.Year.name }}</span>
+				<template #label> <i class="el-icon-date"></i> {{ text.Year.name }} </template>
 				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="year.cronEvery" label="1">{{
@@ -451,7 +452,7 @@
 
 		<div class="vue-cron__footer">
 			<el-button @click="close">{{ text.Close }}</el-button>
-			<el-button type="primary" @click="save">{{ text.Save }}</el-button>
+			<el-button type="success" @click="save">{{ text.Save }}</el-button>
 		</div>
 	</div>
 </template>
@@ -462,38 +463,46 @@ import Language from "./cn";
 export default {
 	name: "vue-cron",
 
-	props: ["value", "data", "showYear"],
+	props: {
+		modelValue: {
+			type: String,
+			default: ""
+		},
+		showYear: Boolean
+	},
+
+	emits: ["update:modelValue", "change", "close"],
 
 	data() {
 		return {
 			second: {
 				cronEvery: "",
-				incrementStart: "3",
-				incrementIncrement: "5",
+				incrementStart: 3,
+				incrementIncrement: 5,
 				rangeStart: "",
 				rangeEnd: "",
 				specificSpecific: []
 			},
 			minute: {
 				cronEvery: "",
-				incrementStart: "3",
-				incrementIncrement: "5",
+				incrementStart: 3,
+				incrementIncrement: 5,
 				rangeStart: "",
 				rangeEnd: "",
 				specificSpecific: []
 			},
 			hour: {
 				cronEvery: "",
-				incrementStart: "3",
-				incrementIncrement: "5",
+				incrementStart: 3,
+				incrementIncrement: 5,
 				rangeStart: "",
 				rangeEnd: "",
 				specificSpecific: []
 			},
 			day: {
 				cronEvery: "",
-				incrementStart: "1",
-				incrementIncrement: "1",
+				incrementStart: 1,
+				incrementIncrement: 1,
 				rangeStart: "",
 				rangeEnd: "",
 				specificSpecific: [],
@@ -503,16 +512,16 @@ export default {
 			},
 			week: {
 				cronEvery: "",
-				incrementStart: "1",
-				incrementIncrement: "1",
+				incrementStart: 1,
+				incrementIncrement: 1,
 				specificSpecific: [],
 				cronNthDayDay: 1,
-				cronNthDayNth: "1"
+				cronNthDayNth: 1
 			},
 			month: {
 				cronEvery: "",
-				incrementStart: "3",
-				incrementIncrement: "5",
+				incrementStart: 3,
+				incrementIncrement: 5,
 				rangeStart: "",
 				rangeEnd: "",
 				specificSpecific: []
@@ -520,7 +529,7 @@ export default {
 			year: {
 				cronEvery: "",
 				incrementStart: "2017",
-				incrementIncrement: "1",
+				incrementIncrement: 1,
 				rangeStart: "",
 				rangeEnd: "",
 				specificSpecific: []
@@ -735,17 +744,16 @@ export default {
 	},
 
 	methods: {
-		getValue() {
-			return this.cron;
-		},
 		save() {
-			this.$emit("input", this.cron);
+			this.$emit("update:modelValue", this.cron);
 			this.$emit("change", this.cron);
 			this.close();
 		},
+
 		close() {
 			this.$emit("close");
 		},
+
 		rest(data) {
 			for (const i in data) {
 				if (data[i] instanceof Object) {
@@ -768,15 +776,19 @@ export default {
 
 <style lang="scss" scoped>
 .vue-cron {
-	/deep/ .el-tabs {
+	:deep(.el-tabs) {
 		box-shadow: none;
 	}
 
 	&__item {
-		/deep/ .el-row {
+		:deep(.el-row) {
 			min-height: 32px;
 			line-height: 32px;
 			margin-bottom: 10px;
+
+			.el-radio {
+				line-height: 32px;
+			}
 		}
 	}
 

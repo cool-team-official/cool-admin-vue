@@ -1,5 +1,5 @@
 <template>
-	<div class="cl-menu-topbar">
+	<div class="app-topbar-menu">
 		<el-menu
 			:default-active="index"
 			mode="horizontal"
@@ -14,70 +14,80 @@
 	</div>
 </template>
 
-<script>
-import { mapMutations } from "vuex";
+<script lang="ts">
+import { computed, defineComponent, onMounted, ref } from "vue";
+import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
 import { firstMenu } from "../../utils";
 
-export default {
+export default defineComponent({
 	name: "cl-menu-topbar",
 
-	data() {
-		return {
-			index: "0"
-		};
-	},
+	setup() {
+		// 缓存
+		const store = useStore();
 
-	computed: {
-		list() {
-			return this.$store.getters.menuGroup.filter(e => e.isShow);
-		}
-	},
+		// 路由控制
+		const router = useRouter();
 
-	mounted() {
-		const deep = (e, i) => {
-			switch (e.type) {
-				case 0:
-					e.children.forEach(e => {
-						deep(e, i);
-					});
-					break;
-				case 1:
-					if (this.$route.path.includes(e.path)) {
-						this.index = String(i);
-						this.SET_MENU_LIST(i);
-					}
-					break;
+		// 当页路由
+		const route = useRoute();
 
-				case 2:
-				default:
-					break;
-			}
-		};
+		// 选中标识
+		const index = ref<string>("0");
 
-		this.list.forEach((e, i) => {
-			deep(e, i);
-		});
-	},
+		// 菜单列表
+		const list = computed(() => store.getters.menuGroup.filter((e: any) => e.isShow));
 
-	methods: {
-		...mapMutations(["SET_MENU_LIST"]),
-
-		onSelect(index) {
-			this.SET_MENU_LIST(index);
+		// 选择导航
+		function onSelect(index: number) {
+			store.commit("SET_MENU_LIST", index);
 
 			// 获取第一个菜单地址
-			const url = firstMenu(this.list[index].children);
-			this.$router.push(url);
+			const url = firstMenu(list.value[index].children);
+			router.push(url);
 		}
+
+		onMounted(function() {
+			// 设置默认
+			function deep(e: any, i: number) {
+				switch (e.type) {
+					case 0:
+						e.children.forEach((e: any) => {
+							deep(e, i);
+						});
+						break;
+					case 1:
+						if (route.path.includes(e.path)) {
+							index.value = String(i);
+							store.commit("SET_MENU_LIST", i);
+						}
+						break;
+					case 2:
+					default:
+						break;
+				}
+			}
+
+			list.value.forEach((e: any, i: number) => {
+				deep(e, i);
+			});
+		});
+
+		return {
+			index,
+			list,
+			onSelect
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
-.cl-menu-topbar {
+.app-topbar-menu {
 	margin-right: 10px;
 
-	/deep/.el-menu {
+	:deep(.el-menu) {
 		height: 50px;
 		background: transparent;
 		border-bottom: 0;
@@ -101,7 +111,7 @@ export default {
 				color: $color-primary;
 			}
 
-			/deep/.icon-svg {
+			:deep(.icon-svg) {
 				margin-right: 5px;
 			}
 		}

@@ -22,51 +22,56 @@
 	</div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { ElMessage } from "element-plus";
+import { defineComponent, inject, reactive, ref } from "vue";
+import { useStore } from "vuex";
 
-export default {
-	data() {
-		return {
-			form: {},
-			saving: false
-		};
-	},
+export default defineComponent({
+	name: "sys-info",
 
-	computed: {
-		...mapGetters(["userInfo"])
-	},
+	setup() {
+		const store = useStore();
+		const $service = inject<any>("$service");
 
-	mounted() {
-		this.form = this.userInfo;
-	},
+		// 表单数据
+		const form = reactive<any>(store.getters.userInfo);
 
-	methods: {
-		save() {
-			this.saving = true;
+		// 保存状态
+		const saving = ref<boolean>(false);
 
-			const { headImg, nickName, password } = this.form;
+		// 保存
+		function save() {
+			const { headImg, nickName, password } = form;
 
-			this.$service.common
+			saving.value = true;
+
+			$service.common
 				.userUpdate({
 					headImg,
 					nickName,
 					password
 				})
 				.then(() => {
-					this.form.password = "";
-					this.$message.success("修改成功");
-					this.$store.dispatch("userInfo");
+					form.password = "";
+					ElMessage.success("修改成功");
+					store.dispatch("userInfo");
 				})
-				.catch(err => {
-					this.$message.error(err);
+				.catch((err: string) => {
+					ElMessage.error(err);
 				})
 				.done(() => {
-					this.saving = false;
+					saving.value = false;
 				});
 		}
+
+		return {
+			form,
+			saving,
+			save
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss">

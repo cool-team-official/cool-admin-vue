@@ -1,5 +1,5 @@
 <template>
-	<cl-crud ref="crud" @load="onLoad">
+	<cl-crud :ref="setRefs('crud')" @load="onLoad">
 		<el-row type="flex">
 			<cl-refresh-btn></cl-refresh-btn>
 
@@ -38,125 +38,124 @@
 	</cl-crud>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { defineComponent, inject, reactive, ref } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { useRefs } from "@/core";
+import { CrudLoad, Table } from "@/crud/types";
 
-export default {
-	data() {
-		return {
-			day: 1,
-			table: {
-				props: {
-					"default-sort": {
-						prop: "createTime",
-						order: "descending"
-					}
+export default defineComponent({
+	name: "sys-log",
+
+	setup() {
+		const $service = inject<any>("$service");
+		const { refs, setRefs } = useRefs();
+
+		// 天数
+		const day = ref<number>(1);
+
+		// cl-table 配置
+		const table = reactive<Table>({
+			"context-menu": ["refresh"],
+			props: {
+				"default-sort": {
+					prop: "createTime",
+					order: "descending"
+				}
+			},
+			columns: [
+				{
+					type: "index",
+					label: "#",
+					width: 60
 				},
-				"context-menu": [
-					"refresh",
-					{
-						label: "清空",
-						callback: (_, done) => {
-							this.clear();
-							done();
-						}
-					}
-				],
-				columns: [
-					{
-						type: "index",
-						label: "#",
-						align: "center",
-						width: 60
-					},
-					{
-						prop: "userId",
-						label: "用户ID",
-						align: "center"
-					},
-					{
-						prop: "name",
-						label: "昵称",
-						align: "center",
-						minWidth: "150"
-					},
-					{
-						prop: "action",
-						label: "请求地址",
-						align: "center",
-						minWidth: "200",
-						"show-overflow-tooltip": true
-					},
-					{
-						prop: "params",
-						label: "参数",
-						align: "center",
-						minWidth: "200",
-						"show-overflow-tooltip": true
-					},
-					{
-						prop: "ip",
-						label: "ip",
-						minWidth: "180",
-						align: "center"
-					},
-					{
-						prop: "ipAddr",
-						label: "ip地址",
-						minWidth: "150",
-						align: "center"
-					},
-					{
-						prop: "createTime",
-						label: "创建时间",
-						minWidth: "150",
-						align: "center",
-						sortable: true
-					}
-				]
-			}
-		};
-	},
-
-	computed: {
-		...mapGetters(["permission"])
-	},
-
-	created() {
-		this.$service.system.log.getKeep().then(res => {
-			this.day = res;
+				{
+					prop: "userId",
+					label: "用户ID"
+				},
+				{
+					prop: "name",
+					label: "昵称",
+					minWidth: 150
+				},
+				{
+					prop: "action",
+					label: "请求地址",
+					minWidth: 200,
+					showOverflowTooltip: true
+				},
+				{
+					prop: "params",
+					label: "参数",
+					align: "center",
+					minWidth: 200,
+					showOverflowTooltip: true
+				},
+				{
+					prop: "ip",
+					label: "ip",
+					minWidth: 180
+				},
+				{
+					prop: "ipAddr",
+					label: "ip地址",
+					minWidth: 150
+				},
+				{
+					prop: "createTime",
+					label: "创建时间",
+					minWidth: 150,
+					sortable: true
+				}
+			]
 		});
-	},
 
-	methods: {
-		onLoad({ ctx, app }) {
-			ctx.service(this.$service.system.log).done();
+		// crud 加载
+		function onLoad({ ctx, app }: CrudLoad) {
+			ctx.service($service.system.log).done();
 			app.refresh();
-		},
+		}
 
-		saveDay() {
-			this.$service.system.log.setKeep(this.day).then(() => {
-				this.$message.success("保存成功");
+		// 保存天数
+		function saveDay() {
+			$service.system.log.setKeep(day.value).then(() => {
+				ElMessage.success("保存成功");
 			});
-		},
+		}
 
-		clear() {
-			this.$confirm("是否要清空日志", "提示", {
+		// 清空日志
+		function clear() {
+			ElMessageBox.confirm("是否要清空日志", "提示", {
 				type: "warning"
 			})
 				.then(() => {
-					this.$service.system.log
+					$service.system.log
 						.clear()
 						.then(() => {
-							this.$message.success("清空成功");
-							this.$refs["crud"].refresh();
+							ElMessage.success("清空成功");
+							refs.value.crud.refresh();
 						})
-						.catch(err => {
-							this.$message.error(err);
+						.catch((err: string) => {
+							ElMessage.error(err);
 						});
 				})
-				.catch(() => {});
+				.catch(() => null);
 		}
+
+		// 获取天数
+		$service.system.log.getKeep().then((res: number) => {
+			day.value = Number(res);
+		});
+
+		return {
+			refs,
+			day,
+			table,
+			setRefs,
+			onLoad,
+			saveDay,
+			clear
+		};
 	}
-};
+});
 </script>

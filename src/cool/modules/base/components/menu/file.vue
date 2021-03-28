@@ -1,6 +1,6 @@
 <template>
 	<div class="cl-menu-file">
-		<el-select v-model="newValue" allow-create filterable clearable placeholder="请选择">
+		<el-select v-model="path" allow-create filterable clearable placeholder="请选择">
 			<el-option
 				v-for="(item, index) in list"
 				:key="index"
@@ -12,55 +12,62 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, watch } from "vue";
+
 const files = require
 	.context("@/", true, /views\/(?!(components)|(.*\/components)|(index\.js)).*.(js|vue)/)
 	.keys();
 
-export default {
+export default defineComponent({
 	name: "cl-menu-file",
 
 	props: {
-		value: [String]
-	},
-
-	inject: ["form"],
-
-	data() {
-		return {
-			newValue: "",
-			list: []
-		};
-	},
-
-	watch: {
-		value: {
-			immediate: true,
-			handler(val) {
-				this.newValue = val || "";
-			}
-		},
-
-		newValue(val) {
-			this.$emit("input", val);
+		modelValue: {
+			type: String,
+			default: ""
 		}
 	},
 
-	created() {
-		this.list = files.map(e => {
+	emits: ["update:modelValue"],
+
+	setup(props, { emit }) {
+		// 路径
+		const path = ref<string>(props.modelValue);
+
+		// 数据列表
+		const list = ref<any[]>([]);
+
+		watch(
+			() => props.modelValue,
+			val => {
+				path.value = val || "";
+			}
+		);
+
+		watch(path, val => {
+			emit("update:modelValue", val);
+		});
+
+		list.value = files.map(e => {
 			return {
 				value: e.substr(2)
 			};
 		});
+
+		return {
+			path,
+			list
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
 .cl-menu-file {
 	width: 100%;
 
-	/deep/ .el-select {
+	:deep(.el-select) {
 		width: 100%;
 	}
 

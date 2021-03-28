@@ -1,5 +1,5 @@
 <template>
-	<el-select v-model="newValue" v-bind="props" multiple @change="onChange">
+	<el-select v-model="value" v-bind="props" multiple @change="onChange">
 		<el-option
 			v-for="(item, index) in list"
 			:value="item.id"
@@ -9,47 +9,55 @@
 	</el-select>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, inject, onMounted, ref, watch } from "vue";
+import { isArray } from "@/core/utils";
+
+export default defineComponent({
 	name: "cl-role-select",
 
 	props: {
-		value: [String, Number, Array],
+		modelValue: [String, Number, Array],
 		props: Object
 	},
 
-	data() {
-		return {
-			list: [],
-			newValue: undefined
-		};
-	},
+	emits: ["update:modelValue"],
 
-	watch: {
-		value: {
-			immediate: true,
-			handler(val) {
-				let arr = [];
+	setup(props, { emit }) {
+		// 请求服务
+		const $service = inject<any>("$service");
 
-				if (!(val instanceof Array)) {
-					arr = [val];
-				} else {
-					arr = val;
-				}
+		// 数据列表
+		const list = ref<any[]>([]);
 
-				this.newValue = arr.filter(Boolean);
+		// 绑定值
+		const value = ref<any>();
+
+		// 绑定值回调
+		function onChange(val: any) {
+			emit("update:modelValue", val);
+		}
+
+		// 解析值
+		watch(
+			() => props.modelValue,
+			(val: any) => {
+				value.value = (isArray(val) ? val : [val]).filter(Boolean);
+			},
+			{
+				immediate: true
 			}
-		}
-	},
+		);
 
-	async created() {
-		this.list = await this.$service.system.role.list();
-	},
+		onMounted(async () => {
+			list.value = await $service.system.role.list();
+		});
 
-	methods: {
-		onChange(val) {
-			this.$emit("input", val);
-		}
+		return {
+			list,
+			value,
+			onChange
+		};
 	}
-};
+});
 </script>

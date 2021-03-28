@@ -2,7 +2,7 @@
 	<div class="cl-chat-message" v-loading="!visible && loading" element-loading-text="消息加载中">
 		<div
 			class="cl-chat-message__scroller scroller1"
-			ref="scroller"
+			:ref="setRefs('scroller')"
 			:style="{
 				opacity: visible ? 1 : 0
 			}"
@@ -76,16 +76,14 @@
 								<!-- 语音 -->
 								<template v-else-if="item.mode === 'voice'">
 									<icon-voice :play="item.isPlay"></icon-voice>
-									<span class="duration"
-										>{{ item.content.duration | duration }}"</span
-									>
+									<span class="duration">{{ item.content.duration }}"</span>
 								</template>
 
 								<!-- 视频 -->
 								<template v-else-if="item.mode === 'video'">
 									<div class="item">
 										<video
-											:poster="item.content.videoUrl | video_poster"
+											:poster="item.content.videoUrl"
 											:src="item.content.videoUrl"
 											controls
 										></video>
@@ -111,52 +109,61 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import { computed, defineComponent, inject, nextTick, onUnmounted, reactive, ref } from "vue";
 import dayjs from "dayjs";
-import { mapGetters } from "vuex";
-import { isString } from "cl-admin/utils";
-import eventBus from "../utils/event-bus";
-import IconVoice from "./icon-voice";
+import { ElMessage } from "element-plus";
+import { useStore } from "vuex";
+import { isString } from "@/core/utils";
+import IconVoice from "./icon-voice.vue";
+import { useRefs } from "@/core";
 
-export default {
+export default defineComponent({
 	components: {
 		IconVoice
 	},
 
-	inject: ["chat"],
+	setup() {
+		const store = useStore();
+		const { refs, setRefs } = useRefs();
+		const $service = inject<any>("$service");
+		const chat = inject<any>("chat");
+		const mitt = inject<any>("mitt");
 
-	data() {
-		return {
-			loading: false,
-			visible: false,
-			pagination: {
-				page: 1,
-				size: 20,
-				total: 0
-			},
-			voice: {
-				url: "",
-				timer: null
-			},
-			refreshRd: null
-		};
-	},
+		// 当前会话信息
+		const session = computed(() => store.getters.session);
 
-	filters: {
-		duration(val) {
-			return Math.ceil((val || 1) / 1000);
-		}
-	},
+		// 加载状态
+		const loading = ref<boolean>(false);
 
-	computed: {
-		...mapGetters(["userInfo", "session", "messageList"]),
+		// 是否可见
+		const visible = ref<boolean>(false);
 
-		list() {
+		// 分页信息
+		const pagination = reactive<any>({
+			page: 1,
+			size: 20,
+			total: 0
+		});
+
+		// 语音
+		const voice = reactive<any>({
+			url: "",
+			timer: null
+		});
+
+		// 请求随机值
+		const refreshRd = ref<any>(null);
+
+		// 消息列表
+		const list = computed(() => {
+			const { userInfo, messageList } = store.getters;
+
 			let date = "";
 
-			return this.messageList.map(e => {
+			return messageList.map((e: any) => {
 				// 时间间隔
-				e._date = date
+				const _date = date
 					? dayjs(e.createTime).isBefore(dayjs(date).add(1, "minute"))
 						? ""
 						: e.createTime
@@ -170,126 +177,115 @@ export default {
 					e = JSON.parse(e);
 				}
 
-				if (isString(e.content)) {
-					e.content = JSON.parse(e.content);
-				}
+				// 内容
+				const content = isString(e.content) ? JSON.parse(e.content) : e.content;
 
-				// 解析昵称
-				const nickName = e.type == 0 ? this.userInfo.nickName : this.session.nickname;
+				// 昵称
+				const nickName = e.type == 0 ? userInfo.nickName : session.value.nickname;
 
-				// 解析头像
+				// 头像
 				const avatarUrl =
 					e.type == 0
-						? this.userInfo.avatarUrl || require("../static/images/custom-avatar.png")
-						: this.session.headimgurl;
+						? userInfo.avatarUrl || require("../static/images/custom-avatar.png")
+						: session.value.headimgurl;
 
 				return {
 					...e,
+					_date,
+					content,
 					avatarUrl,
 					nickName,
-					mode: this.chat.modes[e.contentType]
+					mode: chat.modes[e.contentType]
 				};
 			});
-		}
-	},
-
-	beforeCreate() {
-		// 销毁事件
-		eventBus.$off("message.refresh");
-		eventBus.$off("message.scrollToBottom");
-	},
-
-	created() {
-		// 监听列表刷新
-		eventBus.$on("message.refresh", this.refresh);
-
-		// 滚动到底部
-		eventBus.$on("message.scrollToBottom", this.scrollToBottom);
-	},
-
-	destroyed() {
-		// 清除播放
-		clearTimeout(this.voice.timer);
-
-		this.messageList.map(e => {
-			e.isPlay = false;
 		});
-	},
 
-	methods: {
 		// 点击
-		onTap(item) {
+		function onTap(item: any) {
 			// 播放语音
 			if (item.mode == "voice") {
-				this.messageList.map(e => {
-					this.$set(e, "isPlay", e.id == item.id ? e.isPlay : false);
+				store.getters.messageList.map((e: any) => {
+					e.isPlay = e.id == item.id ? e.isPlay : false;
 				});
 
 				item.isPlay = !item.isPlay;
 
 				if (item.isPlay) {
-					this.voice.url = item.content.voiceUrl;
+					voice.url = item.content.voiceUrl;
 
-					this.$nextTick(() => {
-						this.$refs["voice"].play();
+					nextTick(() => {
+						refs.value.voice.play();
 					});
 				} else {
-					this.$refs["voice"].pause();
+					refs.value.voice.pause();
 					item.isPlay = false;
 				}
 
-				clearTimeout(this.voice.timer);
+				clearTimeout(voice.timer);
 
-				this.voice.timer = setTimeout(() => {
+				voice.timer = setTimeout(() => {
 					item.isPlay = false;
 				}, item.content.duration);
 			}
-		},
+		}
+
+		// 滚动到底部
+		function scrollToBottom() {
+			nextTick(() => {
+				if (refs.value.scroller) {
+					refs.value.scroller.scrollTo({
+						top: 99999,
+						behavior: visible.value ? "smooth" : "auto"
+					});
+				}
+			});
+		}
 
 		// 刷新列表
-		refresh(params) {
+		function refresh(params?: any) {
 			// 请求随机值
-			const rd = (this.refreshRd = Math.random());
+			const rd = (refreshRd.value = Math.random());
 
 			// 请求参数
 			const data = {
-				...this.pagination,
+				...pagination,
 				...params,
-				sessionId: this.session.id,
+				sessionId: session.value.id,
 				order: "createTime",
 				sort: "desc"
 			};
 
 			// 加载动画
-			this.loading = true;
+			loading.value = true;
 
 			// 首页处理
 			if (data.page === 1) {
-				this.visible = false;
-				this.$store.commit("CLEAR_MESSAGE_LIST");
+				visible.value = false;
+				store.commit("CLEAR_MESSAGE_LIST");
 			}
 
 			// 完成
 			const done = () => {
-				this.loading = false;
-				this.visible = true;
+				loading.value = false;
+				visible.value = true;
 			};
 
-			this.$service.im.message
+			$service.im.message
 				.page(data)
-				.then(res => {
+				.then((res: any) => {
 					// 防止脏数据
-					if (rd != this.refreshRd) {
+					if (rd != refreshRd.value) {
 						return false;
 					}
 
 					// 分页信息
-					this.pagination = res.pagination;
+					Object.assign(pagination, res.pagination);
+
 					// 追加数据
-					this.$store.commit("PREPEND_MESSAGE_LIST", res.list);
+					store.commit("PREPEND_MESSAGE_LIST", res.list);
 
 					if (data.page === 1) {
-						this.scrollToBottom();
+						scrollToBottom();
 
 						// 首次滚动隐藏
 						setTimeout(done, 0);
@@ -297,30 +293,53 @@ export default {
 						done();
 					}
 				})
-				.catch(() => {
-					this.$message.error(err);
+				.catch((err: string) => {
+					ElMessage.error(err);
 					done();
 				});
-		},
+		}
 
 		// 加载更多
-		onLoadmore() {
-			this.refresh({ page: this.pagination.page + 1 });
-		},
-
-		// 滚动到底部
-		scrollToBottom() {
-			this.$nextTick(() => {
-				if (this.$refs["scroller"]) {
-					this.$refs["scroller"].scrollTo({
-						top: 99999,
-						behavior: this.visible ? "smooth" : "auto"
-					});
-				}
-			});
+		function onLoadmore() {
+			refresh({ page: pagination.page + 1 });
 		}
+
+		// 监听列表刷新
+		mitt.on("message.refresh", refresh);
+		// 滚动到底部
+		mitt.on("message.scrollToBottom", scrollToBottom);
+
+		// 销毁
+		onUnmounted(function() {
+			// 移除语音播放
+			clearTimeout(voice.timer);
+
+			list.value.map((e: any) => {
+				e.isPlay = false;
+			});
+
+			// 移除事件
+			mitt.off("message.refresh", refresh);
+			mitt.off("message.scrollToBottom", scrollToBottom);
+		});
+
+		return {
+			refs,
+			chat,
+			session,
+			loading,
+			visible,
+			pagination,
+			voice,
+			list,
+			setRefs,
+			onTap,
+			refresh,
+			onLoadmore,
+			scrollToBottom
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -494,7 +513,7 @@ export default {
 					.content {
 						background-color: #fff;
 
-						/deep/.el-image {
+						:deep(.el-image) {
 							display: block;
 							border-radius: 6px;
 							max-width: 200px;

@@ -58,7 +58,7 @@
 				type="textarea"
 				resize="none"
 				:rows="5"
-				@keyup.enter.native="onTextSend"
+				@keyup.enter="onTextSend"
 			></el-input>
 
 			<el-button type="primary" size="mini" :disabled="!text" @click="onTextSend"
@@ -68,33 +68,63 @@
 	</div>
 </template>
 
-<script>
-import { mapMutations } from "vuex";
-import Emoji from "./emoji";
+<script lang="ts">
+import { defineComponent, inject, nextTick, reactive, ref } from "vue";
+import { useStore } from "vuex";
+import Emoji from "./emoji.vue";
 
-export default {
+export default defineComponent({
 	components: {
 		Emoji
 	},
 
-	inject: ["chat"],
+	setup() {
+		const store = useStore();
+		const chat = inject<any>("chat");
+		const mitt = inject<any>("mitt");
 
-	data() {
-		return {
-			text: "",
-			emoji: {
-				visible: false
+		// 输入值
+		const text = ref<string>("");
+
+		// 表情
+		const emoji = reactive<any>({
+			visible: false
+		});
+
+		// 追加消息
+		function append(data: any) {
+			store.commit("APPEND_MESSAGE_LIST", data);
+			mitt.emit("message.scrollToBottom");
+		}
+
+		// 发送消息
+		function send(data: any, isAppend?: boolean) {
+			const { id, userId } = store.getters.session;
+
+			// 格式化内容
+			data.content = JSON.stringify(data.content);
+
+			// 更新消息
+			store.commit("UPDATE_SESSION", data);
+
+			if (chat.socket) {
+				chat.socket.emit(`user@${userId}`, {
+					contentType: data.contentType,
+					type: 0,
+					content: data.content,
+					sessionId: id
+				});
 			}
-		};
-	},
 
-	methods: {
-		...mapMutations(["UPDATE_SESSION", "UPDATE_MESSAGE", "APPEND_MESSAGE_LIST"]),
+			if (isAppend) {
+				append(data);
+			}
+		}
 
 		// 上传前，获取图片预览地址
-		onBeforeUpload(file, key) {
+		function onBeforeUpload(file: any, key: string) {
 			// 先添加到列表中，等待上传
-			const next = (options = {}) => {
+			function next(options = {}) {
 				const data = {
 					content: {
 						[`${key}Url`]: ""
@@ -103,18 +133,18 @@ export default {
 					uid: file.uid,
 					loading: true,
 					progress: "0%",
-					contentType: this.chat.modes.indexOf(key),
+					contentType: chat.modes.indexOf(key),
 					...options
 				};
 
-				this.append(data);
-			};
+				append(data);
+			}
 
 			// 图片预览
 			if (key == "image") {
 				const fileReader = new FileReader();
 
-				fileReader.onload = e => {
+				fileReader.onload = (e: any) => {
 					const imageUrl = e.target.result;
 					const image = new Image();
 
@@ -145,21 +175,21 @@ export default {
 			} else {
 				next();
 			}
-		},
+		}
 
 		// 上传中
-		onUploadProgress(e, file) {
-			this.UPDATE_MESSAGE({
+		function onUploadProgress(e: any, file: any) {
+			store.commit("UPDATE_MESSAGE", {
 				file,
 				data: {
 					progress: e.percent + "%"
 				}
 			});
-		},
+		}
 
 		// 上传成功
-		onUploadSuccess(res, file, key) {
-			this.UPDATE_MESSAGE({
+		function onUploadSuccess(res: any, file: any, key: string) {
+			store.commit("UPDATE_MESSAGE", {
 				file,
 				data: {
 					loading: false,
@@ -167,34 +197,34 @@ export default {
 						[`${key}Url`]: res.data
 					}
 				},
-				callback: this.send
+				callback: send
 			});
-		},
+		}
 
 		// 发送文本内容
-		onTextSend() {
-			if (this.text) {
-				if (this.text.replace(/\n/g, "") !== "") {
+		function onTextSend() {
+			if (text.value) {
+				if (text.value.replace(/\n/g, "") !== "") {
 					const data = {
 						type: 0,
 						contentType: 0,
 						content: {
-							text: this.text
+							text: text.value
 						}
 					};
 
-					this.send(data, true);
+					send(data, true);
 
-					this.$nextTick(() => {
-						this.text = "";
+					nextTick(() => {
+						text.value = "";
 					});
 				}
 			}
-		},
+		}
 
 		// 图片选择
-		onImageSelect(res) {
-			this.send(
+		function onImageSelect(res: any) {
+			send(
 				{
 					content: {
 						imageUrl: res.data
@@ -204,12 +234,12 @@ export default {
 				},
 				true
 			);
-		},
+		}
 
 		// 表情选择
-		onEmojiSelect(url) {
-			this.emoji.visible = false;
-			this.send(
+		function onEmojiSelect(url: string) {
+			emoji.visible = false;
+			send(
 				{
 					content: {
 						imageUrl: url
@@ -219,11 +249,11 @@ export default {
 				},
 				true
 			);
-		},
+		}
 
 		// 视频选择
-		onVideoSelect(url) {
-			this.send(
+		function onVideoSelect(url: string) {
+			send(
 				{
 					content: {
 						videoUrl: url
@@ -233,37 +263,22 @@ export default {
 				},
 				true
 			);
-		},
-
-		// 发送消息
-		send(data, isAppend) {
-			const { id, userId } = this.$store.getters.session;
-
-			// 更新会话消息
-			this.UPDATE_SESSION(data);
-
-			// 发送消息
-			if (this.chat.socket) {
-				this.chat.socket.emit(`user@${userId}`, {
-					contentType: data.contentType,
-					type: 0,
-					content: JSON.stringify(data.content),
-					sessionId: id
-				});
-			}
-
-			// 是否添加到列表中
-			if (isAppend) {
-				this.append(data);
-			}
-		},
-
-		// 追加消息
-		append(data) {
-			this.APPEND_MESSAGE_LIST(data);
 		}
+
+		return {
+			text,
+			emoji,
+			send,
+			onBeforeUpload,
+			onUploadProgress,
+			onUploadSuccess,
+			onTextSend,
+			onImageSelect,
+			onEmojiSelect,
+			onVideoSelect
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -287,7 +302,7 @@ export default {
 					opacity: 0.7;
 				}
 
-				/deep/ img {
+				:deep(img) {
 					height: 26px;
 					width: 26px;
 				}

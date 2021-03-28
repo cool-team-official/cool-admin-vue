@@ -6,14 +6,17 @@
 
 		<div class="scroller">
 			<el-tree
-				:data="list"
-				:props="props"
-				:default-checked-keys="checked"
-				:filter-node-method="filterNode"
+				ref="treeRef"
 				highlight-current
 				node-key="id"
 				show-checkbox
-				ref="tree"
+				:data="list"
+				:props="{
+					label: 'name',
+					children: 'children'
+				}"
+				:default-checked-keys="checked"
+				:filter-node-method="filterNode"
 				@check-change="save"
 			>
 			</el-tree>
@@ -21,54 +24,50 @@
 	</div>
 </template>
 
-<script>
-import { deepTree } from "cl-admin/utils";
+<script lang="ts">
+import { defineComponent, inject, onMounted, ref, watch } from "vue";
+import { ElMessage } from "element-plus";
+import { deepTree } from "@/core/utils";
 
-export default {
+export default defineComponent({
 	name: "cl-role-perms",
 
 	props: {
-		value: Array,
+		modelValue: {
+			type: Array,
+			default: () => []
+		},
 		title: String
 	},
 
-	data() {
-		return {
-			list: [],
-			checked: [],
-			keyword: "",
-			props: {
-				label: "name",
-				children: "children"
-			},
-			loading: false
-		};
-	},
+	setup(props, { emit }) {
+		const $service = inject<any>("$service");
 
-	watch: {
-		keyword(val) {
-			this.$refs["tree"].filter(val);
-		},
+		// 树形列表
+		const list = ref<any[]>([]);
 
-		value(val) {
-			this.refreshTree(val);
-		}
-	},
+		// 已选列表
+		const checked = ref<any[]>([]);
 
-	mounted() {
-		this.refresh();
-	},
+		// 搜索关键字
+		const keyword = ref<string>("");
 
-	methods: {
-		refreshTree(val) {
+		// 加载中
+		const loading = ref<boolean>(false);
+
+		// el-tree 组件
+		const treeRef = ref<any>({});
+
+		// 刷新树
+		function refreshTree(val: any[]) {
 			if (!val) {
-				this.checked = [];
+				checked.value = [];
 			}
 
-			let ids = [];
+			const ids: any[] = [];
 
 			// 处理半选状态
-			let fn = list => {
+			const fn = (list: any[]) => {
 				list.forEach(e => {
 					if (e.children) {
 						fn(e.children);
@@ -78,41 +77,63 @@ export default {
 				});
 			};
 
-			fn(this.list);
+			fn(list.value);
 
-			this.checked = ids.filter(id => (val || []).find(e => e == id));
-		},
+			checked.value = ids.filter(id => (val || []).includes(id));
+		}
 
-		refresh() {
-			this.$service.system.menu
+		// 刷新列表
+		function refresh() {
+			$service.system.menu
 				.list()
-				.then(res => {
-					this.list = deepTree(res);
-
-					this.refreshTree(this.value);
+				.then((res: any[]) => {
+					list.value = deepTree(res);
+					refreshTree(props.modelValue);
 				})
-				.catch(err => {
-					this.$message.error(err);
+				.catch((err: string) => {
+					ElMessage.error(err);
 				});
-		},
+		}
 
-		filterNode(val, data) {
+		// 过滤节点
+		function filterNode(val: string, data: any) {
 			if (!val) return true;
 			return data.name.includes(val);
-		},
-
-		save() {
-			const tree = this.$refs["tree"];
-
-			// 选中的节点
-			const checked = tree.getCheckedKeys();
-			// 半选中的节点
-			const halfChecked = tree.getHalfCheckedKeys();
-
-			this.$emit("input", [...checked, ...halfChecked]);
 		}
+
+		// 保存
+		function save() {
+			// 选中的节点
+			const checked = treeRef.value.getCheckedKeys();
+			// 半选中的节点
+			const halfChecked = treeRef.value.getHalfCheckedKeys();
+
+			emit("update:modelValue", [...checked, ...halfChecked]);
+		}
+
+		// 过滤监听
+		watch(keyword, (val: string) => {
+			treeRef.value.filter(val);
+		});
+
+		// 刷新监听
+		watch(() => props.modelValue, refreshTree);
+
+		onMounted(() => {
+			refresh();
+		});
+
+		return {
+			list,
+			checked,
+			keyword,
+			loading,
+			treeRef,
+			filterNode,
+			save
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -19,12 +19,11 @@
 	</el-scrollbar>
 </template>
 
-<script>
-import { getBrowser } from "cl-admin/utils";
+<script lang="ts">
+import { computed, defineComponent } from "vue";
+import { getBrowser } from "@/core/utils";
 
-const { plat } = getBrowser();
-
-export default {
+export default defineComponent({
 	name: "cl-scrollbar",
 
 	props: {
@@ -44,10 +43,16 @@ export default {
 		}
 	},
 
-	computed: {
-		width() {
+	setup() {
+		const { plat } = getBrowser();
+
+		const width = computed(() => {
 			return `calc(100% - ${plat == "iphone" ? "10px" : "0px"})`;
-		}
+		});
+
+		return {
+			width
+		};
 	}
-};
+});
 </script>

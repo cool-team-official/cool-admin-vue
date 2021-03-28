@@ -30,17 +30,19 @@
 		</ul>
 
 		<!-- 用户信息 -->
-		<div class="app-topbar__user" v-if="userInfo">
-			<el-dropdown trigger="click" @command="onCommand">
-				<span class="el-dropdown-link">
-					<span class="name">{{ userInfo.nickName | default_name }}</span>
-					<img class="avatar" :src="userInfo.headImg | default_avatar" alt />
+		<div class="app-topbar__user">
+			<el-dropdown trigger="click" :hide-on-click="false" @command="onCommand">
+				<span class="el-dropdown-link" v-if="userInfo">
+					<span class="name">{{ userInfo.nickName }}</span>
+					<img class="avatar" :src="userInfo.headImg" alt />
 				</span>
 
-				<el-dropdown-menu slot="dropdown" class="popper-dropdown-menu-user">
-					<el-dropdown-item command="my">个人中心</el-dropdown-item>
-					<el-dropdown-item command="exit">退出</el-dropdown-item>
-				</el-dropdown-menu>
+				<template #dropdown>
+					<el-dropdown-menu class="dropdown-menu__user">
+						<el-dropdown-item command="my">个人中心</el-dropdown-item>
+						<el-dropdown-item command="exit">退出</el-dropdown-item>
+					</el-dropdown-menu>
+				</template>
 			</el-dropdown>
 		</div>
 	</div>
@@ -48,7 +50,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { href } from "cl-admin/utils";
+import { href } from "@/core/utils";
 
 export default {
 	computed: {
@@ -76,11 +78,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.popper-dropdown-menu-user {
+<style lang="scss">
+.dropdown-menu__user {
 	width: 120px;
 }
+</style>
 
+<style lang="scss" scoped>
 .app-topbar {
 	display: flex;
 	align-items: center;

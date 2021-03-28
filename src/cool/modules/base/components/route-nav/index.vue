@@ -15,24 +15,28 @@
 	</div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { computed, defineComponent, ref, watch } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 import _ from "lodash";
+import { isEmpty } from "@/core/utils";
 
-export default {
+export default defineComponent({
 	name: "cl-route-nav",
 
-	data() {
-		return {
-			list: []
-		};
-	},
+	setup() {
+		const route = useRoute();
+		const store = useStore();
 
-	watch: {
-		$route: {
-			immediate: true,
-			handler(route) {
-				const deep = item => {
+		// 数据列表
+		const list = ref<any[]>([]);
+
+		// 监听路由变化
+		watch(
+			() => route,
+			(val: any) => {
+				const deep = (item: any) => {
 					if (route.path === "/") {
 						return false;
 					}
@@ -54,34 +58,42 @@ export default {
 					}
 				};
 
-				this.list = _(this.menuGroup)
+				list.value = _(store.getters.menuGroup)
 					.map(deep)
 					.filter(Boolean)
 					.flattenDeep()
 					.value();
 
-				if (this.list.length === 0) {
-					this.list.push(route);
+				if (isEmpty(list.value)) {
+					list.value.push(val);
 				}
+			},
+			{
+				immediate: true
 			}
-		}
-	},
+		);
 
-	computed: {
-		...mapGetters(["menuGroup", "browser"]),
+		// 最后一个节点名称
+		const lastName = computed(() => _.last(list.value).name);
 
-		lastName() {
-			return _.last(this.list).name;
-		}
+		const browser = computed(() => store.getters.browser);
+
+		return {
+			list,
+			lastName,
+			browser
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
 .cl-route-nav {
 	white-space: nowrap;
 
-	/deep/.el-breadcrumb {
+	:deep(.el-breadcrumb) {
+		margin: 0 10px;
+
 		&__inner {
 			font-size: 13px;
 			padding: 0 10px;
@@ -91,7 +103,7 @@ export default {
 	}
 
 	.title {
-		font-size: 14px;
+		font-size: 15px;
 		font-weight: 500;
 		margin-left: 5px;
 	}

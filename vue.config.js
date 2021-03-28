@@ -1,4 +1,10 @@
 const HardSourceWebpackPlugin = require("hard-source-webpack-plugin");
+const path = require("path");
+
+function resolve(dir) {
+	return path.join(__dirname, dir);
+}
+
 const isProduction = process.env.NODE_ENV === "production";
 
 // 代理列表
@@ -56,37 +62,27 @@ module.exports = {
 		});
 
 		// 设置 svg
-		config.module.rule("svg").uses.clear();
+		const svgRule = config.module.rule("svg");
 
-		config.module
-			.rule("svg-sprite-loader")
-			.test(/.svg$/)
-			.exclude.add(/node_modules/)
-			.end()
+		svgRule.uses.clear();
+		svgRule
 			.use("svg-sprite-loader")
 			.loader("svg-sprite-loader")
 			.options({
 				symbolId: "[name]"
-			});
+			})
+			.end();
 
 		// 生产模式下
 		if (isProduction) {
-			// 去掉元素之间空格
-			config.module
-				.rule("vue")
-				.use("vue-loader")
-				.loader("vue-loader")
-				.tap(options => {
-					options.compilerOptions.preserveWhitespace = true;
-					return options;
-				})
-				.end();
-
 			// 移除 prefetch 插件
 			config.plugins.delete("prefetch-index");
 
 			// 移除 preload 插件，避免加载多余的资源
 			config.plugins.delete("preload-index");
+
+			// 描述文件
+			config.resolve.alias.set("types", resolve("./src/types"));
 
 			config.optimization.minimizer("terser").tap(args => {
 				// 去掉注释

@@ -15,114 +15,104 @@
 	</div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { defineComponent, reactive } from "vue";
+import { isPc } from "@/core/utils";
 
-export default {
+export default defineComponent({
 	data() {
-		return {
-			chartOption: {
-				grid: {
-					top: "20px",
-					bottom: "30px",
-					right: "10px",
-					containLabel: true
+		return {};
+	},
+	setup() {
+		const barWidth = isPc() ? 25 : 15;
+		const chartOption = reactive<any>({
+			grid: {
+				top: "20px",
+				bottom: "30px",
+				right: "10px",
+				containLabel: true
+			},
+			xAxis: {
+				type: "category",
+				data: [],
+				offset: 5,
+				axisLine: {
+					show: false
 				},
-				xAxis: {
-					type: "category",
-					data: [],
-					offset: 5,
-					axisLine: {
-						show: false
-					},
-					axisTick: {
-						show: false
-					}
+				axisTick: {
+					show: false
+				}
+			},
+			yAxis: {
+				type: "value",
+				offset: 20,
+				splitLine: {
+					show: false
 				},
-				yAxis: {
-					type: "value",
-					offset: 20,
-					splitLine: {
-						show: false
-					},
-					axisTick: {
-						show: false
-					},
-					axisLine: {
-						show: false
-					}
+				axisTick: {
+					show: false
 				},
-				tooltip: {
-					trigger: "axis",
-					formatter: (comp, value) => {
-						const [serie] = comp;
+				axisLine: {
+					show: false
+				}
+			},
+			tooltip: {
+				trigger: "axis",
+				formatter: (comp: any) => {
+					const [serie] = comp;
 
-						return `${serie.seriesName}：${serie.value}`;
-					},
-					axisPointer: {
-						show: true,
-						status: "shadow",
-						z: -1,
-						shadowStyle: {
-							color: "#E6F7FF"
-						},
-						type: "shadow"
-					},
-					extraCssText: "width:120px; white-space:pre-wrap"
+					return `${serie.seriesName}：${serie.value}`;
 				},
-				series: [
-					{
-						barWidth: 25,
-						name: "付款笔数",
-						type: "bar",
-						data: [],
-						itemStyle: {
-							normal: {
-								color: "#4165d7"
-							}
+				axisPointer: {
+					show: true,
+					status: "shadow",
+					z: -1,
+					shadowStyle: {
+						color: "#E6F7FF"
+					},
+					type: "shadow"
+				},
+				extraCssText: "width:120px; white-space:pre-wrap"
+			},
+			series: [
+				{
+					barWidth,
+					name: "付款笔数",
+					type: "bar",
+					data: [],
+					itemStyle: {
+						normal: {
+							color: "#4165d7"
+						}
+					}
+				},
+				{
+					type: "bar",
+					barWidth,
+					xAxisIndex: 0,
+					barGap: "-100%",
+					data: [],
+					itemStyle: {
+						normal: {
+							color: "#f1f1f9"
 						}
 					},
-					{
-						type: "bar",
-						barWidth: 25,
-						xAxisIndex: 0,
-						barGap: "-100%",
-						data: [],
-						itemStyle: {
-							normal: {
-								color: "#f1f1f9"
-							}
-						},
-						zlevel: -1
-					}
-				]
-			}
-		};
-	},
+					zlevel: -1
+				}
+			]
+		});
 
-	computed: {
-		...mapGetters(["browser"])
-	},
-
-	watch: {
-		"browser.isMini": {
-			immediate: true,
-			handler(v) {
-				this.chartOption.series.map(e => {
-					e.barWidth = v ? 15 : 25;
-				});
-			}
-		}
-	},
-
-	created() {
-		this.chartOption.xAxis.data = new Array(12).fill(1).map((e, i) => i + 1 + "月");
-		this.chartOption.series[0].data = new Array(12)
+		chartOption.xAxis.data = new Array(12).fill(1).map((e, i) => i + 1 + "月");
+		chartOption.series[0].data = new Array(12)
 			.fill(1)
-			.map(() => parseInt(Math.random() * 100));
-		this.chartOption.series[1].data = new Array(12).fill(100);
+			.map(() => parseInt(String(Math.random() * 100)));
+		chartOption.series[1].data = new Array(12).fill(100);
+
+		return {
+			chartOption
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

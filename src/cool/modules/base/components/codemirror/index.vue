@@ -1,19 +1,12 @@
 <template>
 	<div class="cl-codemirror">
-		<codemirror
-			ref="code"
-			v-model="value2"
-			:options="options2"
-			:style="{
-				height,
-				width
-			}"
-		/>
+		<textarea class="cl-code" id="editor" :height="height" :width="width"></textarea>
 	</div>
 </template>
 
-<script>
-import { codemirror } from "vue-codemirror";
+<script lang="ts">
+import { defineComponent, onMounted, watch } from "vue";
+import CodeMirror from "codemirror";
 import beautifyJs from "js-beautify";
 
 import "codemirror/theme/cobalt.css";
@@ -22,72 +15,94 @@ import "codemirror/addon/hint/show-hint.css";
 import "codemirror/addon/hint/javascript-hint";
 import "codemirror/mode/javascript/javascript";
 
-export default {
+export default defineComponent({
 	name: "cl-codemirror",
 
-	components: {
-		codemirror
-	},
-
 	props: {
-		value: String,
+		modelValue: null,
 		height: String,
 		width: String,
 		options: Object
 	},
 
-	data() {
-		return {
-			value2: ""
-		};
-	},
+	emits: ["update:modelValue", "load"],
 
-	watch: {
-		value: {
-			immediate: true,
-			handler(val) {
-				this.value2 = val || "";
-			}
-		},
-		value2(val) {
-			this.$emit("input", val);
+	setup(props, { emit }) {
+		let editor: any = null;
+
+		// 获取内容
+		function getValue() {
+			return editor ? editor.getValue() : "";
 		}
-	},
 
-	computed: {
-		options2() {
-			return {
+		// 设置内容
+		function setValue(val?: string) {
+			if (editor) {
+				editor.setValue(beautifyJs(val || getValue()));
+			}
+		}
+
+		// 监听内容变化
+		watch(
+			() => props.modelValue,
+			(val: string) => {
+				if (editor) {
+					if (val != getValue().replace(/\s/g, "")) {
+						setValue(val);
+					}
+				}
+			}
+		);
+
+		onMounted(function() {
+			// 实例化
+			editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
 				mode: "javascript",
 				theme: "ambiance",
 				styleActiveLine: true,
 				lineNumbers: true,
 				lineWrapping: true,
 				indentUnit: 4,
-				...this.options
-			};
-		}
-	},
+				...props.options
+			});
 
-	mounted() {
-		this.$el.onkeydown = e => {
-			let keyCode = e.keyCode || e.which || e.charCode;
-			let altKey = e.altKey || e.metaKey;
-			let shiftKey = e.shiftKey || e.metaKey;
+			// 输入监听
+			editor.on("change", (e: any) => {
+				emit("update:modelValue", e.getValue().replace(/\s/g, ""));
+			});
 
-			if (altKey && shiftKey && keyCode == 70) {
-				this.setValue();
+			// 加载回调
+			emit("load", editor);
+
+			// 设置编辑框样式
+			const el = editor.display.wrapper;
+
+			if (el) {
+				if (props.height) {
+					el.style.height = props.height || "50px";
+				}
+
+				if (props.width) {
+					el.style.width = props.width;
+				}
 			}
-		};
 
-		this.setValue(this.value2);
-	},
+			// 设置内容
+			setValue(props.modelValue);
 
-	methods: {
-		setValue(val) {
-			this.value2 = beautifyJs(val || this.value2);
-		}
+			// shift + alt + f 格式化
+			el.onkeydown = (e: any) => {
+				const keyCode = e.keyCode || e.which || e.charCode;
+				const altKey = e.altKey || e.metaKey;
+				const shiftKey = e.shiftKey || e.metaKey;
+
+				if (altKey && shiftKey && keyCode == 70) {
+					setValue();
+				}
+			};
+		});
 	}
-};
+});
 </script>
 
 <style lang="scss">
@@ -96,10 +111,6 @@ export default {
 	border: 1px solid #dcdfe6;
 	box-sizing: border-box;
 	border-radius: 3px;
-}
-
-.CodeMirror {
-	height: 100%;
 }
 
 .cm-s-ambiance * {

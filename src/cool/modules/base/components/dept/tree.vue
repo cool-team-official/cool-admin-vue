@@ -10,7 +10,7 @@
 					</el-tooltip>
 				</li>
 
-				<li v-if="drag && !browser.isMini">
+				<li v-if="drag && !isMini">
 					<el-tooltip content="拖动排序">
 						<i class="el-icon-s-operation" @click="isDrag = true"></i>
 					</el-tooltip>
@@ -39,14 +39,14 @@
 				v-loading="loading"
 				@node-contextmenu="openCM"
 			>
-				<template slot-scope="{ node, data }">
+				<template #default="{ node, data }">
 					<div class="cl-dept-tree__node">
 						<span class="cl-dept-tree__node-label" @click="rowClick(data)">{{
 							node.label
 						}}</span>
 						<span
 							class="cl-dept-tree__node-icon"
-							v-if="browser.isMini"
+							v-if="isMini"
 							@click="openCM($event, data, node)"
 						>
 							<i class="el-icon-more"></i>
@@ -55,15 +55,19 @@
 				</template>
 			</el-tree>
 		</div>
+
+		<cl-form :ref="setRefs('form')"></cl-form>
 	</div>
 </template>
 
-<script>
-import { deepTree, isArray, revDeepTree } from "cl-admin/utils";
-import { ContextMenu, Form } from "cl-admin-crud";
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { defineComponent, inject, onMounted, ref } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { ContextMenu } from "@/crud";
+import { useRefs } from "@/core";
+import { deepTree, isArray, revDeepTree, isPc } from "@/core/utils";
 
-export default {
+export default defineComponent({
 	name: "cl-dept-tree",
 
 	props: {
@@ -77,110 +81,64 @@ export default {
 		}
 	},
 
-	data() {
-		return {
-			list: [],
-			loading: false,
-			isDrag: false
-		};
-	},
+	setup(props, { emit }) {
+		const { refs, setRefs } = useRefs();
 
-	computed: {
-		...mapGetters(["browser"])
-	},
+		// 树形列表
+		const list = ref<any[]>([]);
 
-	created() {
-		this.refresh();
-	},
+		// 加载中
+		const loading = ref<boolean>(false);
 
-	methods: {
-		openCM(e, d, n) {
-			if (!d) {
-				d = this.list[0] || {};
-			}
+		// 是否能拖动
+		const isDrag = ref<boolean>(false);
 
-			ContextMenu.open(e, {
-				list: [
-					{
-						label: "新增",
-						"suffix-icon": "el-icon-plus",
-						hidden: n && n.level >= this.level,
-						callback: (_, done) => {
-							this.rowEdit({
-								name: "",
-								parentName: d.name,
-								parentId: d.id
-							});
-							done();
-						}
-					},
-					{
-						label: "编辑",
-						"suffix-icon": "el-icon-edit",
-						callback: (_, done) => {
-							this.rowEdit(d);
-							done();
-						}
-					},
-					{
-						label: "删除",
-						"suffix-icon": "el-icon-delete",
-						hidden: !Boolean(d.parentId),
-						callback: (_, done) => {
-							this.rowDel(d);
-							done();
-						}
-					},
-					{
-						label: "新增成员",
-						"suffix-icon": "el-icon-user",
-						callback: (_, done) => {
-							this.$emit("user-add", d);
-							done();
-						}
-					}
-				]
-			});
-		},
+		// 请求服务
+		const $service = inject<any>("$service");
 
-		allowDrag({ data }) {
+		// 允许托的规则
+		function allowDrag({ data }: any) {
 			return data.parentId;
-		},
+		}
 
-		allowDrop(_, dropNode) {
+		// 允许放的规则
+		function allowDrop(_: any, dropNode: any) {
 			return dropNode.data.parentId;
-		},
+		}
 
-		refresh() {
-			this.isDrag = false;
-			this.loading = true;
+		// 刷新
+		function refresh() {
+			isDrag.value = false;
+			loading.value = true;
 
-			this.$service.system.dept
+			$service.system.dept
 				.list()
-				.then(res => {
-					this.list = deepTree(res);
-					this.$emit("list-change", this.list);
+				.then((res: any[]) => {
+					list.value = deepTree(res);
+					emit("list-change", list.value);
 				})
 				.done(() => {
-					this.loading = false;
+					loading.value = false;
 				});
-		},
+		}
 
-		rowClick(e) {
+		// 获取 ids
+		function rowClick(e: any) {
 			ContextMenu.close();
-			let ids = e.children ? revDeepTree(e.children).map(e => e.id) : [];
+			const ids = e.children ? revDeepTree(e.children).map(e => e.id) : [];
 			ids.unshift(e.id);
-			this.$emit("row-click", { item: e, ids });
-		},
+			emit("row-click", { item: e, ids });
+		}
 
-		rowEdit(e) {
+		// 编辑部门
+		function rowEdit(e: any) {
 			const method = e.id ? "update" : "add";
 
-			Form.open({
+			refs.value.form.open({
 				title: "编辑部门",
 				width: "550px",
 				props: {
-					"label-width": "100px"
+					labelWidth: "100px"
 				},
 				items: [
 					{
@@ -189,7 +147,7 @@ export default {
 						value: e.name,
 						component: {
 							name: "el-input",
-							attrs: {
+							props: {
 								placeholder: "请填写部门名称"
 							}
 						},
@@ -204,7 +162,7 @@ export default {
 						value: e.parentName || "...",
 						component: {
 							name: "el-input",
-							attrs: {
+							props: {
 								disabled: true
 							}
 						}
@@ -224,50 +182,51 @@ export default {
 					}
 				],
 				on: {
-					submit: (data, { done, close }) => {
-						this.$service.system.dept[method]({
+					submit: (data: any, { done, close }: any) => {
+						$service.system.dept[method]({
 							id: e.id,
 							parentId: e.parentId,
 							name: data.name,
 							orderNum: data.orderNum
 						})
 							.then(() => {
-								this.$message.success(`新增部门${data.name}成功`);
+								ElMessage.success(`新增部门${data.name}成功`);
 								close();
-								this.refresh();
+								refresh();
 							})
-							.catch(err => {
-								this.$message.error(err);
+							.catch((err: string) => {
+								ElMessage.error(err);
 								done();
 							});
 					}
 				}
 			});
-		},
+		}
 
-		rowDel(e) {
-			const del = f => {
-				this.$service.system.dept
+		// 删除部门
+		function rowDel(e: any) {
+			const del = (f: boolean) => {
+				$service.system.dept
 					.delete({
 						ids: [e.id],
 						deleteUser: f
 					})
 					.then(() => {
 						if (f) {
-							this.$message.success("删除成功");
+							ElMessage.success("删除成功");
 						} else {
-							this.$confirm(
+							ElMessageBox.confirm(
 								`“${e.name}” 部门的用户已成功转移到 “${e.parentName}” 部门。`,
 								"删除成功"
 							);
 						}
 					})
 					.done(() => {
-						this.refresh();
+						refresh();
 					});
 			};
 
-			this.$confirm(`该操作会删除 “${e.name}” 部门的所有用户，是否确认？`, "提示", {
+			ElMessageBox.confirm(`该操作会删除 “${e.name}” 部门的所有用户，是否确认？`, "提示", {
 				type: "warning",
 				confirmButtonText: "直接删除",
 				cancelButtonText: "保留用户",
@@ -276,20 +235,23 @@ export default {
 				.then(() => {
 					del(true);
 				})
-				.catch(action => {
+				.catch((action: string) => {
 					if (action == "cancel") {
 						del(false);
 					}
 				});
-		},
+		}
 
-		treeOrder(f) {
+		// 部门排序
+		function treeOrder(f: boolean) {
 			if (f) {
-				this.$confirm("部门架构已发生改变，是否保存？", "提示", {
+				ElMessageBox.confirm("部门架构已发生改变，是否保存？", "提示", {
 					type: "warning"
 				})
 					.then(() => {
-						const deep = (list, pid) => {
+						const ids: any[] = [];
+
+						const deep = (list: any[], pid: any) => {
 							list.forEach(e => {
 								e.parentId = pid;
 								ids.push(e);
@@ -300,11 +262,9 @@ export default {
 							});
 						};
 
-						let ids = [];
+						deep(list.value, null);
 
-						deep(this.list, null);
-
-						this.$service.system.dept
+						$service.system.dept
 							.order(
 								ids.map((e, i) => {
 									return {
@@ -315,23 +275,94 @@ export default {
 								})
 							)
 							.then(() => {
-								this.$message.success("更新排序成功");
+								ElMessage.success("更新排序成功");
 							})
-							.catch(err => {
-								this.$message.error(err);
+							.catch((err: string) => {
+								ElMessage.error(err);
 							})
 							.done(() => {
-								this.refresh();
-								this.isDrag = false;
+								refresh();
+								isDrag.value = false;
 							});
 					})
-					.catch(() => {});
+					.catch(() => null);
 			} else {
-				this.refresh();
+				refresh();
 			}
 		}
+
+		// 右键菜单
+		function openCM(e: any, d: any, n: any) {
+			if (!d) {
+				d = list.value[0] || {};
+			}
+
+			ContextMenu.open(e, {
+				list: [
+					{
+						label: "新增",
+						"suffix-icon": "el-icon-plus",
+						hidden: n && n.level >= props.level,
+						callback: (_: any, done: Function) => {
+							rowEdit({
+								name: "",
+								parentName: d.name,
+								parentId: d.id
+							});
+							done();
+						}
+					},
+					{
+						label: "编辑",
+						"suffix-icon": "el-icon-edit",
+						callback: (_: any, done: Function) => {
+							rowEdit(d);
+							done();
+						}
+					},
+					{
+						label: "删除",
+						"suffix-icon": "el-icon-delete",
+						hidden: !d.parentId,
+						callback: (_: any, done: Function) => {
+							rowDel(d);
+							done();
+						}
+					},
+					{
+						label: "新增成员",
+						"suffix-icon": "el-icon-user",
+						callback: (_: any, done: Function) => {
+							emit("user-add", d);
+							done();
+						}
+					}
+				]
+			});
+		}
+
+		onMounted(function() {
+			refresh();
+		});
+
+		return {
+			refs,
+			list,
+			loading,
+			isDrag,
+			isMini: !isPc(),
+			setRefs,
+			openCM,
+			allowDrag,
+			allowDrop,
+			refresh,
+			rowClick,
+			rowEdit,
+			rowDel,
+			treeOrder
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -360,7 +391,7 @@ export default {
 		}
 	}
 
-	/deep/.el-tree-node__content {
+	:deep(.el-tree-node__content) {
 		height: 36px;
 	}
 
@@ -387,7 +418,7 @@ export default {
 		overflow-y: auto;
 		overflow-x: hidden;
 
-		/deep/.el-tree-node__content {
+		:deep(.el-tree-node__content) {
 			margin: 0 5px;
 		}
 	}

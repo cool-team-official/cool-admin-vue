@@ -8,19 +8,19 @@
 			<div class="sales-rank__filter">
 				<ul>
 					<li
-						v-for="(item, index) in options.date"
+						v-for="(item, index) in types"
 						:key="index"
 						:class="{
-							active: item.value == selects.date
+							active: item.value == type
 						}"
-						@click="changeDate(item)"
+						@click="changeDate(item.value)"
 					>
 						{{ item.label }}
 					</li>
 				</ul>
 
 				<el-date-picker
-					v-model="selects.date"
+					v-model="date"
 					class="hidden-xs-only"
 					type="datetimerange"
 					size="mini"
@@ -62,42 +62,44 @@
 	</div>
 </template>
 
-<script>
-export default {
-	data() {
-		return {
-			selects: {
-				date: "day"
-			},
-			options: {
-				date: [
-					{
-						label: "今日",
-						value: "day"
-					},
-					{
-						label: "本周",
-						value: "week"
-					},
-					{
-						label: "本月",
-						value: "month"
-					},
-					{
-						label: "全年",
-						value: "year"
-					}
-				]
-			}
-		};
-	},
+<script lang="ts">
+import { defineComponent, ref } from "vue";
 
-	methods: {
-		changeDate(item) {
-			this.selects.date = item.value;
-		}
+export default defineComponent({
+	setup() {
+		const date = ref<Array<string>>([]);
+		const type = ref<string>("day");
+		const types = ref<Array<any>>([
+			{
+				label: "今日",
+				value: "day"
+			},
+			{
+				label: "本周",
+				value: "week"
+			},
+			{
+				label: "本月",
+				value: "month"
+			},
+			{
+				label: "全年",
+				value: "year"
+			}
+		]);
+
+		const changeDate = (value: string) => {
+			type.value = value;
+		};
+
+		return {
+			changeDate,
+			types,
+			date,
+			type
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

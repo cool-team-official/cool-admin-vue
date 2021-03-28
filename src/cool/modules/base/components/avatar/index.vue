@@ -1,17 +1,20 @@
 <template>
 	<div class="cl-avatar" :class="[size, shape]" :style="[style]">
 		<el-image :src="src" alt="">
-			<div slot="error" class="image-slot">
-				<i class="el-icon-picture-outline"></i>
-			</div>
+			<template #error>
+				<div class="image-slot">
+					<i class="el-icon-picture-outline"></i>
+				</div>
+			</template>
 		</el-image>
 	</div>
 </template>
 
-<script>
-import { isNumber } from "cl-admin/utils";
+<script lang="ts">
+import { computed, defineComponent } from "vue";
+import { isNumber } from "@/core/utils";
 
-export default {
+export default defineComponent({
 	name: "cl-avatar",
 
 	props: {
@@ -26,17 +29,21 @@ export default {
 		}
 	},
 
-	computed: {
-		style() {
-			const size = isNumber(this.size) ? this.size + "px" : this.size;
+	setup(props) {
+		const size = isNumber(props.size) ? props.size + "px" : props.size;
 
+		const style = computed(() => {
 			return {
 				height: size,
 				width: size
 			};
-		}
+		});
+
+		return {
+			style
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -76,7 +83,7 @@ export default {
 		height: 100%;
 		width: 100%;
 
-		/deep/.image-slot {
+		:deep(.image-slot) {
 			display: flex;
 			justify-content: center;
 			align-items: center;

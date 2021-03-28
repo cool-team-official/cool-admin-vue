@@ -4,7 +4,7 @@
 			<img class="logo" src="../../static/images/logo.png" alt="" />
 			<p class="desc">COOL ADMIN是一款快速开发后台权限管理系统</p>
 
-			<el-form ref="form" class="form" size="medium" :disabled="saving">
+			<el-form class="form" size="medium" :disabled="saving">
 				<el-form-item label="用户名">
 					<el-input
 						placeholder="请输入用户名"
@@ -30,91 +30,105 @@
 						maxlength="4"
 						v-model="form.verifyCode"
 						auto-complete="off"
-						@keyup.enter.native="next"
+						@keyup.enter="toLogin"
 					></el-input>
 
 					<captcha
-						ref="captcha"
+						:ref="setRefs('captcha')"
 						class="value"
 						v-model="form.captchaId"
-						@change="captchaChange"
+						@change="
+							() => {
+								form.verifyCode = '';
+							}
+						"
 					></captcha>
 				</el-form-item>
 			</el-form>
 
-			<el-button round size="mini" class="submit-btn" @click="next" :loading="saving"
+			<el-button round size="mini" class="submit-btn" @click="toLogin" :loading="saving"
 				>登录</el-button
 			>
 		</div>
 	</div>
 </template>
 
-<script>
-import Captcha from "./components/captcha";
+<script lang="ts">
+import { defineComponent, reactive, ref } from "vue";
+import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
+import Captcha from "./components/captcha.vue";
+import { useRefs } from "@/core";
 
-export default {
+export default defineComponent({
 	components: {
 		Captcha
 	},
 
-	data() {
-		return {
-			form: {
-				username: "admin",
-				password: "123456",
-				captchaId: "",
-				verifyCode: ""
-			},
-			saving: false
-		};
-	},
+	setup() {
+		const router = useRouter();
+		const store = useStore();
+		const { refs, setRefs } = useRefs();
 
-	methods: {
-		captchaChange() {
-			this.form.verifyCode = "";
-		},
+		const saving = ref<boolean>(false);
 
-		async next() {
-			const { username, password, verifyCode } = this.form;
+		// 登录表单数据
+		const form = reactive({
+			username: "admin",
+			password: "123456",
+			captchaId: "",
+			verifyCode: ""
+		});
 
-			if (!username) {
-				return this.$message.warning("用户名不能为空");
+		// 登录
+		async function toLogin() {
+			if (!form.username) {
+				return ElMessage.warning("用户名不能为空");
 			}
 
-			if (!password) {
-				return this.$message.warning("密码不能为空");
+			if (!form.password) {
+				return ElMessage.warning("密码不能为空");
 			}
 
-			if (!verifyCode) {
-				return this.$message.warning("图片验证码不能为空");
+			if (!form.verifyCode) {
+				return ElMessage.warning("图片验证码不能为空");
 			}
 
-			this.saving = true;
+			saving.value = true;
 
 			try {
 				// 登录
-				await this.$store.dispatch("userLogin", this.form);
+				await store.dispatch("userLogin", form);
 
 				// 用户信息
-				await this.$store.dispatch("userInfo");
+				await store.dispatch("userInfo");
 
 				// 权限菜单
-				let [first] = await this.$store.dispatch("permMenu");
+				const [first] = await store.dispatch("permMenu");
 
 				if (!first) {
-					this.$message.error("该账号没有权限");
+					ElMessage.error("该账号没有权限");
 				} else {
-					this.$router.push("/");
+					router.push("/");
 				}
 			} catch (err) {
-				this.$message.error(err);
-				this.$refs.captcha.refresh();
+				ElMessage.error(err);
+				refs.value.captcha.refresh();
 			}
 
-			this.saving = false;
+			saving.value = false;
 		}
+
+		return {
+			refs,
+			form,
+			saving,
+			toLogin,
+			setRefs
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -147,7 +161,7 @@ export default {
 			letter-spacing: 1px;
 		}
 
-		/deep/.el-form {
+		:deep(.el-form) {
 			width: 300px;
 			border-radius: 3px;
 

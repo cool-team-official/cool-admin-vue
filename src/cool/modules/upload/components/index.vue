@@ -10,7 +10,7 @@
 				}
 			]"
 		>
-			<el-input class="cl-upload__hidden" type="hidden" v-model="value"></el-input>
+			<el-input class="cl-upload__hidden" type="hidden"></el-input>
 
 			<el-upload
 				:action="action"
@@ -96,13 +96,12 @@
 
 		<cl-dialog
 			title="图片预览"
-			:visible.sync="preview.visible"
+			v-model="preview.visible"
 			:props="{
-				width: previewWidth,
-				'append-to-body': true
+				width: previewWidth
 			}"
 		>
-			<img width="100%" :src="preview.url" alt="" />
+			<img style="width: 100%" :src="preview.url" alt="" />
 		</cl-dialog>
 	</div>
 </template>
@@ -110,14 +109,15 @@
 <script>
 import { mapGetters } from "vuex";
 import path from "path";
-import { cloneDeep, last, isArray, isNumber, isBoolean } from "cl-admin/utils";
+import { last, isArray, isNumber, isBoolean } from "@/core/utils";
 import { v4 as uuidv4 } from "uuid";
+import { clone } from "@/core/utils";
 
 export default {
 	name: "cl-upload",
 
 	props: {
-		value: [Array, String],
+		modelValue: [Array, String],
 		// 尺寸
 		size: [Array, String, Number],
 		// 显示图标
@@ -194,6 +194,8 @@ export default {
 		beforeRemove: Function
 	},
 
+	emits: ["update:modelValue", "change"],
+
 	data() {
 		return {
 			fileList: [],
@@ -226,7 +228,7 @@ export default {
 		},
 
 		_accept() {
-			let d = this.accept || this.conf.accept;
+			const d = this.accept || this.conf.accept;
 
 			switch (this.listType) {
 				case "picture-card":
@@ -276,8 +278,8 @@ export default {
 			return this.urls
 				.filter(e => Boolean(e.url))
 				.map(e => {
-					let arr = e.url.split(".");
-					let suf = last(arr);
+					const arr = e.url.split(".");
+					const suf = last(arr);
 					e.type = format.image.includes(suf) ? "image" : null;
 					return e;
 				});
@@ -310,7 +312,7 @@ export default {
 	},
 
 	watch: {
-		value: {
+		modelValue: {
 			immediate: true,
 			handler: "parseValue"
 		}
@@ -348,7 +350,7 @@ export default {
 				});
 
 				// 设置 URLS
-				this.urls = cloneDeep(this.fileList);
+				this.urls = clone(this.fileList);
 			}
 		},
 
@@ -359,7 +361,7 @@ export default {
 				.map(e => e.url)
 				.join(",");
 
-			this.$emit("input", urls);
+			this.$emit("update:modelValue", urls);
 			this.$emit("change", urls);
 		},
 
@@ -399,7 +401,7 @@ export default {
 			this.preview.url = file.url;
 
 			if (!file.url) {
-				let item = this.urls.find(e => e.uid == file.uid);
+				const item = this.urls.find(e => e.uid == file.uid);
 
 				if (item) {
 					this.preview.url = item.url;
@@ -452,9 +454,9 @@ export default {
 			const upload = file => {
 				return new Promise((resolve, reject) => {
 					const next = res => {
-						let data = new FormData();
+						const data = new FormData();
 
-						for (let i in res) {
+						for (const i in res) {
 							if (i != "host") {
 								data.append(i, res[i]);
 							}
@@ -559,7 +561,7 @@ export default {
 
 	&--default {
 		&:not(.is-drag) {
-			/deep/.el-upload {
+			:deep(.el-upload) {
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -638,7 +640,7 @@ export default {
 	}
 
 	&--picture-card {
-		/deep/.el-upload {
+		:deep(.el-upload) {
 			background-color: #fff;
 
 			.cl-upload__icon {

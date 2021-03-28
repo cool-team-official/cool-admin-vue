@@ -1,24 +1,21 @@
 <template>
 	<div class="page-editor-quill">
-		<cl-editor-quill v-model="content" @load="onLoad" :height="400"></cl-editor-quill>
+		<cl-editor-quill v-model="content" :height="400"></cl-editor-quill>
 	</div>
 </template>
 
-<script>
-export default {
-	data() {
-		return {
-			content: "",
-			options: {
-				placeholder: "输入内容"
-			}
-		};
-	},
+<script lang="ts">
+import { ref } from "vue";
 
-	methods: {
-		onLoad(ref) {
-			console.log(ref);
-		}
+export default {
+	name: "editor-quill",
+
+	setup() {
+		const content = ref<string>("");
+
+		return {
+			content
+		};
 	}
 };
 </script>

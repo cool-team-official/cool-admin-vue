@@ -1,62 +1,76 @@
 <template>
 	<div class="page-layout" :class="{ collapse: menuCollapse }">
-		<!-- 遮罩层 -->
-		<div class="page-layout__mask" @click="COLLAPSE_MENU(true)"></div>
+		<div class="page-layout__mask" @click="collapseMenu(true)"></div>
 
 		<div class="page-layout__left">
-			<!-- 侧栏 -->
 			<slider></slider>
 		</div>
 
 		<div class="page-layout__right">
-			<!-- 顶栏 -->
 			<div class="page-layout__topbar">
 				<topbar></topbar>
 			</div>
 
-			<!-- 页面进程 -->
 			<div class="page-layout__process" v-if="app.conf.showProcess">
 				<cl-process />
 			</div>
 
-			<!-- 页面视图 -->
 			<div class="page-layout__container">
 				<div class="page-layout__view">
-					<keep-alive>
-						<router-view v-if="isKeepAlive"></router-view>
-					</keep-alive>
-
-					<router-view v-if="!isKeepAlive"></router-view>
+					<router-view v-slot="{ Component }">
+						<keep-alive :include="caches">
+							<component :is="Component" />
+						</keep-alive>
+					</router-view>
 				</div>
 			</div>
 		</div>
 	</div>
 </template>
 
-<script>
-import { mapGetters, mapMutations } from "vuex";
-import Topbar from "./topbar";
-import Slider from "./slider";
-import { isEmpty } from "cl-admin/utils";
+<script lang="ts">
+import { computed, defineComponent } from "vue";
+import { useStore } from "vuex";
+import Topbar from "./topbar.vue";
+import Slider from "./slider.vue";
 
-export default {
+export default defineComponent({
 	components: {
 		Topbar,
 		Slider
 	},
 
-	computed: {
-		...mapGetters(["menuCollapse", "app"]),
+	setup() {
+		const store = useStore();
 
-		isKeepAlive() {
-			return isEmpty(this.$route.meta.keepAlive) ? true : this.$route.meta.keepAlive;
+		// 菜单是否折叠
+		const menuCollapse = computed<boolean>(() => store.getters.menuCollapse);
+
+		// 应用信息
+		const app = computed<any>(() => store.getters.app);
+
+		// 缓存列表
+		const caches = computed(() => {
+			return store.getters.processList
+				.filter((e: any) => e.keepAlive)
+				.map((e: any) => {
+					return e.value.substring(1, e.value.length).replace(/\//g, "-");
+				});
+		});
+
+		// 折叠菜单
+		function collapseMenu(val: boolean) {
+			store.commit("COLLAPSE_MENU", val);
 		}
-	},
 
-	methods: {
-		...mapMutations(["COLLAPSE_MENU"])
+		return {
+			menuCollapse,
+			app,
+			collapseMenu,
+			caches
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -147,7 +161,7 @@ export default {
 	@media only screen and (min-width: 768px) {
 		.page-layout__left,
 		.page-layout__right {
-			transition: width 0.2s;
+			transition: width 0.2s ease-in-out;
 		}
 
 		.page-layout__mask {

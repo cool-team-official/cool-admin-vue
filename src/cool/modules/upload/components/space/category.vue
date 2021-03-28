@@ -27,6 +27,8 @@
 				</li>
 			</ul>
 		</div>
+
+		<cl-form ref="form"></cl-form>
 	</div>
 </template>
 
@@ -38,7 +40,7 @@ export default {
 	name: "cl-upload-space-category",
 
 	props: {
-		value: [Number]
+		modelValue: [Number]
 	},
 
 	inject: ["space"],
@@ -62,7 +64,7 @@ export default {
 	watch: {
 		current: {
 			handler(id) {
-				this.$emit("input", id);
+				this.$emit("update:modelValue", id);
 				this.$emit("change", id);
 			}
 		}
@@ -93,7 +95,7 @@ export default {
 
 		// 编辑分类
 		edit(item = {}) {
-			this.$crud.openForm({
+			this.$refs.form.open({
 				title: "添加分类",
 				width: "400px",
 				items: [

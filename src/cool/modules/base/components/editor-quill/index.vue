@@ -1,144 +1,153 @@
 <template>
 	<div class="cl-editor-quill">
-		<div class="editor" :style="style"></div>
+		<div :ref="setRefs('editor')" class="editor" :style="style"></div>
 
 		<cl-upload-space
-			ref="upload-space"
+			:ref="setRefs('upload-space')"
 			detail-data
 			:show-button="false"
-			@confirm="onFileConfirm"
+			@confirm="onUploadSpaceConfirm"
 		>
 		</cl-upload-space>
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import { computed, defineComponent, onMounted, ref, watch } from "vue";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import { isNumber } from "cl-admin/utils";
+import { isNumber } from "@/core/utils";
+import { useRefs } from "@/core";
 
-export default {
+export default defineComponent({
 	name: "cl-editor-quill",
 
 	props: {
-		value: null,
+		options: Object,
+		modelValue: null,
 		height: [String, Number],
-		width: [String, Number],
-		options: Object
+		width: [String, Number]
 	},
 
-	data() {
-		return {
-			content: "",
-			quill: null,
-			cursorIndex: 0
-		};
-	},
+	emits: ["update:modelValue", "load"],
 
-	computed: {
-		style() {
-			const height = isNumber(this.height) ? this.height + "px" : this.height;
-			const width = isNumber(this.width) ? this.width + "px" : this.width;
+	setup(props, { emit }) {
+		const { refs, setRefs } = useRefs();
+
+		let quill: any = null;
+
+		// 文本内容
+		const content = ref<string>("");
+
+		// 光标位置
+		const cursorIndex = ref<number>(0);
+
+		// 上传处理
+		function uploadFileHandler() {
+			const selection = quill.getSelection();
+
+			if (selection) {
+				cursorIndex.value = selection.index;
+			}
+
+			refs.value["upload-space"].open();
+		}
+
+		// 文件确认
+		function onUploadSpaceConfirm(files: any[]) {
+			if (files.length > 0) {
+				files.forEach((file, i) => {
+					const [type] = file.type.split("/");
+
+					quill.insertEmbed(cursorIndex.value + i, type, file.url, Quill.sources.USER);
+				});
+			}
+		}
+
+		// 设置内容
+		function setContent(val: string) {
+			quill.root.innerHTML = val || "";
+		}
+
+		// 编辑框样式
+		const style = computed<any>(() => {
+			const height = isNumber(props.height) ? props.height + "px" : props.height;
+			const width = isNumber(props.width) ? props.width + "px" : props.width;
 
 			return {
 				height,
 				width
 			};
-		}
-	},
+		});
 
-	watch: {
-		value(val) {
-			if (val) {
-				if (val !== this.content) {
-					this.setContent(val);
+		// 监听绑定值
+		watch(
+			() => props.modelValue,
+			(val: string) => {
+				if (val) {
+					if (val !== content.value) {
+						setContent(val);
+					}
+				} else {
+					setContent("");
 				}
-			} else {
-				this.setContent("");
 			}
-		},
+		);
 
-		content(val) {
-			this.$emit("input", val);
-		}
-	},
+		onMounted(function() {
+			// 实例化
+			quill = new Quill(refs.value.editor, {
+				theme: "snow",
+				placeholder: "输入内容",
+				modules: {
+					toolbar: [
+						["bold", "italic", "underline", "strike"],
+						["blockquote", "code-block"],
+						[{ header: 1 }, { header: 2 }],
+						[{ list: "ordered" }, { list: "bullet" }],
+						[{ script: "sub" }, { script: "super" }],
+						[{ indent: "-1" }, { indent: "+1" }],
+						[{ direction: "rtl" }],
+						[{ size: ["small", false, "large", "huge"] }],
+						[{ header: [1, 2, 3, 4, 5, 6, false] }],
+						[{ color: [] }, { background: [] }],
+						[{ font: [] }],
+						[{ align: [] }],
+						["clean"],
+						["link", "image"]
+					]
+				},
+				...props.options
+			});
 
-	mounted() {
-		// 实例化
-		this.quill = new Quill(this.$el.querySelector(".editor"), {
-			theme: "snow",
-			placeholder: "输入内容",
-			modules: {
-				toolbar: [
-					["bold", "italic", "underline", "strike"],
-					["blockquote", "code-block"],
-					[{ header: 1 }, { header: 2 }],
-					[{ list: "ordered" }, { list: "bullet" }],
-					[{ script: "sub" }, { script: "super" }],
-					[{ indent: "-1" }, { indent: "+1" }],
-					[{ direction: "rtl" }],
-					[{ size: ["small", false, "large", "huge"] }],
-					[{ header: [1, 2, 3, 4, 5, 6, false] }],
-					[{ color: [] }, { background: [] }],
-					[{ font: [] }],
-					[{ align: [] }],
-					["clean"],
-					["link", "image"]
-				]
-			},
-			...this.options
+			// 添加图片工具
+			quill.getModule("toolbar").addHandler("image", uploadFileHandler);
+
+			// 监听输入
+			quill.on("text-change", () => {
+				content.value = quill.root.innerHTML;
+				emit("update:modelValue", content.value);
+			});
+
+			// 设置内容
+			setContent(props.modelValue);
+
+			// 加载回调
+			emit("load", quill);
 		});
 
-		// 添加文件上传工具
-		this.quill.getModule("toolbar").addHandler("image", this.uploadHandler);
-
-		// 监听内容变化
-		this.quill.on("text-change", () => {
-			this.content = this.quill.root.innerHTML;
-		});
-
-		// 设置默认内容
-		this.setContent(this.value);
-
-		// 加载完回调
-		this.$emit("load", this.quill);
-	},
-
-	methods: {
-		uploadHandler() {
-			const selection = this.quill.getSelection();
-
-			if (selection) {
-				this.cursorIndex = selection.index;
-			}
-
-			this.$refs["upload-space"].open();
-		},
-
-		onFileConfirm(files) {
-			if (files.length > 0) {
-				// 批量插件图片
-				files.forEach((file, i) => {
-					let [type] = file.type.split("/");
-
-					this.quill.insertEmbed(
-						this.cursorIndex + i,
-						type,
-						file.url,
-						Quill.sources.USER
-					);
-				});
-
-				// 移动光标到图片后一位
-				this.quill.setSelection(this.cursorIndex + files.length);
-			}
-		},
-
-		setContent(val) {
-			this.quill.root.innerHTML = val || "";
-		}
+		return {
+			refs,
+			content,
+			quill,
+			cursorIndex,
+			style,
+			setRefs,
+			setContent,
+			onUploadSpaceConfirm
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss">

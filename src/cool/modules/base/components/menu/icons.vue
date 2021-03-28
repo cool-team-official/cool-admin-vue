@@ -1,83 +1,105 @@
 <template>
 	<div class="cl-menu-icons">
 		<el-popover
-			ref="iconPopover"
+			:visible="visible"
 			placement="bottom-start"
 			trigger="click"
+			width="480px"
 			popper-class="popper-menu-icon"
 		>
-			<el-row :gutter="10" class="list">
+			<el-row :gutter="10" class="list scroller1">
 				<el-col :span="3" :xs="4" v-for="(item, index) in list" :key="index">
 					<el-button
 						size="mini"
-						:class="{ 'is-active': item === value }"
-						@click="onUpdate(item)"
+						:class="{ 'is-active': item === name }"
+						@click="onChange(item)"
 					>
 						<icon-svg :name="item"></icon-svg>
 					</el-button>
 				</el-col>
 			</el-row>
-		</el-popover>
 
-		<el-input
-			v-model="name"
-			v-popover:iconPopover
-			placeholder="请选择"
-			@input="onUpdate"
-		></el-input>
+			<template #reference>
+				<el-input
+					v-model="name"
+					placeholder="请选择"
+					clearable
+					@click="open"
+					@input="onChange"
+				></el-input>
+			</template>
+		</el-popover>
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref, watch } from "vue";
 import { iconList } from "@/cool/modules/base";
 
-export default {
+export default defineComponent({
 	name: "cl-menu-icons",
 
 	props: {
-		value: String
+		modelValue: {
+			type: String,
+			default: ""
+		}
 	},
 
-	data() {
-		return {
-			list: [],
-			name: ""
-		};
-	},
+	emits: ["update:modelValue"],
 
-	watch: {
-		value: {
-			immediate: true,
-			handler(val) {
-				this.name = val;
+	setup(props, { emit }) {
+		// 是否可见
+		const visible = ref<boolean>(false);
+
+		// 图标列表
+		const list = ref<any[]>(iconList());
+
+		// 已选图标
+		const name = ref<string>(props.modelValue);
+
+		watch(
+			() => props.modelValue,
+			val => {
+				name.value = val;
 			}
-		}
-	},
+		);
 
-	mounted() {
-		this.list = iconList();
-	},
-
-	methods: {
-		onUpdate(icon) {
-			this.$emit("input", icon);
+		function open() {
+			visible.value = true;
 		}
+
+		function close() {
+			visible.value = false;
+		}
+
+		function onChange(val: string) {
+			emit("update:modelValue", val);
+			close();
+		}
+
+		return {
+			name,
+			list,
+			visible,
+			open,
+			close,
+			onChange
+		};
 	}
-};
+});
 </script>
 
 .
 <style lang="scss">
 .popper-menu-icon {
-	width: 480px;
 	max-width: 90%;
 	box-sizing: border-box;
 
 	.list {
-		height: 250px;
-		overflow-y: auto;
 		display: flex;
 		flex-wrap: wrap;
+		height: 250px;
 	}
 
 	.el-button {

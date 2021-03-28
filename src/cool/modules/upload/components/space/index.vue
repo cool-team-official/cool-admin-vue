@@ -10,7 +10,7 @@
 			height="630px"
 			width="1000px"
 			keep-alive
-			:visible.sync="visible"
+			v-model="visible"
 			:props="{
 				'close-on-click-modal': false,
 				'append-to-body': true,
@@ -316,7 +316,11 @@ export default {
 				})
 				.then(res => {
 					this.pagination = res.pagination;
-					this.list = res.list;
+
+					this.list = res.list.map(e => {
+						e.loading = false;
+						return e;
+					});
 				})
 				.done(() => {
 					this.loading = false;
@@ -327,7 +331,7 @@ export default {
 		confirm() {
 			const urls = this.selection.map(e => e.url).join(",");
 
-			this.$emit("input", urls);
+			this.$emit("update:modelValue", urls);
 			this.$emit("confirm", this.detailData ? this.selection : urls);
 
 			this.close();
@@ -435,7 +439,7 @@ export default {
 			top: calc(50% - 90px);
 			left: calc(50% - 160px);
 
-			/deep/.cl-upload {
+			:deep(.cl-upload) {
 				display: flex;
 				flex-direction: column;
 				justify-content: center;

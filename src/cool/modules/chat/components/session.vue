@@ -15,7 +15,7 @@
 				size="small"
 				clearable
 				@clear="onSearch"
-				@keyup.enter.native="onSearch"
+				@keyup.enter="onSearch"
 			></el-input>
 		</div>
 
@@ -52,79 +52,128 @@
 	</div>
 </template>
 
-<script>
-import { mapGetters, mapMutations } from "vuex";
-import { isEmpty } from "cl-admin/utils";
-import { ContextMenu } from "cl-admin-crud";
+<script lang="ts">
+import { computed, defineComponent, inject, onUnmounted, reactive, ref } from "vue";
+import { useStore } from "vuex";
+import { ElMessage } from "element-plus";
+import { isEmpty } from "@/core/utils";
+import { ContextMenu } from "@/crud";
 import { parseContent } from "../utils";
-import eventBus from "../utils/event-bus";
 
-export default {
-	data() {
-		return {
-			loading: false,
-			pagination: {
-				page: 1,
-				size: 100,
-				total: 0
-			},
-			keyWord: ""
-		};
-	},
+export default defineComponent({
+	setup() {
+		const store = useStore();
+		const $service = inject<any>("$service");
+		const mitt = inject<any>("mitt");
 
-	computed: {
-		...mapGetters(["sessionList", "session", "browser", "sessionVisible"]),
+		// 当前会话信息
+		const session = computed(() => store.getters.session);
+		// 是否显示会话列表
+		const sessionVisible = computed(() => store.getters.sessionVisible);
+		// 浏览器信息
+		const browser = computed(() => store.getters.browser);
 
-		// 列表数据
-		list() {
-			return this.sessionList
-				.map(e => {
+		// 加载状态
+		const loading = ref<boolean>(false);
+
+		// 分页信息
+		const pagination = reactive<any>({
+			page: 1,
+			size: 100,
+			total: 0
+		});
+
+		// 关键字筛选
+		const keyWord = ref<string>("");
+
+		// 刷新列表
+		function refresh(params?: any) {
+			loading.value = true;
+
+			return new Promise((resolve, reject) => {
+				$service.im.session
+					.page({
+						...pagination,
+						keyWord: keyWord.value,
+						params,
+						order: "updateTime",
+						sort: "desc"
+					})
+					.then((res: any) => {
+						store.commit("SET_SESSION_LIST", res.list);
+						Object.assign(pagination, res.pagination);
+
+						resolve(res);
+					})
+					.catch((err: string) => {
+						ElMessage.error(err);
+						reject(err);
+					})
+					.done(() => {
+						loading.value = false;
+					});
+			});
+		}
+
+		// 搜索关键字
+		function onSearch() {
+			refresh({ page: 1 });
+		}
+
+		// 设置会话
+		function setSession(item: any) {
+			if (item) {
+				store.commit("SET_SESSION", item);
+				mitt.emit("message.refresh", { page: 1 });
+			}
+		}
+
+		// 会话详情
+		function toDetail(item?: any) {
+			if (item) {
+				// 点击关闭弹窗
+				if (browser.value.isMini) store.commit("CLOSE_SESSION");
+
+				// 设置为当前会话
+				if (!session.value || session.value.id != item.id) {
+					setSession(item);
+				}
+			} else {
+				store.commit("CLEAR_SESSION");
+			}
+		}
+
+		// 数据列表
+		const list = computed(() => {
+			return store.getters.sessionList
+				.map((e: any) => {
 					const { _text } = parseContent(e);
-					e.lastMessage = _text;
-					return e;
+					return {
+						...e,
+						lastMessage: _text
+					};
 				})
-				.sort((a, b) => {
+				.sort((a: any, b: any) => {
 					return a.updateTime < b.updateTime ? 1 : -1;
 				});
-		}
-	},
-
-	beforeCreate() {
-		// 销毁事件
-		eventBus.$off("session.refresh");
-	},
-
-	created() {
-		// 监听列表刷新
-		eventBus.$on("session.refresh", this.refresh);
-
-		// PC 端下首次请求读取第一个消息
-		this.refresh().then(res => {
-			if (!isEmpty(res.list) && !this.browser.isMini) {
-				this.SET_SESSION(res.list[0]);
-			}
 		});
-	},
-
-	methods: {
-		...mapMutations(["SET_SESSION_LIST", "SET_SESSION", "CLEAR_SESSION", "CLOSE_SESSION"]),
 
 		// 右键菜单
-		openCM(e, id, index) {
+		function openCM(e: any, id: any, index: number) {
 			ContextMenu.open(e, {
 				list: [
 					{
 						label: "删除",
 						icon: "el-icon-delete",
-						callback: (_, done) => {
-							this.$service.im.session.delete({
+						callback: (_: any, done: Function) => {
+							$service.im.session.delete({
 								ids: id
 							});
 
-							this.list.splice(index, 1);
+							list.value.splice(index, 1);
 
-							if (id == this.session.id) {
-								this.toDetail();
+							if (id == session.value.id) {
+								toDetail();
 							}
 
 							done();
@@ -132,58 +181,38 @@ export default {
 					}
 				]
 			});
-		},
-
-		// 刷新列表
-		refresh(params) {
-			this.loading = true;
-
-			return new Promise((resolve, reject) => {
-				this.$service.im.session
-					.page({
-						...this.pagination,
-						keyWord: this.keyWord,
-						params,
-						order: "updateTime",
-						sort: "desc"
-					})
-					.then(res => {
-						this.SET_SESSION_LIST(res.list);
-						this.pagination = res.pagination;
-
-						resolve(res);
-					})
-					.catch(err => {
-						this.$message.error(err);
-						reject(err);
-					})
-					.done(() => {
-						this.loading = false;
-					});
-			});
-		},
-
-		// 搜索关键字
-		onSearch() {
-			this.refresh({ page: 1 });
-		},
-
-		// 会话详情
-		toDetail(item) {
-			if (item) {
-				// 点击关闭弹窗
-				if (this.browser.isMini) this.CLOSE_SESSION();
-
-				// 设置为当前会话
-				if (!this.session || this.session.id != item.id) {
-					this.SET_SESSION(item);
-				}
-			} else {
-				this.CLEAR_SESSION();
-			}
 		}
+
+		// PC 端下首次请求读取第一个消息
+		refresh().then((res: any) => {
+			if (!isEmpty(res.list) && !browser.value.isMini) {
+				setSession(res.list[0]);
+			}
+		});
+
+		// 事件监听
+		mitt.on("session.refresh", refresh);
+
+		// 销毁
+		onUnmounted(function() {
+			mitt.off("session.refresh", refresh);
+		});
+
+		return {
+			session,
+			sessionVisible,
+			browser,
+			list,
+			loading,
+			pagination,
+			keyWord,
+			openCM,
+			refresh,
+			onSearch,
+			toDetail
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

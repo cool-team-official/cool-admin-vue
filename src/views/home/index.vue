@@ -53,17 +53,18 @@
 	</cl-scrollbar>
 </template>
 
-<script>
-import CategoryRatio from "./components/category-ratio";
-import CountSales from "./components/count-sales";
-import CountViews from "./components/count-views";
-import CountPaid from "./components/count-paid";
-import CountEffect from "./components/count-effect";
-import TabChart from "./components/tab-chart";
-import SalesRank from "./components/sales-rank";
-import HotSearch from "./components/hot-search";
+<script lang="ts">
+import { defineComponent } from "vue";
+import CategoryRatio from "./components/category-ratio.vue";
+import CountSales from "./components/count-sales.vue";
+import CountViews from "./components/count-views.vue";
+import CountPaid from "./components/count-paid.vue";
+import CountEffect from "./components/count-effect.vue";
+import TabChart from "./components/tab-chart.vue";
+import SalesRank from "./components/sales-rank.vue";
+import HotSearch from "./components/hot-search.vue";
 
-export default {
+export default defineComponent({
 	components: {
 		CategoryRatio,
 		CountSales,
@@ -74,12 +75,12 @@ export default {
 		SalesRank,
 		HotSearch
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
 .home {
-	/deep/.card {
+	:deep(.card) {
 		background-color: #fff;
 		border-radius: 5px;
 		margin-bottom: 15px;

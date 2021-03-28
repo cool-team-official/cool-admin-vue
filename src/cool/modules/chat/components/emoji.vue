@@ -1,30 +1,36 @@
 <template>
-	<el-popover
-		v-model="visible"
-		placement="top"
-		:width="popoverWidth"
-		trigger="click"
-		popper-class="popover-emoji"
-	>
-		<div class="tool-emoji">
-			<div class="tool-emoji__scroller scroller1">
-				<div
-					class="tool-emoji__item"
-					v-for="(item, index) in list"
-					:key="index"
-					@click="select(item)"
-				>
-					<img :src="item" />
+	<div>
+		<el-popover
+			:visible="visible"
+			:width="popoverWidth"
+			placement="top"
+			trigger="click"
+			popper-class="popper-emoji"
+		>
+			<div class="tool-emoji">
+				<div class="tool-emoji__scroller scroller1">
+					<div
+						class="tool-emoji__item"
+						v-for="(item, index) in list"
+						:key="index"
+						@click="select(item)"
+					>
+						<img :src="item" />
+					</div>
 				</div>
 			</div>
-		</div>
 
-		<img slot="reference" src="../static/images/emoji.png" alt="" />
-	</el-popover>
+			<template #reference>
+				<img src="../static/images/emoji.png" alt="" @click="open" />
+			</template>
+		</el-popover>
+	</div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { computed, defineComponent, ref } from "vue";
+import { useStore } from "vuex";
+
 // 表情列表
 const emoji = {
 	url: "https://cool-comm.oss-cn-shenzhen.aliyuncs.com/show/imgs/chat/",
@@ -120,34 +126,50 @@ const emoji = {
 	]
 };
 
-export default {
-	data() {
+export default defineComponent({
+	setup(_, { emit }) {
+		const store = useStore();
+
+		// 是否可见
+		const visible = ref<boolean>(false);
+
+		// 表情列表
+		const list = ref<any[]>(emoji.list.map(e => emoji.url + e));
+
+		// 弹窗宽度
+		const popoverWidth = computed(() => {
+			const { width } = store.getters.browser;
+			return (width > 500 ? 500 : width) - 24;
+		});
+
+		function open() {
+			visible.value = true;
+		}
+
+		function close() {
+			visible.value = false;
+		}
+
+		function select(e: any) {
+			emit("select", e);
+			close();
+		}
+
 		return {
-			visible: false,
-			list: emoji.list.map(e => emoji.url + e)
+			visible,
+			list,
+			popoverWidth,
+			open,
+			close,
+			select
 		};
-	},
-
-	computed: {
-		...mapGetters(["browser"]),
-
-		popoverWidth() {
-			return (this.browser.width > 500 ? 500 : this.browser.width) - 24;
-		}
-	},
-
-	methods: {
-		select(e) {
-			this.$emit("select", e);
-			this.visible = false;
-		}
 	}
-};
+});
 </script>
 
 <style lang="scss">
-.popover-emoji {
-	padding: 5px;
+.popper-emoji {
+	padding: 5px !important;
 }
 </style>
 

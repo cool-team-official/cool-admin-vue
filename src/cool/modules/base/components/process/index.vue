@@ -4,20 +4,19 @@
 			<i class="el-icon-arrow-left"></i>
 		</div>
 
-		<div class="app-process__scroller" ref="scroller">
+		<div class="app-process__scroller" :ref="setRefs('scroller')">
 			<div
 				class="app-process__item"
-				v-for="(item, index) in processList"
+				v-for="(item, index) in list"
 				:key="index"
-				:ref="`item-${index}`"
+				:ref="setRefs(`item-${index}`)"
 				:class="{ active: item.active }"
 				:data-index="index"
-				@click="onTap(item, index)"
+				@click="onTap(item)"
 				@contextmenu.stop.prevent="openCM($event, item)"
 			>
 				<span>{{ item.label }}</span>
-
-				<i class="el-icon-close" v-if="index > 0" @click.stop="onDel(index)"></i>
+				<i class="el-icon-close" v-if="index > 0" @mousedown.stop="onDel(index)"></i>
 			</div>
 		</div>
 
@@ -27,100 +26,136 @@
 	</div>
 </template>
 
-<script>
-import { mapGetters, mapMutations } from "vuex";
-import { ContextMenu } from "cl-admin-crud";
-import { last } from "cl-admin/utils";
+<script lang="ts">
+import { computed, reactive, watch } from "vue";
+import { useStore } from "vuex";
+import { useRoute, useRouter } from "vue-router";
+import { last } from "@/core/utils";
+import { useRefs } from "@/core";
+import { ContextMenu } from "@/crud";
 
 export default {
 	name: "cl-process",
 
-	computed: {
-		...mapGetters(["processList"])
-	},
+	setup() {
+		const router = useRouter();
+		const route = useRoute();
+		const store = useStore();
+		const { refs, setRefs } = useRefs();
 
-	watch: {
-		"$route.path"(val) {
-			this.adScroll(this.processList.findIndex(e => e.value === val) || 0);
-		}
-	},
+		// 参数配置
+		const menu = reactive<any>({
+			current: {}
+		});
 
-	methods: {
-		...mapMutations(["ADD_PROCESS", "DEL_PROCESS", "SET_PROCESS"]),
+		// 数据列表
+		const list = computed(() => store.getters.processList);
 
-		onTap(item, index) {
-			this.adScroll(index);
-			this.$router.push(item.value);
-		},
-
-		onDel(index) {
-			this.DEL_PROCESS(index);
-			this.toPath();
-		},
-
-		openCM(e, item) {
-			ContextMenu.open(e, {
-				list: [
-					{
-						label: "关闭当前",
-						hidden: this.$route.path !== item.value,
-						callback: (_, done) => {
-							this.onDel(this.processList.findIndex(e => e.value == item.value));
-							done();
-							this.toPath();
-						}
-					},
-					{
-						label: "关闭其他",
-						callback: (_, done) => {
-							this.SET_PROCESS(
-								this.processList.filter(
-									e => e.value == item.value || e.value == "/"
-								)
-							);
-							done();
-							this.toPath();
-						}
-					},
-					{
-						label: "关闭所有",
-						callback: (_, done) => {
-							this.SET_PROCESS(this.processList.filter(e => e.value == "/"));
-							done();
-							this.toPath();
-						}
-					}
-				]
-			});
-		},
-
-		toPath() {
-			const active = this.processList.find(e => e.active);
+		// 跳转
+		function toPath() {
+			const active = list.value.find((e: any) => e.active);
 
 			if (!active) {
-				const next = last(this.processList);
-				this.$router.push(next ? next.value : "/");
+				const next = last(list.value);
+				router.push(next ? next.value : "/");
 			}
-		},
+		}
 
-		adScroll(index) {
-			const el = this.$refs[`item-${index}`][0];
-
-			if (el) {
-				this.scrollTo(el.offsetLeft + el.clientWidth - this.$refs["scroller"].clientWidth);
-			}
-		},
-
-		toScroll(f) {
-			this.scrollTo(this.$refs["scroller"].scrollLeft + (f ? -100 : 100));
-		},
-
-		scrollTo(left) {
-			this.$refs["scroller"].scrollTo({
+		// 移动到
+		function scrollTo(left: number) {
+			refs.value.scroller.scrollTo({
 				left,
 				behavior: "smooth"
 			});
 		}
+
+		// 左右移动
+		function toScroll(f: boolean) {
+			scrollTo(refs.value.scroller.scrollLeft + (f ? -100 : 100));
+		}
+
+		// 调整滚动位置
+		function adScroll(index: number) {
+			const el = refs.value[`item-${index}`];
+
+			if (el) {
+				scrollTo(el.offsetLeft + el.clientWidth - refs.value.scroller.clientWidth);
+			}
+		}
+
+		// 选择
+		function onTap(item: any, index: number) {
+			adScroll(index);
+			router.push(item.value);
+		}
+
+		// 删除
+		function onDel(index: number) {
+			store.commit("DEL_PROCESS", index);
+			toPath();
+		}
+
+		// 右键菜单
+		function openCM(e: any, item: any) {
+			ContextMenu.open(e, {
+				list: [
+					{
+						label: "关闭当前",
+						hidden: item.value !== route.path,
+						callback: (_: any, done: Function) => {
+							onDel(list.value.findIndex((e: any) => e.value == item.value));
+							done();
+							toPath();
+						}
+					},
+					{
+						label: "关闭其他",
+						callback: (_: any, done: Function) => {
+							store.commit(
+								"SET_PROCESS",
+								list.value.filter(
+									(e: any) => e.value == item.value || e.value == "/"
+								)
+							);
+							done();
+							toPath();
+						}
+					},
+					{
+						label: "关闭所有",
+						callback: (_: any, done: Function) => {
+							store.commit(
+								"SET_PROCESS",
+								list.value.filter((e: any) => e.value == "/")
+							);
+							done();
+							toPath();
+						}
+					}
+				]
+			});
+		}
+
+		watch(
+			() => route.path,
+			function(val) {
+				adScroll(list.value.findIndex((e: any) => e.value === val) || 0);
+			}
+		);
+
+		return {
+			refs,
+			setRefs,
+			menu,
+			list,
+			onTap,
+			onDel,
+			toPath,
+			toScroll,
+			adScroll,
+			scrollTo,
+			openCM
+		};
 	}
 };
 </script>

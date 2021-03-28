@@ -12,6 +12,8 @@
 		<div class="f">
 			<span class="date">2019/10/11</span>
 		</div>
+
+		<cl-form ref="form"></cl-form>
 	</div>
 </template>
 
@@ -19,7 +21,7 @@
 export default {
 	methods: {
 		openForm() {
-			this.$crud.openForm({
+			this.$refs.form.open({
 				title: "填写邀请码",
 				width: "450px",
 				dialog: {
@@ -28,7 +30,7 @@ export default {
 				items: [
 					{
 						props: {
-							"label-width": "0px"
+							labelWidth: "0px"
 						},
 
 						component: (
@@ -40,7 +42,7 @@ export default {
 					},
 					{
 						props: {
-							"label-width": "0px"
+							labelWidth: "0px"
 						},
 						prop: "code",
 						component: {

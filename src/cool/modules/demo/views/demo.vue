@@ -19,6 +19,8 @@ import BErrorPage from "./components/b-error-page";
 import BClEditorQuill from "./components/b-cl-editor-quill";
 
 export default {
+	name: "demo",
+
 	components: {
 		BClUpload,
 		BVCopy,

@@ -15,15 +15,18 @@
 
 		<div class="cl-dept-check__tree" v-if="visible">
 			<el-tree
-				:data="list"
-				:props="props"
-				:default-checked-keys="checked"
-				:filter-node-method="filterNode"
-				:check-strictly="!form.relevance"
+				ref="treeRef"
 				highlight-current
 				node-key="id"
 				show-checkbox
-				ref="tree"
+				:data="list"
+				:props="{
+					label: 'name',
+					children: 'children'
+				}"
+				:default-checked-keys="checked"
+				:filter-node-method="filterNode"
+				:check-strictly="!form.relevance"
 				@check-change="onCheckChange"
 			>
 			</el-tree>
@@ -31,83 +34,120 @@
 	</div>
 </template>
 
-<script>
-import { deepTree } from "cl-admin/utils";
+<script lang="ts">
+import { deepTree } from "@/core/utils";
+import { ElMessage } from "element-plus";
+import { defineComponent, inject, nextTick, onMounted, ref, watch } from "vue";
 
-export default {
+export default defineComponent({
 	name: "cl-dept-check",
 
 	props: {
-		value: Array,
+		modelValue: {
+			type: Array,
+			default: () => []
+		},
 		title: String
 	},
 
-	inject: ["form"],
+	emits: ["update:modelValue"],
 
-	data() {
-		return {
-			list: [],
-			checked: [],
-			keyword: "",
-			props: {
-				label: "name",
-				children: "children"
-			},
-			loading: false,
-			visible: true
-		};
-	},
+	setup(props, { emit }) {
+		// 请求服务
+		const $service = inject<any>("$service");
 
-	watch: {
-		keyword(val) {
-			this.$refs["tree"].filter(val);
-		},
+		// 表单值
+		const form = inject<any>("form");
 
-		value(val) {
-			this.refreshTree(val);
+		// 树形列表
+		const list = ref<any[]>([]);
+
+		// 已选列表
+		const checked = ref<any>([]);
+
+		// 关键字搜素
+		const keyword = ref<string>("");
+
+		// 加载中
+		const loading = ref<boolean>(false);
+
+		// 是否可见
+		const visible = ref<boolean>(false);
+
+		const treeRef = ref<any>({});
+
+		// 刷新已选列表
+		function refreshTree(val: any[]) {
+			checked.value = val || [];
 		}
-	},
 
-	mounted() {
-		this.refresh();
-	},
-
-	methods: {
-		refreshTree(val) {
-			this.checked = val || [];
-		},
-
-		refresh() {
-			this.$service.system.dept
+		// 刷新树形列表
+		function refresh() {
+			$service.system.dept
 				.list()
-				.then(res => {
-					this.list = deepTree(res);
-					this.refreshTree(this.value);
+				.then((res: any[]) => {
+					list.value = deepTree(res);
+					refreshTree(props.modelValue);
 				})
-				.catch(err => {
-					this.$message.error(err);
+				.catch((err: string) => {
+					ElMessage.error(err);
 				});
-		},
+		}
 
-		filterNode(val, data) {
+		// 过滤节点
+		function filterNode(val: string, data: any) {
 			if (!val) return true;
 			return data.name.includes(val);
-		},
-
-		onCheckStrictlyChange() {
-			this.form.departmentIdList = [];
-			this.visible = false;
-
-			this.$nextTick(() => {
-				this.visible = true;
-			});
-		},
-
-		onCheckChange() {
-			this.$emit("input", this.$refs["tree"].getCheckedKeys());
 		}
+
+		// 是否关联上下级
+		function onCheckStrictlyChange() {
+			visible.value = false;
+			checked.value = [];
+			emit("update:modelValue", []);
+
+			nextTick(() => {
+				visible.value = true;
+			});
+		}
+
+		// 监听选择
+		function onCheckChange() {
+			emit("update:modelValue", treeRef.value.getCheckedKeys());
+		}
+
+		// 监听过滤
+		watch(keyword, (val: string) => {
+			treeRef.value.filter(val);
+		});
+
+		// 刷新树
+		watch(
+			() => props.modelValue,
+			(val: any[]) => {
+				refreshTree(val);
+			}
+		);
+
+		onMounted(() => {
+			refresh();
+		});
+
+		return {
+			form,
+			list,
+			checked,
+			keyword,
+			loading,
+			visible,
+			refresh,
+			filterNode,
+			onCheckStrictlyChange,
+			onCheckChange,
+			treeRef
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -22,7 +22,7 @@
 				</div>
 
 				<div class="container">
-					<cl-crud ref="crud" :on-refresh="onRefresh" @load="onLoad">
+					<cl-crud :ref="setRefs('crud')" :on-refresh="onRefresh" @load="onLoad">
 						<el-row type="flex">
 							<cl-refresh-btn></cl-refresh-btn>
 							<cl-add-btn></cl-add-btn>
@@ -35,13 +35,12 @@
 								@click="toMove()"
 								>转移</el-button
 							>
-							<cl-flex1></cl-flex1>
 							<cl-search-key></cl-search-key>
 						</el-row>
 
 						<el-row>
 							<cl-table
-								ref="table"
+								:ref="setRefs('table')"
 								v-bind="table"
 								@selection-change="onSelectionChange"
 							>
@@ -50,7 +49,7 @@
 									<cl-avatar
 										shape="square"
 										size="medium"
-										:src="scope.row.headImg | default_avatar"
+										:src="scope.row.headImg"
 										:style="{ margin: 'auto' }"
 									>
 									</cl-avatar>
@@ -88,327 +87,349 @@
 						</el-row>
 
 						<cl-upsert
-							ref="upsert"
+							:ref="setRefs('upsert')"
 							:items="upsert.items"
 							:on-submit="onUpsertSubmit"
-						></cl-upsert>
+						>
+							<template #slot-tips>
+								<div>
+									<i class="el-icon-warning"></i>
+									<span style="margin-left: 6px">新增用户默认密码为：123456</span>
+								</div>
+							</template>
+						</cl-upsert>
 					</cl-crud>
 				</div>
 			</div>
 		</div>
 
 		<!-- 部门移动 -->
-		<cl-dept-move ref="dept-move" @success="refresh({ page: 1 })"></cl-dept-move>
+		<cl-dept-move :ref="setRefs('dept-move')" @success="refresh({ page: 1 })"></cl-dept-move>
 	</div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { computed, inject, reactive, ref, watch } from "vue";
+import { useStore } from "vuex";
+import { useRefs } from "@/core";
+import { Table, Upsert } from "@/crud/types";
+
 export default {
-	data() {
-		return {
-			isExpand: true,
-			selects: {
-				dept: {},
-				ids: []
+	name: "sys-user",
+
+	setup() {
+		const $service = inject<any>("$service");
+		const store = useStore();
+		const { refs, setRefs } = useRefs();
+
+		// 是否展开
+		const isExpand = ref<boolean>(true);
+
+		// 选择项
+		const selects = reactive<any>({
+			dept: {},
+			ids: []
+		});
+
+		// 部门列表
+		const dept = ref<any[]>([]);
+
+		// 表格配置
+		const table = reactive<Table>({
+			props: {
+				"default-sort": {
+					prop: "createTime",
+					order: "descending"
+				}
 			},
-			dept: [],
-			table: {
-				props: {
-					"default-sort": {
-						prop: "createTime",
-						order: "descending"
+			columns: [
+				{
+					type: "selection",
+					width: 60
+				},
+				{
+					prop: "headImg",
+					label: "头像"
+				},
+				{
+					prop: "name",
+					label: "姓名",
+					minWidth: 150
+				},
+				{
+					prop: "username",
+					label: "用户名",
+					minWidth: 150
+				},
+				{
+					prop: "nickName",
+					label: "昵称",
+					minWidth: 150
+				},
+				{
+					prop: "departmentName",
+					label: "部门名称",
+					minWidth: 150
+				},
+				{
+					prop: "roleName",
+					label: "角色",
+					headerAlign: "center",
+					minWidth: 200
+				},
+				{
+					prop: "phone",
+					label: "手机号码",
+					minWidth: 150
+				},
+				{
+					prop: "remark",
+					label: "备注",
+					minWidth: 150
+				},
+				{
+					prop: "status",
+					label: "状态",
+					minWidth: 120,
+					dict: [
+						{
+							label: "启用",
+							value: 1,
+							type: "success"
+						},
+						{
+							label: "禁用",
+							value: 0,
+							type: "danger"
+						}
+					]
+				},
+				{
+					prop: "createTime",
+					label: "创建时间",
+					sortable: "custom",
+					minWidth: 150
+				},
+				{
+					type: "op",
+					buttons: ["slot-move-btn", "edit", "delete"],
+					width: 160
+				}
+			]
+		});
+
+		// 新增、编辑配置
+		const upsert = reactive<Upsert>({
+			items: [
+				{
+					prop: "headImg",
+					label: "头像",
+					span: 24,
+					component: {
+						name: "cl-upload",
+						props: {
+							text: "选择头像",
+							icon: "el-icon-picture"
+						}
 					}
 				},
-				columns: [
-					{
-						type: "selection",
-						width: 60
+				{
+					prop: "name",
+					label: "姓名",
+					span: 24,
+					component: {
+						name: "el-input",
+						props: {
+							placeholder: "请填写姓名"
+						}
 					},
-					{
-						prop: "headImg",
-						label: "头像"
+					rules: {
+						required: true,
+						message: "姓名不能为空"
+					}
+				},
+				{
+					prop: "nickName",
+					label: "昵称",
+					span: 12,
+					component: {
+						name: "el-input",
+						props: {
+							placeholder: "请填写昵称"
+						}
 					},
-					{
-						prop: "name",
-						label: "姓名",
-						"min-width": 150
+					rules: {
+						required: true,
+						message: "昵称不能为空"
+					}
+				},
+				{
+					prop: "username",
+					label: "用户名",
+					span: 12,
+					component: {
+						name: "el-input",
+						props: {
+							placeholder: "请填写用户名"
+						}
 					},
-					{
-						prop: "username",
-						label: "用户名",
-						"min-width": 150
+					rules: [
+						{
+							required: true,
+							message: "用户名不能为空"
+						}
+					]
+				},
+				{
+					prop: "password",
+					label: "密码",
+					span: 12,
+					hidden: ":isAdd",
+					component: {
+						name: "el-input",
+						props: {
+							placeholder: "请填写密码",
+							type: "password"
+						}
 					},
-					{
-						prop: "nickName",
-						label: "昵称",
-						"min-width": 150
+					rules: [
+						{
+							min: 6,
+							max: 16,
+							message: "密码长度在 6 到 16 个字符"
+						}
+					]
+				},
+				{
+					prop: "roleIdList",
+					label: "角色",
+					span: 24,
+					value: [],
+					component: {
+						name: "cl-role-select",
+						props: {
+							props: {
+								"multiple-limit": 3
+							}
+						}
 					},
-					{
-						prop: "departmentName",
-						label: "部门名称",
-						"min-width": 150
-					},
-					{
-						prop: "roleName",
-						label: "角色",
-						"header-align": "center",
-						"min-width": 200
-					},
-					{
-						prop: "phone",
-						label: "手机号码",
-						"min-width": 150
-					},
-					{
-						prop: "remark",
-						label: "备注",
-						"min-width": 150
-					},
-					{
-						prop: "status",
-						label: "状态",
-						"min-width": 120,
-						dict: [
+					rules: {
+						required: true,
+						message: "角色不能为空"
+					}
+				},
+				{
+					prop: "phone",
+					label: "手机号码",
+					span: 12,
+					component: {
+						name: "el-input",
+						props: {
+							placeholder: "请填写手机号码"
+						}
+					}
+				},
+				{
+					prop: "email",
+					label: "邮箱",
+					span: 12,
+					component: {
+						name: "el-input",
+						props: {
+							placeholder: "请填写邮箱"
+						}
+					}
+				},
+				{
+					prop: "remark",
+					label: "备注",
+					span: 24,
+					component: {
+						name: "el-input",
+						props: {
+							placeholder: "请填写备注",
+							type: "textarea",
+							rows: 4
+						}
+					}
+				},
+				{
+					prop: "status",
+					label: "状态",
+					value: 1,
+					component: {
+						name: "el-radio-group",
+						options: [
 							{
-								label: "启用",
-								value: 1,
-								type: "success"
+								label: "开启",
+								value: 1
 							},
 							{
-								label: "禁用",
-								value: 0,
-								type: "danger"
+								label: "关闭",
+								value: 0
 							}
 						]
-					},
-					{
-						prop: "createTime",
-						label: "创建时间",
-						sortable: "custom",
-						"min-width": 150
-					},
-					{
-						type: "op",
-						buttons: ["slot-move-btn", "edit", "delete"],
-						width: 160
 					}
-				]
+				},
+				{
+					prop: "tips",
+					hidden: ":isEdit",
+					component: {
+						name: "slot-tips"
+					}
+				}
+			]
+		});
+
+		// 浏览器信息
+		const browser = computed(() => store.getters.browser);
+
+		// 监听屏幕大小变化
+		watch(
+			() => browser.value.isMini,
+			(val: boolean) => {
+				isExpand.value = !val;
 			},
-			upsert: {
-				items: [
-					{
-						prop: "headImg",
-						label: "头像",
-						span: 24,
-						component: {
-							name: "cl-upload",
-							props: {
-								text: "选择头像",
-								icon: "el-icon-picture"
-							}
-						}
-					},
-					{
-						prop: "name",
-						label: "姓名",
-						span: 24,
-						component: {
-							name: "el-input",
-							attrs: {
-								placeholder: "请填写姓名"
-							}
-						},
-						rules: {
-							required: true,
-							message: "姓名不能为空"
-						}
-					},
-					{
-						prop: "nickName",
-						label: "昵称",
-						span: 12,
-						component: {
-							name: "el-input",
-							attrs: {
-								placeholder: "请填写昵称"
-							}
-						},
-						rules: {
-							required: true,
-							message: "昵称不能为空"
-						}
-					},
-					{
-						prop: "username",
-						label: "用户名",
-						span: 12,
-						component: {
-							name: "el-input",
-							attrs: {
-								placeholder: "请填写用户名"
-							}
-						},
-						rules: [
-							{
-								required: true,
-								message: "用户名不能为空"
-							}
-						]
-					},
-					{
-						prop: "password",
-						label: "密码",
-						span: 12,
-						hidden: ":isAdd",
-						component: {
-							name: "el-input",
-							attrs: {
-								placeholder: "请填写密码",
-								type: "password"
-							}
-						},
-						rules: [
-							{
-								min: 6,
-								max: 16,
-								message: "密码长度在 6 到 16 个字符"
-							}
-						]
-					},
-					{
-						prop: "roleIdList",
-						label: "角色",
-						span: 24,
-						value: [],
-						component: {
-							name: "cl-role-select",
-							props: {
-								props: {
-									"multiple-limit": 3
-								}
-							}
-						},
-						rules: {
-							required: true,
-							message: "角色不能为空"
-						}
-					},
-					{
-						prop: "phone",
-						label: "手机号码",
-						span: 12,
-						component: {
-							name: "el-input",
-							attrs: {
-								placeholder: "请填写手机号码"
-							}
-						}
-					},
-					{
-						prop: "email",
-						label: "邮箱",
-						span: 12,
-						component: {
-							name: "el-input",
-							attrs: {
-								placeholder: "请填写邮箱"
-							}
-						}
-					},
-					{
-						prop: "remark",
-						label: "备注",
-						span: 24,
-						component: {
-							name: "el-input",
-							props: {
-								type: "textarea",
-								rows: 4
-							},
-							attrs: {
-								placeholder: "请填写备注"
-							}
-						}
-					},
-					{
-						prop: "status",
-						label: "状态",
-						value: 1,
-						component: {
-							name: "el-radio-group",
-							options: [
-								{
-									label: "开启",
-									value: 1
-								},
-								{
-									label: "关闭",
-									value: 0
-								}
-							]
-						}
-					},
-					{
-						prop: "tips",
-						hidden: ":isEdit",
-						component: (
-							<div>
-								<i class="el-icon-warning"></i>
-								<span style="margin-left: 6px">新增用户默认密码为：123456</span>
-							</div>
-						)
-					}
-				]
+			{
+				immediate: true
 			}
-		};
-	},
+		);
 
-	computed: {
-		...mapGetters(["browser"])
-	},
-
-	watch: {
-		"browser.isMini": {
-			immediate: true,
-			handler(val) {
-				this.isExpand = !val;
-			}
-		}
-	},
-
-	methods: {
-		refresh(params) {
-			this.$refs["crud"].refresh(params);
-		},
-
-		onLoad({ ctx, app }) {
-			ctx.service(this.$service.system.user).done();
+		// crud 加载
+		function onLoad({ ctx, app }: any) {
+			ctx.service($service.system.user).done();
 			app.refresh();
-		},
+		}
 
-		async onRefresh(params, { next, render }) {
-			let { list } = await next(params);
+		// 刷新列表
+		function refresh(params: any) {
+			refs.value.crud.refresh(params);
+		}
 
-			list.map(e => {
+		// 刷新监听
+		async function onRefresh(params: any, { next, render }: any) {
+			const { list } = await next(params);
+
+			list.map((e: any) => {
 				if (e.roleName) {
-					this.$set(e, "roleNameList", e.roleName.split(","));
+					e.roleNameList = e.roleName.split(",");
 				}
 
 				e.status = Boolean(e.status);
 			});
 
 			render(list);
-		},
+		}
 
-		onUpsertSubmit(_, data, { next }) {
+		// 提交钩子
+		function onUpsertSubmit(_: boolean, data: any, { next }: any) {
 			let departmentId = data.departmentId;
 
 			if (!departmentId) {
-				departmentId = this.selects.dept.id;
+				departmentId = selects.dept.id;
 
 				if (!departmentId) {
-					departmentId = this.dept[0].id;
+					departmentId = dept.value[0].id;
 				}
 			}
 
@@ -416,51 +437,78 @@ export default {
 				...data,
 				departmentId
 			});
-		},
+		}
 
-		onSelectionChange(selection) {
-			this.selects.ids = selection.map(e => e.id);
-		},
+		// 多选监听
+		function onSelectionChange(selection: any[]) {
+			selects.ids = selection.map(e => e.id);
+		}
 
-		onDeptRowClick({ item, ids }) {
-			this.selects.dept = item;
+		// 部门选择监听
+		function onDeptRowClick({ item, ids }: any) {
+			selects.dept = item;
 
-			this.refresh({
+			refresh({
 				page: 1,
 				departmentIds: ids
 			});
 
 			// 收起
-			if (this.browser.isMini) {
-				this.isExpand = false;
+			if (browser.value.isMini) {
+				isExpand.value = false;
 			}
-		},
+		}
 
-		onDeptUserAdd(item) {
-			this.$refs["crud"].rowAppend({
+		// 部门下新增成员
+		function onDeptUserAdd(item: any) {
+			refs.value.crud.rowAppend({
 				departmentId: item.id
 			});
-		},
+		}
 
-		onDeptListChange(list) {
-			this.dept = list;
-		},
+		// 部门列表监听
+		function onDeptListChange(list: any[]) {
+			dept.value = list;
+		}
 
-		deptExpand() {
-			this.isExpand = !this.isExpand;
-		},
+		// 是否显示部门
+		function deptExpand() {
+			isExpand.value = !isExpand.value;
+		}
 
-		async toMove(e) {
+		// 移动成员
+		async function toMove(e: any) {
 			let ids = [];
 
 			if (!e) {
-				ids = this.selects.ids;
+				ids = selects.ids;
 			} else {
 				ids = [e.id];
 			}
 
-			this.$refs["dept-move"].toMove(ids);
+			refs.value["dept-move"].toMove(ids);
 		}
+
+		return {
+			refs,
+			isExpand,
+			selects,
+			dept,
+			table,
+			upsert,
+			browser,
+			setRefs,
+			onLoad,
+			refresh,
+			onRefresh,
+			onUpsertSubmit,
+			onSelectionChange,
+			onDeptRowClick,
+			onDeptUserAdd,
+			onDeptListChange,
+			deptExpand,
+			toMove
+		};
 	}
 };
 </script>

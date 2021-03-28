@@ -1,13 +1,14 @@
 <template>
-	<svg :class="svgClass" :style="style2" aria-hidden="true">
+	<svg :class="svgClass" :style="style" aria-hidden="true">
 		<use :xlink:href="iconName"></use>
 	</svg>
 </template>
 
-<script>
-import { isNumber } from "cl-admin/utils";
+<script lang="ts">
+import { computed, defineComponent, ref } from "vue";
+import { isNumber } from "@/core/utils";
 
-export default {
+export default defineComponent({
 	name: "icon-svg",
 
 	props: {
@@ -22,30 +23,26 @@ export default {
 		}
 	},
 
-	data() {
+	setup(props) {
+		const style = ref<any>({
+			fontSize: isNumber(props.size) ? props.size + "px" : props.size
+		});
+
+		const iconName = computed<string>(() => `#${props.name}`);
+		const svgClass = computed<Array<string>>(() => {
+			return ["icon-svg", `icon-svg__${props.name}`, String(props.className || "")];
+		});
+
 		return {
-			style2: {}
-		};
-	},
-
-	computed: {
-		iconName() {
-			return `#${this.name}`;
-		},
-		svgClass() {
-			return ["icon-svg", `icon-svg__${this.name}`, this.className];
-		}
-	},
-
-	mounted() {
-		this.style2 = {
-			fontSize: isNumber(this.size) ? this.size + "px" : this.size
+			style,
+			iconName,
+			svgClass
 		};
 	}
-};
+});
 </script>
 
-<style>
+<style scoped>
 .icon-svg {
 	width: 1em;
 	height: 1em;

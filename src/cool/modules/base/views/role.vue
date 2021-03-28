@@ -21,143 +21,148 @@
 	</cl-crud>
 </template>
 
-<script>
-export default {
-	data() {
-		return {
-			form: {
-				relevance: 1
-			},
-			upsert: {
-				props: {
-					width: "800px"
-				},
-				items: [
-					{
-						prop: "name",
-						label: "名称",
-						span: 12,
-						component: {
-							name: "el-input",
-							attrs: {
-								placeholder: "请填写名称"
-							}
-						},
-						rules: {
-							required: true,
-							message: "名称不能为空"
+<script lang="ts">
+import { CrudLoad, Table, Upsert } from "@/crud/types";
+import { defineComponent, inject, reactive } from "vue";
+
+export default defineComponent({
+	name: "sys-role",
+
+	setup() {
+		const $service = inject<any>("$service");
+
+		// 表单值
+		const form = reactive<any>({
+			relevance: 1
+		});
+
+		// 新增、编辑配置
+		const upsert = reactive<Upsert>({
+			width: "800px",
+
+			items: [
+				{
+					prop: "name",
+					label: "名称",
+					span: 12,
+					component: {
+						name: "el-input",
+						props: {
+							placeholder: "请填写名称"
 						}
 					},
-					{
-						prop: "label",
-						label: "标识",
-						span: 12,
-						component: {
-							name: "el-input",
-							attrs: {
-								placeholder: "请填写标识"
-							}
-						},
-						rules: {
-							required: true,
-							message: "标识不能为空"
-						}
-					},
-					{
-						prop: "remark",
-						label: "备注",
-						span: 24,
-						component: {
-							name: "el-input",
-							props: {
-								type: "textarea",
-								rows: 4
-							},
-							attrs: {
-								placeholder: "请填写备注"
-							}
-						}
-					},
-					{
-						label: "功能权限",
-						prop: "menuIdList",
-						value: [],
-						component: {
-							name: "cl-role-perms"
-						}
-					},
-					{
-						label: "数据权限",
-						prop: "departmentIdList",
-						value: [],
-						component: {
-							name: "cl-dept-check"
-						}
-					}
-				]
-			},
-			table: {
-				props: {
-					"default-sort": {
-						prop: "createTime",
-						order: "descending"
+					rules: {
+						required: true,
+						message: "名称不能为空"
 					}
 				},
-				columns: [
-					{
-						type: "selection",
-						align: "center",
-						width: "60"
+				{
+					prop: "label",
+					label: "标识",
+					span: 12,
+					component: {
+						name: "el-input",
+						props: {
+							placeholder: "请填写标识"
+						}
 					},
-					{
-						prop: "name",
-						label: "名称",
-						align: "center",
-						"min-width": 150
-					},
-					{
-						prop: "label",
-						label: "标识",
-						align: "center",
-						"min-width": 120
-					},
-					{
-						prop: "remark",
-						label: "备注",
-						align: "center",
-						"show-overflow-tooltips": true,
-						"min-width": 150
-					},
-					{
-						prop: "createTime",
-						label: "创建时间",
-						align: "center",
-						sortable: "custom",
-						"min-width": 150
-					},
-					{
-						prop: "updateTime",
-						label: "更新时间",
-						align: "center",
-						sortable: "custom",
-						"min-width": 150
-					},
-					{
-						label: "操作",
-						align: "center",
-						type: "op"
+					rules: {
+						required: true,
+						message: "标识不能为空"
 					}
-				]
-			}
-		};
-	},
+				},
+				{
+					prop: "remark",
+					label: "备注",
+					span: 24,
+					component: {
+						name: "el-input",
+						props: {
+							placeholder: "请填写备注",
+							type: "textarea",
+							rows: 4
+						}
+					}
+				},
+				{
+					label: "功能权限",
+					prop: "menuIdList",
+					value: [],
+					component: {
+						name: "cl-role-perms"
+					}
+				},
+				{
+					label: "数据权限",
+					prop: "departmentIdList",
+					value: [],
+					component: {
+						name: "cl-dept-check"
+					}
+				}
+			]
+		});
 
-	methods: {
-		onLoad({ ctx, app }) {
-			ctx.service(this.$service.system.role).done();
+		// 表格配置
+		const table = reactive<Table>({
+			props: {
+				"default-sort": {
+					prop: "createTime",
+					order: "descending"
+				}
+			},
+			columns: [
+				{
+					type: "selection",
+					width: 60
+				},
+				{
+					prop: "name",
+					label: "名称",
+					minWidth: 150
+				},
+				{
+					prop: "label",
+					label: "标识",
+					minWidth: 120
+				},
+				{
+					prop: "remark",
+					label: "备注",
+					showOverflowTooltip: true,
+					minWidth: 150
+				},
+				{
+					prop: "createTime",
+					label: "创建时间",
+					sortable: "custom",
+					minWidth: 150
+				},
+				{
+					prop: "updateTime",
+					label: "更新时间",
+					sortable: "custom",
+					minWidth: 150
+				},
+				{
+					label: "操作",
+					type: "op"
+				}
+			]
+		});
 
+		// crud 加载
+		function onLoad({ ctx, app }: CrudLoad) {
+			ctx.service($service.system.role).done();
 			app.refresh();
 		}
+
+		return {
+			form,
+			upsert,
+			table,
+			onLoad
+		};
 	}
-};
+});
 </script>

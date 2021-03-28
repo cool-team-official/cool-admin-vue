@@ -15,11 +15,11 @@
 				<el-button round @click="navTo">跳转</el-button>
 			</div>
 
-			<div class="link">
-				<el-link class="to-home" @click="home">回到首页</el-link>
-				<el-link class="to-back" @click="back">返回上一页</el-link>
-				<el-link class="to-login" @click="reLogin">重新登录</el-link>
-			</div>
+			<ul class="link">
+				<li @click="home">回到首页</li>
+				<li @click="back">返回上一页</li>
+				<li @click="reLogin">重新登录</li>
+			</ul>
 		</template>
 
 		<template v-else>
@@ -32,53 +32,65 @@
 	</div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
-import { href } from "cl-admin/utils";
+<script lang="ts">
+import { useStore } from "vuex";
+import { computed, defineComponent, ref } from "vue";
+import { useRouter } from "vue-router";
+import { href } from "@/core/utils";
 
-export default {
+export default defineComponent({
 	props: {
 		code: Number,
 		desc: String
 	},
 
-	data() {
-		return {
-			url: "",
-			isLogout: false
-		};
-	},
+	setup() {
+		const store = useStore();
+		const router = useRouter();
 
-	computed: {
-		...mapGetters(["routes", "token"])
-	},
+		const url = ref<string>("");
+		const isLogout = ref<boolean>(false);
 
-	methods: {
-		navTo() {
-			this.$router.push(this.url);
-		},
+		const routes = computed(() => store.getters.routes);
+		const token = computed(() => store.getters.token);
 
-		toLogin() {
-			this.$router.push("/login");
-		},
+		function navTo() {
+			router.push(url.value);
+		}
 
-		reLogin() {
-			this.isLogout = true;
+		function toLogin() {
+			router.push("/login");
+		}
 
-			this.$store.dispatch("userLogout").done(() => {
+		function reLogin() {
+			isLogout.value = true;
+
+			store.dispatch("userLogout").done(() => {
 				href("/login");
 			});
-		},
-
-		back() {
-			history.back();
-		},
-
-		home() {
-			this.$router.push("/");
 		}
+
+		function back() {
+			history.back();
+		}
+
+		function home() {
+			router.push("/");
+		}
+
+		return {
+			url,
+			isLogout,
+			routes,
+			token,
+			navTo,
+			toLogin,
+			reLogin,
+			back,
+			home
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
@@ -129,16 +141,19 @@ export default {
 	}
 
 	.link {
+		display: flex;
 		margin-top: 40px;
 
-		a {
+		li {
 			font-weight: 500;
-			transition: all 0.5s;
-			-webkit-transition: all 0.5s;
 			cursor: pointer;
 			font-size: 14px;
-			margin: 0 15px;
-			padding-bottom: 2px;
+			margin: 0 20px;
+			list-style: none;
+
+			&:hover {
+				color: $color-primary;
+			}
 		}
 	}
 
