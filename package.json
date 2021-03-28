@@ -9,7 +9,6 @@
 		"inspect": "vue inspect --mode=production > output.js"
 	},
 	"dependencies": {
-		"@vue/composition-api": "^1.0.0-rc.5",
 		"axios": "^0.21.1",
 		"cl-admin": "^1.5.3",
 		"cl-admin-crud": "^1.6.8",
@@ -37,6 +36,7 @@
 		"vuex": "^3.4.0"
 	},
 	"devDependencies": {
+		"@vue/composition-api": "^1.0.0-rc.5",
 		"@typescript-eslint/parser": "^3.0.0",
 		"@vue/babel-helper-vue-jsx-merge-props": "^1.0.0",
 		"@vue/babel-preset-jsx": "^1.1.2",
