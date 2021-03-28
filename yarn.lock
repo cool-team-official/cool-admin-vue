@@ -2729,11 +2729,6 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-cl-admin@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/cl-admin/-/cl-admin-1.5.1.tgz#3a83b08e657209f69351f926bfcb56ae61665331"
-  integrity sha512-aEKHAV9PEcpbDKYK43+Gft2AISvV7wp1ZWJ4ST1cN/6hEB3LckmrEej43o+y5aw7vlZ1bilVGwy1BliE5nvgTQ==
-
 class-utils@^0.3.5:
   version "0.3.6"
   resolved "https://registry.yarnpkg.com/class-utils/-/class-utils-0.3.6.tgz#f93369ae8b9a7ce02fd41faad0ca83033190c463"

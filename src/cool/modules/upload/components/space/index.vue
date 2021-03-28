@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import { isEmpty } from "cl-admin/utils";
+import { isEmpty } from "@/core/utils";
 import Category from "./category";
 import FileItem from "./file-item";
 import { mapGetters } from "vuex";

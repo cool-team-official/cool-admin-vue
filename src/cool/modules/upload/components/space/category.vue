@@ -34,7 +34,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { isEmpty } from "cl-admin/utils";
+import { isEmpty } from "@/core/utils";
 
 export default {
 	name: "cl-upload-space-category",

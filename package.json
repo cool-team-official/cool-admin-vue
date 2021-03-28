@@ -10,7 +10,6 @@
 	"dependencies": {
 		"array.prototype.flat": "^1.2.4",
 		"axios": "^0.21.1",
-		"cl-admin": "^1.5.1",
 		"clipboard": "^2.0.8",
 		"clone-deep": "^4.0.1",
 		"codemirror": "^5.60.0",
