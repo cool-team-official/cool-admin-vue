@@ -9,6 +9,7 @@
 			title="文件空间"
 			height="630px"
 			width="1000px"
+			keep-alive
 			:visible.sync="visible"
 			:props="{
 				'close-on-click-modal': false,

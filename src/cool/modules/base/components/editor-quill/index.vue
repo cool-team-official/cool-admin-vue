@@ -6,7 +6,7 @@
 			ref="upload-space"
 			detail-data
 			:show-button="false"
-			@confirm="onUploadSpaceConfirm"
+			@confirm="onFileConfirm"
 		>
 		</cl-upload-space>
 	</div>
@@ -15,6 +15,7 @@
 <script>
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
+import { isNumber } from "cl-admin/utils";
 
 export default {
 	name: "cl-editor-quill",
@@ -28,7 +29,6 @@ export default {
 
 	data() {
 		return {
-			uploadURL: "",
 			content: "",
 			quill: null,
 			cursorIndex: 0
@@ -37,20 +37,12 @@ export default {
 
 	computed: {
 		style() {
-			let h = this.height;
-			let w = this.width;
-
-			if (!isNaN(Number(h))) {
-				h += "px";
-			}
-
-			if (!isNaN(Number(w))) {
-				h += "px";
-			}
+			const height = isNumber(this.height) ? this.height + "px" : this.height;
+			const width = isNumber(this.width) ? this.width + "px" : this.width;
 
 			return {
-				height: h,
-				width: w
+				height,
+				width
 			};
 		}
 	},
@@ -72,6 +64,7 @@ export default {
 	},
 
 	mounted() {
+		// 实例化
 		this.quill = new Quill(this.$el.querySelector(".editor"), {
 			theme: "snow",
 			placeholder: "输入内容",
@@ -96,18 +89,23 @@ export default {
 			...this.options
 		});
 
-		this.quill.getModule("toolbar").addHandler("image", this.uploadFileHandler);
+		// 添加文件上传工具
+		this.quill.getModule("toolbar").addHandler("image", this.uploadHandler);
 
+		// 监听内容变化
 		this.quill.on("text-change", () => {
 			this.content = this.quill.root.innerHTML;
 		});
 
+		// 设置默认内容
 		this.setContent(this.value);
+
+		// 加载完回调
 		this.$emit("load", this.quill);
 	},
 
 	methods: {
-		uploadFileHandler() {
+		uploadHandler() {
 			const selection = this.quill.getSelection();
 
 			if (selection) {
@@ -117,8 +115,9 @@ export default {
 			this.$refs["upload-space"].open();
 		},
 
-		onUploadSpaceConfirm(files) {
+		onFileConfirm(files) {
 			if (files.length > 0) {
+				// 批量插件图片
 				files.forEach((file, i) => {
 					let [type] = file.type.split("/");
 
@@ -129,6 +128,9 @@ export default {
 						Quill.sources.USER
 					);
 				});
+
+				// 移动光标到图片后一位
+				this.quill.setSelection(this.cursorIndex + files.length);
 			}
 		},
 

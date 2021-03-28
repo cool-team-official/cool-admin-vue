@@ -1,6 +1,20 @@
 <template>
 	<div class="demo-upload scroller1">
 		<div class="demo-upload__item">
+			<p>文件空间</p>
+			<cl-upload-space v-model="urls"></cl-upload-space>
+
+			<p style="margin-top: 10px">选择的文件：</p>
+
+			<el-image
+				v-for="(item, index) in urlList"
+				:key="index"
+				:src="item"
+				:style="{ width: '100px', marginRight: '10px' }"
+			></el-image>
+		</div>
+
+		<div class="demo-upload__item">
 			<p>普通上传</p>
 			<cl-upload :before-upload="onBeforeUpload"></cl-upload>
 		</div>
@@ -33,13 +47,6 @@
 				<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
 			</cl-upload>
 		</div>
-
-		<div class="demo-upload__item">
-			<p>文件空间</p>
-			<cl-upload-space v-model="urls"></cl-upload-space>
-
-			<p style="margin-top: 10px">选择的文件：{{ urls }}</p>
-		</div>
 	</div>
 </template>
 
@@ -49,6 +56,12 @@ export default {
 		return {
 			urls: ""
 		};
+	},
+
+	computed: {
+		urlList() {
+			return this.urls.split(",").filter(Boolean);
+		}
 	},
 
 	methods: {
