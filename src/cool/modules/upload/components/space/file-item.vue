@@ -111,6 +111,7 @@ export default {
 	justify-content: center;
 	height: 160px;
 	width: 160px;
+	max-width: calc(50% - 10px);
 	cursor: pointer;
 	position: relative;
 	border-radius: 3px;

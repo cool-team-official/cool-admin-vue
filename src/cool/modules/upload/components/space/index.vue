@@ -52,7 +52,7 @@
 							size="mini"
 							:disabled="!isSelected"
 							@click="confirm()"
-							>使用选中文件 {{ this.limitTip }}</el-button
+							>使用选中文件 {{ limitTip }}</el-button
 						>
 
 						<el-button
