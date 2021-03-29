@@ -1,7 +1,7 @@
 import { Form, FormItem, FormRef } from "./form";
 
-export interface UpsertItem extends FormItem {}
+export type UpsertItem = FormItem;
 
-export interface UpsertRef extends FormRef {}
+export type UpsertRef = FormRef;
 
-export interface Upsert extends Form {}
+export type Upsert = Form;

@@ -1,3 +1,3 @@
 import { FormItem } from "./form";
 
-export interface AdvSearchItem extends FormItem {}
+export type AdvSearchItem = FormItem;
