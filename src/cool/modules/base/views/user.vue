@@ -35,6 +35,7 @@
 								@click="toMove()"
 								>转移</el-button
 							>
+							<cl-flex1></cl-flex1>
 							<cl-search-key></cl-search-key>
 						</el-row>
 
@@ -109,12 +110,12 @@
 </template>
 
 <script lang="ts">
-import { computed, inject, reactive, ref, watch } from "vue";
+import { computed, defineComponent, inject, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRefs } from "@/core";
 import { Table, Upsert } from "@/crud/types";
 
-export default {
+export default defineComponent({
 	name: "sys-user",
 
 	setup() {
@@ -510,7 +511,7 @@ export default {
 			toMove
 		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>
