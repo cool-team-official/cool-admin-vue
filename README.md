@@ -10,14 +10,23 @@
     <img src="https://img.shields.io/github/last-commit/cool-team-official/cool-admin-vue?style=flat-square" alt="GitHub tag"></a>
 </p>
 
+## 地址
+
+-   [⚡️ vue2.x + element-ui（免费商用，支持 PC、平板、手机）](https://github.com/cool-team-official/cool-admin-vue)
+
+-   [⚡️ vue3.x + element-plus + ts + webpack（免费商用，支持 PC、平板、手机）](https://github.com/cool-team-official/cool-admin-vue/tree/vue3-ts-webpack)
+
+-   [📌 vue3.x + element-plus + ts + vite（测试中）]()
+
+-   [🌐 码云仓库地址](https://gitee.com/cool-team-official/cool-admin-vue)
+
 ## 演示
 
 [https://show.cool-admin.com](https://show.cool-admin.com)
 
--   账户：admin
--   密码：123456
+账户：admin，密码：123456
 
-<img src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/home-mini.png" alt="Admin Home"></a>
+<img src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/home-mini.png" alt="Admin Home" ></a>
 
 ## 项目后端
 
