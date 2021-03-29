@@ -63,7 +63,7 @@ import { parseContent } from "../utils";
 export default defineComponent({
 	setup() {
 		const store = useStore();
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 		const mitt = inject<any>("mitt");
 
 		// 当前会话信息

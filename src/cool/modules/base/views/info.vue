@@ -32,7 +32,7 @@ export default defineComponent({
 
 	setup() {
 		const store = useStore();
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 
 		// 表单数据
 		const form = reactive<any>(store.getters.userInfo);

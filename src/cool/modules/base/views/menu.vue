@@ -89,7 +89,7 @@ export default defineComponent({
 	setup() {
 		const router = useRouter();
 		const { refs, setRefs } = useRefs();
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {

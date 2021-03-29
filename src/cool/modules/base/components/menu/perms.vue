@@ -28,7 +28,7 @@ export default defineComponent({
 	emits: ["update:modelValue"],
 
 	setup(props, { emit }) {
-		const $service = inject("$service");
+		const $service = inject<any>("service");
 
 		// 绑定值
 		const value = ref<any[]>([]);

@@ -126,7 +126,7 @@ export default defineComponent({
 	setup() {
 		const store = useStore();
 		const { refs, setRefs } = useRefs();
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 		const chat = inject<any>("chat");
 		const mitt = inject<any>("mitt");
 

@@ -85,7 +85,7 @@ export default defineComponent({
 	setup(_, { emit }) {
 		const store = useStore();
 		const { refs, setRefs } = useRefs();
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 		const mitt = inject<any>("mitt");
 
 		// 当前会话

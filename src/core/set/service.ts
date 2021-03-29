@@ -50,5 +50,5 @@ export default function(app: any) {
 
 	// @ts-ignore
 	app.config.globalProperties.$service = store.$service = modules;
-	app.provide("$service", modules);
+	app.provide("service", modules);
 }

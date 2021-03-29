@@ -47,7 +47,7 @@ export default defineComponent({
 	name: "sys-param",
 
 	setup() {
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 		const { refs, setRefs } = useRefs();
 
 		// 选项卡

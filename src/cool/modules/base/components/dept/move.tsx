@@ -9,7 +9,7 @@ export default defineComponent({
 	emits: ["success", "error"],
 
 	setup(_: any, { emit }) {
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 		const { refs, setRefs } = useRefs();
 
 		// 树形列表

@@ -50,7 +50,7 @@ export default defineComponent({
 
 	setup(props, { emit }) {
 		// 请求服务
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 
 		// 关键字
 		const keyword = ref<string>("");

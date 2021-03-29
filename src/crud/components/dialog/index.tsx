@@ -264,8 +264,7 @@ export default defineComponent({
 					{
 						...ctx.props,
 						customClass,
-						fullscreen: ctx.isFullscreen,
-						key: ctx.cacheKey
+						fullscreen: ctx.isFullscreen
 					},
 					{
 						title() {
@@ -273,7 +272,10 @@ export default defineComponent({
 						},
 						default() {
 							return (
-								<div class="cl-dialog__container" style={{ height: ctx.height }}>
+								<div
+									class="cl-dialog__container"
+									style={{ height: ctx.height }}
+									key={ctx.cacheKey}>
 									{ctx.$slots.default && ctx.$slots.default()}
 								</div>
 							);

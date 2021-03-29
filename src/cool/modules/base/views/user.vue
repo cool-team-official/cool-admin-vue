@@ -118,7 +118,7 @@ export default {
 	name: "sys-user",
 
 	setup() {
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 		const store = useStore();
 		const { refs, setRefs } = useRefs();
 

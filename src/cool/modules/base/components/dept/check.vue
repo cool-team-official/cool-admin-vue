@@ -54,7 +54,7 @@ export default defineComponent({
 
 	setup(props, { emit }) {
 		// 请求服务
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 
 		// 表单值
 		const form = inject<any>("form");

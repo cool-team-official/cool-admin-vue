@@ -57,7 +57,7 @@ export default defineComponent({
 	name: "sys-plugin",
 
 	setup() {
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 		const { refs, setRefs } = useRefs();
 
 		// 编辑权限

@@ -29,7 +29,7 @@ export default defineComponent({
 	name: "sys-role",
 
 	setup() {
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 
 		// 表单值
 		const form = reactive<any>({

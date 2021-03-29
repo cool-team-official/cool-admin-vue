@@ -94,7 +94,7 @@ export default defineComponent({
 		const isDrag = ref<boolean>(false);
 
 		// 请求服务
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 
 		// 允许托的规则
 		function allowDrag({ data }: any) {

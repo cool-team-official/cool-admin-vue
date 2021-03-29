@@ -48,7 +48,7 @@ export default defineComponent({
 	name: "sys-log",
 
 	setup() {
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 		const { refs, setRefs } = useRefs();
 
 		// 天数

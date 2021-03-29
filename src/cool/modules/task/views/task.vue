@@ -232,7 +232,7 @@ export default defineComponent({
 
 	setup() {
 		const { refs, setRefs } = useRefs();
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 
 		// 任务列表
 		const list = reactive<any[]>([

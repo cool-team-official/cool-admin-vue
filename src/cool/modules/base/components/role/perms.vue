@@ -41,7 +41,7 @@ export default defineComponent({
 	},
 
 	setup(props, { emit }) {
-		const $service = inject<any>("$service");
+		const $service = inject<any>("service");
 
 		// 树形列表
 		const list = ref<any[]>([]);
