@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue-demi";
+import { computed, defineComponent } from "vue";
 import { useStore } from "vuex";
 import Logo from "/@/assets/icon/logo/silder-simple.png";
 
@@ -39,9 +39,9 @@ export default defineComponent({
 			menuCollapse,
 			browser,
 			app,
-			toHome,
+			toHome
 		};
-	},
+	}
 });
 </script>
 
