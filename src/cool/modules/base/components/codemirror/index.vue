@@ -1,11 +1,11 @@
 <template>
-	<div class="cl-codemirror">
+	<div class="cl-codemirror" ref="editorRef">
 		<textarea class="cl-code" id="editor" :height="height" :width="width"></textarea>
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, watch } from "vue";
+import { defineComponent, nextTick, onMounted, ref, watch } from "vue";
 import CodeMirror from "codemirror";
 import beautifyJs from "js-beautify";
 
@@ -28,6 +28,8 @@ export default defineComponent({
 	emits: ["update:modelValue", "load"],
 
 	setup(props, { emit }) {
+		const editorRef = ref<any>(null);
+
 		let editor: any = null;
 
 		// 获取内容
@@ -55,52 +57,48 @@ export default defineComponent({
 		);
 
 		onMounted(function() {
-			// 实例化
-			editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
-				mode: "javascript",
-				theme: "ambiance",
-				styleActiveLine: true,
-				lineNumbers: true,
-				lineWrapping: true,
-				indentUnit: 4,
-				...props.options
+			nextTick(() => {
+				// 实例化
+				editor = CodeMirror.fromTextArea(editorRef.value.querySelector("#editor"), {
+					mode: "javascript",
+					theme: "ambiance",
+					styleActiveLine: true,
+					lineNumbers: true,
+					lineWrapping: true,
+					indentUnit: 4,
+					...props.options
+				});
+
+				// 输入监听
+				editor.on("change", (e: any) => {
+					emit("update:modelValue", e.getValue().replace(/\s/g, ""));
+				});
+
+				// 设置内容
+				setValue(props.modelValue);
+
+				// 加载回调
+				emit("load", editor);
+
+				// 设置编辑框大小
+				editor.setSize(props.width || "auto", props.height || "auto");
+
+				// shift + alt + f 格式化
+				editor.display.wrapper.onkeydown = (e: any) => {
+					const keyCode = e.keyCode || e.which || e.charCode;
+					const altKey = e.altKey || e.metaKey;
+					const shiftKey = e.shiftKey || e.metaKey;
+
+					if (altKey && shiftKey && keyCode == 70) {
+						setValue();
+					}
+				};
 			});
-
-			// 输入监听
-			editor.on("change", (e: any) => {
-				emit("update:modelValue", e.getValue().replace(/\s/g, ""));
-			});
-
-			// 加载回调
-			emit("load", editor);
-
-			// 设置编辑框样式
-			const el = editor.display.wrapper;
-
-			if (el) {
-				if (props.height) {
-					el.style.height = props.height || "50px";
-				}
-
-				if (props.width) {
-					el.style.width = props.width;
-				}
-			}
-
-			// 设置内容
-			setValue(props.modelValue);
-
-			// shift + alt + f 格式化
-			el.onkeydown = (e: any) => {
-				const keyCode = e.keyCode || e.which || e.charCode;
-				const altKey = e.altKey || e.metaKey;
-				const shiftKey = e.shiftKey || e.metaKey;
-
-				if (altKey && shiftKey && keyCode == 70) {
-					setValue();
-				}
-			};
 		});
+
+		return {
+			editorRef
+		};
 	}
 });
 </script>

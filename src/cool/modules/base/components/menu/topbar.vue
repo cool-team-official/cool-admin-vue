@@ -1,5 +1,5 @@
 <template>
-	<div class="app-topbar-menu">
+	<div class="cl-menu-topbar">
 		<el-menu
 			:default-active="index"
 			mode="horizontal"
@@ -84,7 +84,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.app-topbar-menu {
+.cl-menu-topbar {
 	margin-right: 10px;
 
 	:deep(.el-menu) {

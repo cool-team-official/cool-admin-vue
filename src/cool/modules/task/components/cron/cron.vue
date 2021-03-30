@@ -776,12 +776,12 @@ export default {
 
 <style lang="scss" scoped>
 .vue-cron {
-	:deep(.el-tabs) {
+	.el-tabs {
 		box-shadow: none;
 	}
 
 	&__item {
-		:deep(.el-row) {
+		.el-row {
 			min-height: 32px;
 			line-height: 32px;
 			margin-bottom: 10px;

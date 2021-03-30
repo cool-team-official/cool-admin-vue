@@ -48,34 +48,58 @@
 	</div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { computed, defineComponent } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 import { href } from "@/core/utils";
 
-export default {
-	computed: {
-		...mapGetters(["userInfo", "menuCollapse", "app", "modules"])
-	},
+export default defineComponent({
+	setup() {
+		const store = useStore();
+		const router = useRouter();
 
-	methods: {
-		onCommand(name) {
+		// 菜单是否展开
+		const menuCollapse = computed<any>(() => store.getters.menuCollapse);
+
+		// 模块列表
+		const modules = computed<any>(() => store.getters.modules);
+
+		// 应用信息
+		const app = computed<any>(() => store.getters.app);
+
+		// 用户信息
+		const userInfo = computed<any>(() => store.getters.userInfo);
+
+		// 跳转官网
+		function onCommand(name: string) {
 			switch (name) {
 				case "my":
-					this.$router.push("/my/info");
+					router.push("/my/info");
 					break;
 				case "exit":
-					this.$store.dispatch("userLogout").done(() => {
+					store.dispatch("userLogout").done(() => {
 						href("/login");
 					});
 					break;
 			}
-		},
-
-		collapse() {
-			this.$store.commit("COLLAPSE_MENU", !this.menuCollapse);
 		}
+
+		// 展开
+		function collapse() {
+			store.commit("COLLAPSE_MENU", !menuCollapse.value);
+		}
+
+		return {
+			userInfo,
+			menuCollapse,
+			modules,
+			app,
+			onCommand,
+			collapse
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss">

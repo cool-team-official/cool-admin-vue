@@ -391,10 +391,6 @@ export default defineComponent({
 		}
 	}
 
-	:deep(.el-tree-node__content) {
-		height: 36px;
-	}
-
 	&__op {
 		display: flex;
 
@@ -419,6 +415,7 @@ export default defineComponent({
 		overflow-x: hidden;
 
 		:deep(.el-tree-node__content) {
+			height: 36px;
 			margin: 0 5px;
 		}
 	}

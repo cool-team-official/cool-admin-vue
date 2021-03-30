@@ -56,11 +56,15 @@ export default defineComponent({
 		// 文件确认
 		function onUploadSpaceConfirm(files: any[]) {
 			if (files.length > 0) {
+				// 批量插入图片
 				files.forEach((file, i) => {
 					const [type] = file.type.split("/");
 
 					quill.insertEmbed(cursorIndex.value + i, type, file.url, Quill.sources.USER);
 				});
+
+				// 移动光标到图片后一位
+				quill.setSelection(cursorIndex.value + files.length);
 			}
 		}
 

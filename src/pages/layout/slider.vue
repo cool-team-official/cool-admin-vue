@@ -11,20 +11,35 @@
 	</div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { computed, defineComponent } from "vue-demi";
+import { useStore } from "vuex";
 
-export default {
-	computed: {
-		...mapGetters(["menuCollapse", "browser", "app"])
-	},
+export default defineComponent({
+	setup() {
+		const store = useStore();
 
-	methods: {
-		toHome() {
+		// 菜单是否展开
+		const menuCollapse = computed<any>(() => store.getters.menuCollapse);
+
+		// 浏览器信息
+		const browser = computed<any>(() => store.getters.browser);
+
+		// 应用信息
+		const app = computed<any>(() => store.getters.app);
+
+		// 跳转官网
+		function toHome() {
 			location.href = "https://cool-js.com/";
 		}
+		return {
+			menuCollapse,
+			browser,
+			app,
+			toHome
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

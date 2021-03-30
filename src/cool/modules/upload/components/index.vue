@@ -108,8 +108,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import path from "path";
-import { last, isArray, isNumber, isBoolean } from "@/core/utils";
+import { last, isArray, isNumber, isBoolean, basename } from "@/core/utils";
 import { v4 as uuidv4 } from "uuid";
 import { clone } from "@/core/utils";
 
@@ -344,7 +343,7 @@ export default {
 				this.fileList = list.filter(Boolean).map(url => {
 					return {
 						url,
-						name: path.basename(url),
+						name: basename(url),
 						uid: url
 					};
 				});
@@ -543,7 +542,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .cl-upload {
 	display: flex;
 	flex-wrap: wrap;
@@ -561,7 +560,7 @@ export default {
 
 	&--default {
 		&:not(.is-drag) {
-			:deep(.el-upload) {
+			.el-upload {
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -640,7 +639,7 @@ export default {
 	}
 
 	&--picture-card {
-		:deep(.el-upload) {
+		.el-upload {
 			background-color: #fff;
 
 			.cl-upload__icon {

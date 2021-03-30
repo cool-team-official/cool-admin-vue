@@ -1,77 +1,77 @@
 /* eslint-disable */
 declare module '*.vue' {
-import type { DefineComponent } from 'vue'
-	const component: DefineComponent<{}, {}, any>
-	export default component
+import type { DefineComponent } from 'vue';
+	const component: DefineComponent<{}, {}, any>;
+	export default component;
 }
 
 declare module 'array.prototype.flat' {
-	function Flat(list: any[]): any[]
-	export default Flat
+	function Flat(list: any[]): any[];
+	export default Flat;
 }
 
 declare module 'clone-deep' {
-	function CloneDeep(data: any): any
-	export default CloneDeep
+	function CloneDeep(data: any): any;
+	export default CloneDeep;
 }
 
 declare module '@/core' {
-	export function bootstrap(app: any): Promise<void>
+	export function bootstrap(app: any): Promise<void>;
 	export class BaseService {
 		namespace: string
 		request: Function
 	}
-	export function Service(val: any)
-	export function Permission(val: string)
-	export function useRefs()
+	export function Service(val: any): any;
+	export function Permission(val: string): any;
+	export function useRefs(): any;
 }
 
 declare module '@/crud' {
-	export const ContextMenu
+	export const ContextMenu: any;
 }
 
 declare module '@/store' {
-	import { Store } from 'vuex/types/index.d.ts'
-	export const $service
-	export default Store
+	import { Store } from 'vuex/types/index.d.ts';
+	export const $service;
+	export default Store;
 }
 
 declare module 'store' {
-	export function set(key: string, value: any)
-	export function get(key: string)
-	export function remove(key: string)
-	export function clearAll()
-	export function each(callback: Function)
+	export function set(key: string, value: any): void;
+	export function get(key: string): any;
+	export function remove(key: string): void;
+	export function clearAll(): void;
+	export function each(callback: Function): void;
 }
 
 declare module 'quill' {
-	const Quill: any = {}
-	export default Quill
+	const Quill: any;
+	export default Quill;
 }
 
 declare module 'codemirror' {
-	export function fromTextArea(el: any, options?: any) {}
+	export function fromTextArea(el: any, options?: any): any;
 }
 
 declare module 'js-beautify' {
-	export default function(text: string) {}
+	export default function(text: string): string;
 }
 
 declare module 'nprogress' {
-	export function configure(options: any) {}
-	export const start = () => {}
-	export const done = () => {}
+	export function configure(options: any): void;
+	export function start(): void;
+	export function done(): void;
 }
 
 declare module 'mockjs' {
-	const Mock: any = {}
-	export default Mock
+	const Mock: any;
+	export default Mock;
 }
 
 declare module '@/router' {
 	const Router: any = {
 		$plugin: {
-			addViews: (list: any[], options?:any) => {}
+			addViews(list: any[], options?:any) {}
 		}
 	}
 
@@ -79,16 +79,16 @@ declare module '@/router' {
 		token: string[]
 	}
 
-	export default Router
-	export const ignore: Ignore
+	export default Router;
+	export const ignore: Ignore;
 }
 
 declare module '@/assets/css/common.scss' {
-	export const colorPrimary: string
+	export const colorPrimary: string;
 }
 
 interface Promise {
-	then: Function,
-	catch: Function,
-	done: Function
+	then(cb: Function): Promise<any>;
+	catch(cb: Function): Promise<any>;
+	done(cb: Function): void;
 }

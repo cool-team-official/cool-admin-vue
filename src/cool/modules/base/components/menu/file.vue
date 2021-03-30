@@ -15,9 +15,18 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
 
-const files = require
-	.context("@/", true, /views\/(?!(components)|(.*\/components)|(index\.js)).*.(js|vue)/)
-	.keys();
+// 扫描文件
+function findFiles() {
+	const files = require
+		.context("@/", true, /views\/(?!(components)|(.*\/components)|(index\.js)).*.(js|vue)/)
+		.keys();
+
+	return files.map(e => {
+		return {
+			value: e.substr(2)
+		};
+	});
+}
 
 export default defineComponent({
 	name: "cl-menu-file",
@@ -36,7 +45,7 @@ export default defineComponent({
 		const path = ref<string>(props.modelValue);
 
 		// 数据列表
-		const list = ref<any[]>([]);
+		const list = ref<any[]>(findFiles());
 
 		watch(
 			() => props.modelValue,
@@ -47,12 +56,6 @@ export default defineComponent({
 
 		watch(path, val => {
 			emit("update:modelValue", val);
-		});
-
-		list.value = files.map(e => {
-			return {
-				value: e.substr(2)
-			};
 		});
 
 		return {
