@@ -1,3 +1,5 @@
+# cool-admin [vue2]
+
 <p align="center">
   <a href="https://show.cool-admin.com/" target="blank"><img src="https://admin.cool-js.com/logo.png" width="200" alt="cool-admin Logo" /></a>
 </p>
@@ -12,11 +14,11 @@
 
 ## 地址
 
--   [⚡️ vue2.x + element-ui（免费商用，支持 PC、平板、手机）](https://github.com/cool-team-official/cool-admin-vue)
+-   [⚡️ vue2.x + element-ui](https://github.com/cool-team-official/cool-admin-vue)
 
--   [⚡️ vue3.x + element-plus + ts + webpack（免费商用，支持 PC、平板、手机）](https://github.com/cool-team-official/cool-admin-vue/tree/vue3-ts-webpack)
+-   [⚡️ vue3.x + element-plus + ts + webpack](https://github.com/cool-team-official/cool-admin-vue/tree/vue3-ts-webpack)
 
--   [📌 vue3.x + element-plus + ts + vite（测试中）]()
+-   [📌 vue3.x + element-plus + ts + vite](https://github.com/cool-team-official/cool-admin-vue/tree/vue3-ts-vite)
 
 -   [🌐 码云仓库地址](https://gitee.com/cool-team-official/cool-admin-vue)
 
