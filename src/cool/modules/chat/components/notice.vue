@@ -16,7 +16,7 @@ export default {
 	data() {
 		return {
 			visible: false,
-			number: 0
+			number: 0,
 		};
 	},
 
@@ -26,7 +26,7 @@ export default {
 
 	methods: {
 		refresh() {
-			this.$service.im.session.unreadCount().then(res => {
+			this.$service.im.session.unreadCount().then((res) => {
 				this.number = Number(res);
 			});
 		},
@@ -38,8 +38,8 @@ export default {
 		openChatBox() {
 			this.$refs["chat"].open();
 			this.number = 0;
-		}
-	}
+		},
+	},
 };
 </script>
 

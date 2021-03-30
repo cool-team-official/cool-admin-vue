@@ -1,4 +1,4 @@
-import { BaseService, Service } from "@/core";
+import { BaseService, Service } from "/@/core";
 
 @Service("space/info")
 class SpaceInfo extends BaseService {}

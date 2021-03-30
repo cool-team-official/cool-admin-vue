@@ -1,7 +1,7 @@
 <template>
 	<div class="app-slider">
 		<div class="app-slider__logo" @click="toHome">
-			<img src="@/assets/icon/logo/silder-simple.png" />
+			<img :src="Logo" />
 			<span v-if="!menuCollapse || browser.isMini">{{ app.name }}</span>
 		</div>
 
@@ -14,6 +14,7 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue-demi";
 import { useStore } from "vuex";
+import Logo from "/@/assets/icon/logo/silder-simple.png";
 
 export default defineComponent({
 	setup() {
@@ -32,13 +33,15 @@ export default defineComponent({
 		function toHome() {
 			location.href = "https://cool-js.com/";
 		}
+
 		return {
+			Logo,
 			menuCollapse,
 			browser,
 			app,
-			toHome
+			toHome,
 		};
-	}
+	},
 });
 </script>
 

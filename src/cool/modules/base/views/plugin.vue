@@ -49,9 +49,9 @@
 <script lang="ts">
 import { ElMessage } from "element-plus";
 import { defineComponent, inject, reactive } from "vue";
-import { checkPerm } from "@/cool/modules/base";
-import { useRefs } from "@/core";
-import { CrudLoad, RefreshOp, Table } from "@/crud/types";
+import { checkPerm } from "/@/cool/modules/base";
+import { useRefs } from "/@/core";
+import { CrudLoad, RefreshOp, Table } from "/@/crud/types";
 
 export default defineComponent({
 	name: "plugin",
@@ -65,9 +65,9 @@ export default defineComponent({
 
 		const perms = reactive<any>({
 			edit: checkPerm({
-				and: [config, getConfig]
+				and: [config, getConfig],
 			}),
-			enable: checkPerm(enable)
+			enable: checkPerm(enable),
 		});
 
 		// crud 加载
@@ -75,8 +75,8 @@ export default defineComponent({
 			ctx.service($service.plugin.info)
 				.set("dict", {
 					api: {
-						page: "list"
-					}
+						page: "list",
+					},
 				})
 				.done();
 			app.refresh();
@@ -91,7 +91,7 @@ export default defineComponent({
 				});
 
 				render(list, {
-					total: res.length
+					total: res.length,
 				});
 			});
 		}
@@ -101,7 +101,7 @@ export default defineComponent({
 			$service.plugin.info
 				.enable({
 					namespace: item.namespace,
-					enable: val
+					enable: val,
 				})
 				.then(() => {
 					ElMessage.success(val ? "开启成功" : "关闭成功");
@@ -114,7 +114,7 @@ export default defineComponent({
 		// 打开配置
 		async function openConf({ name, namespace, view }: any) {
 			const form = await $service.plugin.info.getConfig({
-				namespace
+				namespace,
 			});
 
 			let items = [];
@@ -134,7 +134,7 @@ export default defineComponent({
 						$service.plugin.info
 							.config({
 								namespace,
-								config: data
+								config: data,
 							})
 							.then(() => {
 								ElMessage.success("保存成功");
@@ -144,8 +144,8 @@ export default defineComponent({
 								ElMessage.error(err);
 								done();
 							});
-					}
-				}
+					},
+				},
 			});
 		}
 
@@ -154,8 +154,8 @@ export default defineComponent({
 			props: {
 				"default-sort": {
 					prop: "createTime",
-					order: "descending"
-				}
+					order: "descending",
+				},
 			},
 			"context-menu": [
 				"refresh",
@@ -166,47 +166,47 @@ export default defineComponent({
 						callback: (_: any, done: Function) => {
 							openConf(scope);
 							done();
-						}
+						},
 					};
-				}
+				},
 			],
 			columns: [
 				{
 					label: "名称",
 					prop: "name",
-					minWidth: 140
+					minWidth: 140,
 				},
 				{
 					label: "作者",
 					prop: "author",
-					minWidth: 120
+					minWidth: 120,
 				},
 				{
 					label: "联系方式",
 					prop: "contact",
 					showOverflowTooltip: true,
-					minWidth: 180
+					minWidth: 180,
 				},
 				{
 					label: "功能描述",
 					prop: "description",
 					showOverflowTooltip: true,
-					minWidth: 150
+					minWidth: 150,
 				},
 				{
 					label: "版本号",
 					prop: "version",
-					minWidth: 110
+					minWidth: 110,
 				},
 				{
 					label: "是否启用",
 					prop: "enable",
-					minWidth: 110
+					minWidth: 110,
 				},
 				{
 					label: "命名空间",
 					prop: "namespace",
-					minWidth: 110
+					minWidth: 110,
 				},
 				{
 					label: "状态",
@@ -216,37 +216,37 @@ export default defineComponent({
 						{
 							label: "缺少配置",
 							value: 0,
-							type: "warning"
+							type: "warning",
 						},
 						{
 							label: "可用",
 							value: 1,
-							type: "success"
+							type: "success",
 						},
 						{
 							label: "配置错误",
 							value: 2,
-							type: "danger"
+							type: "danger",
 						},
 						{
 							label: "未知错误",
 							value: 3,
-							type: "danger"
-						}
-					]
+							type: "danger",
+						},
+					],
 				},
 				{
 					label: "创建时间",
 					prop: "createTime",
 					width: 150,
-					sortable: "custom"
+					sortable: "custom",
 				},
 				{
 					type: "op",
 					width: 120,
-					buttons: ["slot-conf"]
-				}
-			]
+					buttons: ["slot-conf"],
+				},
+			],
 		});
 
 		return {
@@ -257,8 +257,8 @@ export default defineComponent({
 			onLoad,
 			onRefresh,
 			onEnableChange,
-			openConf
+			openConf,
 		};
-	}
+	},
 });
 </script>

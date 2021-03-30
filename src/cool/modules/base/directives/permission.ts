@@ -1,4 +1,4 @@
-import store from "@/store";
+import store from "/@/store";
 
 function parse(value: any) {
 	const permission = store.getters.permission;

@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
-import { iconList } from "@/cool/modules/base";
+import { iconList } from "/@/cool/modules/base";
 
 export default defineComponent({
 	name: "cl-menu-icons",

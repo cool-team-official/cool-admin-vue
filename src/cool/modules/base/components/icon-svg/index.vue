@@ -6,39 +6,43 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { isNumber } from "@/core/utils";
+import { isNumber } from "/@/core/utils";
 
 export default defineComponent({
 	name: "icon-svg",
 
 	props: {
 		name: {
-			type: String
+			type: String,
 		},
 		className: {
-			type: String
+			type: String,
 		},
 		size: {
-			type: [String, Number]
-		}
+			type: [String, Number],
+		},
 	},
 
 	setup(props) {
 		const style = ref<any>({
-			fontSize: isNumber(props.size) ? props.size + "px" : props.size
+			fontSize: isNumber(props.size) ? props.size + "px" : props.size,
 		});
 
-		const iconName = computed<string>(() => `#${props.name}`);
+		const iconName = computed<string>(() => `#icon-${props.name}`);
 		const svgClass = computed<Array<string>>(() => {
-			return ["icon-svg", `icon-svg__${props.name}`, String(props.className || "")];
+			return [
+				"icon-svg",
+				`icon-svg__${props.name}`,
+				String(props.className || ""),
+			];
 		});
 
 		return {
 			style,
 			iconName,
-			svgClass
+			svgClass,
 		};
-	}
+	},
 });
 </script>
 

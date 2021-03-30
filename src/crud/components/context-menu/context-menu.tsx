@@ -1,7 +1,7 @@
 import { defineComponent, nextTick, onMounted, reactive, ref } from "vue";
 import { useRefs } from "../../hooks/core";
 import { contains } from "../../utils";
-import { ContextMenuItem, ContextMenuOptions } from "@/crud/types";
+import { ContextMenuItem, ContextMenuOptions } from "/@/crud/types";
 
 export default defineComponent({
 	name: "cl-context-menu",

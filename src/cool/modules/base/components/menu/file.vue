@@ -1,6 +1,12 @@
 <template>
 	<div class="cl-menu-file">
-		<el-select v-model="path" allow-create filterable clearable placeholder="请选择">
+		<el-select
+			v-model="path"
+			allow-create
+			filterable
+			clearable
+			placeholder="请选择"
+		>
 			<el-option
 				v-for="(item, index) in list"
 				:key="index"
@@ -17,15 +23,18 @@ import { defineComponent, ref, watch } from "vue";
 
 // 扫描文件
 function findFiles() {
-	const files = require
-		.context("@/", true, /views\/(?!(components)|(.*\/components)|(index\.js)).*.(js|vue)/)
-		.keys();
+	const files = import.meta.globEager("/**/views/**/*.vue");
+	let list = [];
 
-	return files.map(e => {
-		return {
-			value: e.substr(2)
-		};
-	});
+	for (const i in files) {
+		if (!i.includes("components")) {
+			list.push({
+				value: i.substr(5),
+			});
+		}
+	}
+
+	return list;
 }
 
 export default defineComponent({
@@ -34,8 +43,8 @@ export default defineComponent({
 	props: {
 		modelValue: {
 			type: String,
-			default: ""
-		}
+			default: "",
+		},
 	},
 
 	emits: ["update:modelValue"],
@@ -49,20 +58,20 @@ export default defineComponent({
 
 		watch(
 			() => props.modelValue,
-			val => {
+			(val) => {
 				path.value = val || "";
 			}
 		);
 
-		watch(path, val => {
+		watch(path, (val) => {
 			emit("update:modelValue", val);
 		});
 
 		return {
 			path,
-			list
+			list,
 		};
-	}
+	},
 });
 </script>
 
@@ -70,7 +79,7 @@ export default defineComponent({
 .cl-menu-file {
 	width: 100%;
 
-	:deep(.el-select) {
+	.el-select {
 		width: 100%;
 	}
 

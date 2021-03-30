@@ -1,6 +1,13 @@
 import { TableOptions } from "./table";
 
-export type ServiceName = "page" | "list" | "add" | "delete" | "update" | "info" | string;
+export type ServiceName =
+	| "page"
+	| "list"
+	| "add"
+	| "delete"
+	| "update"
+	| "info"
+	| string;
 
 export interface Service {
 	page?(

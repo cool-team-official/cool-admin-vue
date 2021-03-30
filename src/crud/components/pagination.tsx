@@ -1,5 +1,5 @@
 import { h, inject, ref, watch } from "vue";
-import { Crud, Mitt } from "@/crud/types";
+import { Crud, Mitt } from "/@/crud/types";
 
 export default {
 	name: "cl-pagination",

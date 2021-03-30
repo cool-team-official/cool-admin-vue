@@ -1,54 +1,51 @@
-import path from "path";
-import store from "@/store";
+import store from "/@/store";
+import { last } from "../utils";
 
-export default function(app: any) {
-	const files = require.context("@/service/", true, /\.js$/);
-	const ignore = ["./request.js"];
+export default function (app: any) {
+	const files = import.meta.globEager("/src/service/*.ts");
+	const ignore = ["request.ts"];
 
 	const modules: any = {};
 
-	files
-		.keys()
-		.filter(e => !ignore.includes(e))
-		.map(e => {
-			if (e.includes("--ignore")) {
-				return false;
+	for (let i in files) {
+		const path: string = i.replace("/src/service/", "");
+		const inst: any = files[i].default;
+
+		if (ignore.includes(path)) {
+			continue;
+		}
+
+		let list = path.split("/");
+		let parents = list.slice(0, list.length - 1);
+		let name = last(list).replace(".ts", "");
+
+		let curr: any = modules;
+		let prev: any = null;
+		let key: any = null;
+
+		parents.forEach((k: any) => {
+			if (!curr[k]) {
+				curr[k] = {};
 			}
 
-			const list = e.substr(2).split("/");
-			const parents = list.slice(0, list.length - 1);
-			const name = path.basename(e, ".js");
-
-			let curr: any = modules;
-			let prev: any = null;
-			let key: any = null;
-
-			parents.forEach(k => {
-				if (!curr[k]) {
-					curr[k] = {};
-				}
-
-				prev = curr;
-				curr = curr[k];
-				key = k;
-			});
-
-			const ep = files(e);
-
-			if (ep.default) {
-				const service = new ep.default();
-
-				if (name == "index") {
-					prev[key] = service;
-				} else {
-					curr[name] = service;
-				}
-			} else {
-				console.error(`Service must export default in ${e}`);
-			}
+			prev = curr;
+			curr = curr[k];
+			key = k;
 		});
 
-	// @ts-ignore
+		if (inst) {
+			let service = new inst();
+
+			if (name == "index") {
+				prev[key] = service;
+			} else {
+				curr[name] = service;
+			}
+		} else {
+			console.error(`Service must export default in ${files[i]}`);
+		}
+	}
+
 	app.config.globalProperties.$service = store.$service = modules;
 	app.provide("service", modules);
 }

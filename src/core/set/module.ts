@@ -1,34 +1,39 @@
-import cool from "@/cool";
-import store from "@/store";
-import router from "@/router";
+import cool from "/@/cool";
+import store from "/@/store";
+import router from "/@/router";
 import { deepMerge, isFunction, isArray, isObject, isString } from "../utils";
 
 // 模块列表
 const modules: any[] = [];
 
-export default function(app: any) {
-	const files = require.context("@/cool/modules", true, /index.ts$/);
+export default function (app: any) {
+	const files = import.meta.globEager("/src/cool/modules/*/index.ts");
 
 	// 本地模块
-	const local = files
-		.keys()
-		.map(e => {
-			const [, name, , error] = e.split("/");
+	const local: any[] = [];
 
-			if (!error) {
-				return {
-					name,
-					value: files(e).default
-				};
-			} else {
-				return null;
-			}
-		})
-		.filter(Boolean);
+	for (const i in files) {
+		const [, , , , name, , error] = i.split("/");
+
+		if (!error) {
+			local.push({
+				name,
+				value: files[i].default,
+			});
+		}
+	}
 
 	// 安装模块
 	function install(mod: any) {
-		const { store: _store, components, service, directives, pages, views, name } = mod;
+		const {
+			store: _store,
+			components,
+			service,
+			directives,
+			pages,
+			views,
+			name,
+		} = mod;
 
 		try {
 			// 注册vuex模块
@@ -99,7 +104,7 @@ export default function(app: any) {
 		// Parse
 		if (isString(e)) {
 			mod = {
-				name: e
+				name: e,
 			};
 		} else if (isObject(e)) {
 			mod = e;
@@ -107,7 +112,7 @@ export default function(app: any) {
 			mod = {
 				name: e[0],
 				value: e[1],
-				options: e[2]
+				options: e[2],
 			};
 		} else {
 			console.error(e, "格式错误");
@@ -139,7 +144,7 @@ export default function(app: any) {
 			mod = {
 				name: mod.name,
 				options: mod.options || {},
-				...mod.value
+				...mod.value,
 			};
 
 			modules.push(mod);

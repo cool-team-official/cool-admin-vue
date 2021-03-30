@@ -10,7 +10,7 @@ import {
 import Mitt from "../../utils/mitt";
 import { useMitt, useRequest } from "./helper";
 import { bootstap } from "./app";
-import { deepMerge } from "@/core/utils";
+import { deepMerge } from "/@/core/utils";
 
 export default defineComponent({
 	name: "cl-crud",

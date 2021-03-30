@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ErrorPage from "./components/error-page";
+import ErrorPage from "./components/error-page.vue";
 
 export default {
 	components: {

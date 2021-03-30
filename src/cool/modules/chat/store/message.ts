@@ -1,4 +1,4 @@
-import { isArray } from "@/core/utils";
+import { isArray } from "/@/core/utils";
 
 const state = {
 	list: []

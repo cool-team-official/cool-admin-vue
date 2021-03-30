@@ -1,8 +1,8 @@
 import axios from "axios";
-import store from "@/store";
-import { isDev } from "@/config/env";
-import { href } from "@/core/utils";
-import storage from "@/core/utils/storage";
+import store from "/@/store";
+import { isDev } from "/@/config/env";
+import { href } from "/@/core/utils";
+import storage from "/@/core/utils/storage";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { ElMessage } from "element-plus";

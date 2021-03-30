@@ -1,4 +1,4 @@
-import { BaseService, Service, Permission } from "@/core";
+import { BaseService, Service, Permission } from "/@/core";
 
 @Service("base/plugin/info")
 class PluginInfo extends BaseService {

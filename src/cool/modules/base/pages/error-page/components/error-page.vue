@@ -36,7 +36,7 @@
 import { useStore } from "vuex";
 import { computed, defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import { href } from "@/core/utils";
+import { href } from "/@/core/utils";
 
 export default defineComponent({
 	props: {

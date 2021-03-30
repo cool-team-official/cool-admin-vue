@@ -6,8 +6,16 @@
 			background-color="transparent"
 			@select="onSelect"
 		>
-			<el-menu-item v-for="(item, index) in list" :index="`${index}`" :key="index">
-				<icon-svg v-if="item.icon" :name="item.icon" :size="18"></icon-svg>
+			<el-menu-item
+				v-for="(item, index) in list"
+				:index="`${index}`"
+				:key="index"
+			>
+				<icon-svg
+					v-if="item.icon"
+					:name="item.icon"
+					:size="18"
+				></icon-svg>
 				<span>{{ item.name }}</span>
 			</el-menu-item>
 		</el-menu>
@@ -37,7 +45,9 @@ export default defineComponent({
 		const index = ref<string>("0");
 
 		// 菜单列表
-		const list = computed(() => store.getters.menuGroup.filter((e: any) => e.isShow));
+		const list = computed(() =>
+			store.getters.menuGroup.filter((e: any) => e.isShow)
+		);
 
 		// 选择导航
 		function onSelect(index: number) {
@@ -48,7 +58,7 @@ export default defineComponent({
 			router.push(url);
 		}
 
-		onMounted(function() {
+		onMounted(function () {
 			// 设置默认
 			function deep(e: any, i: number) {
 				switch (e.type) {
@@ -77,27 +87,26 @@ export default defineComponent({
 		return {
 			index,
 			list,
-			onSelect
+			onSelect,
 		};
-	}
+	},
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .cl-menu-topbar {
 	margin-right: 10px;
 
-	:deep(.el-menu) {
+	.el-menu {
 		height: 50px;
 		background: transparent;
-		border-bottom: 0;
 		overflow: hidden;
 
 		.el-menu-item {
 			display: flex;
 			align-items: center;
 			height: 50px;
-			border-bottom: 0;
+			border-bottom: 0 !important;
 			padding: 0 20px;
 			background: transparent;
 
@@ -111,7 +120,7 @@ export default defineComponent({
 				color: $color-primary;
 			}
 
-			:deep(.icon-svg) {
+			.icon-svg {
 				margin-right: 5px;
 			}
 		}

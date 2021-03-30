@@ -9,8 +9,8 @@ export default {
 			name: "upload",
 			options: {
 				icon: "el-icon-picture",
-				text: "选择图片"
-			}
+				text: "选择图片",
+			},
 		},
 		{
 			name: "crud",
@@ -20,11 +20,11 @@ export default {
 					dict: {
 						sort: {
 							prop: "order",
-							order: "sort"
-						}
-					}
-				}
-			}
+							order: "sort",
+						},
+					},
+				},
+			},
 		},
 		// 客服聊天
 		"chat",
@@ -35,6 +35,6 @@ export default {
 		// 示例页
 		"demo",
 		// 主题切换
-		"theme"
-	]
+		"theme",
+	],
 };

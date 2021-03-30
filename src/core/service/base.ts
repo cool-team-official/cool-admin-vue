@@ -1,5 +1,5 @@
-import request from "@/service/request";
-import { baseUrl, isDev } from "@/config/env";
+import request from "/@/service/request";
+import { baseUrl, isDev } from "/@/config/env";
 
 export default class BaseService {
 	permission: any;

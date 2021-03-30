@@ -1,56 +1,54 @@
 <template>
-	<cl-scrollbar>
-		<div class="home">
-			<el-row :gutter="15">
-				<el-col :lg="6" :md="12" :xs="24">
-					<div class="card">
-						<count-sales></count-sales>
-					</div>
-				</el-col>
-				<el-col :lg="6" :md="12" :xs="24">
-					<div class="card">
-						<count-views></count-views>
-					</div>
-				</el-col>
-				<el-col :lg="6" :md="12" :xs="24">
-					<div class="card">
-						<count-paid></count-paid>
-					</div>
-				</el-col>
-				<el-col :lg="6" :md="12" :xs="24">
-					<div class="card">
-						<count-effect></count-effect>
-					</div>
-				</el-col>
-			</el-row>
+	<div class="view-home scroller1">
+		<el-row :gutter="15">
+			<el-col :lg="6" :md="12" :xs="24">
+				<div class="card">
+					<count-sales></count-sales>
+				</div>
+			</el-col>
+			<el-col :lg="6" :md="12" :xs="24">
+				<div class="card">
+					<count-views></count-views>
+				</div>
+			</el-col>
+			<el-col :lg="6" :md="12" :xs="24">
+				<div class="card">
+					<count-paid></count-paid>
+				</div>
+			</el-col>
+			<el-col :lg="6" :md="12" :xs="24">
+				<div class="card">
+					<count-effect></count-effect>
+				</div>
+			</el-col>
+		</el-row>
 
-			<el-row :gutter="15">
-				<el-col :lg="14" :xs="24">
-					<div class="card">
-						<tab-chart></tab-chart>
-					</div>
-				</el-col>
-				<el-col :lg="10" :xs="24">
-					<div class="card">
-						<sales-rank></sales-rank>
-					</div>
-				</el-col>
-			</el-row>
+		<el-row :gutter="15">
+			<el-col :lg="14" :xs="24">
+				<div class="card">
+					<tab-chart></tab-chart>
+				</div>
+			</el-col>
+			<el-col :lg="10" :xs="24">
+				<div class="card">
+					<sales-rank></sales-rank>
+				</div>
+			</el-col>
+		</el-row>
 
-			<el-row :gutter="15">
-				<el-col :lg="14" :sm="24">
-					<div class="card card--last">
-						<hot-search></hot-search>
-					</div>
-				</el-col>
-				<el-col :lg="10" :sm="24">
-					<div class="card card--last">
-						<category-ratio></category-ratio>
-					</div>
-				</el-col>
-			</el-row>
-		</div>
-	</cl-scrollbar>
+		<el-row :gutter="15">
+			<el-col :lg="14" :sm="24">
+				<div class="card card--last">
+					<hot-search></hot-search>
+				</div>
+			</el-col>
+			<el-col :lg="10" :sm="24">
+				<div class="card card--last">
+					<category-ratio></category-ratio>
+				</div>
+			</el-col>
+		</el-row>
+	</div>
 </template>
 
 <script lang="ts">
@@ -73,14 +71,14 @@ export default defineComponent({
 		CountEffect,
 		TabChart,
 		SalesRank,
-		HotSearch
-	}
+		HotSearch,
+	},
 });
 </script>
 
-<style lang="scss" scoped>
-.home {
-	:deep(.card) {
+<style lang="scss">
+.view-home {
+	.card {
 		background-color: #fff;
 		border-radius: 5px;
 		margin-bottom: 15px;

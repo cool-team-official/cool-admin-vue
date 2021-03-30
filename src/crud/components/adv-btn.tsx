@@ -1,5 +1,5 @@
 import { defineComponent, inject } from "vue";
-import { Crud } from "@/crud/types";
+import { Crud } from "/@/crud/types";
 
 export default defineComponent({
 	name: "cl-adv-btn",

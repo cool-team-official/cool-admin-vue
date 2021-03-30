@@ -2,7 +2,9 @@
 	<div class="vue-cron">
 		<el-tabs type="border-card">
 			<el-tab-pane>
-				<template #label> <i class="el-icon-date"></i> {{ text.Seconds.name }} </template>
+				<template #label>
+					<i class="el-icon-date"></i> {{ text.Seconds.name }}
+				</template>
 				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="second.cronEvery" label="1">{{
@@ -29,12 +31,22 @@
 						</el-radio>
 					</el-row>
 					<el-row>
-						<el-radio class="long" v-model="second.cronEvery" label="3"
+						<el-radio
+							class="long"
+							v-model="second.cronEvery"
+							label="3"
 							>{{ text.Seconds.specific }}
-							<el-select size="small" multiple v-model="second.specificSpecific">
-								<el-option v-for="val in 60" :key="val" :value="val - 1">{{
-									val - 1
-								}}</el-option>
+							<el-select
+								size="small"
+								multiple
+								v-model="second.specificSpecific"
+							>
+								<el-option
+									v-for="val in 60"
+									:key="val"
+									:value="val - 1"
+									>{{ val - 1 }}</el-option
+								>
 							</el-select>
 						</el-radio>
 					</el-row>
@@ -90,12 +102,22 @@
 						</el-radio>
 					</el-row>
 					<el-row>
-						<el-radio class="long" v-model="minute.cronEvery" label="3"
+						<el-radio
+							class="long"
+							v-model="minute.cronEvery"
+							label="3"
 							>{{ text.Minutes.specific }}
-							<el-select size="small" multiple v-model="minute.specificSpecific">
-								<el-option v-for="val in 60" :key="val" :value="val - 1">{{
-									val - 1
-								}}</el-option>
+							<el-select
+								size="small"
+								multiple
+								v-model="minute.specificSpecific"
+							>
+								<el-option
+									v-for="val in 60"
+									:key="val"
+									:value="val - 1"
+									>{{ val - 1 }}</el-option
+								>
 							</el-select>
 						</el-radio>
 					</el-row>
@@ -121,7 +143,9 @@
 				</div>
 			</el-tab-pane>
 			<el-tab-pane>
-				<template #label> <i class="el-icon-date"></i> {{ text.Hours.name }} </template>
+				<template #label>
+					<i class="el-icon-date"></i> {{ text.Hours.name }}
+				</template>
 				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="hour.cronEvery" label="1">{{
@@ -148,12 +172,22 @@
 						</el-radio>
 					</el-row>
 					<el-row>
-						<el-radio class="long" v-model="hour.cronEvery" label="3"
+						<el-radio
+							class="long"
+							v-model="hour.cronEvery"
+							label="3"
 							>{{ text.Hours.specific }}
-							<el-select size="small" multiple v-model="hour.specificSpecific">
-								<el-option v-for="val in 24" :key="val" :value="val - 1">{{
-									val - 1
-								}}</el-option>
+							<el-select
+								size="small"
+								multiple
+								v-model="hour.specificSpecific"
+							>
+								<el-option
+									v-for="val in 24"
+									:key="val"
+									:value="val - 1"
+									>{{ val - 1 }}</el-option
+								>
 							</el-select>
 						</el-radio>
 					</el-row>
@@ -179,10 +213,14 @@
 				</div>
 			</el-tab-pane>
 			<el-tab-pane>
-				<template #label> <i class="el-icon-date"></i> {{ text.Day.name }} </template>
+				<template #label>
+					<i class="el-icon-date"></i> {{ text.Day.name }}
+				</template>
 				<div class="vue-cron__item">
 					<el-row>
-						<el-radio v-model="day.cronEvery" label="1">{{ text.Day.every }}</el-radio>
+						<el-radio v-model="day.cronEvery" label="1">{{
+							text.Day.every
+						}}</el-radio>
 					</el-row>
 					<el-row>
 						<el-radio v-model="day.cronEvery" label="2"
@@ -194,7 +232,10 @@
 								:max="7"
 							></el-input-number>
 							{{ text.Day.intervalWeek[1] }}
-							<el-select size="small" v-model="week.incrementStart">
+							<el-select
+								size="small"
+								v-model="week.incrementStart"
+							>
 								<el-option
 									v-for="val in 7"
 									:key="val"
@@ -227,13 +268,25 @@
 					<el-row>
 						<el-radio class="long" v-model="day.cronEvery" label="4"
 							>{{ text.Day.specificWeek }}
-							<el-select size="small" multiple v-model="week.specificSpecific">
+							<el-select
+								size="small"
+								multiple
+								v-model="week.specificSpecific"
+							>
 								<el-option
 									v-for="val in 7"
 									:key="val"
 									:label="text.Week[val - 1]"
 									:value="
-										['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'][val - 1]
+										[
+											'SUN',
+											'MON',
+											'TUE',
+											'WED',
+											'THU',
+											'FRI',
+											'SAT',
+										][val - 1]
 									"
 								></el-option>
 							</el-select>
@@ -242,10 +295,17 @@
 					<el-row>
 						<el-radio class="long" v-model="day.cronEvery" label="5"
 							>{{ text.Day.specificDay }}
-							<el-select size="small" multiple v-model="day.specificSpecific">
-								<el-option v-for="val in 31" :key="val" :value="val">{{
-									val
-								}}</el-option>
+							<el-select
+								size="small"
+								multiple
+								v-model="day.specificSpecific"
+							>
+								<el-option
+									v-for="val in 31"
+									:key="val"
+									:value="val"
+									>{{ val }}</el-option
+								>
 							</el-select>
 						</el-radio>
 					</el-row>
@@ -262,7 +322,10 @@
 					<el-row>
 						<el-radio v-model="day.cronEvery" label="8"
 							>{{ text.Day.lastWeek[0] }}
-							<el-select size="small" v-model="day.cronLastSpecificDomDay">
+							<el-select
+								size="small"
+								v-model="day.cronLastSpecificDomDay"
+							>
 								<el-option
 									v-for="val in 7"
 									:key="val"
@@ -352,9 +415,16 @@
 						</el-radio>
 					</el-row>
 					<el-row>
-						<el-radio class="long" v-model="month.cronEvery" label="3"
+						<el-radio
+							class="long"
+							v-model="month.cronEvery"
+							label="3"
 							>{{ text.Month.specific }}
-							<el-select size="small" multiple v-model="month.specificSpecific">
+							<el-select
+								size="small"
+								multiple
+								v-model="month.specificSpecific"
+							>
 								<el-option
 									v-for="val in 12"
 									:key="val"
@@ -385,7 +455,9 @@
 				</div>
 			</el-tab-pane>
 			<el-tab-pane v-if="showYear || false">
-				<template #label> <i class="el-icon-date"></i> {{ text.Year.name }} </template>
+				<template #label>
+					<i class="el-icon-date"></i> {{ text.Year.name }}
+				</template>
 				<div class="vue-cron__item">
 					<el-row>
 						<el-radio v-model="year.cronEvery" label="1">{{
@@ -411,7 +483,10 @@
 						</el-radio>
 					</el-row>
 					<el-row>
-						<el-radio class="long" v-model="year.cronEvery" label="3"
+						<el-radio
+							class="long"
+							v-model="year.cronEvery"
+							label="3"
 							>{{ text.Year.specific }}
 							<el-select
 								size="small"
@@ -466,9 +541,9 @@ export default {
 	props: {
 		modelValue: {
 			type: String,
-			default: ""
+			default: "",
 		},
-		showYear: Boolean
+		showYear: Boolean,
 	},
 
 	emits: ["update:modelValue", "change", "close"],
@@ -481,7 +556,7 @@ export default {
 				incrementIncrement: 5,
 				rangeStart: "",
 				rangeEnd: "",
-				specificSpecific: []
+				specificSpecific: [],
 			},
 			minute: {
 				cronEvery: "",
@@ -489,7 +564,7 @@ export default {
 				incrementIncrement: 5,
 				rangeStart: "",
 				rangeEnd: "",
-				specificSpecific: []
+				specificSpecific: [],
 			},
 			hour: {
 				cronEvery: "",
@@ -497,7 +572,7 @@ export default {
 				incrementIncrement: 5,
 				rangeStart: "",
 				rangeEnd: "",
-				specificSpecific: []
+				specificSpecific: [],
 			},
 			day: {
 				cronEvery: "",
@@ -508,7 +583,7 @@ export default {
 				specificSpecific: [],
 				cronLastSpecificDomDay: 1,
 				cronDaysBeforeEomMinus: "",
-				cronDaysNearestWeekday: ""
+				cronDaysNearestWeekday: "",
 			},
 			week: {
 				cronEvery: "",
@@ -516,7 +591,7 @@ export default {
 				incrementIncrement: 1,
 				specificSpecific: [],
 				cronNthDayDay: 1,
-				cronNthDayNth: 1
+				cronNthDayNth: 1,
 			},
 			month: {
 				cronEvery: "",
@@ -524,7 +599,7 @@ export default {
 				incrementIncrement: 5,
 				rangeStart: "",
 				rangeEnd: "",
-				specificSpecific: []
+				specificSpecific: [],
 			},
 			year: {
 				cronEvery: "",
@@ -532,7 +607,7 @@ export default {
 				incrementIncrement: 1,
 				rangeStart: "",
 				rangeEnd: "",
-				specificSpecific: []
+				specificSpecific: [],
 			},
 			output: {
 				second: "",
@@ -541,15 +616,15 @@ export default {
 				day: "",
 				month: "",
 				Week: "",
-				year: ""
-			}
+				year: "",
+			},
 		};
 	},
 
 	watch: {
 		data() {
 			this.rest(this.$data);
-		}
+		},
 	},
 
 	computed: {
@@ -564,16 +639,20 @@ export default {
 					seconds = "*";
 					break;
 				case "2":
-					seconds = this.second.incrementStart + "/" + this.second.incrementIncrement;
+					seconds =
+						this.second.incrementStart +
+						"/" +
+						this.second.incrementIncrement;
 					break;
 				case "3":
-					this.second.specificSpecific.forEach(val => {
+					this.second.specificSpecific.forEach((val) => {
 						seconds += val + ",";
 					});
 					seconds = seconds.slice(0, -1);
 					break;
 				case "4":
-					seconds = this.second.rangeStart + "-" + this.second.rangeEnd;
+					seconds =
+						this.second.rangeStart + "-" + this.second.rangeEnd;
 					break;
 			}
 			return seconds;
@@ -586,16 +665,20 @@ export default {
 					minutes = "*";
 					break;
 				case "2":
-					minutes = this.minute.incrementStart + "/" + this.minute.incrementIncrement;
+					minutes =
+						this.minute.incrementStart +
+						"/" +
+						this.minute.incrementIncrement;
 					break;
 				case "3":
-					this.minute.specificSpecific.forEach(val => {
+					this.minute.specificSpecific.forEach((val) => {
 						minutes += val + ",";
 					});
 					minutes = minutes.slice(0, -1);
 					break;
 				case "4":
-					minutes = this.minute.rangeStart + "-" + this.minute.rangeEnd;
+					minutes =
+						this.minute.rangeStart + "-" + this.minute.rangeEnd;
 					break;
 			}
 			return minutes;
@@ -608,10 +691,13 @@ export default {
 					hours = "*";
 					break;
 				case "2":
-					hours = this.hour.incrementStart + "/" + this.hour.incrementIncrement;
+					hours =
+						this.hour.incrementStart +
+						"/" +
+						this.hour.incrementIncrement;
 					break;
 				case "3":
-					this.hour.specificSpecific.forEach(val => {
+					this.hour.specificSpecific.forEach((val) => {
 						hours += val + ",";
 					});
 					hours = hours.slice(0, -1);
@@ -634,10 +720,13 @@ export default {
 					days = "?";
 					break;
 				case "3":
-					days = this.day.incrementStart + "/" + this.day.incrementIncrement;
+					days =
+						this.day.incrementStart +
+						"/" +
+						this.day.incrementIncrement;
 					break;
 				case "5":
-					this.day.specificSpecific.forEach(val => {
+					this.day.specificSpecific.forEach((val) => {
 						days += val + ",";
 					});
 					days = days.slice(0, -1);
@@ -670,10 +759,13 @@ export default {
 					weeks = "?";
 					break;
 				case "2":
-					weeks = this.week.incrementStart + "/" + this.week.incrementIncrement;
+					weeks =
+						this.week.incrementStart +
+						"/" +
+						this.week.incrementIncrement;
 					break;
 				case "4":
-					this.week.specificSpecific.forEach(val => {
+					this.week.specificSpecific.forEach((val) => {
 						weeks += val + ",";
 					});
 					weeks = weeks.slice(0, -1);
@@ -686,7 +778,8 @@ export default {
 					weeks = "?";
 					break;
 				case "11":
-					weeks = this.week.cronNthDayDay + "#" + this.week.cronNthDayNth;
+					weeks =
+						this.week.cronNthDayDay + "#" + this.week.cronNthDayNth;
 					break;
 			}
 			return weeks;
@@ -699,10 +792,13 @@ export default {
 					months = "*";
 					break;
 				case "2":
-					months = this.month.incrementStart + "/" + this.month.incrementIncrement;
+					months =
+						this.month.incrementStart +
+						"/" +
+						this.month.incrementIncrement;
 					break;
 				case "3":
-					this.month.specificSpecific.forEach(val => {
+					this.month.specificSpecific.forEach((val) => {
 						months += val + ",";
 					});
 					months = months.slice(0, -1);
@@ -721,10 +817,13 @@ export default {
 					years = "*";
 					break;
 				case "2":
-					years = this.year.incrementStart + "/" + this.year.incrementIncrement;
+					years =
+						this.year.incrementStart +
+						"/" +
+						this.year.incrementIncrement;
 					break;
 				case "3":
-					this.year.specificSpecific.forEach(val => {
+					this.year.specificSpecific.forEach((val) => {
 						years += val + ",";
 					});
 					years = years.slice(0, -1);
@@ -736,11 +835,12 @@ export default {
 			return years;
 		},
 		cron() {
-			return `${this.secondsText || "*"} ${this.minutesText || "*"} ${this.hoursText ||
-				"*"} ${this.daysText || "*"} ${this.monthsText || "*"} ${this.weeksText || "?"} ${
-				this.showYear ? this.yearsText || "*" : ""
-			}`;
-		}
+			return `${this.secondsText || "*"} ${this.minutesText || "*"} ${
+				this.hoursText || "*"
+			} ${this.daysText || "*"} ${this.monthsText || "*"} ${
+				this.weeksText || "?"
+			} ${this.showYear ? this.yearsText || "*" : ""}`;
+		},
 	},
 
 	methods: {
@@ -769,8 +869,8 @@ export default {
 					}
 				}
 			}
-		}
-	}
+		},
+	},
 };
 </script>
 

@@ -41,8 +41,8 @@
 <script lang="ts">
 import { defineComponent, inject, reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { useRefs } from "@/core";
-import { CrudLoad, Table } from "@/crud/types";
+import { useRefs } from "/@/core";
+import { CrudLoad, Table } from "/@/crud/types";
 
 export default defineComponent({
 	name: "sys-log",

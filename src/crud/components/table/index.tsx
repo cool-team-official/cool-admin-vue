@@ -1,11 +1,11 @@
 import { defineComponent, h, inject, nextTick, onMounted, ref } from "vue";
-import { Crud, Mitt } from "@/crud/types";
+import { Crud, Mitt } from "/@/crud/types";
 import { useRefs } from "../../hooks/core";
 import { cloneDeep, isArray, isEmpty, isFunction, isNull } from "../../utils";
 import { renderNode } from "../../utils/vnode";
 import ContextMenu from "../context-menu/index";
 import { useElTableApi } from "./helper";
-import { Browser } from "@/crud/types";
+import { Browser } from "/@/crud/types";
 
 export default defineComponent({
 	name: "cl-table",

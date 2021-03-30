@@ -46,7 +46,12 @@
 				</el-form-item>
 			</el-form>
 
-			<el-button round size="mini" class="submit-btn" @click="toLogin" :loading="saving"
+			<el-button
+				round
+				size="mini"
+				class="submit-btn"
+				@click="toLogin"
+				:loading="saving"
 				>登录</el-button
 			>
 		</div>
@@ -59,11 +64,11 @@ import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import Captcha from "./components/captcha.vue";
-import { useRefs } from "@/core";
+import { useRefs } from "/@/core";
 
 export default defineComponent({
 	components: {
-		Captcha
+		Captcha,
 	},
 
 	setup() {
@@ -78,7 +83,7 @@ export default defineComponent({
 			username: "admin",
 			password: "123456",
 			captchaId: "",
-			verifyCode: ""
+			verifyCode: "",
 		});
 
 		// 登录
@@ -125,13 +130,13 @@ export default defineComponent({
 			form,
 			saving,
 			toLogin,
-			setRefs
+			setRefs,
 		};
-	}
+	},
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .page-login {
 	height: 100vh;
 	width: 100vw;
@@ -161,7 +166,7 @@ export default defineComponent({
 			letter-spacing: 1px;
 		}
 
-		:deep(.el-form) {
+		.el-form {
 			width: 300px;
 			border-radius: 3px;
 

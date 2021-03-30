@@ -2,13 +2,21 @@
 	<div class="page-my-info">
 		<div class="title">基本信息</div>
 
-		<el-form size="small" label-width="100px" :model="form" :disabled="saving">
+		<el-form
+			size="small"
+			label-width="100px"
+			:model="form"
+			:disabled="saving"
+		>
 			<el-form-item label="头像">
 				<cl-upload v-model="form.headImg"></cl-upload>
 			</el-form-item>
 
 			<el-form-item label="昵称">
-				<el-input v-model="form.nickName" placeholder="请填写昵称"></el-input>
+				<el-input
+					v-model="form.nickName"
+					placeholder="请填写昵称"
+				></el-input>
 			</el-form-item>
 
 			<el-form-item label="密码">
@@ -16,7 +24,9 @@
 			</el-form-item>
 
 			<el-form-item label="">
-				<el-button type="primary" @click="save" :disabled="saving">保存修改</el-button>
+				<el-button type="primary" @click="save" :disabled="saving"
+					>保存修改</el-button
+				>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -50,7 +60,7 @@ export default defineComponent({
 				.userUpdate({
 					headImg,
 					nickName,
-					password
+					password,
 				})
 				.then(() => {
 					form.password = "";
@@ -68,9 +78,9 @@ export default defineComponent({
 		return {
 			form,
 			saving,
-			save
+			save,
 		};
-	}
+	},
 });
 </script>
 

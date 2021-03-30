@@ -4,7 +4,10 @@ export interface RefreshOp {
 	 * @param list 数据列表
 	 * @param pagination 分页信息
 	 */
-	render(list: any[], pagination?: { size?: number; page?: number; total?: number }): void;
+	render(
+		list: any[],
+		pagination?: { size?: number; page?: number; total?: number }
+	): void;
 
 	/**
 	 * 继续执行刷新

@@ -10,10 +10,10 @@ const CRUD = {
 		app.provide("__crud", options.crud);
 
 		// 获取浏览器信息
-		(function() {
+		(function () {
 			const browser = reactive<any>({
 				isMini: false,
-				screen: "full"
+				screen: "full",
 			});
 
 			function resize() {
@@ -47,11 +47,11 @@ const CRUD = {
 		}
 
 		app.config.globalProperties.$crud = {
-			openContextMenu: ContextMenu.open
+			openContextMenu: ContextMenu.open,
 		};
 
 		return {};
-	}
+	},
 };
 
 export default CRUD;

@@ -1,6 +1,6 @@
 import { ElMessageBox, ElMessage } from "element-plus";
 import { isArray, isObject, isString } from "../../utils";
-import { ServiceName } from "@/crud/types";
+import { ServiceName } from "/@/crud/types";
 
 export function useRequest({ mitt, props, crud }: any) {
 	// 刷新随机值，避免脏数据

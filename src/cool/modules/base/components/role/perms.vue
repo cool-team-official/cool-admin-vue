@@ -27,7 +27,7 @@
 <script lang="ts">
 import { defineComponent, inject, onMounted, ref, watch } from "vue";
 import { ElMessage } from "element-plus";
-import { deepTree } from "@/core/utils";
+import { deepTree } from "/@/core/utils";
 
 export default defineComponent({
 	name: "cl-role-perms",

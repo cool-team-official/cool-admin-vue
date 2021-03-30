@@ -1,5 +1,5 @@
-import { useRefs } from "@/core";
-import { deepTree } from "@/core/utils";
+import { useRefs } from "/@/core";
+import { deepTree } from "/@/core/utils";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { defineComponent, h, inject, ref } from "vue";
 

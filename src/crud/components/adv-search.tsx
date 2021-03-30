@@ -2,7 +2,7 @@ import { useForm, useRefs } from "../hooks/core";
 import { cloneDeep, deepMerge } from "../utils";
 import Parse from "../utils/parse";
 import { renderNode } from "../utils/vnode";
-import { Browser, Crud, Mitt } from "@/crud/types";
+import { Browser, Crud, Mitt } from "/@/crud/types";
 import { defineComponent, inject, reactive, ref } from "vue";
 import { useAction } from "./form/helper";
 

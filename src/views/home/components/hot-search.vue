@@ -50,32 +50,32 @@
 								border: false,
 								'default-sort': {
 									prop: 'ud',
-									order: 'descending'
-								}
+									order: 'descending',
+								},
 							}"
 							:context-menu="false"
 							:columns="[
 								{
 									label: '排名',
 									prop: 'index',
-									width: 60
+									width: 60,
 								},
 								{
 									label: '搜索关键词',
 									prop: 'keyWord',
-									'min-width': 100
+									'min-width': 100,
 								},
 								{
 									label: '用户数',
 									prop: 'users',
-									'min-width': 100
+									'min-width': 100,
 								},
 								{
 									label: '周涨幅',
 									prop: 'ud',
 									sortable: 'custom',
-									'min-width': 100
-								}
+									'min-width': 100,
+								},
 							]"
 						></cl-table>
 					</el-row>
@@ -96,7 +96,7 @@ export default defineComponent({
 				left: 0,
 				top: 0,
 				right: 0,
-				bottom: 0
+				bottom: 0,
 			},
 			xAxis: {
 				type: "category",
@@ -112,24 +112,24 @@ export default defineComponent({
 					"16:00",
 					"18:00",
 					"20:00",
-					"22:00"
+					"22:00",
 				],
-				boundaryGap: false
+				boundaryGap: false,
 			},
 			yAxis: {
 				type: "value",
 				splitLine: {
-					show: false
+					show: false,
 				},
 				axisTick: {
-					show: false
+					show: false,
 				},
 				axisLine: {
-					show: false
+					show: false,
 				},
 				axisLabel: {
-					show: false
-				}
+					show: false,
+				},
 			},
 			series: [
 				{
@@ -151,7 +151,7 @@ export default defineComponent({
 						"1100",
 						"1000",
 						"1118",
-						"1322"
+						"1322",
 					],
 					areaStyle: {
 						normal: {
@@ -163,29 +163,29 @@ export default defineComponent({
 								[
 									{
 										offset: 0,
-										color: "#D1E5FF"
+										color: "#D1E5FF",
 									},
 									{
 										offset: 1,
-										color: "#FFFFFF"
-									}
+										color: "#FFFFFF",
+									},
 								],
 								false
-							)
-						}
+							),
+						},
 					},
 					itemStyle: {
 						normal: {
-							color: "#4165d7"
-						}
+							color: "#4165d7",
+						},
 					},
 					lineStyle: {
 						normal: {
-							width: 2
-						}
-					}
-				}
-			]
+							width: 2,
+						},
+					},
+				},
+			],
 		});
 
 		function onLoad({ ctx, app }: any) {
@@ -197,45 +197,45 @@ export default defineComponent({
 								index: 1,
 								keyWord: "无线耳机",
 								users: 983,
-								ud: 5
+								ud: 5,
 							},
 							{
 								index: 1,
 								keyWord: "运动耳机",
 								users: 763,
-								ud: -3
+								ud: -3,
 							},
 							{
 								index: 1,
 								keyWord: "蓝牙音箱",
 								users: 328,
-								ud: 7
+								ud: 7,
 							},
 							{
 								index: 1,
 								keyWord: "4k显示屏",
 								users: 144,
-								ud: 4
+								ud: 4,
 							},
 							{
 								index: 1,
 								keyWord: "罗技 G530",
 								users: 121,
-								ud: -1
-							}
-						]
+								ud: -1,
+							},
+						],
 					});
-				}
+				},
 			}).done();
 			app.refresh();
 		}
 
 		return { chartOption, onLoad };
-	}
+	},
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .hot-search {
 	&__header {
 		display: flex;
@@ -301,7 +301,7 @@ export default defineComponent({
 	&__table {
 		padding: 10px;
 
-		:deep(.el-table) {
+		.el-table {
 			&__header {
 				th {
 					background-color: #fff !important;

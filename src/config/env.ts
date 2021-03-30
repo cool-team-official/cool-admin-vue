@@ -1,18 +1,19 @@
 import store from "store";
-import { getUrlParam } from "@/core/utils";
-import { MenuItem } from "@/cool/modules/base/types";
+import { getUrlParam } from "/@/core/utils";
+import { MenuItem } from "/@/cool/modules/base/types";
 
 // 路由模式
 const routerMode = "history";
 
 // 开发模式
-const isDev: boolean = process.env.NODE_ENV == "development";
+const isDev: boolean = true;
+
 
 // Host
 const host = "https://show.cool-admin.com";
 
 // 请求地址
-const baseUrl: string = (function() {
+const baseUrl: string = (function () {
 	let proxy = getUrlParam("proxy");
 
 	if (proxy) {
@@ -38,13 +39,13 @@ const app: any = store.get("__app__") || {
 		showAMenu: false, // 是否显示一级菜单栏
 		showRouteNav: true, // 是否显示路由导航栏
 		showProcess: true, // 是否显示页面进程栏
-		customMenu: false // 自定义菜单
+		customMenu: false, // 自定义菜单
 	},
 
 	theme: {
 		color: "", // 主题色
-		url: "" // 主题样式地址
-	}
+		url: "", // 主题样式地址
+	},
 };
 
 // 自定义菜单列表

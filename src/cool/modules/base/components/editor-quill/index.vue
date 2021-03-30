@@ -16,8 +16,8 @@
 import { computed, defineComponent, onMounted, ref, watch } from "vue";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import { isNumber } from "@/core/utils";
-import { useRefs } from "@/core";
+import { isNumber } from "/@/core/utils";
+import { useRefs } from "/@/core";
 
 export default defineComponent({
 	name: "cl-editor-quill",
@@ -26,7 +26,7 @@ export default defineComponent({
 		options: Object,
 		modelValue: null,
 		height: [String, Number],
-		width: [String, Number]
+		width: [String, Number],
 	},
 
 	emits: ["update:modelValue", "load"],
@@ -60,7 +60,12 @@ export default defineComponent({
 				files.forEach((file, i) => {
 					const [type] = file.type.split("/");
 
-					quill.insertEmbed(cursorIndex.value + i, type, file.url, Quill.sources.USER);
+					quill.insertEmbed(
+						cursorIndex.value + i,
+						type,
+						file.url,
+						Quill.sources.USER
+					);
 				});
 
 				// 移动光标到图片后一位
@@ -75,12 +80,16 @@ export default defineComponent({
 
 		// 编辑框样式
 		const style = computed<any>(() => {
-			const height = isNumber(props.height) ? props.height + "px" : props.height;
-			const width = isNumber(props.width) ? props.width + "px" : props.width;
+			const height = isNumber(props.height)
+				? props.height + "px"
+				: props.height;
+			const width = isNumber(props.width)
+				? props.width + "px"
+				: props.width;
 
 			return {
 				height,
-				width
+				width,
 			};
 		});
 
@@ -98,7 +107,7 @@ export default defineComponent({
 			}
 		);
 
-		onMounted(function() {
+		onMounted(function () {
 			// 实例化
 			quill = new Quill(refs.value.editor, {
 				theme: "snow",
@@ -118,10 +127,10 @@ export default defineComponent({
 						[{ font: [] }],
 						[{ align: [] }],
 						["clean"],
-						["link", "image"]
-					]
+						["link", "image"],
+					],
 				},
-				...props.options
+				...props.options,
 			});
 
 			// 添加图片工具
@@ -148,9 +157,9 @@ export default defineComponent({
 			style,
 			setRefs,
 			setContent,
-			onUploadSpaceConfirm
+			onUploadSpaceConfirm,
 		};
-	}
+	},
 });
 </script>
 
@@ -250,8 +259,12 @@ export default defineComponent({
 		content: "衬线字体";
 	}
 
-	.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,
-	.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
+	.ql-snow
+		.ql-picker.ql-font
+		.ql-picker-label[data-value="monospace"]::before,
+	.ql-snow
+		.ql-picker.ql-font
+		.ql-picker-item[data-value="monospace"]::before {
 		content: "等宽字体";
 	}
 }

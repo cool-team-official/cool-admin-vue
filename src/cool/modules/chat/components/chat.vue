@@ -55,12 +55,12 @@ import { useStore } from "vuex";
 import { ElNotification } from "element-plus";
 import dayjs from "dayjs";
 // import io from "socket.io-client";
-// import { socketUrl } from "@/config/env";
+// import { socketUrl } from "/@/config/env";
 import Session from "./session.vue";
 import Message from "./message.vue";
 import Input from "./input.vue";
 import { parseContent } from "../utils";
-import { useRefs } from "@/core";
+import { useRefs } from "/@/core";
 
 export default defineComponent({
 	name: "cl-chat",

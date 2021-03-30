@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { getBrowser } from "@/core/utils";
+import { getBrowser } from "/@/core/utils";
 
 export default defineComponent({
 	name: "cl-scrollbar",

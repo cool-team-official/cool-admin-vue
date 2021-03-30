@@ -1,4 +1,4 @@
-import { Crud } from "@/crud/types";
+import { Crud } from "/@/crud/types";
 import { computed, defineComponent, inject, ref } from "vue";
 
 export default defineComponent({

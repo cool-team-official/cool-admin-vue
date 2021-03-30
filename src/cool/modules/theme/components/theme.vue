@@ -19,7 +19,7 @@
 						>
 							<li
 								:style="{
-									backgroundColor: item.color
+									backgroundColor: item.color,
 								}"
 								@click="setTheme(item)"
 							>
@@ -38,15 +38,24 @@
 					<ul>
 						<li v-if="!browser.isMini">
 							<span>显示一级菜单栏</span>
-							<el-switch size="mini" v-model="form.conf.showAMenu"></el-switch>
+							<el-switch
+								size="mini"
+								v-model="form.conf.showAMenu"
+							></el-switch>
 						</li>
 						<li>
 							<span>显示路由导航栏</span>
-							<el-switch size="mini" v-model="form.conf.showRouteNav"></el-switch>
+							<el-switch
+								size="mini"
+								v-model="form.conf.showRouteNav"
+							></el-switch>
 						</li>
 						<li>
 							<span>显示页面进程栏</span>
-							<el-switch size="mini" v-model="form.conf.showProcess"></el-switch>
+							<el-switch
+								size="mini"
+								v-model="form.conf.showProcess"
+							></el-switch>
 						</li>
 					</ul>
 				</div>
@@ -82,7 +91,7 @@
 			title="修改说明"
 			width="800px"
 			:props="{
-				'append-to-body': true
+				'append-to-body': true,
 			}"
 		>
 			<ul class="cl-theme__desc">
@@ -102,50 +111,50 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { isDev } from "@/config/env";
-import { isArray, cloneDeep } from "@/core/utils";
+import { isDev } from "/@/config/env";
+import { isArray, cloneDeep } from "/@/core/utils";
 
 export default {
 	name: "cl-theme",
 
 	props: {
-		list: Array
+		list: Array,
 	},
 
 	data() {
 		return {
 			drawer: {
-				visible: false
+				visible: false,
 			},
 			desc: {
 				visible: false,
 				color: "",
-				conf: ""
+				conf: "",
 			},
 			themes: [
 				{
 					label: "钴蓝",
 					name: "blue",
-					color: "#4165d7"
+					color: "#4165d7",
 				},
 				{
 					label: "极黑",
 					name: "black",
-					color: "#2f3447"
+					color: "#2f3447",
 				},
 				{
 					label: "果绿",
 					name: "green",
-					color: "#51C21A"
+					color: "#51C21A",
 				},
 				{
 					label: "酱紫",
 					name: "purple",
-					color: "#d0378d"
-				}
+					color: "#d0378d",
+				},
 			],
 			isDev,
-			form: {}
+			form: {},
 		};
 	},
 
@@ -154,7 +163,7 @@ export default {
 
 		themeList() {
 			return isArray(this.list) ? this.list : this.themes;
-		}
+		},
 	},
 
 	watch: {
@@ -163,15 +172,15 @@ export default {
 			immediate: true,
 			handler(val) {
 				this.form = cloneDeep(val);
-			}
+			},
 		},
 
 		form: {
 			deep: true,
 			handler(val) {
 				this.$store.commit("UPDATE_APP", val);
-			}
-		}
+			},
+		},
 	},
 
 	methods: {
@@ -194,7 +203,9 @@ export default {
 			const theme = document.getElementById("theme-style");
 			const style = theme || document.createElement("link");
 
-			style.href = `${this.modules.theme.options.sourceUrl || "/theme/"}${name}.css`;
+			style.href = `${
+				this.modules.theme.options.sourceUrl || "/theme/"
+			}${name}.css`;
 
 			if (!theme) {
 				style.type = "text/css";
@@ -212,7 +223,9 @@ export default {
 			this.form.theme.url = style.href;
 
 			// 设置 css 变量
-			document.getElementsByTagName("body")[0].style.setProperty("--color-primary", color);
+			document
+				.getElementsByTagName("body")[0]
+				.style.setProperty("--color-primary", color);
 		},
 
 		// 打开修改说明
@@ -233,14 +246,14 @@ export default {
 					}
 				}
 			`;
-		}
-	}
+		},
+	},
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .cl-theme {
-	:deep(.el-drawer) {
+	.el-drawer {
 		&__header {
 			margin-bottom: 20px;
 		}

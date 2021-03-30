@@ -22,13 +22,19 @@
 				</div>
 
 				<div class="container">
-					<cl-crud :ref="setRefs('crud')" :on-refresh="onRefresh" @load="onLoad">
+					<cl-crud
+						:ref="setRefs('crud')"
+						:on-refresh="onRefresh"
+						@load="onLoad"
+					>
 						<el-row type="flex">
 							<cl-refresh-btn></cl-refresh-btn>
 							<cl-add-btn></cl-add-btn>
 							<cl-multi-delete-btn></cl-multi-delete-btn>
 							<el-button
-								v-permission="$service.system.user.permission.move"
+								v-permission="
+									$service.system.user.permission.move
+								"
 								size="mini"
 								type="success"
 								:disabled="selects.ids.length == 0"
@@ -59,7 +65,8 @@
 								<!-- 权限 -->
 								<template #column-roleName="{ scope }">
 									<el-tag
-										v-for="(item, index) in scope.row.roleNameList"
+										v-for="(item, index) in scope.row
+											.roleNameList"
 										:key="index"
 										disable-transitions
 										size="small"
@@ -72,7 +79,9 @@
 								<!-- 单个转移 -->
 								<template #slot-move-btn="{ scope }">
 									<el-button
-										v-permission="$service.system.user.permission.move"
+										v-permission="
+											$service.system.user.permission.move
+										"
 										type="text"
 										size="mini"
 										@click="toMove(scope.row)"
@@ -95,7 +104,9 @@
 							<template #slot-tips>
 								<div>
 									<i class="el-icon-warning"></i>
-									<span style="margin-left: 6px">新增用户默认密码为：123456</span>
+									<span style="margin-left: 6px"
+										>新增用户默认密码为：123456</span
+									>
 								</div>
 							</template>
 						</cl-upsert>
@@ -105,15 +116,18 @@
 		</div>
 
 		<!-- 部门移动 -->
-		<cl-dept-move :ref="setRefs('dept-move')" @success="refresh({ page: 1 })"></cl-dept-move>
+		<cl-dept-move
+			:ref="setRefs('dept-move')"
+			@success="refresh({ page: 1 })"
+		></cl-dept-move>
 	</div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, inject, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
-import { useRefs } from "@/core";
-import { Table, Upsert } from "@/crud/types";
+import { useRefs } from "/@/core";
+import { Table, Upsert } from "/@/crud/types";
 
 export default defineComponent({
 	name: "sys-user",
@@ -129,7 +143,7 @@ export default defineComponent({
 		// 选择项
 		const selects = reactive<any>({
 			dept: {},
-			ids: []
+			ids: [],
 		});
 
 		// 部门列表
@@ -140,53 +154,53 @@ export default defineComponent({
 			props: {
 				"default-sort": {
 					prop: "createTime",
-					order: "descending"
-				}
+					order: "descending",
+				},
 			},
 			columns: [
 				{
 					type: "selection",
-					width: 60
+					width: 60,
 				},
 				{
 					prop: "headImg",
-					label: "头像"
+					label: "头像",
 				},
 				{
 					prop: "name",
 					label: "姓名",
-					minWidth: 150
+					minWidth: 150,
 				},
 				{
 					prop: "username",
 					label: "用户名",
-					minWidth: 150
+					minWidth: 150,
 				},
 				{
 					prop: "nickName",
 					label: "昵称",
-					minWidth: 150
+					minWidth: 150,
 				},
 				{
 					prop: "departmentName",
 					label: "部门名称",
-					minWidth: 150
+					minWidth: 150,
 				},
 				{
 					prop: "roleName",
 					label: "角色",
 					headerAlign: "center",
-					minWidth: 200
+					minWidth: 200,
 				},
 				{
 					prop: "phone",
 					label: "手机号码",
-					minWidth: 150
+					minWidth: 150,
 				},
 				{
 					prop: "remark",
 					label: "备注",
-					minWidth: 150
+					minWidth: 150,
 				},
 				{
 					prop: "status",
@@ -196,27 +210,27 @@ export default defineComponent({
 						{
 							label: "启用",
 							value: 1,
-							type: "success"
+							type: "success",
 						},
 						{
 							label: "禁用",
 							value: 0,
-							type: "danger"
-						}
-					]
+							type: "danger",
+						},
+					],
 				},
 				{
 					prop: "createTime",
 					label: "创建时间",
 					sortable: "custom",
-					minWidth: 150
+					minWidth: 150,
 				},
 				{
 					type: "op",
 					buttons: ["slot-move-btn", "edit", "delete"],
-					width: 160
-				}
-			]
+					width: 160,
+				},
+			],
 		});
 
 		// 新增、编辑配置
@@ -230,9 +244,9 @@ export default defineComponent({
 						name: "cl-upload",
 						props: {
 							text: "选择头像",
-							icon: "el-icon-picture"
-						}
-					}
+							icon: "el-icon-picture",
+						},
+					},
 				},
 				{
 					prop: "name",
@@ -241,13 +255,13 @@ export default defineComponent({
 					component: {
 						name: "el-input",
 						props: {
-							placeholder: "请填写姓名"
-						}
+							placeholder: "请填写姓名",
+						},
 					},
 					rules: {
 						required: true,
-						message: "姓名不能为空"
-					}
+						message: "姓名不能为空",
+					},
 				},
 				{
 					prop: "nickName",
@@ -256,13 +270,13 @@ export default defineComponent({
 					component: {
 						name: "el-input",
 						props: {
-							placeholder: "请填写昵称"
-						}
+							placeholder: "请填写昵称",
+						},
 					},
 					rules: {
 						required: true,
-						message: "昵称不能为空"
-					}
+						message: "昵称不能为空",
+					},
 				},
 				{
 					prop: "username",
@@ -271,15 +285,15 @@ export default defineComponent({
 					component: {
 						name: "el-input",
 						props: {
-							placeholder: "请填写用户名"
-						}
+							placeholder: "请填写用户名",
+						},
 					},
 					rules: [
 						{
 							required: true,
-							message: "用户名不能为空"
-						}
-					]
+							message: "用户名不能为空",
+						},
+					],
 				},
 				{
 					prop: "password",
@@ -290,16 +304,16 @@ export default defineComponent({
 						name: "el-input",
 						props: {
 							placeholder: "请填写密码",
-							type: "password"
-						}
+							type: "password",
+						},
 					},
 					rules: [
 						{
 							min: 6,
 							max: 16,
-							message: "密码长度在 6 到 16 个字符"
-						}
-					]
+							message: "密码长度在 6 到 16 个字符",
+						},
+					],
 				},
 				{
 					prop: "roleIdList",
@@ -310,14 +324,14 @@ export default defineComponent({
 						name: "cl-role-select",
 						props: {
 							props: {
-								"multiple-limit": 3
-							}
-						}
+								"multiple-limit": 3,
+							},
+						},
 					},
 					rules: {
 						required: true,
-						message: "角色不能为空"
-					}
+						message: "角色不能为空",
+					},
 				},
 				{
 					prop: "phone",
@@ -326,9 +340,9 @@ export default defineComponent({
 					component: {
 						name: "el-input",
 						props: {
-							placeholder: "请填写手机号码"
-						}
-					}
+							placeholder: "请填写手机号码",
+						},
+					},
 				},
 				{
 					prop: "email",
@@ -337,9 +351,9 @@ export default defineComponent({
 					component: {
 						name: "el-input",
 						props: {
-							placeholder: "请填写邮箱"
-						}
-					}
+							placeholder: "请填写邮箱",
+						},
+					},
 				},
 				{
 					prop: "remark",
@@ -350,9 +364,9 @@ export default defineComponent({
 						props: {
 							placeholder: "请填写备注",
 							type: "textarea",
-							rows: 4
-						}
-					}
+							rows: 4,
+						},
+					},
 				},
 				{
 					prop: "status",
@@ -363,23 +377,23 @@ export default defineComponent({
 						options: [
 							{
 								label: "开启",
-								value: 1
+								value: 1,
 							},
 							{
 								label: "关闭",
-								value: 0
-							}
-						]
-					}
+								value: 0,
+							},
+						],
+					},
 				},
 				{
 					prop: "tips",
 					hidden: ":isEdit",
 					component: {
-						name: "slot-tips"
-					}
-				}
-			]
+						name: "slot-tips",
+					},
+				},
+			],
 		});
 
 		// 浏览器信息
@@ -392,7 +406,7 @@ export default defineComponent({
 				isExpand.value = !val;
 			},
 			{
-				immediate: true
+				immediate: true,
 			}
 		);
 
@@ -436,13 +450,13 @@ export default defineComponent({
 
 			next({
 				...data,
-				departmentId
+				departmentId,
 			});
 		}
 
 		// 多选监听
 		function onSelectionChange(selection: any[]) {
-			selects.ids = selection.map(e => e.id);
+			selects.ids = selection.map((e) => e.id);
 		}
 
 		// 部门选择监听
@@ -451,7 +465,7 @@ export default defineComponent({
 
 			refresh({
 				page: 1,
-				departmentIds: ids
+				departmentIds: ids,
 			});
 
 			// 收起
@@ -463,7 +477,7 @@ export default defineComponent({
 		// 部门下新增成员
 		function onDeptUserAdd(item: any) {
 			refs.value.crud.rowAppend({
-				departmentId: item.id
+				departmentId: item.id,
 			});
 		}
 
@@ -508,9 +522,9 @@ export default defineComponent({
 			onDeptUserAdd,
 			onDeptListChange,
 			deptExpand,
-			toMove
+			toMove,
 		};
-	}
+	},
 });
 </script>
 

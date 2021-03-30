@@ -1,7 +1,9 @@
 <template>
 	<div class="cl-upload-space__wrap">
 		<slot>
-			<el-button v-if="showButton" size="mini" @click="open">点击上传</el-button>
+			<el-button v-if="showButton" size="mini" @click="open"
+				>点击上传</el-button
+			>
 		</slot>
 
 		<!-- 弹框 -->
@@ -14,7 +16,7 @@
 			:props="{
 				'close-on-click-modal': false,
 				'append-to-body': true,
-				customClass: 'dialog-upload-space'
+				customClass: 'dialog-upload-space',
 			}"
 			:controls="['slot-expand', 'cl-flex1', 'fullscreen', 'close']"
 		>
@@ -26,7 +28,9 @@
 				<div class="cl-upload-space__content">
 					<!-- 操作栏 -->
 					<div class="cl-upload-space__header scroller1">
-						<el-button size="mini" @click="refresh()">刷新</el-button>
+						<el-button size="mini" @click="refresh()"
+							>刷新</el-button
+						>
 
 						<cl-upload
 							style="margin: 0 10px"
@@ -44,7 +48,9 @@
 							:on-progress="onProgress"
 							:before-upload="beforeUpload"
 						>
-							<el-button size="mini" type="primary">点击上传</el-button>
+							<el-button size="mini" type="primary"
+								>点击上传</el-button
+							>
 						</cl-upload>
 
 						<el-button
@@ -117,7 +123,7 @@
 							:current-page="pagination.page"
 							:total="pagination.total"
 							@current-change="
-								page => {
+								(page) => {
 									refresh({ page });
 								}
 							"
@@ -134,7 +140,11 @@
 						v-if="category.visible"
 						@click="category.visible = false"
 					></i>
-					<i class="el-icon-arrow-left" v-else @click="category.visible = true"></i>
+					<i
+						class="el-icon-arrow-left"
+						v-else
+						@click="category.visible = true"
+					></i>
 				</button>
 			</template>
 		</cl-dialog>
@@ -142,9 +152,9 @@
 </template>
 
 <script>
-import { isEmpty } from "@/core/utils";
-import Category from "./category";
-import FileItem from "./file-item";
+import { isEmpty } from "/@/core/utils";
+import Category from "./category.vue";
+import FileItem from "./file-item.vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -156,12 +166,12 @@ export default {
 		// 选择图片的长度
 		limit: {
 			type: Number,
-			default: 9
+			default: 9,
 		},
 		// 最大允许上传文件大小(MB)
 		limitSize: {
 			type: Number,
-			default: 10
+			default: 10,
 		},
 		// 是否禁用
 		disabled: Boolean,
@@ -178,18 +188,18 @@ export default {
 		// 是否显示按钮
 		showButton: {
 			type: Boolean,
-			default: true
-		}
+			default: true,
+		},
 	},
 
 	components: {
 		Category,
-		FileItem
+		FileItem,
 	},
 
 	provide() {
 		return {
-			space: this
+			space: this,
 		};
 	},
 
@@ -199,15 +209,15 @@ export default {
 			loading: false,
 			category: {
 				id: null,
-				visible: true
+				visible: true,
 			},
 			selection: [],
 			list: [],
 			pagination: {
 				page: 1,
 				size: 12,
-				total: 0
-			}
+				total: 0,
+			},
 		};
 	},
 
@@ -220,7 +230,7 @@ export default {
 
 		isSelected() {
 			return !isEmpty(this.selection);
-		}
+		},
 	},
 
 	watch: {
@@ -228,8 +238,8 @@ export default {
 			immediate: true,
 			handler(val) {
 				this.category.visible = val ? false : true;
-			}
-		}
+			},
+		},
 	},
 
 	methods: {
@@ -248,7 +258,7 @@ export default {
 
 		// 上传成功
 		onSuccess(res, file) {
-			const item = this.list.find(e => file.uid == e.uid);
+			const item = this.list.find((e) => file.uid == e.uid);
 
 			if (item) {
 				item.url = res.data;
@@ -257,13 +267,13 @@ export default {
 					.add({
 						url: res.data,
 						type: item.type,
-						classifyId: item.classifyId
+						classifyId: item.classifyId,
 					})
-					.then(res => {
+					.then((res) => {
 						item.loading = false;
 						item.id = res.id;
 					})
-					.catch(err => {
+					.catch((err) => {
 						this.$message.error(err);
 					});
 			}
@@ -271,7 +281,7 @@ export default {
 
 		// 上传失败
 		onError(err, file) {
-			const item = this.list.find(e => file.uid == e.uid);
+			const item = this.list.find((e) => file.uid == e.uid);
 
 			if (item) {
 				item.loading = false;
@@ -287,7 +297,7 @@ export default {
 				uid,
 				classifyId: this.category.id,
 				loading: true,
-				progress: "0%"
+				progress: "0%",
 			});
 		},
 
@@ -312,12 +322,12 @@ export default {
 					...this.pagination,
 					...params,
 					classifyId: this.category.id,
-					type: this.accept
+					type: this.accept,
 				})
-				.then(res => {
+				.then((res) => {
 					this.pagination = res.pagination;
 
-					this.list = res.list.map(e => {
+					this.list = res.list.map((e) => {
 						e.loading = false;
 						return e;
 					});
@@ -329,7 +339,7 @@ export default {
 
 		// 确认选中
 		confirm() {
-			const urls = this.selection.map(e => e.url).join(",");
+			const urls = this.selection.map((e) => e.url).join(",");
 
 			this.$emit("update:modelValue", urls);
 			this.$emit("confirm", this.detailData ? this.selection : urls);
@@ -339,7 +349,7 @@ export default {
 
 		// 选择
 		select(item) {
-			const index = this.selection.findIndex(e => e.id === item.id);
+			const index = this.selection.findIndex((e) => e.id === item.id);
 
 			if (index >= 0) {
 				this.selection.splice(index, 1);
@@ -357,18 +367,18 @@ export default {
 			}
 
 			// 已选文件 id
-			const ids = selection.map(e => e.id);
+			const ids = selection.map((e) => e.id);
 
 			this.$confirm("此操作将删除文件, 是否继续?", "提示", {
-				type: "warning"
+				type: "warning",
 			})
 				.then(() => {
 					this.$message.success("删除成功");
 
 					// 删除文件及选择
-					ids.forEach(id => {
-						[this.list, this.selection].forEach(list => {
-							const index = list.findIndex(e => e.id === id);
+					ids.forEach((id) => {
+						[this.list, this.selection].forEach((list) => {
+							const index = list.findIndex((e) => e.id === id);
 							list.splice(index, 1);
 						});
 					});
@@ -376,15 +386,15 @@ export default {
 					// 删除请求
 					this.$service.space.info
 						.delete({
-							ids
+							ids,
 						})
-						.catch(err => {
+						.catch((err) => {
 							this.$message.error(err);
 						});
 				})
 				.catch(() => null);
-		}
-	}
+		},
+	},
 };
 </script>
 
@@ -396,9 +406,7 @@ export default {
 		}
 	}
 }
-</style>
 
-<style lang="scss" scoped>
 .cl-upload-space {
 	display: flex;
 	height: 100%;
@@ -439,7 +447,7 @@ export default {
 			top: calc(50% - 90px);
 			left: calc(50% - 160px);
 
-			:deep(.cl-upload) {
+			.cl-upload {
 				display: flex;
 				flex-direction: column;
 				justify-content: center;

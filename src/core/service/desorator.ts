@@ -1,7 +1,7 @@
 import { isObject } from "../utils";
 
 export function Permission(value: string) {
-	return function(target: any, key: any, descriptor: any) {
+	return function (target: any, key: any, descriptor: any) {
 		if (!target.permission) {
 			target.permission = {};
 		}
@@ -17,7 +17,7 @@ export function Permission(value: string) {
 }
 
 export function Service(value: any) {
-	return function(target: any) {
+	return function (target: any) {
 		// 命名
 		if (typeof value == "string") {
 			target.prototype.namespace = value;
@@ -27,7 +27,7 @@ export function Service(value: any) {
 		if (isObject(value)) {
 			const { proxy, namespace, url, mock } = value;
 			// @ts-ignore
-			const item: any = process.env.PROXY_LIST[proxy];
+			const item: any = null;
 
 			if (proxy && !item) {
 				console.error(`${proxy} 指向的地址不存在！`);

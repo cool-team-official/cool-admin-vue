@@ -1,5 +1,5 @@
 import { inject, ref, watch } from "vue";
-import { Crud } from "@/crud/types";
+import { Crud } from "/@/crud/types";
 import { isArray } from "../utils";
 
 export default {

@@ -12,13 +12,20 @@
 
 				<li v-if="drag && !isMini">
 					<el-tooltip content="拖动排序">
-						<i class="el-icon-s-operation" @click="isDrag = true"></i>
+						<i
+							class="el-icon-s-operation"
+							@click="isDrag = true"
+						></i>
 					</el-tooltip>
 				</li>
 
 				<li class="no" v-show="isDrag">
-					<el-button type="text" size="mini" @click="treeOrder(true)">保存</el-button>
-					<el-button type="text" size="mini" @click="treeOrder(false)">取消</el-button>
+					<el-button type="text" size="mini" @click="treeOrder(true)"
+						>保存</el-button
+					>
+					<el-button type="text" size="mini" @click="treeOrder(false)"
+						>取消</el-button
+					>
 				</li>
 			</ul>
 		</div>
@@ -30,7 +37,7 @@
 				default-expand-all
 				:data="list"
 				:props="{
-					label: 'name'
+					label: 'name',
 				}"
 				:draggable="isDrag"
 				:allow-drag="allowDrag"
@@ -41,9 +48,11 @@
 			>
 				<template #default="{ node, data }">
 					<div class="cl-dept-tree__node">
-						<span class="cl-dept-tree__node-label" @click="rowClick(data)">{{
-							node.label
-						}}</span>
+						<span
+							class="cl-dept-tree__node-label"
+							@click="rowClick(data)"
+							>{{ node.label }}</span
+						>
 						<span
 							class="cl-dept-tree__node-icon"
 							v-if="isMini"
@@ -63,9 +72,9 @@
 <script lang="ts">
 import { defineComponent, inject, onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { ContextMenu } from "@/crud";
-import { useRefs } from "@/core";
-import { deepTree, isArray, revDeepTree, isPc } from "@/core/utils";
+import { ContextMenu } from "/@/crud";
+import { useRefs } from "/@/core";
+import { deepTree, isArray, revDeepTree, isPc } from "/@/core/utils";
 
 export default defineComponent({
 	name: "cl-dept-tree",
@@ -73,12 +82,12 @@ export default defineComponent({
 	props: {
 		drag: {
 			type: Boolean,
-			default: true
+			default: true,
 		},
 		level: {
 			type: Number,
-			default: 99
-		}
+			default: 99,
+		},
 	},
 
 	setup(props, { emit }) {
@@ -125,7 +134,9 @@ export default defineComponent({
 		// 获取 ids
 		function rowClick(e: any) {
 			ContextMenu.close();
-			const ids = e.children ? revDeepTree(e.children).map(e => e.id) : [];
+			const ids = e.children
+				? revDeepTree(e.children).map((e) => e.id)
+				: [];
 			ids.unshift(e.id);
 			emit("row-click", { item: e, ids });
 		}
@@ -138,7 +149,7 @@ export default defineComponent({
 				title: "编辑部门",
 				width: "550px",
 				props: {
-					labelWidth: "100px"
+					labelWidth: "100px",
 				},
 				items: [
 					{
@@ -148,13 +159,13 @@ export default defineComponent({
 						component: {
 							name: "el-input",
 							props: {
-								placeholder: "请填写部门名称"
-							}
+								placeholder: "请填写部门名称",
+							},
 						},
 						rules: {
 							required: true,
-							message: "部门名称不能为空"
-						}
+							message: "部门名称不能为空",
+						},
 					},
 					{
 						label: "上级部门",
@@ -163,9 +174,9 @@ export default defineComponent({
 						component: {
 							name: "el-input",
 							props: {
-								disabled: true
-							}
-						}
+								disabled: true,
+							},
+						},
 					},
 					{
 						label: "排序",
@@ -176,10 +187,10 @@ export default defineComponent({
 							props: {
 								"controls-position": "right",
 								min: 0,
-								max: 100
-							}
-						}
-					}
+								max: 100,
+							},
+						},
+					},
 				],
 				on: {
 					submit: (data: any, { done, close }: any) => {
@@ -187,7 +198,7 @@ export default defineComponent({
 							id: e.id,
 							parentId: e.parentId,
 							name: data.name,
-							orderNum: data.orderNum
+							orderNum: data.orderNum,
 						})
 							.then(() => {
 								ElMessage.success(`新增部门${data.name}成功`);
@@ -198,8 +209,8 @@ export default defineComponent({
 								ElMessage.error(err);
 								done();
 							});
-					}
-				}
+					},
+				},
 			});
 		}
 
@@ -209,7 +220,7 @@ export default defineComponent({
 				$service.system.dept
 					.delete({
 						ids: [e.id],
-						deleteUser: f
+						deleteUser: f,
 					})
 					.then(() => {
 						if (f) {
@@ -226,12 +237,16 @@ export default defineComponent({
 					});
 			};
 
-			ElMessageBox.confirm(`该操作会删除 “${e.name}” 部门的所有用户，是否确认？`, "提示", {
-				type: "warning",
-				confirmButtonText: "直接删除",
-				cancelButtonText: "保留用户",
-				distinguishCancelAndClose: true
-			})
+			ElMessageBox.confirm(
+				`该操作会删除 “${e.name}” 部门的所有用户，是否确认？`,
+				"提示",
+				{
+					type: "warning",
+					confirmButtonText: "直接删除",
+					cancelButtonText: "保留用户",
+					distinguishCancelAndClose: true,
+				}
+			)
 				.then(() => {
 					del(true);
 				})
@@ -246,13 +261,13 @@ export default defineComponent({
 		function treeOrder(f: boolean) {
 			if (f) {
 				ElMessageBox.confirm("部门架构已发生改变，是否保存？", "提示", {
-					type: "warning"
+					type: "warning",
 				})
 					.then(() => {
 						const ids: any[] = [];
 
 						const deep = (list: any[], pid: any) => {
-							list.forEach(e => {
+							list.forEach((e) => {
 								e.parentId = pid;
 								ids.push(e);
 
@@ -270,7 +285,7 @@ export default defineComponent({
 									return {
 										id: e.id,
 										parentId: e.parentId,
-										orderNum: i
+										orderNum: i,
 									};
 								})
 							)
@@ -307,10 +322,10 @@ export default defineComponent({
 							rowEdit({
 								name: "",
 								parentName: d.name,
-								parentId: d.id
+								parentId: d.id,
 							});
 							done();
-						}
+						},
 					},
 					{
 						label: "编辑",
@@ -318,7 +333,7 @@ export default defineComponent({
 						callback: (_: any, done: Function) => {
 							rowEdit(d);
 							done();
-						}
+						},
 					},
 					{
 						label: "删除",
@@ -327,7 +342,7 @@ export default defineComponent({
 						callback: (_: any, done: Function) => {
 							rowDel(d);
 							done();
-						}
+						},
 					},
 					{
 						label: "新增成员",
@@ -335,13 +350,13 @@ export default defineComponent({
 						callback: (_: any, done: Function) => {
 							emit("user-add", d);
 							done();
-						}
-					}
-				]
+						},
+					},
+				],
 			});
 		}
 
-		onMounted(function() {
+		onMounted(function () {
 			refresh();
 		});
 
@@ -359,13 +374,13 @@ export default defineComponent({
 			rowClick,
 			rowEdit,
 			rowDel,
-			treeOrder
+			treeOrder,
 		};
-	}
+	},
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .cl-dept-tree {
 	height: 100%;
 	width: 100%;
@@ -414,7 +429,7 @@ export default defineComponent({
 		overflow-y: auto;
 		overflow-x: hidden;
 
-		:deep(.el-tree-node__content) {
+		.el-tree-node__content {
 			height: 36px;
 			margin: 0 5px;
 		}

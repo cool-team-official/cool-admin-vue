@@ -1,4 +1,4 @@
-Promise.prototype.done = function(cb: Function) {
+Promise.prototype.done = function (cb: Function) {
 	const P: any = this.constructor;
 
 	return this.then(

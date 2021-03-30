@@ -30,15 +30,15 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { CrudLoad } from "@/crud/types";
+import { CrudLoad } from "/@/crud/types";
 import { TestService } from "../utils/service";
-import Dialog from "./crud/dialog.vue";
-import ContextMenu from "./crud/context-menu.vue";
-import Query from "./crud/query.vue";
-import AdvSearch from "./crud/adv-search.vue";
-import Table from "./crud/table.vue";
-import Upsert from "./crud/upsert.vue";
-import Form from "./crud/form.vue";
+import Dialog from "../components/crud/dialog.vue";
+import ContextMenu from "../components/crud/context-menu.vue";
+import Query from "../components/crud/query.vue";
+import AdvSearch from "../components/crud/adv-search.vue";
+import Table from "../components/crud/table.vue";
+import Upsert from "../components/crud/upsert.vue";
+import Form from "../components/crud/form.vue";
 
 export default defineComponent({
 	name: "crud",
@@ -50,7 +50,7 @@ export default defineComponent({
 		"demo-adv-search": AdvSearch,
 		"demo-table": Table,
 		"demo-upsert": Upsert,
-		"demo-form": Form
+		"demo-form": Form,
 	},
 
 	setup() {
@@ -60,9 +60,9 @@ export default defineComponent({
 		}
 
 		return {
-			onLoad
+			onLoad,
 		};
-	}
+	},
 });
 </script>
 

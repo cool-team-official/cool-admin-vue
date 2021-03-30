@@ -1,4 +1,4 @@
-import { routerMode } from "@/config/env";
+import { routerMode } from "/@/config/env";
 import storage from "./storage";
 
 export function isArray(value: any) {
@@ -66,14 +66,19 @@ export function cloneDeep(obj: any) {
 }
 
 export function clone(obj: any) {
-	return Object.create(Object.getPrototypeOf(obj), Object.getOwnPropertyDescriptors(obj));
+	return Object.create(
+		Object.getPrototypeOf(obj),
+		Object.getOwnPropertyDescriptors(obj)
+	);
 }
 
 export function deepMerge(a: any, b: any) {
 	let k;
 	for (k in b) {
 		a[k] =
-			a[k] && a[k].toString() === "[object Object]" ? deepMerge(a[k], b[k]) : (a[k] = b[k]);
+			a[k] && a[k].toString() === "[object Object]"
+				? deepMerge(a[k], b[k])
+				: (a[k] = b[k]);
 	}
 	return a;
 }
@@ -92,7 +97,14 @@ export function getUrlParam(name: string) {
 
 export function isPc() {
 	const userAgentInfo = navigator.userAgent;
-	const Agents = ["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"];
+	const Agents = [
+		"Android",
+		"iPhone",
+		"SymbianOS",
+		"Windows Phone",
+		"iPad",
+		"iPod",
+	];
 	let flag = true;
 	for (let v = 0; v < Agents.length; v++) {
 		if (userAgentInfo.indexOf(Agents[v]) > 0) {
@@ -120,7 +132,9 @@ export function getBrowser() {
 	let tag = "";
 
 	const isTocuh =
-		"ontouchstart" in window || ua.indexOf("touch") !== -1 || ua.indexOf("mobile") !== -1;
+		"ontouchstart" in window ||
+		ua.indexOf("touch") !== -1 ||
+		ua.indexOf("mobile") !== -1;
 	if (isTocuh) {
 		if (ua.indexOf("ipad") !== -1) {
 			tag = "pad";
@@ -159,7 +173,10 @@ export function getBrowser() {
 	}
 
 	// 操作平台
-	const plat = ua.indexOf("android") > 0 ? "android" : navigator.platform.toLowerCase();
+	const plat =
+		ua.indexOf("android") > 0
+			? "android"
+			: navigator.platform.toLowerCase();
 
 	// 屏幕信息
 	let screen = "full";
@@ -203,7 +220,7 @@ export function getBrowser() {
 		isIOS,
 		isPC,
 		isMini,
-		screen
+		screen,
 	};
 }
 
@@ -237,9 +254,9 @@ export function deepTree(list: Array<any>) {
 	const newList: Array<any> = [];
 	const map: any = {};
 
-	list.forEach(e => (map[e.id] = e));
+	list.forEach((e) => (map[e.id] = e));
 
-	list.forEach(e => {
+	list.forEach((e) => {
 		const parent = map[e.parentId];
 
 		if (parent) {
@@ -250,7 +267,7 @@ export function deepTree(list: Array<any>) {
 	});
 
 	const fn = (list: Array<any>) => {
-		list.map(e => {
+		list.map((e) => {
 			if (e.children instanceof Array) {
 				e.children = orderBy(e.children, "orderNum");
 
@@ -269,7 +286,7 @@ export function revDeepTree(list: Array<any> = []) {
 	let id = 0;
 
 	const deep = (list: Array<any>, parentId: any) => {
-		list.forEach(e => {
+		list.forEach((e) => {
 			if (!e.id) {
 				e.id = id++;
 			}

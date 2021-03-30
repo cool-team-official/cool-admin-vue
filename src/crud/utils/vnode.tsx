@@ -16,14 +16,18 @@ const parseNode = (vnode: any, options: any) => {
 		if (rn) {
 			return rn({ scope });
 		} else {
-			return <cl-error-message title={`组件渲染失败，未找到插槽：${vnode.name}`} />;
+			return (
+				<cl-error-message
+					title={`组件渲染失败，未找到插槽：${vnode.name}`}
+				/>
+			);
 		}
 	}
 
 	if (scope) {
 		// 添加双向绑定
 		vnode.modelValue = scope[prop];
-		vnode["onUpdate:modelValue"] = function(val: any) {
+		vnode["onUpdate:modelValue"] = function (val: any) {
 			scope[prop] = val;
 		};
 	}
@@ -36,7 +40,8 @@ const parseNode = (vnode: any, options: any) => {
 	// 组件参数
 	const props = {
 		...vnode,
-		...vnode.props
+		...vnode.attrs,
+		...vnode.props,
 	};
 
 	delete props._children;
@@ -45,7 +50,7 @@ const parseNode = (vnode: any, options: any) => {
 	return h(resolveComponent(vnode.name), props, {
 		default: () => {
 			return vnode._children;
-		}
+		},
 	});
 };
 
@@ -102,21 +107,37 @@ export function renderNode(vnode: any, { prop, scope, slots }: any) {
 								}
 
 								return (
-									<el-option key={i} label={label} value={value} {...e.props} />
+									<el-option
+										key={i}
+										label={label}
+										value={value}
+										{...e.props}
+									/>
 								);
 							}
 							// 单选框组
 							else if (vnode.name == "el-radio-group") {
-								return h(<el-radio key={i} label={e.value}></el-radio>, e.props, {
-									default() {
-										return <span>{e.label}</span>;
+								return h(
+									<el-radio
+										key={i}
+										label={e.value}
+									></el-radio>,
+									e.props,
+									{
+										default() {
+											return <span>{e.label}</span>;
+										},
 									}
-								});
+								);
 							}
 							// 多选框组
 							else if (vnode.name == "el-checkbox-group") {
 								return (
-									<el-checkbox key={i} label={e.value} {...e.props}>
+									<el-checkbox
+										key={i}
+										label={e.value}
+										{...e.props}
+									>
 										{e.label}
 									</el-checkbox>
 								);
@@ -132,7 +153,9 @@ export function renderNode(vnode: any, { prop, scope, slots }: any) {
 				return parseNode(vnode, { prop, scope, slots });
 			}
 		} else {
-			return <cl-error-message title={`组件渲染失败，组件 name 不能为空`} />;
+			return (
+				<cl-error-message title={`组件渲染失败，组件 name 不能为空`} />
+			);
 		}
 	}
 }

@@ -1,8 +1,8 @@
 import { BaseService, Service, Permission } from "./service";
 import { SET_SERVICE, SET_ROUTER, SET_MODULE } from "./set";
 import { useRefs } from "./hook/core";
-import router from "@/router";
-import store from "@/store";
+import router from "/@/router";
+import store from "/@/store";
 import "./common";
 
 async function bootstrap(app: any) {

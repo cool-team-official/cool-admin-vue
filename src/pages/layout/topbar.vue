@@ -1,7 +1,9 @@
 <template>
 	<div class="app-topbar">
 		<div class="app-topbar__collapse" @click="collapse">
-			<i :class="[menuCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold']"></i>
+			<i
+				:class="[menuCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold']"
+			></i>
 		</div>
 
 		<!-- 一级菜单 -->
@@ -31,7 +33,11 @@
 
 		<!-- 用户信息 -->
 		<div class="app-topbar__user">
-			<el-dropdown trigger="click" :hide-on-click="false" @command="onCommand">
+			<el-dropdown
+				trigger="click"
+				:hide-on-click="false"
+				@command="onCommand"
+			>
 				<span class="el-dropdown-link" v-if="userInfo">
 					<span class="name">{{ userInfo.nickName }}</span>
 					<img class="avatar" :src="userInfo.headImg" alt />
@@ -39,7 +45,9 @@
 
 				<template #dropdown>
 					<el-dropdown-menu class="dropdown-menu__user">
-						<el-dropdown-item command="my">个人中心</el-dropdown-item>
+						<el-dropdown-item command="my"
+							>个人中心</el-dropdown-item
+						>
 						<el-dropdown-item command="exit">退出</el-dropdown-item>
 					</el-dropdown-menu>
 				</template>
@@ -52,7 +60,7 @@
 import { computed, defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { href } from "@/core/utils";
+import { href } from "/@/core/utils";
 
 export default defineComponent({
 	setup() {
@@ -96,9 +104,9 @@ export default defineComponent({
 			modules,
 			app,
 			onCommand,
-			collapse
+			collapse,
 		};
-	}
+	},
 });
 </script>
 
@@ -106,9 +114,7 @@ export default defineComponent({
 .dropdown-menu__user {
 	width: 120px;
 }
-</style>
 
-<style lang="scss" scoped>
 .app-topbar {
 	display: flex;
 	align-items: center;
@@ -139,13 +145,14 @@ export default defineComponent({
 		display: flex;
 		margin-right: 20px;
 
-		li {
-			list-style: none;
-			height: 45px;
-			width: 45px;
+		& > li {
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			list-style: none;
+			height: 45px;
+			padding: 0 10px;
+			margin-right: 10px;
 			cursor: pointer;
 
 			i {

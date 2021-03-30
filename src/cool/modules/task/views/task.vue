@@ -217,10 +217,10 @@
 import { computed, defineComponent, inject, onMounted, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Draggable from "vuedraggable";
-import { checkPerm } from "@/cool/modules/base";
-import { ContextMenu } from "@/crud";
+import { checkPerm } from "/@/cool/modules/base";
+import { ContextMenu } from "/@/crud";
 import Cron from "../components/cron";
-import { useRefs } from "@/core";
+import { useRefs } from "/@/core";
 
 export default defineComponent({
 	name: "task",

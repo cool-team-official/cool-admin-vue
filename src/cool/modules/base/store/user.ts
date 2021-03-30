@@ -1,5 +1,5 @@
-import { storage, href } from "@/core/utils";
-import store from "@/store";
+import { storage, href } from "/@/core/utils";
+import store from "/@/store";
 import { Token } from "../types";
 
 const state: any = {

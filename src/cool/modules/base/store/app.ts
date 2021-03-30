@@ -1,6 +1,6 @@
 import store from "store";
-import { deepMerge, getBrowser } from "@/core/utils";
-import { app } from "@/config/env";
+import { deepMerge, getBrowser } from "/@/core/utils";
+import { app } from "/@/config/env";
 
 const browser = getBrowser();
 

@@ -1,5 +1,5 @@
 import { defineComponent, h, inject, onMounted, ref, watch, computed } from "vue";
-import { Browser } from "@/crud/types";
+import { Browser } from "/@/crud/types";
 import { useDialog } from "./helper";
 import { isArray, isBoolean } from "../../utils";
 import { renderNode } from "../../utils/vnode";

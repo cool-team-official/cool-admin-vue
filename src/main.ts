@@ -2,19 +2,19 @@ import { createApp } from "vue";
 import App from "./App.vue";
 
 // cool
-import { bootstrap } from "@/core";
+import { bootstrap } from "./core";
 
 // router
-import router from "@/router";
+import router from "./router";
 
 // store
-import store from "@/store";
+import store from "./store";
 
-import "@/mock";
+import "./mock";
 
 // element-plus
 import ElementPlus from "element-plus";
-import "@/assets/css/element-variables.scss";
+import "./assets/css/element-variables.scss";
 import locale from "element-plus/lib/locale/lang/zh-cn";
 
 // mitt
@@ -33,11 +33,7 @@ bootstrap(app)
 		// 事件通讯
 		app.provide("mitt", mitt());
 
-		app.use(store)
-			.use(router)
-			.use(ElementPlus, { locale })
-
-			.mount("#app");
+		app.use(store).use(router).use(ElementPlus, { locale }).mount("#app");
 	})
 	.catch((err: string) => {
 		console.error(`COOL-ADMIN 启动失败`, err);

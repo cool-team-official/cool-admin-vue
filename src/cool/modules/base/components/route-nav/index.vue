@@ -6,10 +6,16 @@
 
 		<template v-else>
 			<el-breadcrumb>
-				<el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-				<el-breadcrumb-item v-for="(item, index) in list" :key="index">{{
-					(item.meta && item.meta.label) || item.name
-				}}</el-breadcrumb-item>
+				<el-breadcrumb-item :to="{ path: '/' }"
+					>首页</el-breadcrumb-item
+				>
+				<el-breadcrumb-item
+					v-for="(item, index) in list"
+					:key="index"
+					>{{
+						(item.meta && item.meta.label) || item.name
+					}}</el-breadcrumb-item
+				>
 			</el-breadcrumb>
 		</template>
 	</div>
@@ -20,7 +26,7 @@ import { computed, defineComponent, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import _ from "lodash";
-import { isEmpty } from "@/core/utils";
+import { isEmpty } from "/@/core/utils";
 
 export default defineComponent({
 	name: "cl-route-nav",
@@ -69,7 +75,7 @@ export default defineComponent({
 				}
 			},
 			{
-				immediate: true
+				immediate: true,
 			}
 		);
 
@@ -81,17 +87,17 @@ export default defineComponent({
 		return {
 			list,
 			lastName,
-			browser
+			browser,
 		};
-	}
+	},
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .cl-route-nav {
 	white-space: nowrap;
 
-	:deep(.el-breadcrumb) {
+	.el-breadcrumb {
 		margin: 0 10px;
 
 		&__inner {

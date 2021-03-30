@@ -21,8 +21,8 @@ export default defineComponent({
 	props: {
 		modelValue: {
 			type: String,
-			default: ""
-		}
+			default: "",
+		},
 	},
 
 	emits: ["update:modelValue"],
@@ -38,7 +38,10 @@ export default defineComponent({
 
 		// 监听改变
 		function onChange(row: any) {
-			emit("update:modelValue", row.map((e: any) => e.join(":")).join(","));
+			emit(
+				"update:modelValue",
+				row.map((e: any) => e.join(":")).join(",")
+			);
 		}
 
 		// 解析权限
@@ -61,9 +64,9 @@ export default defineComponent({
 			flat($service);
 
 			perms
-				.filter(e => e.includes(":"))
-				.map(e => e.split(":"))
-				.forEach(arr => {
+				.filter((e) => e.includes(":"))
+				.map((e) => e.split(":"))
+				.forEach((arr) => {
 					const col = (i: number, d: any[]) => {
 						const key = arr[i];
 
@@ -77,7 +80,7 @@ export default defineComponent({
 							d.push({
 								label: key,
 								value: key,
-								children: isLast ? null : []
+								children: isLast ? null : [],
 							});
 
 							if (!isLast) {
@@ -96,25 +99,27 @@ export default defineComponent({
 		watch(
 			() => props.modelValue,
 			(val: string) => {
-				value.value = val ? val.split(",").map((e: string) => e.split(":")) : [];
+				value.value = val
+					? val.split(",").map((e: string) => e.split(":"))
+					: [];
 			},
 			{
-				immediate: true
+				immediate: true,
 			}
 		);
 
 		return {
 			value,
 			options,
-			onChange
+			onChange,
 		};
-	}
+	},
 });
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .cl-menu-perms {
-	:deep(.el-cascader) {
+	.el-cascader {
 		width: 100%;
 	}
 }

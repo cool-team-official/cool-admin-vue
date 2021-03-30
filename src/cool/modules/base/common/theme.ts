@@ -1,6 +1,6 @@
-import { iconfontUrl, app } from "@/config/env";
+import { iconfontUrl, app } from "/@/config/env";
+import { basename } from "/@/core/utils";
 import { createLink } from "../utils";
-import { colorPrimary } from "@/assets/css/common.scss";
 
 // 主题初始化
 
@@ -13,7 +13,7 @@ if (app.theme) {
 
 	document
 		.getElementsByTagName("body")[0]
-		.style.setProperty("--color-primary", color || colorPrimary);
+		.style.setProperty("--color-primary", color);
 }
 
 // 字体图标库加载
@@ -24,17 +24,16 @@ if (iconfontUrl) {
 
 // svg 图标加载
 
-const req = require.context("@/icons/svg/", false, /\.svg$/);
-
-req.keys().map(req);
+const svgFiles = import.meta.globEager("/src/icons/svg/**/*.svg");
 
 function iconList() {
-	return req
-		.keys()
-		.map(req)
-		.map((e: any) => e.default.id)
-		.filter(e => e.includes("icon"))
-		.sort();
+	let list: string[] = [];
+
+	for (const i in svgFiles) {
+		list.push(basename(i).replace(".svg", ""));
+	}
+
+	return list;
 }
 
 export { iconList };

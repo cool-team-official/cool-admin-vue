@@ -10,7 +10,9 @@ export function useDialog({ props, isFullscreen }: any) {
 		nextTick(() => {
 			// 获取元素
 			const dlg: any = document.querySelector(`.cl-dialog--${ctx?.uid}`);
-			const hdr: any = dlg ? dlg.querySelector(".el-dialog__header") : null;
+			const hdr: any = dlg
+				? dlg.querySelector(".el-dialog__header")
+				: null;
 
 			// 设置对话框
 			if (dlg) {
@@ -32,7 +34,8 @@ export function useDialog({ props, isFullscreen }: any) {
 			if (hdr) {
 				hdr.onmousedown = (e: any) => {
 					// 可视区域大小
-					const { clientWidth, clientHeight } = document.documentElement || document.body;
+					const { clientWidth, clientHeight } =
+						document.documentElement || document.body;
 
 					// Try drag
 					const isDrag = (() => {
@@ -48,7 +51,7 @@ export function useDialog({ props, isFullscreen }: any) {
 						// Determine height of the box is too large
 						let marginTop = 0;
 
-						if (["vh", "%"].some(e => top.includes(e))) {
+						if (["vh", "%"].some((e) => top.includes(e))) {
 							marginTop = clientHeight * (parseInt(top) / 100);
 						}
 
@@ -69,23 +72,28 @@ export function useDialog({ props, isFullscreen }: any) {
 					// Distance
 					const dis = {
 						left: e.clientX - hdr.offsetLeft,
-						top: e.clientY - hdr.offsetTop
+						top: e.clientY - hdr.offsetTop,
 					};
 
 					// Calc left and top of the box
 					const box = (() => {
 						const { left, top } =
-							dlg.currentStyle || window.getComputedStyle(dlg, null);
+							dlg.currentStyle ||
+							window.getComputedStyle(dlg, null);
 
 						if (left.includes("%")) {
 							return {
-								top: +clientHeight * (+top.replace(/%/g, "") / 100),
-								left: +clientWidth * (+left.replace(/%/g, "") / 100)
+								top:
+									+clientHeight *
+									(+top.replace(/%/g, "") / 100),
+								left:
+									+clientWidth *
+									(+left.replace(/%/g, "") / 100),
 							};
 						} else {
 							return {
 								top: +top.replace(/\px/g, ""),
-								left: +left.replace(/\px/g, "")
+								left: +left.replace(/\px/g, ""),
 							};
 						}
 					})();
@@ -95,14 +103,17 @@ export function useDialog({ props, isFullscreen }: any) {
 					const minLeft = -(clientWidth - dlg.clientWidth) / 2 + pad;
 					const maxLeft =
 						(dlg.clientWidth >= clientWidth / 2
-							? dlg.clientWidth / 2 - (dlg.clientWidth - clientWidth / 2)
-							: dlg.clientWidth / 2 + clientWidth / 2 - dlg.clientWidth) - pad;
+							? dlg.clientWidth / 2 -
+							  (dlg.clientWidth - clientWidth / 2)
+							: dlg.clientWidth / 2 +
+							  clientWidth / 2 -
+							  dlg.clientWidth) - pad;
 
 					const minTop = pad;
 					const maxTop = clientHeight - dlg.clientHeight - pad;
 
 					// Start move
-					document.onmousemove = function(e) {
+					document.onmousemove = function (e) {
 						let left = e.clientX - dis.left + box.left;
 						let top = e.clientY - dis.top + box.top;
 
@@ -124,7 +135,7 @@ export function useDialog({ props, isFullscreen }: any) {
 					};
 
 					// Clear event
-					document.onmouseup = function() {
+					document.onmouseup = function () {
 						document.onmousemove = null;
 						document.onmouseup = null;
 					};
@@ -134,6 +145,6 @@ export function useDialog({ props, isFullscreen }: any) {
 	};
 
 	return {
-		setDialog
+		setDialog,
 	};
 }

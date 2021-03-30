@@ -1,6 +1,6 @@
 import { ElMessage } from "element-plus";
 import { defineComponent, h, inject, ref } from "vue";
-import { Crud } from "@/crud/types";
+import { Crud } from "/@/crud/types";
 import { useFormApi } from "./helper";
 import { useForm, useRefs } from "../../hooks/core";
 
