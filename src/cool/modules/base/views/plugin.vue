@@ -54,7 +54,7 @@ import { useRefs } from "@/core";
 import { CrudLoad, RefreshOp, Table } from "@/crud/types";
 
 export default defineComponent({
-	name: "sys-plugin",
+	name: "plugin",
 
 	setup() {
 		const $service = inject<any>("service");

@@ -1,4 +1,4 @@
-import { TableColumnCtx } from "element-plus/lib/el-table/src/table.type";
+import { ContextMenuItem } from "./context-menu";
 import { RenderOptions } from "./render";
 
 export interface TableOptions {

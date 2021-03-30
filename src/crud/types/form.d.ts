@@ -1,4 +1,3 @@
-import { Ref } from "vue";
 import { RenderOptions } from "./render";
 
 export interface FormItem {
@@ -15,7 +14,7 @@ export interface FormItem {
 	group?: string;
 	collapse?: boolean;
 	value?: any;
-	label?: stirng | { text?: string; icon?: string; tip?: string };
+	label?: string | { text?: string; icon?: string; tip?: string };
 	span?: number;
 	flex?: boolean;
 	hidden?: Function | boolean | string;
@@ -30,29 +29,29 @@ export interface Form {
 	props?: any;
 	items?: Array<FormItem>;
 	on?: {
-		open?(form: any, { close, submit, done });
-		close?();
-		submit?(data: any, { done, close });
+		open?(form: any, { close, submit, done }: any): void;
+		close?(): void;
+		submit?(data: any, { done, close }: any): void;
 	};
 }
 
 export interface FormRef {
-	create(options: Form);
-	open(options: Form);
-	close();
-	done();
-	clear();
-	showLoading();
-	hiddenLoading();
-	setData();
-	setOptions(prop: string, list: Array<{ label: string; value?: any }>);
-	getForm(prop?: string);
-	setForm(prop: string, value: any);
-	toggleItem(prop: string, flag?: boolean);
-	hiddenItem(props: string[]);
-	showItem(props: string[]);
-	resetFields();
-	clearValidate(props: string[] | string);
-	validateField(props: string[] | string, callback: Function);
-	validate(callback: Function);
+	create(options: Form): FormRef;
+	open(options: Form): FormRef;
+	close(): void;
+	done(): void;
+	clear(): void;
+	showLoading(): void;
+	hiddenLoading(): void;
+	setData(): void;
+	setOptions(prop: string, list: Array<{ label: string; value?: any }>): void;
+	getForm(prop?: string): any;
+	setForm(prop: string, value: any): void;
+	toggleItem(prop: string, flag?: boolean): void;
+	hiddenItem(props: string[]): void;
+	showItem(props: string[]): void;
+	resetFields(): void;
+	clearValidate(props: string[] | string): void;
+	validateField(props: string[] | string, callback: Function): void;
+	validate(callback: Function): void;
 }

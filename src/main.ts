@@ -17,9 +17,6 @@ import ElementPlus from "element-plus";
 import "@/assets/css/element-variables.scss";
 import locale from "element-plus/lib/locale/lang/zh-cn";
 
-// crud
-import Crud from "./crud";
-
 // mitt
 import mitt from "mitt";
 
@@ -39,16 +36,7 @@ bootstrap(app)
 		app.use(store)
 			.use(router)
 			.use(ElementPlus, { locale })
-			.use(Crud, {
-				crud: {
-					dict: {
-						sort: {
-							prop: "order",
-							order: "sort"
-						}
-					}
-				}
-			})
+
 			.mount("#app");
 	})
 	.catch((err: string) => {

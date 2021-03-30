@@ -4,7 +4,7 @@ export type ServiceName = "page" | "list" | "add" | "delete" | "update" | "info"
 
 export interface Service {
 	page?(
-		params?
+		params?: any
 	): Promise<{
 		list: any[];
 		pagination?: {
@@ -13,11 +13,11 @@ export interface Service {
 			size?: number;
 		};
 	}>;
-	list?(params?): Promise<any[]>;
-	add?(params): Promise<any>;
-	delete?(params): Promise<any>;
-	update?(params): Promise<any>;
-	info?(params): Promise<any>;
+	list?(params?: any): Promise<any[]>;
+	add?(params: any): Promise<any>;
+	delete?(params: any): Promise<any>;
+	update?(params: any): Promise<any>;
+	info?(params: any): Promise<any>;
 }
 
 export interface Dict {

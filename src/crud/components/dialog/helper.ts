@@ -10,7 +10,7 @@ export function useDialog({ props, isFullscreen }: any) {
 		nextTick(() => {
 			// 获取元素
 			const dlg: any = document.querySelector(`.cl-dialog--${ctx?.uid}`);
-			const hdr: any = dlg.querySelector(".el-dialog__header");
+			const hdr: any = dlg ? dlg.querySelector(".el-dialog__header") : null;
 
 			// 设置对话框
 			if (dlg) {

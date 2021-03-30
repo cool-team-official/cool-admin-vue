@@ -4,7 +4,7 @@ export interface RefreshOp {
 	 * @param list 数据列表
 	 * @param pagination 分页信息
 	 */
-	render(list: any[], pagination?: { size?: number; size?: number; total?: number }): void;
+	render(list: any[], pagination?: { size?: number; page?: number; total?: number }): void;
 
 	/**
 	 * 继续执行刷新
@@ -27,24 +27,24 @@ export interface UpsertOpenOp {
 	 * 提交表单
 	 * @param form 表单值
 	 */
-	submit(form: any);
+	submit(form: any): void;
 
 	/**
 	 * 关闭加载状态
 	 */
-	done();
+	done(): void;
 
 	/**
 	 * 关闭弹窗
 	 */
-	close();
+	close(): void;
 }
 
 export interface UpsertCloseOp {
 	/**
 	 * 关闭弹窗
 	 */
-	done();
+	done(): void;
 }
 
 export interface UpsertInfoOp {
@@ -52,17 +52,17 @@ export interface UpsertInfoOp {
 	 * 继续执行获取详情
 	 * @param params 请求参数
 	 */
-	next(params: any);
+	next(params: any): Promise<any>;
 
 	/**
 	 * 关闭加载状态，并设置表单值
 	 */
-	done(data);
+	done(data: any): void;
 
 	/**
 	 * 关闭弹窗
 	 */
-	close();
+	close(): void;
 }
 
 export interface UpsertSubmitOp {
@@ -70,17 +70,17 @@ export interface UpsertSubmitOp {
 	 * 继续执行提交
 	 * @param params 请求参数
 	 */
-	next(params: any);
+	next(params: any): Promise<any>;
 
 	/**
 	 * 关闭加载状态
 	 */
-	done();
+	done(): void;
 
 	/**
 	 * 关闭弹窗
 	 */
-	close();
+	close(): void;
 }
 
 export interface AdvOpenOp {
@@ -88,14 +88,14 @@ export interface AdvOpenOp {
 	 * 继续执行打开
 	 * @param data 筛选参数
 	 */
-	next(data: any);
+	next(data: any): Promise<any>;
 }
 
 export interface AdvCloseOp {
 	/**
 	 * 关闭抽屉
 	 */
-	done();
+	done(): void;
 }
 
 export interface AdvSearchOp {
@@ -103,9 +103,9 @@ export interface AdvSearchOp {
 	 * 继续执行搜索
 	 * @param params 请求参数
 	 */
-	next(params: any);
+	next(params: any): Promise<any>;
 	/**
 	 * 关闭抽屉
 	 */
-	done();
+	done(): void;
 }

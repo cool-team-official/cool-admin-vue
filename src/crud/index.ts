@@ -49,6 +49,8 @@ const CRUD = {
 		app.config.globalProperties.$crud = {
 			openContextMenu: ContextMenu.open
 		};
+
+		return {};
 	}
 };
 
