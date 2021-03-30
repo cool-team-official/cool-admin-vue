@@ -1,27 +1,69 @@
-# Vue 3 + Typescript + Vite
+# cool-admin [vue3 - ts - vite]
 
-This template should help get you started developing with Vue 3 and Typescript in Vite.
+<p align="center">
+  <a href="https://show.cool-admin.com/" target="blank"><img src="https://admin.cool-js.com/logo.png" width="200" alt="cool-admin Logo" /></a>
+</p>
 
-## Recommended IDE Setup
+<p align="center">cool-admin 一个很酷的后台权限管理系统，开源免费，模块化、插件化、极速开发 CRUD，方便快速构建迭代后台管理系统， 到论坛 进一步了解</p>
 
-[VSCode](https://code.visualstudio.com/) + [Vetur](https://marketplace.visualstudio.com/items?itemName=octref.vetur). Make sure to enable `vetur.experimental.templateInterpolationService` in settings!
+<p align="center">
+    <a href="https://github.com/cool-team-official/cool-admin-vue/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="GitHub license" />
+    <a href=""><img src="https://img.shields.io/github/package-json/v/cool-team-official/cool-admin-vue?style=flat-square" alt="GitHub tag"></a>
+    <img src="https://img.shields.io/github/last-commit/cool-team-official/cool-admin-vue?style=flat-square" alt="GitHub tag"></a>
+</p>
 
-### If Using `<script setup>`
+## 地址
 
-[`<script setup>`](https://github.com/vuejs/rfcs/pull/227) is a feature that is currently in RFC stage. To get proper IDE support for the syntax, use [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar) instead of Vetur (and disable Vetur).
+-   [⚡️ vue2.x + element-ui](https://github.com/cool-team-official/cool-admin-vue)
 
-## Type Support For `.vue` Imports in TS
+-   [⚡️ vue3.x + element-plus + ts + webpack](https://github.com/cool-team-official/cool-admin-vue/tree/vue3-ts-webpack)
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can use the following:
+-   [📌 vue3.x + element-plus + ts + vite](https://github.com/cool-team-official/cool-admin-vue/tree/vue3-ts-vite)
 
-### If Using Volar
+-   [🌐 码云仓库地址](https://gitee.com/cool-team-official/cool-admin-vue)
 
-Run `Volar: Switch TS Plugin on/off` from VSCode command palette.
+## 演示
 
-### If Using Vetur
+[https://show.cool-admin.com](https://show.cool-admin.com)
 
-1. Install and add `@vuedx/typescript-plugin-vue` to the [plugins section](https://www.typescriptlang.org/tsconfig#plugins) in `tsconfig.json`
-2. Delete `src/shims-vue.d.ts` as it is no longer needed to provide module info to Typescript
-3. Open `src/main.ts` in VSCode
-4. Open the VSCode command palette
-5. Search and run "Select TypeScript version" -> "Use workspace version"
+账户：admin，密码：123456
+
+<img src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/home-mini.png" alt="Admin Home" ></a>
+
+## 项目后端
+
+[https://github.com/cool-team-official/cool-admin-midway](https://github.com/cool-team-official/cool-admin-midway)
+
+## 微信群
+
+<img width="260" src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/wechat.jpeg" alt="Admin Wechat"></a>
+
+## 微信公众号
+
+<img width="260" src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/mp.jpg" alt="Admin Wechat"></a>
+
+## 在线社区
+
+[https://bbs.cool-js.com/](https://bbs.cool-js.com/)
+
+## 安装项目依赖
+
+推荐使用 `yarn`：
+
+```shell
+yarn
+```
+
+解决 `node-sass` 网络慢的方法：
+
+```shell
+yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
+```
+
+## 运行应用程序
+
+安装过程完成后，运行以下命令启动服务。您可以在浏览器中预览网站 [http://localhost:9000](http://localhost:9000)
+
+```shell
+yarn dev
+```
