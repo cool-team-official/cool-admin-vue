@@ -18,11 +18,12 @@ function copyboard() {
 copyboard();
 
 export default {
-	inserted: (el: HTMLElement, binding: any) => {
+	mounted: (el: HTMLElement, binding: any) => {
 		el.className = el.className + " _copy-btn";
 		el.setAttribute("data-clipboard-text", binding.value);
 	},
-	update: (el: HTMLElement, binding: any) => {
+	beforeUpdate: (el: HTMLElement, binding: any) => {
+		console.log(el);
 		el.setAttribute("data-clipboard-text", binding.value);
 	}
 };

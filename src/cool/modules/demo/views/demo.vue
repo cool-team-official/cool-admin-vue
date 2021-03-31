@@ -9,14 +9,14 @@
 </template>
 
 <script>
-import BClUpload from "./components/b-cl-upload";
-import BVCopy from "./components/b-v-copy";
-import BIconSvg from "./components/b-icon-svg";
-import BClCrud from "./components/b-cl-crud";
-import BClForm from "./components/b-cl-form";
-import BClContextMenu from "./components/b-cl-context-menu";
-import BErrorPage from "./components/b-error-page";
-import BClEditorQuill from "./components/b-cl-editor-quill";
+import BClUpload from "../components/demo/b-cl-upload";
+import BVCopy from "../components/demo/b-v-copy";
+import BIconSvg from "../components/demo/b-icon-svg";
+import BClCrud from "../components/demo/b-cl-crud";
+import BClForm from "../components/demo/b-cl-form";
+import BClContextMenu from "../components/demo/b-cl-context-menu";
+import BErrorPage from "../components/demo/b-error-page";
+import BClEditorQuill from "../components/demo/b-cl-editor-quill";
 
 export default {
 	name: "demo",
