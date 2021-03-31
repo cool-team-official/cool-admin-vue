@@ -1,6 +1,6 @@
 {
-	"name": "front-next-vue3-vite",
-	"version": "0.0.0",
+	"name": "front-next",
+	"version": "0.0.1",
 	"scripts": {
 		"dev": "vite",
 		"build": "vue-tsc --noEmit && vite build",
