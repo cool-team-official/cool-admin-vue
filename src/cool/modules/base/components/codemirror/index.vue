@@ -1,11 +1,6 @@
 <template>
-	<div class="cl-codemirror" ref="editorRef">
-		<textarea
-			class="cl-code"
-			id="editor"
-			:height="height"
-			:width="width"
-		></textarea>
+	<div ref="editorRef" class="cl-codemirror">
+		<textarea id="editor" class="cl-code" :height="height" :width="width"></textarea>
 	</div>
 </template>
 
@@ -27,7 +22,7 @@ export default defineComponent({
 		modelValue: null,
 		height: String,
 		width: String,
-		options: Object,
+		options: Object
 	},
 
 	emits: ["update:modelValue", "load"],
@@ -64,18 +59,15 @@ export default defineComponent({
 		onMounted(function () {
 			nextTick(() => {
 				// 实例化
-				editor = CodeMirror.fromTextArea(
-					editorRef.value.querySelector("#editor"),
-					{
-						mode: "javascript",
-						theme: "ambiance",
-						styleActiveLine: true,
-						lineNumbers: true,
-						lineWrapping: true,
-						indentUnit: 4,
-						...props.options,
-					}
-				);
+				editor = CodeMirror.fromTextArea(editorRef.value.querySelector("#editor"), {
+					mode: "javascript",
+					theme: "ambiance",
+					styleActiveLine: true,
+					lineNumbers: true,
+					lineWrapping: true,
+					indentUnit: 4,
+					...props.options
+				});
 
 				// 输入监听
 				editor.on("change", (e: any) => {
@@ -105,9 +97,9 @@ export default defineComponent({
 		});
 
 		return {
-			editorRef,
+			editorRef
 		};
-	},
+	}
 });
 </script>
 

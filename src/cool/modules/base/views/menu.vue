@@ -11,10 +11,10 @@
 				<template #column-name="{ scope }">
 					<span>{{ scope.row.name }}</span>
 					<el-tag
+						v-if="!scope.row.isShow"
 						size="mini"
 						effect="dark"
 						type="danger"
-						v-if="!scope.row.isShow"
 						style="margin-left: 10px"
 						>隐藏</el-tag
 					>
@@ -22,7 +22,7 @@
 
 				<!-- 图标 -->
 				<template #column-icon="{ scope }">
-					<icon-svg :name="scope.row.icon" size="16px" style="margin-top: 5px"></icon-svg>
+					<icon-svg :name="scope.row.icon" size="16px" style="margin-top: 5px" />
 				</template>
 
 				<!-- 权限 -->
@@ -39,7 +39,7 @@
 
 				<!-- 路由 -->
 				<template #column-router="{ scope }">
-					<el-link type="primary" :href="scope.row.router" v-if="scope.row.type == 1">{{
+					<el-link v-if="scope.row.type == 1" type="primary" :href="scope.row.router">{{
 						scope.row.router
 					}}</el-link>
 					<span v-else>{{ scope.row.router }}</span>
@@ -48,18 +48,18 @@
 				<!-- 路由缓存 -->
 				<template #column-keepAlive="{ scope }">
 					<template v-if="scope.row.type == 1">
-						<i class="el-icon-check" v-if="scope.row.keepAlive"></i>
-						<i class="el-icon-close" v-else></i>
+						<i v-if="scope.row.keepAlive" class="el-icon-check"></i>
+						<i v-else class="el-icon-close"></i>
 					</template>
 				</template>
 
 				<!-- 行新增 -->
 				<template #slot-add="{ scope }">
 					<el-button
+						v-if="scope.row.type != 2"
 						type="text"
 						size="mini"
 						@click="upsertAppend(scope.row)"
-						v-if="scope.row.type != 2"
 						>新增</el-button
 					>
 				</template>
@@ -67,12 +67,12 @@
 		</el-row>
 
 		<el-row type="flex">
-			<cl-flex1></cl-flex1>
-			<cl-pagination :props="{ layout: 'total' }"></cl-pagination>
+			<cl-flex1 />
+			<cl-pagination :props="{ layout: 'total' }" />
 		</el-row>
 
 		<!-- 编辑 -->
-		<cl-upsert v-bind="upsert"></cl-upsert>
+		<cl-upsert v-bind="upsert" />
 	</cl-crud>
 </template>
 
@@ -100,7 +100,7 @@ export default defineComponent({
 		// 刷新监听
 		function onRefresh(_: any, { render }: RefreshOp) {
 			$service.system.menu.list().then((list: any[]) => {
-				list.map(e => {
+				list.map((e) => {
 					e.permList = e.perms ? e.perms.split(",") : [];
 				});
 

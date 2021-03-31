@@ -46,7 +46,7 @@ function resize() {
 	}
 }
 
-window.onload = function() {
+window.onload = function () {
 	window.addEventListener("resize", resize);
 	resize();
 };

@@ -1,5 +1,5 @@
 <template>
-	<error-page :code="500" desc="糟糕，出了点问题"></error-page>
+	<error-page :code="500" desc="糟糕，出了点问题" />
 </template>
 
 <script>

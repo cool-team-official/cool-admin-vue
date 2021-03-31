@@ -9,7 +9,7 @@
 			@opened="onOpened"
 			@closed="onClosed"
 		>
-			<el-alert type="success" title="行云又被风吹散，见了依前是梦中"> </el-alert>
+			<el-alert type="success" title="行云又被风吹散，见了依前是梦中" />
 		</cl-dialog>
 	</div>
 </template>
@@ -18,8 +18,6 @@
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-	name: "demo__dialog",
-
 	setup() {
 		const visible = ref<boolean>(false);
 

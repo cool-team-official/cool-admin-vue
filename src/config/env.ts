@@ -6,8 +6,7 @@ import { MenuItem } from "/@/cool/modules/base/types";
 const routerMode = "history";
 
 // 开发模式
-const isDev: boolean = true;
-
+const isDev = import.meta.env.MODE === "development";
 
 // Host
 const host = "https://show.cool-admin.com";
@@ -39,13 +38,13 @@ const app: any = store.get("__app__") || {
 		showAMenu: false, // 是否显示一级菜单栏
 		showRouteNav: true, // 是否显示路由导航栏
 		showProcess: true, // 是否显示页面进程栏
-		customMenu: false, // 自定义菜单
+		customMenu: false // 自定义菜单
 	},
 
 	theme: {
 		color: "", // 主题色
-		url: "", // 主题样式地址
-	},
+		url: "" // 主题样式地址
+	}
 };
 
 // 自定义菜单列表

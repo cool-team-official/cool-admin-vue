@@ -11,9 +11,7 @@ if (app.theme) {
 		createLink(url, "theme-style");
 	}
 
-	document
-		.getElementsByTagName("body")[0]
-		.style.setProperty("--color-primary", color);
+	document.getElementsByTagName("body")[0].style.setProperty("--color-primary", color);
 }
 
 // 字体图标库加载
@@ -27,7 +25,7 @@ if (iconfontUrl) {
 const svgFiles = import.meta.globEager("/src/icons/svg/**/*.svg");
 
 function iconList() {
-	let list: string[] = [];
+	const list: string[] = [];
 
 	for (const i in svgFiles) {
 		list.push(basename(i).replace(".svg", ""));

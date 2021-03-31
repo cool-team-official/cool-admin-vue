@@ -14,7 +14,7 @@
 		<template v-else>
 			<!-- 图片 -->
 			<template v-if="type === 'image'">
-				<el-image fit="cover" :src="value.url" lazy></el-image>
+				<el-image fit="cover" :src="value.url" lazy />
 			</template>
 
 			<!-- 视频 -->
@@ -39,7 +39,7 @@
 		<div class="cl-upload-space-item__size"></div>
 
 		<!-- 遮罩层 -->
-		<div class="cl-upload-space-item__mask" v-if="isSelected">
+		<div v-if="isSelected" class="cl-upload-space-item__mask">
 			<span>{{ index + 1 }}</span>
 		</div>
 	</div>
@@ -49,15 +49,17 @@
 export default {
 	name: "cl-upload-space-item",
 
+	inject: ["space"],
+
 	props: {
 		value: Object
 	},
 
-	inject: ["space"],
+	emits: ["select", "remove"],
 
 	computed: {
 		index() {
-			return this.space.selection.findIndex(e => e.id === this.value.id);
+			return this.space.selection.findIndex((e) => e.id === this.value.id);
 		},
 
 		isSelected() {

@@ -1,21 +1,15 @@
 <template>
 	<div class="cl-route-nav">
-		<p class="title" v-if="browser.isMini">
+		<p v-if="browser.isMini" class="title">
 			{{ lastName }}
 		</p>
 
 		<template v-else>
 			<el-breadcrumb>
-				<el-breadcrumb-item :to="{ path: '/' }"
-					>首页</el-breadcrumb-item
-				>
-				<el-breadcrumb-item
-					v-for="(item, index) in list"
-					:key="index"
-					>{{
-						(item.meta && item.meta.label) || item.name
-					}}</el-breadcrumb-item
-				>
+				<el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+				<el-breadcrumb-item v-for="(item, index) in list" :key="index">{{
+					(item.meta && item.meta.label) || item.name
+				}}</el-breadcrumb-item>
 			</el-breadcrumb>
 		</template>
 	</div>
@@ -75,7 +69,7 @@ export default defineComponent({
 				}
 			},
 			{
-				immediate: true,
+				immediate: true
 			}
 		);
 
@@ -87,9 +81,9 @@ export default defineComponent({
 		return {
 			list,
 			lastName,
-			browser,
+			browser
 		};
-	},
+	}
 });
 </script>
 

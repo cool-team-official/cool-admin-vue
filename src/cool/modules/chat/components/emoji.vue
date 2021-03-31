@@ -10,9 +10,9 @@
 			<div class="tool-emoji">
 				<div class="tool-emoji__scroller scroller1">
 					<div
-						class="tool-emoji__item"
 						v-for="(item, index) in list"
 						:key="index"
+						class="tool-emoji__item"
 						@click="select(item)"
 					>
 						<img :src="item" />
@@ -127,6 +127,8 @@ const emoji = {
 };
 
 export default defineComponent({
+	emits: ["select"],
+
 	setup(_, { emit }) {
 		const store = useStore();
 
@@ -134,7 +136,7 @@ export default defineComponent({
 		const visible = ref<boolean>(false);
 
 		// 表情列表
-		const list = ref<any[]>(emoji.list.map(e => emoji.url + e));
+		const list = ref<any[]>(emoji.list.map((e) => emoji.url + e));
 
 		// 弹窗宽度
 		const popoverWidth = computed(() => {

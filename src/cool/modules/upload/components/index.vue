@@ -6,11 +6,11 @@
 				`cl-upload--${listType}`,
 				{
 					'is-multiple': multiple,
-					'is-drag': drag,
-				},
+					'is-drag': drag
+				}
 			]"
 		>
-			<el-input class="cl-upload__hidden" type="hidden"></el-input>
+			<el-input class="cl-upload__hidden" type="hidden" />
 
 			<el-upload
 				:action="action"
@@ -25,9 +25,10 @@
 				:show-file-list="_showFileList"
 				:auto-upload="autoUpload"
 				:disabled="disabled"
+				v-loading="_loading"
 				:headers="{
 					Authorization: token,
-					...headers,
+					...headers
 				}"
 				:http-request="action ? undefined : httpRequest"
 				:on-remove="_onRemove"
@@ -38,15 +39,12 @@
 				:before-upload="_beforeUpload"
 				:before-remove="beforeRemove"
 				:style="_style"
-				v-loading="_loading"
 			>
 				<slot>
 					<!-- 多图上传 -->
 					<template v-if="listType == 'picture-card'">
 						<i :class="['cl-upload__icon', _icon]"></i>
-						<span class="cl-upload__text" v-if="_text">{{
-							_text
-						}}</span>
+						<span v-if="_text" class="cl-upload__text">{{ _text }}</span>
 					</template>
 
 					<!-- 文件上传 -->
@@ -61,10 +59,7 @@
 						<template v-if="_file">
 							<div class="cl-upload__cover">
 								<!-- 图片 -->
-								<img
-									v-if="_file.type == 'image'"
-									:src="_file.url"
-								/>
+								<img v-if="_file.type == 'image'" :src="_file.url" />
 
 								<!-- 文件名 -->
 								<span v-else>{{ _file.name }}</span>
@@ -73,8 +68,8 @@
 							<!-- 功能按钮 -->
 							<div class="cl-upload__actions">
 								<span
-									class="cl-upload__actions-preview"
 									v-if="_file.type == 'image'"
+									class="cl-upload__actions-preview"
 									@click.stop="_onPreview(_file)"
 								>
 									<i class="el-icon-zoom-in"></i>
@@ -92,9 +87,7 @@
 						<!-- 空态 -->
 						<template v-else>
 							<i :class="['cl-upload__icon', _icon]"></i>
-							<span class="cl-upload__text" v-if="_text">{{
-								_text
-							}}</span>
+							<span v-if="_text" class="cl-upload__text">{{ _text }}</span>
 						</template>
 					</template>
 				</slot>
@@ -102,10 +95,10 @@
 		</div>
 
 		<cl-dialog
-			title="图片预览"
 			v-model="preview.visible"
+			title="图片预览"
 			:props="{
-				width: previewWidth,
+				width: previewWidth
 			}"
 		>
 			<img style="width: 100%" :src="preview.url" alt="" />
@@ -133,19 +126,19 @@ export default {
 		// 是否以 uuid 重命名
 		rename: {
 			type: Boolean,
-			default: undefined,
+			default: undefined
 		},
 		// 最大允许上传文件大小(MB)
 		limitSize: Number,
 		// 预览图片的宽度
 		previewWidth: {
 			type: String,
-			default: "500px",
+			default: "500px"
 		},
 		// 上传的地址
 		action: {
 			type: String,
-			default: "",
+			default: ""
 		},
 		// 设置上传的请求头部
 		headers: Object,
@@ -160,7 +153,7 @@ export default {
 		// 是否显示已上传文件列表
 		showFileList: {
 			type: Boolean,
-			default: undefined,
+			default: undefined
 		},
 		// 是否拖拽
 		drag: Boolean,
@@ -169,12 +162,12 @@ export default {
 		// 文件列表的类型
 		listType: {
 			type: String,
-			default: "default",
+			default: "default"
 		},
 		// 是否自带上传
 		autoUpload: {
 			type: Boolean,
-			default: true,
+			default: true
 		},
 		// 是否禁用
 		disabled: Boolean,
@@ -197,7 +190,7 @@ export default {
 		// 上传文件之前的钩子
 		beforeUpload: Function,
 		// 删除文件之前的钩子
-		beforeRemove: Function,
+		beforeRemove: Function
 	},
 
 	emits: ["update:modelValue", "change"],
@@ -209,8 +202,8 @@ export default {
 			loading: false,
 			preview: {
 				visible: false,
-				url: null,
-			},
+				url: null
+			}
 		};
 	},
 
@@ -278,7 +271,7 @@ export default {
 
 		_urls() {
 			const format = {
-				image: ["bmp", "jpg", "jpeg", "png", "tif", "gif", "svg"],
+				image: ["bmp", "jpg", "jpeg", "png", "tif", "gif", "svg"]
 			};
 
 			return this.urls
@@ -304,26 +297,24 @@ export default {
 				arr = [this._size, this._size];
 			}
 
-			const [height, width] = arr.map((e) =>
-				isNumber(e) ? `${e}px` : e
-			);
+			const [height, width] = arr.map((e) => (isNumber(e) ? `${e}px` : e));
 
 			if (this.listType == "default" && !this.drag) {
 				return {
 					height,
-					width,
+					width
 				};
 			} else {
 				return {};
 			}
-		},
+		}
 	},
 
 	watch: {
 		modelValue: {
 			immediate: true,
-			handler: "parseValue",
-		},
+			handler: "parseValue"
+		}
 	},
 
 	methods: {
@@ -353,7 +344,7 @@ export default {
 					return {
 						url,
 						name: basename(url),
-						uid: url,
+						uid: url
 					};
 				});
 
@@ -423,9 +414,7 @@ export default {
 
 			if (this._limitSize) {
 				if (file.size / 1024 / 1024 >= this._limitSize) {
-					this.$message.error(
-						`上传文件大小不能超过 ${this._limitSize}MB!`
-					);
+					this.$message.error(`上传文件大小不能超过 ${this._limitSize}MB!`);
 					this.done();
 					return false;
 				}
@@ -433,7 +422,7 @@ export default {
 
 			if (this.beforeUpload) {
 				return this.beforeUpload(file, {
-					done: this.done,
+					done: this.done
 				});
 			}
 
@@ -447,7 +436,7 @@ export default {
 			this.append({
 				url: res.data,
 				name: file.raw.name,
-				uid: file.raw.uid,
+				uid: file.raw.uid
 			});
 
 			// 文件上传成功时的钩子
@@ -476,10 +465,7 @@ export default {
 
 						// 是否以 uuid 重新命名
 						if (this._rename) {
-							fileName =
-								uuidv4() +
-								"." +
-								last((file.name || "").split("."));
+							fileName = uuidv4() + "." + last((file.name || "").split("."));
 						}
 
 						data.append("key", `app/${fileName}`);
@@ -491,17 +477,15 @@ export default {
 								url: res.host,
 								method: "POST",
 								headers: {
-									"Content-Type": "multipart/form-data",
+									"Content-Type": "multipart/form-data"
 								},
 								data,
 								onUploadProgress: (e) => {
 									if (this.onProgress) {
-										e.percent = parseInt(
-											(e.loaded / e.total) * 100
-										);
+										e.percent = parseInt((e.loaded / e.total) * 100);
 										this.onProgress(e, req.file);
 									}
-								},
+								}
 							})
 							.then((url) => {
 								if (mode === "local") {
@@ -517,7 +501,7 @@ export default {
 
 					if (mode == "local") {
 						next({
-							host: "/upload",
+							host: "/upload"
 						});
 					} else {
 						this.$service.common
@@ -553,8 +537,8 @@ export default {
 		// 上传模式
 		uploadMode() {
 			return this.$service.common.uploadMode().then((res) => res.mode);
-		},
-	},
+		}
+	}
 };
 </script>
 

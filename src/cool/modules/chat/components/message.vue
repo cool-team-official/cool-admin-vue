@@ -1,23 +1,15 @@
 <template>
-	<div
-		class="cl-chat-message"
-		v-loading="!visible && loading"
-		element-loading-text="消息加载中"
-	>
+	<div v-loading="!visible && loading" class="cl-chat-message" element-loading-text="消息加载中">
 		<div
-			class="cl-chat-message__scroller scroller1"
 			:ref="setRefs('scroller')"
+			class="cl-chat-message__scroller scroller1"
 			:style="{
-				opacity: visible ? 1 : 0,
+				opacity: visible ? 1 : 0
 			}"
 		>
 			<!-- 加载更多 -->
-			<div class="cl-chat-message__more" v-show="list.length > 0">
-				<el-button
-					round
-					size="mini"
-					:loading="loading"
-					@click="onLoadmore"
+			<div v-show="list.length > 0" class="cl-chat-message__more">
+				<el-button round size="mini" :loading="loading" @click="onLoadmore"
 					>加载更多</el-button
 				>
 			</div>
@@ -25,16 +17,13 @@
 			<!-- 消息列表 -->
 			<div class="cl-chat-message__list">
 				<div
-					class="cl-chat-message__item"
 					v-for="item in list"
 					:key="item.id || item.uid"
-					:class="[
-						item.type == 0 ? `is-right` : `is-left`,
-						`is-${item.mode}`,
-					]"
+					class="cl-chat-message__item"
+					:class="[item.type == 0 ? `is-right` : `is-left`, `is-${item.mode}`]"
 				>
 					<!-- 日期 -->
-					<div class="date" v-if="item._date">
+					<div v-if="item._date" class="date">
 						<span>{{ item._date }}</span>
 					</div>
 
@@ -50,8 +39,8 @@
 							<span class="name">{{ item.nickName }}</span>
 
 							<div
-								class="content"
 								v-loading="item.loading"
+								class="content"
 								:element-loading-text="item.progress"
 								@click="onTap(item)"
 							>
@@ -65,9 +54,7 @@
 									<el-image
 										:key="item.uid"
 										:src="item.content.imageUrl"
-										:preview-src-list="[
-											item.content.imageUrl,
-										]"
+										:preview-src-list="[item.content.imageUrl]"
 										:z-index="3000"
 										:style="item.style"
 									>
@@ -88,12 +75,8 @@
 
 								<!-- 语音 -->
 								<template v-else-if="item.mode === 'voice'">
-									<icon-voice
-										:play="item.isPlay"
-									></icon-voice>
-									<span class="duration"
-										>{{ item.content.duration }}"</span
-									>
+									<icon-voice :play="item.isPlay" />
+									<span class="duration">{{ item.content.duration }}"</span>
 								</template>
 
 								<!-- 视频 -->
@@ -119,12 +102,7 @@
 
 				<!-- 音频 -->
 				<div class="voice">
-					<audio
-						style="display: none"
-						ref="voice"
-						:src="voice.url"
-						controls
-					></audio>
+					<audio ref="voice" style="display: none" :src="voice.url" controls></audio>
 				</div>
 			</div>
 		</div>
@@ -132,15 +110,7 @@
 </template>
 
 <script lang="ts">
-import {
-	computed,
-	defineComponent,
-	inject,
-	nextTick,
-	onUnmounted,
-	reactive,
-	ref,
-} from "vue";
+import { computed, defineComponent, inject, nextTick, onUnmounted, reactive, ref } from "vue";
 import dayjs from "dayjs";
 import { ElMessage } from "element-plus";
 import { useStore } from "vuex";
@@ -152,7 +122,7 @@ import AvatarUrl from "../static/images/custom-avatar.png";
 
 export default defineComponent({
 	components: {
-		IconVoice,
+		IconVoice
 	},
 
 	setup() {
@@ -175,13 +145,13 @@ export default defineComponent({
 		const pagination = reactive<any>({
 			page: 1,
 			size: 20,
-			total: 0,
+			total: 0
 		});
 
 		// 语音
 		const voice = reactive<any>({
 			url: "",
-			timer: null,
+			timer: null
 		});
 
 		// 请求随机值
@@ -210,19 +180,14 @@ export default defineComponent({
 				}
 
 				// 内容
-				const content = isString(e.content)
-					? JSON.parse(e.content)
-					: e.content;
+				const content = isString(e.content) ? JSON.parse(e.content) : e.content;
 
 				// 昵称
-				const nickName =
-					e.type == 0 ? userInfo.nickName : session.value.nickname;
+				const nickName = e.type == 0 ? userInfo.nickName : session.value.nickname;
 
 				// 头像
 				const avatarUrl =
-					e.type == 0
-						? userInfo.avatarUrl || AvatarUrl
-						: session.value.headimgurl;
+					e.type == 0 ? userInfo.avatarUrl || AvatarUrl : session.value.headimgurl;
 
 				return {
 					...e,
@@ -230,7 +195,7 @@ export default defineComponent({
 					content,
 					avatarUrl,
 					nickName,
-					mode: chat.modes[e.contentType],
+					mode: chat.modes[e.contentType]
 				};
 			});
 		});
@@ -270,7 +235,7 @@ export default defineComponent({
 				if (refs.value.scroller) {
 					refs.value.scroller.scrollTo({
 						top: 99999,
-						behavior: visible.value ? "smooth" : "auto",
+						behavior: visible.value ? "smooth" : "auto"
 					});
 				}
 			});
@@ -287,7 +252,7 @@ export default defineComponent({
 				...params,
 				sessionId: session.value.id,
 				order: "createTime",
-				sort: "desc",
+				sort: "desc"
 			};
 
 			// 加载动画
@@ -371,9 +336,9 @@ export default defineComponent({
 			onTap,
 			refresh,
 			onLoadmore,
-			scrollToBottom,
+			scrollToBottom
 		};
-	},
+	}
 });
 </script>
 

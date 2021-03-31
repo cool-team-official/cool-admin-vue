@@ -10,8 +10,6 @@ import { ElMessage } from "element-plus";
 import { defineComponent } from "vue";
 
 export default defineComponent({
-	name: "demo__context-menu",
-
 	setup() {
 		function open(event: any) {
 			ContextMenu.open(event, {

@@ -31,8 +31,8 @@
 
 			<template #slot-session>
 				<button v-if="session">
-					<i class="el-icon-notebook-2" v-if="sessionVisible" @click="closeSession()"></i>
-					<i class="el-icon-arrow-left" v-else @click="openSession()"></i>
+					<i v-if="sessionVisible" class="el-icon-notebook-2" @click="closeSession()"></i>
+					<i v-else class="el-icon-arrow-left" @click="openSession()"></i>
 				</button>
 			</template>
 		</cl-dialog>
@@ -40,8 +40,8 @@
 		<!-- MP3 -->
 		<div class="mp3">
 			<audio
-				style="display: none"
 				:ref="setRefs('sound')"
+				style="display: none"
 				src="../static/notify.mp3"
 				controls
 			></audio>
@@ -81,6 +81,8 @@ export default defineComponent({
 			default: "1000px"
 		}
 	},
+
+	emits: ["message"],
 
 	setup(_, { emit }) {
 		const store = useStore();
@@ -223,7 +225,7 @@ export default defineComponent({
 		}
 
 		// 加载 socket
-		(function() {
+		(function () {
 			// socket = io(`${socketUrl}?isAdmin=true&token=${store.getters.token}`);
 			// socket.on("connect", () => {
 			// 	console.log("socket connect");
@@ -246,7 +248,7 @@ export default defineComponent({
 		});
 
 		// 销毁
-		onUnmounted(function() {
+		onUnmounted(function () {
 			if (socket) {
 				socket.close();
 			}

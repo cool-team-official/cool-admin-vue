@@ -59,13 +59,9 @@
 				resize="none"
 				:rows="5"
 				@keyup.enter="onTextSend"
-			></el-input>
+			/>
 
-			<el-button
-				type="primary"
-				size="mini"
-				:disabled="!text"
-				@click="onTextSend"
+			<el-button type="primary" size="mini" :disabled="!text" @click="onTextSend"
 				>发送</el-button
 			>
 		</div>
@@ -79,7 +75,7 @@ import Emoji from "./emoji.vue";
 
 export default defineComponent({
 	components: {
-		Emoji,
+		Emoji
 	},
 
 	setup() {
@@ -92,7 +88,7 @@ export default defineComponent({
 
 		// 表情
 		const emoji = reactive<any>({
-			visible: false,
+			visible: false
 		});
 
 		// 追加消息
@@ -116,7 +112,7 @@ export default defineComponent({
 					contentType: data.contentType,
 					type: 0,
 					content: data.content,
-					sessionId: id,
+					sessionId: id
 				});
 			}
 
@@ -131,14 +127,14 @@ export default defineComponent({
 			function next(options = {}) {
 				const data = {
 					content: {
-						[`${key}Url`]: "",
+						[`${key}Url`]: ""
 					},
 					type: 0,
 					uid: file.uid,
 					loading: true,
 					progress: "0%",
 					contentType: chat.modes.indexOf(key),
-					...options,
+					...options
 				};
 
 				append(data);
@@ -163,12 +159,12 @@ export default defineComponent({
 
 						next({
 							content: {
-								imageUrl,
+								imageUrl
 							},
 							style: {
 								height: height + "px",
-								width: width + "px",
-							},
+								width: width + "px"
+							}
 						});
 					};
 
@@ -186,8 +182,8 @@ export default defineComponent({
 			store.commit("UPDATE_MESSAGE", {
 				file,
 				data: {
-					progress: e.percent + "%",
-				},
+					progress: e.percent + "%"
+				}
 			});
 		}
 
@@ -198,10 +194,10 @@ export default defineComponent({
 				data: {
 					loading: false,
 					content: {
-						[`${key}Url`]: res.data,
-					},
+						[`${key}Url`]: res.data
+					}
 				},
-				callback: send,
+				callback: send
 			});
 		}
 
@@ -213,8 +209,8 @@ export default defineComponent({
 						type: 0,
 						contentType: 0,
 						content: {
-							text: text.value,
-						},
+							text: text.value
+						}
 					};
 
 					send(data, true);
@@ -231,10 +227,10 @@ export default defineComponent({
 			send(
 				{
 					content: {
-						imageUrl: res.data,
+						imageUrl: res.data
 					},
 					type: 0,
-					contentType: 1,
+					contentType: 1
 				},
 				true
 			);
@@ -246,10 +242,10 @@ export default defineComponent({
 			send(
 				{
 					content: {
-						imageUrl: url,
+						imageUrl: url
 					},
 					type: 0,
-					contentType: 2,
+					contentType: 2
 				},
 				true
 			);
@@ -260,10 +256,10 @@ export default defineComponent({
 			send(
 				{
 					content: {
-						videoUrl: url,
+						videoUrl: url
 					},
 					type: 0,
-					contentType: 4,
+					contentType: 4
 				},
 				true
 			);
@@ -279,9 +275,9 @@ export default defineComponent({
 			onTextSend,
 			onImageSelect,
 			onEmojiSelect,
-			onVideoSelect,
+			onVideoSelect
 		};
-	},
+	}
 });
 </script>
 

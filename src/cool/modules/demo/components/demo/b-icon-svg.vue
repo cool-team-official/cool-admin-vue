@@ -5,8 +5,8 @@
 			svg图片库
 		</div>
 		<div class="c _svg">
-			<el-tooltip content="icon-like" v-for="(item, index) in list" :key="index">
-				<icon-svg :size="18" :name="`icon-${item}`"></icon-svg>
+			<el-tooltip v-for="(item, index) in list" :key="index" content="icon-like">
+				<icon-svg :size="18" :name="`icon-${item}`" />
 			</el-tooltip>
 		</div>
 		<div class="f">

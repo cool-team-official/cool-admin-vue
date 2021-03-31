@@ -1,15 +1,8 @@
 <template>
 	<div class="demo scroller1">
 		<el-row :gutter="10">
-			<el-col
-				v-for="(item, index) in list"
-				:key="index"
-				:xs="24"
-				:sm="12"
-				:md="8"
-				:lg="6"
-			>
-				<component :is="item"></component>
+			<el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="8" :lg="6">
+				<component :is="item" />
 			</el-col>
 		</el-row>
 	</div>
@@ -34,7 +27,7 @@ export default {
 		BClCrud,
 		BClContextMenu,
 		BErrorPage,
-		BClEditorQuill,
+		BClEditorQuill
 	},
 
 	setup() {
@@ -46,10 +39,10 @@ export default {
 				"b-v-copy",
 				"b-cl-context-menu",
 				"b-error-page",
-				"b-cl-editor-quill",
-			],
+				"b-cl-editor-quill"
+			]
 		};
-	},
+	}
 };
 </script>
 

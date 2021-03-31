@@ -27,7 +27,7 @@
 								prop: 'createTime'
 							}
 						]"
-					></cl-table>
+					/>
 				</cl-crud>
 			</template>
 
@@ -39,7 +39,7 @@
 					:prop="'vads.' + index + '.val'"
 					:rules="{ required: true, message: '请输入' }"
 				>
-					<el-input v-model="item.val"></el-input>
+					<el-input v-model="item.val" />
 				</el-form-item>
 
 				<el-button @click="addVad(scope.vads)">添加行</el-button>
@@ -55,8 +55,6 @@ import { TestService } from "../../utils/service";
 import { CrudLoad, FormItem, FormRef } from "/@/crud/types";
 
 export default defineComponent({
-	name: "demo-form",
-
 	setup() {
 		const formRef = ref<FormRef>();
 

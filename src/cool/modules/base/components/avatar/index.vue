@@ -21,12 +21,12 @@ export default defineComponent({
 		src: String,
 		size: {
 			type: String,
-			default: "large",
+			default: "large"
 		},
 		shape: {
 			type: String,
-			default: "circle",
-		},
+			default: "circle"
+		}
 	},
 
 	setup(props) {
@@ -35,14 +35,14 @@ export default defineComponent({
 		const style = computed(() => {
 			return {
 				height: size,
-				width: size,
+				width: size
 			};
 		});
 
 		return {
-			style,
+			style
 		};
-	},
+	}
 });
 </script>
 

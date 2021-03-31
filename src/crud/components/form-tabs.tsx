@@ -40,7 +40,7 @@ export default defineComponent({
 
 		function update(val: string | number) {
 			nextTick(() => {
-				const index = list.value.findIndex(e => e.value === val);
+				const index = list.value.findIndex((e) => e.value === val);
 				const item = refs.value[`tab-${index}`];
 
 				// 下划线位置
@@ -64,7 +64,7 @@ export default defineComponent({
 			emit("change", val);
 		}
 
-		onMounted(function() {
+		onMounted(function () {
 			if (isArray(props.labels) && props.labels.length > 0) {
 				list.value = props.labels;
 				update(isEmpty(props.modelValue) ? list.value[0].value : props.modelValue);

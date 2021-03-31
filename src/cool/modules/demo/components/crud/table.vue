@@ -1,6 +1,6 @@
 <template>
 	<div class="demo-table">
-		<cl-table :columns="columns"></cl-table>
+		<cl-table :columns="columns" />
 	</div>
 </template>
 
@@ -9,8 +9,6 @@ import { TableColumn } from "/@/crud/types";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-	name: "demo-table",
-
 	setup() {
 		const columns = ref<TableColumn[]>([
 			{

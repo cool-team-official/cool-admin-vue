@@ -1,5 +1,5 @@
 <template>
-	<div class="page-iframe" v-loading="loading" element-loading-text="拼命加载中">
+	<div v-loading="loading" class="page-iframe" element-loading-text="拼命加载中">
 		<iframe :src="url" frameborder="0"></iframe>
 	</div>
 </template>

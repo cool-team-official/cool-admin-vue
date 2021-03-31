@@ -16,7 +16,7 @@ export function useFormApi({ refs }: any) {
 		"clearValidate",
 		"validateField",
 		"validate"
-	].forEach(e => {
+	].forEach((e) => {
 		apis[e] = (...args: any[]) => {
 			return refs.value.form[e](...args);
 		};

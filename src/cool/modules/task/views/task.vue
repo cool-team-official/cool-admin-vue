@@ -2,7 +2,7 @@
 	<div class="system-task">
 		<div class="box scroller1">
 			<!-- 系统，用户自定义，已停止 -->
-			<div class="block" :class="[`_${item.key}`]" v-for="(item, index) in list" :key="index">
+			<div v-for="(item, index) in list" :key="index" class="block" :class="[`_${item.key}`]">
 				<div class="header">
 					<!-- 图标 -->
 					<i class="icon" :class="item.icon"></i>
@@ -19,22 +19,22 @@
 
 						<li
 							v-else
-							@click="refreshTask({ page: 1 })"
-							class="refresh-btn"
 							v-permission="perm.delete"
+							class="refresh-btn"
+							@click="refreshTask({ page: 1 })"
 						>
 							<i class="el-icon-refresh"></i>
 							<span>刷新</span>
 						</li>
 
-						<li @click="edit(item.params)" class="add-btn" v-permission="perm.add">
+						<li v-permission="perm.add" class="add-btn" @click="edit(item.params)">
 							<i class="el-icon-plus"></i>
 							<span>添加</span>
 						</li>
 					</ul>
 				</div>
 
-				<div class="container scroller1" :ref="setRefs(`${item.key}-scroller`)">
+				<div :ref="setRefs(`${item.key}-scroller`)" class="container scroller1">
 					<draggable
 						v-model="list[index].list"
 						v-bind="drag.options"
@@ -42,17 +42,17 @@
 						item-key="id"
 						:data-type="item.params.type"
 						:data-status="item.params.status"
-						@end="e => onDragEnd(e, item)"
+						@end="(e) => onDragEnd(e, item)"
 					>
-						<template #item="{element}">
+						<template #item="{ element }">
 							<li
 								:key="element.id"
 								:data-id="element.id"
-								@contextmenu.stop.prevent="openCM($event, element)"
 								class="_drag"
+								@contextmenu.stop.prevent="openCM($event, element)"
 							>
 								<div class="h">
-									<span class="type _warning" v-show="element.status === 0">
+									<span v-show="element.status === 0" class="type _warning">
 										{{ element.type === 0 ? "系统" : "用户" }}
 									</span>
 									<span class="name">{{ element.name }}</span>
@@ -74,8 +74,8 @@
 
 								<div class="op">
 									<div
-										class="op-item"
 										v-if="element.status === 0"
+										class="op-item"
 										@click="start(element)"
 									>
 										<i class="el-icon-video-play"></i>
@@ -83,30 +83,30 @@
 									</div>
 
 									<div
-										class="op-item"
 										v-else
-										@click="stop(element)"
 										v-permission="perm.stop"
+										class="op-item"
+										@click="stop(element)"
 									>
 										<i class="el-icon-video-pause"></i>
 										<span>暂停</span>
 									</div>
 
 									<div
-										class="op-item"
-										@click="edit(element)"
 										v-permission="{
 											and: [perm.update, perm.info]
 										}"
+										class="op-item"
+										@click="edit(element)"
 									>
 										<i class="el-icon-edit"></i>
 										<span>编辑</span>
 									</div>
 
 									<div
+										v-permission="perm.log"
 										class="op-item"
 										@click="findLog(element)"
-										v-permission="perm.log"
 									>
 										<i class="el-icon-tickets"></i>
 										<span>查看日志</span>
@@ -116,31 +116,29 @@
 						</template>
 
 						<template #header>
-							<div class="empty" v-if="list[index].list.length == 0">
-								暂无数据
-							</div>
+							<div v-if="list[index].list.length == 0" class="empty">暂无数据</div>
 						</template>
 					</draggable>
 
 					<el-button
+						v-if="item.pagination.total >= item.pagination.size"
 						class="more"
 						type="text"
 						size="mini"
 						@click="moreTask(index, item)"
-						v-if="item.pagination.total >= item.pagination.size"
 						>查看更多</el-button
 					>
 				</div>
 
 				<div class="footer">
-					<button class="btn-add" @click="edit(item.params)" v-permission="perm.add">
+					<button v-permission="perm.add" class="btn-add" @click="edit(item.params)">
 						<i class="el-icon-plus"></i>
 					</button>
 				</div>
 			</div>
 
 			<!-- 日志 -->
-			<div class="block _log" v-permission="perm.log">
+			<div v-permission="perm.log" class="block _log">
 				<div class="header">
 					<!-- 标题 -->
 					<span class="label">日志</span>
@@ -150,8 +148,8 @@
 
 					<!-- 是否异常 -->
 					<el-checkbox-group
-						class="status"
 						v-model="logs.filters.status"
+						class="status"
 						@change="filterLog"
 					>
 						<el-checkbox :label="0">异常</el-checkbox>
@@ -171,11 +169,11 @@
 					</ul>
 				</div>
 
-				<div class="container" v-loading="logs.loading" element-loading-text="拼命加载中">
+				<div v-loading="logs.loading" class="container" element-loading-text="拼命加载中">
 					<ul
-						class="scroller1"
 						:ref="setRefs('log-scroller')"
 						v-infinite-scroll="moreLog"
+						class="scroller1"
 					>
 						<li
 							v-for="(item, index) in logs.list"
@@ -343,7 +341,7 @@ export default defineComponent({
 			const { index, more } = options || {};
 			const arr = index === undefined || index === null ? list.map((e, i) => i) : [index];
 
-			arr.forEach(async k => {
+			arr.forEach(async (k) => {
 				const item = list[k];
 
 				Object.assign(item.params, {
@@ -759,9 +757,9 @@ export default defineComponent({
 			}
 
 			ContextMenu.open(e, {
-				list: menus.filter(e => {
+				list: menus.filter((e) => {
 					return checkPerm({
-						and: e.perm.map(a => perm.value[a])
+						and: e.perm.map((a) => perm.value[a])
 					});
 				})
 			});

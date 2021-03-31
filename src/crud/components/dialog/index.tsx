@@ -152,7 +152,7 @@ export default defineComponent({
 			}
 		}
 
-		onMounted(function() {
+		onMounted(function () {
 			setDialog();
 		});
 

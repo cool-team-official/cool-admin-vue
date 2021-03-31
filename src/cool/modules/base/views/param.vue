@@ -1,35 +1,31 @@
 <template>
 	<cl-crud @load="onLoad">
 		<el-row type="flex">
-			<cl-refresh-btn></cl-refresh-btn>
-			<cl-add-btn></cl-add-btn>
-			<cl-multi-delete-btn></cl-multi-delete-btn>
-			<cl-flex1></cl-flex1>
-			<cl-search-key></cl-search-key>
+			<cl-refresh-btn />
+			<cl-add-btn />
+			<cl-multi-delete-btn />
+			<cl-flex1 />
+			<cl-search-key />
 		</el-row>
 
 		<el-row>
-			<cl-table v-bind="table"></cl-table>
+			<cl-table v-bind="table" />
 		</el-row>
 
 		<el-row type="flex">
-			<cl-flex1></cl-flex1>
-			<cl-pagination></cl-pagination>
+			<cl-flex1 />
+			<cl-pagination />
 		</el-row>
 
 		<cl-upsert :ref="setRefs('upsert')" v-bind="upsert" @open="onUpsertOpen">
 			<template #slot-content="{ scope }">
-				<div class="editor" v-for="(item, index) in tab.list" :key="index">
+				<div v-for="(item, index) in tab.list" :key="index" class="editor">
 					<template v-if="tab.index == index">
 						<el-button class="change-btn" size="mini" @click="changeTab(item.to)">{{
 							item.label
 						}}</el-button>
 
-						<component
-							:is="item.component"
-							height="300px"
-							v-model="scope.data"
-						></component>
+						<component :is="item.component" v-model="scope.data" height="300px" />
 					</template>
 				</div>
 			</template>

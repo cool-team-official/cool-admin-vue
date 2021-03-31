@@ -5,7 +5,7 @@
 		</el-badge>
 
 		<!-- 聊天盒子 -->
-		<cl-chat ref="chat" @message="updateNum"></cl-chat>
+		<cl-chat ref="chat" @message="updateNum" />
 	</div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
 	data() {
 		return {
 			visible: false,
-			number: 0,
+			number: 0
 		};
 	},
 
@@ -38,8 +38,8 @@ export default {
 		openChatBox() {
 			this.$refs["chat"].open();
 			this.number = 0;
-		},
-	},
+		}
+	}
 };
 </script>
 

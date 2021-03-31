@@ -1,5 +1,5 @@
 <template>
-	<cl-query field="status" :list="list"></cl-query>
+	<cl-query field="status" :list="list" />
 </template>
 
 <script lang="ts">
@@ -7,8 +7,6 @@ import { QueryList } from "/@/crud/types";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-	name: "demo__query",
-
 	setup() {
 		const list = ref<QueryList[]>([
 			{

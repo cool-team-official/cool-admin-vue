@@ -16,15 +16,15 @@
 				clearable
 				@clear="onSearch"
 				@keyup.enter="onSearch"
-			></el-input>
+			/>
 		</div>
 
 		<!-- 会话列表 -->
-		<ul class="cl-chat-session__list scroller1" v-loading="loading">
+		<ul v-loading="loading" class="cl-chat-session__list scroller1">
 			<li
-				class="cl-chat-session__item"
 				v-for="(item, index) in list"
 				:key="index"
+				class="cl-chat-session__item"
 				:class="{
 					'is-active': session ? item.id == session.id : false
 				}"
@@ -194,7 +194,7 @@ export default defineComponent({
 		mitt.on("session.refresh", refresh);
 
 		// 销毁
-		onUnmounted(function() {
+		onUnmounted(function () {
 			mitt.off("session.refresh", refresh);
 		});
 

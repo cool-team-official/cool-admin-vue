@@ -1,6 +1,6 @@
 <template>
 	<div class="page-editor-quill">
-		<cl-editor-quill v-model="content" :height="400"></cl-editor-quill>
+		<cl-editor-quill v-model="content" :height="400" />
 	</div>
 </template>
 

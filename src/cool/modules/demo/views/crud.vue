@@ -2,28 +2,28 @@
 	<div class="demo">
 		<cl-crud @load="onLoad">
 			<el-row>
-				<cl-refresh-btn></cl-refresh-btn>
-				<cl-add-btn></cl-add-btn>
-				<cl-multi-delete-btn></cl-multi-delete-btn>
-				<demo-dialog></demo-dialog>
-				<demo-context-menu></demo-context-menu>
-				<demo-form></demo-form>
-				<demo-query></demo-query>
-				<cl-flex1></cl-flex1>
-				<cl-search-key field="name"></cl-search-key>
-				<demo-adv-search></demo-adv-search>
+				<cl-refresh-btn />
+				<cl-add-btn />
+				<cl-multi-delete-btn />
+				<demo-dialog />
+				<demo-context-menu />
+				<demo-form />
+				<demo-query />
+				<cl-flex1 />
+				<cl-search-key field="name" />
+				<demo-adv-search />
 			</el-row>
 
 			<el-row>
-				<demo-table></demo-table>
+				<demo-table />
 			</el-row>
 
 			<el-row>
-				<cl-flex1></cl-flex1>
-				<cl-pagination></cl-pagination>
+				<cl-flex1 />
+				<cl-pagination />
 			</el-row>
 
-			<demo-upsert></demo-upsert>
+			<demo-upsert />
 		</cl-crud>
 	</div>
 </template>
@@ -50,7 +50,7 @@ export default defineComponent({
 		"demo-adv-search": AdvSearch,
 		"demo-table": Table,
 		"demo-upsert": Upsert,
-		"demo-form": Form,
+		"demo-form": Form
 	},
 
 	setup() {
@@ -60,9 +60,9 @@ export default defineComponent({
 		}
 
 		return {
-			onLoad,
+			onLoad
 		};
-	},
+	}
 });
 </script>
 

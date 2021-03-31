@@ -1,19 +1,18 @@
 <template>
-	<div class="cl-dept-check" v-loading="loading">
+	<div v-loading="loading" class="cl-dept-check">
 		<p v-if="title">{{ title }}</p>
 
 		<div class="cl-dept-check__search">
-			<el-input placeholder="输入关键字进行过滤" v-model="keyword" size="small"> </el-input>
+			<el-input v-model="keyword" placeholder="输入关键字进行过滤" size="small" />
 			<el-switch
+				v-model="form.relevance"
 				:active-value="1"
 				:inactive-value="0"
-				v-model="form.relevance"
 				@change="onCheckStrictlyChange"
-			></el-switch
-			>是否关联上下级
+			/>是否关联上下级
 		</div>
 
-		<div class="cl-dept-check__tree" v-if="visible">
+		<div v-if="visible" class="cl-dept-check__tree">
 			<el-tree
 				ref="treeRef"
 				highlight-current
@@ -28,8 +27,7 @@
 				:filter-node-method="filterNode"
 				:check-strictly="!form.relevance"
 				@check-change="onCheckChange"
-			>
-			</el-tree>
+			/>
 		</div>
 	</div>
 </template>

@@ -2,7 +2,7 @@
 	<div class="demo-upload scroller1">
 		<div class="demo-upload__item">
 			<p>文件空间</p>
-			<cl-upload-space v-model="urls"></cl-upload-space>
+			<cl-upload-space v-model="urls" />
 
 			<p style="margin-top: 10px">选择的文件：</p>
 
@@ -11,33 +11,33 @@
 				:key="index"
 				:src="item"
 				:style="{ width: '100px', marginRight: '10px' }"
-			></el-image>
+			/>
 		</div>
 
 		<div class="demo-upload__item">
 			<p>普通上传</p>
-			<cl-upload></cl-upload>
+			<cl-upload />
 		</div>
 
 		<div class="demo-upload__item">
 			<p>指定类型上传 accept=.jpg,.png</p>
-			<cl-upload accept=".jpg,.png"></cl-upload>
+			<cl-upload accept=".jpg,.png" />
 		</div>
 
 		<div class="demo-upload__item">
 			<p>多图上传 picture-card</p>
 
-			<cl-upload multiple :limit="3" listType="picture-card"></cl-upload>
+			<cl-upload multiple :limit="3" list-type="picture-card" />
 		</div>
 
 		<div class="demo-upload__item">
 			<p>文件上传 text</p>
-			<cl-upload v-model="urls" multiple :limit="5" accept="*" list-type="text"></cl-upload>
+			<cl-upload v-model="urls" multiple :limit="5" accept="*" list-type="text" />
 		</div>
 
 		<div class="demo-upload__item">
 			<p>自定义</p>
-			<cl-upload icon="el-icon-picture" text="选择图片" :size="[120, 200]"></cl-upload>
+			<cl-upload icon="el-icon-picture" text="选择图片" :size="[120, 200]" />
 		</div>
 
 		<div class="demo-upload__item">

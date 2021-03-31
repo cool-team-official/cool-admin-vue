@@ -25,7 +25,7 @@ const actions = {
 
 	// 用户退出
 	userLogout({ dispatch }: any): Promise<any> {
-		return new Promise(resolve => {
+		return new Promise((resolve) => {
 			store.$service.common.userLogout().done(() => {
 				dispatch("userRemove").then(() => {
 					resolve(null);

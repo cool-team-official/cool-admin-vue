@@ -6,7 +6,7 @@
 		</div>
 
 		<div class="c">
-			<el-button size="small" v-copy="'https://www.cool-admin.com/'">
+			<el-button v-copy="'https://www.cool-admin.com/'" size="small">
 				https://www.cool-admin.com
 			</el-button>
 		</div>

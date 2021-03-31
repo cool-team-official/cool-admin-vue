@@ -7,7 +7,7 @@
 			</div>
 
 			<div class="card__container">
-				<el-progress :percentage="50" :stroke-width="8"></el-progress>
+				<el-progress :percentage="50" :stroke-width="8" />
 			</div>
 
 			<div class="card__footer">

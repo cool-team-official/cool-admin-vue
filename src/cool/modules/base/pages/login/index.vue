@@ -7,51 +7,46 @@
 			<el-form class="form" size="medium" :disabled="saving">
 				<el-form-item label="用户名">
 					<el-input
-						placeholder="请输入用户名"
 						v-model="form.username"
+						placeholder="请输入用户名"
 						maxlength="20"
 						auto-complete="off"
-					></el-input>
+					/>
 				</el-form-item>
 
 				<el-form-item label="密码">
 					<el-input
+						v-model="form.password"
 						type="password"
 						placeholder="请输入密码"
-						v-model="form.password"
 						maxlength="20"
 						auto-complete="off"
-					></el-input>
+					/>
 				</el-form-item>
 
 				<el-form-item label="验证码" class="captcha">
 					<el-input
+						v-model="form.verifyCode"
 						placeholder="请输入图片验证码"
 						maxlength="4"
-						v-model="form.verifyCode"
 						auto-complete="off"
 						@keyup.enter="toLogin"
-					></el-input>
+					/>
 
 					<captcha
 						:ref="setRefs('captcha')"
-						class="value"
 						v-model="form.captchaId"
+						class="value"
 						@change="
 							() => {
 								form.verifyCode = '';
 							}
 						"
-					></captcha>
+					/>
 				</el-form-item>
 			</el-form>
 
-			<el-button
-				round
-				size="mini"
-				class="submit-btn"
-				@click="toLogin"
-				:loading="saving"
+			<el-button round size="mini" class="submit-btn" :loading="saving" @click="toLogin"
 				>登录</el-button
 			>
 		</div>
@@ -68,13 +63,13 @@ import { useRefs } from "/@/core";
 
 export default defineComponent({
 	components: {
-		Captcha,
+		Captcha
 	},
 
 	setup() {
 		const router = useRouter();
 		const store = useStore();
-		const { refs, setRefs } = useRefs();
+		const { refs, setRefs }: any = useRefs();
 
 		const saving = ref<boolean>(false);
 
@@ -83,7 +78,7 @@ export default defineComponent({
 			username: "admin",
 			password: "123456",
 			captchaId: "",
-			verifyCode: "",
+			verifyCode: ""
 		});
 
 		// 登录
@@ -130,9 +125,9 @@ export default defineComponent({
 			form,
 			saving,
 			toLogin,
-			setRefs,
+			setRefs
 		};
-	},
+	}
 });
 </script>
 

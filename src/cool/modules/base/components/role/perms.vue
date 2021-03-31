@@ -1,8 +1,8 @@
 <template>
-	<div class="cl-role-perms" v-loading="loading">
+	<div v-loading="loading" class="cl-role-perms">
 		<p v-if="title">{{ title }}</p>
 
-		<el-input placeholder="输入关键字进行过滤" v-model="keyword" size="small"> </el-input>
+		<el-input v-model="keyword" placeholder="输入关键字进行过滤" size="small" />
 
 		<div class="scroller">
 			<el-tree
@@ -18,8 +18,7 @@
 				:default-checked-keys="checked"
 				:filter-node-method="filterNode"
 				@check-change="save"
-			>
-			</el-tree>
+			/>
 		</div>
 	</div>
 </template>
@@ -39,6 +38,8 @@ export default defineComponent({
 		},
 		title: String
 	},
+
+	emits: ["update:modelValue"],
 
 	setup(props, { emit }) {
 		const $service = inject<any>("service");
@@ -68,7 +69,7 @@ export default defineComponent({
 
 			// 处理半选状态
 			const fn = (list: any[]) => {
-				list.forEach(e => {
+				list.forEach((e) => {
 					if (e.children) {
 						fn(e.children);
 					} else {
@@ -79,7 +80,7 @@ export default defineComponent({
 
 			fn(list.value);
 
-			checked.value = ids.filter(id => (val || []).includes(id));
+			checked.value = ids.filter((id) => (val || []).includes(id));
 		}
 
 		// 刷新列表

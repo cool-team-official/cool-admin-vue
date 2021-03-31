@@ -6,7 +6,7 @@
 		</div>
 
 		<div class="app-slider__menu">
-			<cl-menu-slider></cl-menu-slider>
+			<cl-menu-slider />
 		</div>
 	</div>
 </template>

@@ -42,7 +42,7 @@ export default {
 
 			// 默认选择
 			list.value = (props.list || []).map((e: any) => {
-				e.active = arr.some(v => v === e.value);
+				e.active = arr.some((v) => v === e.value);
 				return e;
 			});
 		};
@@ -105,7 +105,7 @@ export default {
 						<button
 							class={{ "is-active": item.active }}
 							key={index}
-							onClick={event => {
+							onClick={(event) => {
 								ctx.selectItem(event, item);
 							}}>
 							<span>{item.label}</span>

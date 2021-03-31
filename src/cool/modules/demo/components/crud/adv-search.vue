@@ -1,7 +1,7 @@
 <template>
 	<div class="demo-adv-search">
-		<cl-adv-btn></cl-adv-btn>
-		<cl-adv-search :items="items" :op-list="opList"></cl-adv-search>
+		<cl-adv-btn />
+		<cl-adv-search :items="items" :op-list="opList" />
 	</div>
 </template>
 
@@ -10,8 +10,6 @@ import { AdvSearchItem } from "/@/crud/types";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-	name: "demo-adv-search",
-
 	setup() {
 		const items = ref<AdvSearchItem[]>([
 			{

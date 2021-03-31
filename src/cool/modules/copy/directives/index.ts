@@ -4,12 +4,12 @@ import Clipboard from "clipboard";
 function copyboard() {
 	const clipboard = new Clipboard("._copy-btn");
 
-	clipboard.on("success", e => {
+	clipboard.on("success", (e) => {
 		ElMessage.success("复制成功");
 		e.clearSelection();
 	});
 
-	clipboard.on("error", err => {
+	clipboard.on("error", (err) => {
 		console.error(err);
 		ElMessage.success("复制失败");
 	});

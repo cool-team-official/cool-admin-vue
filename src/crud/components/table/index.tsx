@@ -200,7 +200,7 @@ export default defineComponent({
 								}
 						}
 					})
-					.filter(e => Boolean(e) && !e.hidden);
+					.filter((e) => Boolean(e) && !e.hidden);
 
 				// 打开菜单
 				if (list.length > 0) {
@@ -270,7 +270,7 @@ export default defineComponent({
 			}
 		})();
 
-		onMounted(function() {
+		onMounted(function () {
 			calcMaxHeight();
 		});
 

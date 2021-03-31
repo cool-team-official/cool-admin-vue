@@ -9,7 +9,7 @@
 		</el-row>
 
 		<el-row>
-			<cl-table v-bind="table"> </cl-table>
+			<cl-table v-bind="table" />
 		</el-row>
 
 		<el-row type="flex">
@@ -17,7 +17,7 @@
 			<cl-pagination />
 		</el-row>
 
-		<cl-upsert v-model="form" v-bind="upsert"></cl-upsert>
+		<cl-upsert v-model="form" v-bind="upsert" />
 	</cl-crud>
 </template>
 

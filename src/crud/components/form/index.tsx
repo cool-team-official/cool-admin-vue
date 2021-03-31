@@ -341,7 +341,7 @@ export default defineComponent({
 													{/* Form item */}
 													<div class="cl-form-item">
 														{["prepend", "component", "append"].map(
-															name => {
+															(name) => {
 																return (
 																	e[name] && (
 																		<div

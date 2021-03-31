@@ -8,7 +8,7 @@
 			:options="options"
 			:props="{ multiple: true }"
 			@change="onChange"
-		></el-cascader>
+		/>
 	</div>
 </template>
 
@@ -21,8 +21,8 @@ export default defineComponent({
 	props: {
 		modelValue: {
 			type: String,
-			default: "",
-		},
+			default: ""
+		}
 	},
 
 	emits: ["update:modelValue"],
@@ -38,10 +38,7 @@ export default defineComponent({
 
 		// 监听改变
 		function onChange(row: any) {
-			emit(
-				"update:modelValue",
-				row.map((e: any) => e.join(":")).join(",")
-			);
+			emit("update:modelValue", row.map((e: any) => e.join(":")).join(","));
 		}
 
 		// 解析权限
@@ -80,7 +77,7 @@ export default defineComponent({
 							d.push({
 								label: key,
 								value: key,
-								children: isLast ? null : [],
+								children: isLast ? null : []
 							});
 
 							if (!isLast) {
@@ -99,21 +96,19 @@ export default defineComponent({
 		watch(
 			() => props.modelValue,
 			(val: string) => {
-				value.value = val
-					? val.split(",").map((e: string) => e.split(":"))
-					: [];
+				value.value = val ? val.split(",").map((e: string) => e.split(":")) : [];
 			},
 			{
-				immediate: true,
+				immediate: true
 			}
 		);
 
 		return {
 			value,
 			options,
-			onChange,
+			onChange
 		};
-	},
+	}
 });
 </script>
 

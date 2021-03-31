@@ -4,19 +4,19 @@
 			<i class="el-icon-arrow-left"></i>
 		</div>
 
-		<div class="app-process__scroller" :ref="setRefs('scroller')">
+		<div :ref="setRefs('scroller')" class="app-process__scroller">
 			<div
-				class="app-process__item"
 				v-for="(item, index) in list"
 				:key="index"
 				:ref="setRefs(`item-${index}`)"
+				class="app-process__item"
 				:class="{ active: item.active }"
 				:data-index="index"
 				@click="onTap(item)"
 				@contextmenu.stop.prevent="openCM($event, item)"
 			>
 				<span>{{ item.label }}</span>
-				<i class="el-icon-close" v-if="index > 0" @mousedown.stop="onDel(index)"></i>
+				<i v-if="index > 0" class="el-icon-close" @mousedown.stop="onDel(index)"></i>
 			</div>
 		</div>
 
@@ -138,7 +138,7 @@ export default {
 
 		watch(
 			() => route.path,
-			function(val) {
+			function (val) {
 				adScroll(list.value.findIndex((e: any) => e.value === val) || 0);
 			}
 		);

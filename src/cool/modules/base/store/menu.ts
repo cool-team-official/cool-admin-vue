@@ -17,7 +17,7 @@ const state = {
 	// 左侧菜单
 	menu: [],
 	// 权限列表
-	permission: storage.get("permission") || [],
+	permission: storage.get("permission") || []
 };
 
 const getters = {
@@ -28,7 +28,7 @@ const getters = {
 	// 视图路由
 	routes: (state: any) => state.routes,
 	// 权限列表
-	permission: (state: any) => state.permission,
+	permission: (state: any) => state.permission
 };
 
 const actions = {
@@ -59,9 +59,9 @@ const actions = {
 							isShow: isEmpty(e.isShow) ? true : e.isShow,
 							meta: {
 								label: e.name,
-								keepAlive: e.keepAlive,
+								keepAlive: e.keepAlive
 							},
-							children: [],
+							children: []
 						};
 					});
 
@@ -97,11 +97,11 @@ const actions = {
 					});
 			} else {
 				next({
-					menus: revDeepTree(menuList),
+					menus: revDeepTree(menuList)
 				});
 			}
 		});
-	},
+	}
 };
 
 const mutations = {
@@ -141,12 +141,12 @@ const mutations = {
 	SET_PERMIESSION(state: any, list: Array<any>) {
 		state.permission = list;
 		storage.set("permission", list);
-	},
+	}
 };
 
 export default {
 	state,
 	getters,
 	actions,
-	mutations,
+	mutations
 };

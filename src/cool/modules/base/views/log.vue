@@ -1,7 +1,7 @@
 <template>
 	<cl-crud :ref="setRefs('crud')" @load="onLoad">
 		<el-row type="flex">
-			<cl-refresh-btn></cl-refresh-btn>
+			<cl-refresh-btn />
 
 			<el-button
 				v-permission="$service.system.log.permission.clear"
@@ -14,26 +14,26 @@
 
 			<cl-filter label="日志保存天数">
 				<el-input-number
+					v-model="day"
 					controls-position="right"
 					size="mini"
 					:max="10000"
 					:min="1"
-					v-model="day"
 					@blur="saveDay"
-				></el-input-number>
+				/>
 			</cl-filter>
 
 			<cl-flex1 />
-			<cl-search-key placeholder="请输入请求地址, 参数，ip地址"></cl-search-key>
+			<cl-search-key placeholder="请输入请求地址, 参数，ip地址" />
 		</el-row>
 
 		<el-row>
-			<cl-table v-bind="table"></cl-table>
+			<cl-table v-bind="table" />
 		</el-row>
 
 		<el-row type="flex">
-			<cl-flex1></cl-flex1>
-			<cl-pagination></cl-pagination>
+			<cl-flex1 />
+			<cl-pagination />
 		</el-row>
 	</cl-crud>
 </template>

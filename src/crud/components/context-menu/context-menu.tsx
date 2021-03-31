@@ -123,12 +123,12 @@ export default defineComponent({
 			}
 		}
 
-		onMounted(function() {
+		onMounted(function () {
 			if (visible.value) {
 				// 添加到 body 下
 				document.body.appendChild(refs.value["context-menu"]);
 				// 关闭事件
-				(document.documentElement || document.body).addEventListener("mousedown", e => {
+				(document.documentElement || document.body).addEventListener("mousedown", (e) => {
 					const el = refs.value["context-menu"];
 					if (!contains(el, e.target) && el != e.target) {
 						close();
@@ -156,7 +156,7 @@ export default defineComponent({
 			return (
 				<div class={["cl-context-menu__box", level > 1 && "is-append"]}>
 					{list
-						.filter(e => !e.hidden)
+						.filter((e) => !e.hidden)
 						.map((e, i) => {
 							const id = `${pId}-${i}`;
 

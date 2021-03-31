@@ -1,11 +1,6 @@
 <template>
 	<el-select v-model="value" v-bind="props" multiple @change="onChange">
-		<el-option
-			v-for="(item, index) in list"
-			:value="item.id"
-			:label="item.name"
-			:key="index"
-		></el-option>
+		<el-option v-for="(item, index) in list" :key="index" :value="item.id" :label="item.name" />
 	</el-select>
 </template>
 

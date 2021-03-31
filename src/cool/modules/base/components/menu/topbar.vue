@@ -6,16 +6,8 @@
 			background-color="transparent"
 			@select="onSelect"
 		>
-			<el-menu-item
-				v-for="(item, index) in list"
-				:index="`${index}`"
-				:key="index"
-			>
-				<icon-svg
-					v-if="item.icon"
-					:name="item.icon"
-					:size="18"
-				></icon-svg>
+			<el-menu-item v-for="(item, index) in list" :key="index" :index="`${index}`">
+				<icon-svg v-if="item.icon" :name="item.icon" :size="18" />
 				<span>{{ item.name }}</span>
 			</el-menu-item>
 		</el-menu>
@@ -45,9 +37,7 @@ export default defineComponent({
 		const index = ref<string>("0");
 
 		// 菜单列表
-		const list = computed(() =>
-			store.getters.menuGroup.filter((e: any) => e.isShow)
-		);
+		const list = computed(() => store.getters.menuGroup.filter((e: any) => e.isShow));
 
 		// 选择导航
 		function onSelect(index: number) {
@@ -87,9 +77,9 @@ export default defineComponent({
 		return {
 			index,
 			list,
-			onSelect,
+			onSelect
 		};
-	},
+	}
 });
 </script>
 

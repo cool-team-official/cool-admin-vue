@@ -1,6 +1,6 @@
 <template>
 	<div class="icon-voice">
-		<icon-svg :name="`voice${index}`"></icon-svg>
+		<icon-svg :name="`voice${index}`" />
 	</div>
 </template>
 

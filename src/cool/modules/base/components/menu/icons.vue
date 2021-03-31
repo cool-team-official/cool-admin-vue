@@ -8,13 +8,13 @@
 			popper-class="popper-menu-icon"
 		>
 			<el-row :gutter="10" class="list scroller1">
-				<el-col :span="3" :xs="4" v-for="(item, index) in list" :key="index">
+				<el-col v-for="(item, index) in list" :key="index" :span="3" :xs="4">
 					<el-button
 						size="mini"
 						:class="{ 'is-active': item === name }"
 						@click="onChange(item)"
 					>
-						<icon-svg :name="item"></icon-svg>
+						<icon-svg :name="item" />
 					</el-button>
 				</el-col>
 			</el-row>
@@ -26,7 +26,7 @@
 					clearable
 					@click="open"
 					@input="onChange"
-				></el-input>
+				/>
 			</template>
 		</el-popover>
 	</div>
@@ -60,7 +60,7 @@ export default defineComponent({
 
 		watch(
 			() => props.modelValue,
-			val => {
+			(val) => {
 				name.value = val;
 			}
 		);

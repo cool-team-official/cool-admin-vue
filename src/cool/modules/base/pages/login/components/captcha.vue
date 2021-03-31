@@ -1,7 +1,7 @@
 <template>
 	<div class="login-captcha" @click="refresh">
-		<div class="svg" v-html="svg" v-if="svg"></div>
-		<img class="base64" :src="base64" alt="" v-else />
+		<div v-if="svg" class="svg" v-html="svg"></div>
+		<img v-else class="base64" :src="base64" alt="" />
 	</div>
 </template>
 

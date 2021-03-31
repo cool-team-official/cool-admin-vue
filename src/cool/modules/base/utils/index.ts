@@ -39,8 +39,5 @@ export function createLink(url: string, id?: string) {
 		link.id = id;
 	}
 
-	document
-		.getElementsByTagName("head")
-		?.item(0)
-		?.appendChild(link);
+	document.getElementsByTagName("head")?.item(0)?.appendChild(link);
 }

@@ -1,18 +1,16 @@
 <template>
 	<div class="app-topbar">
 		<div class="app-topbar__collapse" @click="collapse">
-			<i
-				:class="[menuCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold']"
-			></i>
+			<i :class="[menuCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold']"></i>
 		</div>
 
 		<!-- 一级菜单 -->
-		<div class="app-topbar__menu" v-if="app.conf.showAMenu">
+		<div v-if="app.conf.showAMenu" class="app-topbar__menu">
 			<cl-menu-topbar />
 		</div>
 
 		<!-- 路由导航 -->
-		<div class="app-topbar__route-nav" v-if="app.conf.showRouteNav">
+		<div v-if="app.conf.showRouteNav" class="app-topbar__route-nav">
 			<cl-route-nav />
 		</div>
 
@@ -33,21 +31,15 @@
 
 		<!-- 用户信息 -->
 		<div class="app-topbar__user">
-			<el-dropdown
-				trigger="click"
-				:hide-on-click="false"
-				@command="onCommand"
-			>
-				<span class="el-dropdown-link" v-if="userInfo">
+			<el-dropdown trigger="click" :hide-on-click="false" @command="onCommand">
+				<span v-if="userInfo" class="el-dropdown-link">
 					<span class="name">{{ userInfo.nickName }}</span>
 					<img class="avatar" :src="userInfo.headImg" alt />
 				</span>
 
 				<template #dropdown>
 					<el-dropdown-menu class="dropdown-menu__user">
-						<el-dropdown-item command="my"
-							>个人中心</el-dropdown-item
-						>
+						<el-dropdown-item command="my">个人中心</el-dropdown-item>
 						<el-dropdown-item command="exit">退出</el-dropdown-item>
 					</el-dropdown-menu>
 				</template>
@@ -104,9 +96,9 @@ export default defineComponent({
 			modules,
 			app,
 			onCommand,
-			collapse,
+			collapse
 		};
-	},
+	}
 });
 </script>
 

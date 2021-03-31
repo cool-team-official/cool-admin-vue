@@ -75,8 +75,8 @@ export const TestService = {
 	},
 	info: (d: any) => {
 		console.log("GET[info]", d);
-		return new Promise(resolve => {
-			resolve(UserList.find(e => e.id == d.id));
+		return new Promise((resolve) => {
+			resolve(UserList.find((e) => e.id == d.id));
 		});
 	},
 	add: (d: any) => {
@@ -92,14 +92,14 @@ export const TestService = {
 		console.log("POST[delete]", d);
 		const ids = d.ids.split(",");
 		ids.forEach((id: any) => {
-			const index = UserList.findIndex(e => e.id == id);
+			const index = UserList.findIndex((e) => e.id == id);
 			UserList.splice(index, 1);
 		});
 		return Promise.resolve();
 	},
 	update: (d: any) => {
 		console.log("POST[update]", d);
-		const item = UserList.find(e => e.id == d.id);
+		const item = UserList.find((e) => e.id == d.id);
 		Object.assign(item, d);
 		return Promise.resolve();
 	}

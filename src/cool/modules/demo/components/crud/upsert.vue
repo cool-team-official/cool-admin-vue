@@ -1,6 +1,6 @@
 <template>
 	<div class="demo-upsert">
-		<cl-upsert ref="upsertRef" :items="items"></cl-upsert>
+		<cl-upsert ref="upsertRef" :items="items" />
 	</div>
 </template>
 
@@ -9,8 +9,6 @@ import { UpsertItem, UpsertRef } from "/@/crud/types";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
-	name: "demo-upsert",
-
 	setup() {
 		const upsertRef = ref<UpsertRef>();
 

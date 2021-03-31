@@ -5,7 +5,7 @@
 		</div>
 
 		<div class="category-ratio__container">
-			<v-chart :option="chartOption" autoresize></v-chart>
+			<v-chart :option="chartOption" autoresize />
 		</div>
 	</div>
 </template>

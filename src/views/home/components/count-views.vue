@@ -7,7 +7,7 @@
 			</div>
 
 			<div class="card__container">
-				<v-chart :option="chartOption" autoresize></v-chart>
+				<v-chart :option="chartOption" autoresize />
 			</div>
 
 			<div class="card__footer">

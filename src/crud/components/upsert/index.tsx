@@ -118,7 +118,7 @@ export default defineComponent({
 
 		// 打开表单
 		function open() {
-			return new Promise(resolve => {
+			return new Promise((resolve) => {
 				if (!refs.value.form) {
 					return false;
 				}

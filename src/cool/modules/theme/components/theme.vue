@@ -1,11 +1,11 @@
 <template>
 	<div class="cl-theme">
 		<li @click="open">
-			<icon-svg :size="18" name="icon-theme"></icon-svg>
+			<icon-svg :size="18" name="icon-theme" />
 		</li>
 
 		<!-- 系统设置 -->
-		<el-drawer title="系统设置" v-model="drawer.visible" size="300px">
+		<el-drawer v-model="drawer.visible" title="系统设置" size="300px">
 			<div class="cl-theme__container">
 				<div class="cl-theme__color is-card">
 					<p>主题</p>
@@ -19,13 +19,13 @@
 						>
 							<li
 								:style="{
-									backgroundColor: item.color,
+									backgroundColor: item.color
 								}"
 								@click="setTheme(item)"
 							>
 								<i
-									class="el-icon-check"
 									v-show="item.color == form.theme.color"
+									class="el-icon-check"
 								></i>
 							</li>
 						</el-tooltip>
@@ -38,24 +38,15 @@
 					<ul>
 						<li v-if="!browser.isMini">
 							<span>显示一级菜单栏</span>
-							<el-switch
-								size="mini"
-								v-model="form.conf.showAMenu"
-							></el-switch>
+							<el-switch v-model="form.conf.showAMenu" size="mini" />
 						</li>
 						<li>
 							<span>显示路由导航栏</span>
-							<el-switch
-								size="mini"
-								v-model="form.conf.showRouteNav"
-							></el-switch>
+							<el-switch v-model="form.conf.showRouteNav" size="mini" />
 						</li>
 						<li>
 							<span>显示页面进程栏</span>
-							<el-switch
-								size="mini"
-								v-model="form.conf.showProcess"
-							></el-switch>
+							<el-switch v-model="form.conf.showProcess" size="mini" />
 						</li>
 					</ul>
 				</div>
@@ -70,7 +61,7 @@
 						:closable="false"
 						show-icon
 						title="手动修改配置文件可设置为默认主题、布局。"
-					></el-alert>
+					/>
 
 					<el-button
 						round
@@ -91,18 +82,18 @@
 			title="修改说明"
 			width="800px"
 			:props="{
-				'append-to-body': true,
+				'append-to-body': true
 			}"
 		>
 			<ul class="cl-theme__desc">
 				<li>
 					<p class="cl-theme__desc-label">修改主题色：</p>
-					<cl-codemirror v-model="desc.color"></cl-codemirror>
+					<cl-codemirror v-model="desc.color" />
 				</li>
 
 				<li>
 					<p class="cl-theme__desc-label">修改应用配置：</p>
-					<cl-codemirror v-model="desc.conf"></cl-codemirror>
+					<cl-codemirror v-model="desc.conf" />
 				</li>
 			</ul>
 		</cl-dialog>
@@ -118,43 +109,43 @@ export default {
 	name: "cl-theme",
 
 	props: {
-		list: Array,
+		list: Array
 	},
 
 	data() {
 		return {
 			drawer: {
-				visible: false,
+				visible: false
 			},
 			desc: {
 				visible: false,
 				color: "",
-				conf: "",
+				conf: ""
 			},
 			themes: [
 				{
 					label: "钴蓝",
 					name: "blue",
-					color: "#4165d7",
+					color: "#4165d7"
 				},
 				{
 					label: "极黑",
 					name: "black",
-					color: "#2f3447",
+					color: "#2f3447"
 				},
 				{
 					label: "果绿",
 					name: "green",
-					color: "#51C21A",
+					color: "#51C21A"
 				},
 				{
 					label: "酱紫",
 					name: "purple",
-					color: "#d0378d",
-				},
+					color: "#d0378d"
+				}
 			],
 			isDev,
-			form: {},
+			form: {}
 		};
 	},
 
@@ -163,7 +154,7 @@ export default {
 
 		themeList() {
 			return isArray(this.list) ? this.list : this.themes;
-		},
+		}
 	},
 
 	watch: {
@@ -172,15 +163,15 @@ export default {
 			immediate: true,
 			handler(val) {
 				this.form = cloneDeep(val);
-			},
+			}
 		},
 
 		form: {
 			deep: true,
 			handler(val) {
 				this.$store.commit("UPDATE_APP", val);
-			},
-		},
+			}
+		}
 	},
 
 	methods: {
@@ -203,19 +194,14 @@ export default {
 			const theme = document.getElementById("theme-style");
 			const style = theme || document.createElement("link");
 
-			style.href = `${
-				this.modules.theme.options.sourceUrl || "/theme/"
-			}${name}.css`;
+			style.href = `${this.modules.theme.options.sourceUrl || "/theme/"}${name}.css`;
 
 			if (!theme) {
 				style.type = "text/css";
 				style.rel = "stylesheet";
 				style.id = "theme-style";
 
-				document
-					.getElementsByTagName("head")
-					.item(0)
-					.appendChild(style);
+				document.getElementsByTagName("head").item(0).appendChild(style);
 			}
 
 			// 设置主题色和路径
@@ -223,9 +209,7 @@ export default {
 			this.form.theme.url = style.href;
 
 			// 设置 css 变量
-			document
-				.getElementsByTagName("body")[0]
-				.style.setProperty("--color-primary", color);
+			document.getElementsByTagName("body")[0].style.setProperty("--color-primary", color);
 		},
 
 		// 打开修改说明
@@ -246,8 +230,8 @@ export default {
 					}
 				}
 			`;
-		},
-	},
+		}
+	}
 };
 </script>
 

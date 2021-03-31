@@ -10,7 +10,7 @@
 		</div>
 
 		<div class="tab-chart__container">
-			<v-chart :option="chartOption" autoresize></v-chart>
+			<v-chart :option="chartOption" autoresize />
 		</div>
 	</div>
 </template>
@@ -20,9 +20,6 @@ import { defineComponent, reactive } from "vue";
 import { isPc } from "/@/core/utils";
 
 export default defineComponent({
-	data() {
-		return {};
-	},
 	setup() {
 		const barWidth = isPc() ? 25 : 15;
 		const chartOption = reactive<any>({
@@ -111,6 +108,9 @@ export default defineComponent({
 		return {
 			chartOption
 		};
+	},
+	data() {
+		return {};
 	}
 });
 </script>

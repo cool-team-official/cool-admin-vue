@@ -9,7 +9,7 @@
 		<div class="cl-upload-space-category__search">
 			<el-button type="primary" size="mini" @click="edit()">添加分类</el-button>
 
-			<el-input v-model="keyword" placeholder="输入关键字过滤" size="mini"></el-input>
+			<el-input v-model="keyword" placeholder="输入关键字过滤" size="mini" />
 		</div>
 
 		<div class="cl-upload-space-category__list">
@@ -28,7 +28,7 @@
 			</ul>
 		</div>
 
-		<cl-form ref="form"></cl-form>
+		<cl-form ref="form" />
 	</div>
 </template>
 
@@ -39,11 +39,13 @@ import { isEmpty } from "/@/core/utils";
 export default {
 	name: "cl-upload-space-category",
 
+	inject: ["space"],
+
 	props: {
 		modelValue: [Number]
 	},
 
-	inject: ["space"],
+	emits: ["update:modelValue", "change"],
 
 	data() {
 		return {
@@ -57,7 +59,7 @@ export default {
 		...mapGetters(["browser"]),
 
 		flist() {
-			return this.list.filter(e => e.name.includes(this.keyword));
+			return this.list.filter((e) => e.name.includes(this.keyword));
 		}
 	},
 
@@ -77,7 +79,7 @@ export default {
 	methods: {
 		// 刷新分类
 		refresh() {
-			return this.$service.space.type.list().then(res => {
+			return this.$service.space.type.list().then((res) => {
 				res.unshift({
 					name: "全部文件",
 					id: null
@@ -131,7 +133,7 @@ export default {
 						next.then(() => {
 							this.refresh();
 							close();
-						}).catch(err => {
+						}).catch((err) => {
 							this.$message.error(err);
 							done();
 						});
@@ -195,7 +197,7 @@ export default {
 
 											this.refresh();
 										})
-										.catch(err => {
+										.catch((err) => {
 											this.$message.error(err);
 										});
 								})

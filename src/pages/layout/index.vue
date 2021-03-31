@@ -3,15 +3,15 @@
 		<div class="page-layout__mask" @click="collapseMenu(true)"></div>
 
 		<div class="page-layout__left">
-			<slider></slider>
+			<slider />
 		</div>
 
 		<div class="page-layout__right">
 			<div class="page-layout__topbar">
-				<topbar></topbar>
+				<topbar />
 			</div>
 
-			<div class="page-layout__process" v-if="app.conf.showProcess">
+			<div v-if="app.conf.showProcess" class="page-layout__process">
 				<cl-process />
 			</div>
 

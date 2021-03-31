@@ -1,19 +1,12 @@
 <template>
 	<div class="cl-menu-file">
-		<el-select
-			v-model="path"
-			allow-create
-			filterable
-			clearable
-			placeholder="请选择"
-		>
+		<el-select v-model="path" allow-create filterable clearable placeholder="请选择">
 			<el-option
 				v-for="(item, index) in list"
 				:key="index"
 				:label="item.value"
 				:value="item.value"
-			>
-			</el-option>
+			/>
 		</el-select>
 	</div>
 </template>
@@ -29,7 +22,7 @@ function findFiles() {
 	for (const i in files) {
 		if (!i.includes("components")) {
 			list.push({
-				value: i.substr(5),
+				value: i.substr(5)
 			});
 		}
 	}
@@ -43,8 +36,8 @@ export default defineComponent({
 	props: {
 		modelValue: {
 			type: String,
-			default: "",
-		},
+			default: ""
+		}
 	},
 
 	emits: ["update:modelValue"],
@@ -69,9 +62,9 @@ export default defineComponent({
 
 		return {
 			path,
-			list,
+			list
 		};
-	},
+	}
 });
 </script>
 

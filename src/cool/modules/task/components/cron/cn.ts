@@ -34,7 +34,7 @@ export default {
 		nearestWeekday: ["最近的工作日（周一至周五）至本月", "日"],
 		someWeekday: ["在这个月的第", "个"]
 	},
-	Week: ["天", "一", "二", "三", "四", "五", "六"].map(val => "星期" + val),
+	Week: ["天", "一", "二", "三", "四", "五", "六"].map((val) => "星期" + val),
 	Month: {
 		name: "月",
 		every: "每一月",

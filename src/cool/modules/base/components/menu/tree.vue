@@ -6,7 +6,7 @@
 			width="500px"
 			popper-class="popper-menu-tree"
 		>
-			<el-input size="small" v-model="keyword">
+			<el-input v-model="keyword" size="small">
 				<template #prefix>
 					<i class="el-input__icon el-icon-search"></i>
 				</template>
@@ -25,11 +25,10 @@
 				:default-expanded-keys="expandedKeys"
 				:filter-node-method="filterNode"
 				@current-change="onCurrentChange"
-			>
-			</el-tree>
+			/>
 
 			<template #reference>
-				<el-input v-model="name" readonly placeholder="请选择"></el-input>
+				<el-input v-model="name" readonly placeholder="请选择" />
 			</template>
 		</el-popover>
 	</div>
@@ -91,7 +90,7 @@ export default defineComponent({
 
 		// 节点名称
 		const name = computed(() => {
-			const item = list.value.find(e => e.id == props.modelValue);
+			const item = list.value.find((e) => e.id == props.modelValue);
 			return item ? item.name : "一级菜单";
 		});
 
@@ -103,7 +102,7 @@ export default defineComponent({
 			treeRef.value.filter(val);
 		});
 
-		onMounted(function() {
+		onMounted(function () {
 			refresh();
 		});
 
