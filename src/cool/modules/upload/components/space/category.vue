@@ -28,76 +28,81 @@
 			</ul>
 		</div>
 
-		<cl-form ref="form" />
+		<cl-form :ref="setRefs('form')" />
 	</div>
 </template>
 
-<script>
-import { mapGetters } from "vuex";
+<script lang="ts">
+import { ElMessage, ElMessageBox } from "element-plus";
+import { computed, defineComponent, inject, ref, watch } from "vue";
+import { useStore } from "vuex";
 import { isEmpty } from "/@/core/utils";
+import { ContextMenu } from "/@/crud";
+import { useRefs } from "/@/crud/hooks/core";
 
-export default {
+export default defineComponent({
 	name: "cl-upload-space-category",
 
-	inject: ["space"],
-
 	props: {
-		modelValue: [Number]
+		modelValue: [Number, String]
 	},
 
 	emits: ["update:modelValue", "change"],
 
-	data() {
-		return {
-			list: [],
-			current: undefined,
-			keyword: ""
-		};
-	},
+	setup(_, { emit }) {
+		const store = useStore();
+		const { refs, setRefs }: any = useRefs();
+		const $service: any = inject("service");
+		const space = inject<any>("space");
 
-	computed: {
-		...mapGetters(["browser"]),
+		// 数据列表
+		const list = ref<any[]>([]);
 
-		flist() {
-			return this.list.filter((e) => e.name.includes(this.keyword));
-		}
-	},
+		// 当前选择
+		const current = ref<number | string>("");
 
-	watch: {
-		current: {
-			handler(id) {
-				this.$emit("update:modelValue", id);
-				this.$emit("change", id);
+		// 搜索关键字
+		const keyword = ref<string>("");
+
+		// 过滤列表
+		const flist = computed(() => {
+			return list.value.filter((e: any) => e.name.includes(keyword.value));
+		});
+
+		// 浏览器信息
+		const browser = computed(() => store.getters.browser);
+
+		// 监听选择变化
+		watch(
+			() => current.value,
+			(id: number | string) => {
+				console.log(id);
+				emit("update:modelValue", id);
+				emit("change", id);
 			}
-		}
-	},
+		);
 
-	created() {
-		this.refresh();
-	},
-
-	methods: {
 		// 刷新分类
-		refresh() {
-			return this.$service.space.type.list().then((res) => {
+		function refresh() {
+			return $service.space.type.list().then((res: any) => {
 				res.unshift({
 					name: "全部文件",
 					id: null
 				});
 
-				this.list = res;
+				list.value = res;
 
 				if (!isEmpty(res)) {
-					if (!this.current) {
-						this.current = res[0].id;
+					if (!current.value) {
+						current.value = res[0].id;
 					}
 				}
 			});
-		},
+		}
 
 		// 编辑分类
-		edit(item = {}) {
-			this.$refs.form.open({
+		function edit(item: any = {}) {
+			refs.value.form.open({
 				title: "添加分类",
 				width: "400px",
 				items: [
@@ -118,87 +123,91 @@ export default {
 					}
 				],
 				on: {
-					submit: (data, { done, close }) => {
+					submit: (data: any, { done, close }: any) => {
 						let next = null;
 
 						if (!item.id) {
-							next = this.$service.space.type.add(data);
+							next = $service.space.type.add(data);
 						} else {
-							next = this.$service.space.type.update({
+							next = $service.space.type.update({
 								...data,
 								id: item.id
 							});
 						}
 
 						next.then(() => {
-							this.refresh();
+							refresh();
 							close();
-						}).catch((err) => {
-							this.$message.error(err);
+						}).catch((err: string) => {
+							ElMessage.error(err);
 							done();
 						});
 					}
 				}
 			});
-		},
+		}
 
 		// 选择类目
-		select(id) {
-			this.current = id;
+		function select(id: number) {
+			current.value = id;
 
 			// 小屏幕下收起左侧类目
-			if (this.browser.isMini) {
-				this.space.category.visible = false;
+			if (browser.value.isMini) {
+				space.category.visible = false;
 			}
-		},
+		}
 
 		// 打开类目列表右键菜单
-		openContextMenu(e, { id, name }) {
+		function openContextMenu(e: any, { id, name }: any) {
 			if (!id) {
 				return false;
 			}
 
-			this.$crud.openContextMenu(e, {
+			ContextMenu.open(e, {
 				list: [
 					{
 						label: "刷新",
 						"suffix-icon": "el-icon-edit",
-						callback: (_, done) => {
-							this.refresh();
+						callback: (_: any, done: Function) => {
+							refresh();
 							done();
 						}
 					},
 					{
 						label: "编辑",
 						"suffix-icon": "el-icon-edit",
-						callback: (_, done) => {
-							this.edit({ id, name });
+						callback: (_: any, done: Function) => {
+							edit({ id, name });
 							done();
 						}
 					},
 					{
 						label: "删除",
 						"suffix-icon": "el-icon-delete",
-						callback: (_, done) => {
-							this.$confirm(`此操作将删除【${name}】下的文件, 是否继续?`, "提示", {
-								type: "warning"
-							})
+						callback: (_: any, done: Function) => {
+							ElMessageBox.confirm(
+								`此操作将删除【${name}】下的文件, 是否继续?`,
+								"提示",
+								{
+									type: "warning"
+								}
+							)
 								.then(() => {
-									this.$service.space.type
+									$service.space.type
 										.delete({
 											ids: [id]
 										})
 										.then(() => {
-											this.$message.success("删除成功");
+											ElMessage.success("删除成功");
 
-											if (id == this.current) {
-												this.current = null;
+											if (id == current.value) {
+												current.value = 0;
 											}
 
-											this.refresh();
+											refresh();
 										})
-										.catch((err) => {
-											this.$message.error(err);
+										.catch((err: string) => {
+											ElMessage.error(err);
 										});
 								})
 								.catch(() => null);
@@ -209,8 +218,25 @@ export default {
 				]
 			});
 		}
+
+		refresh();
+
+		return {
+			refs,
+			setRefs,
+			browser,
+			space,
+			list,
+			flist,
+			current,
+			keyword,
+			refresh,
+			edit,
+			select,
+			openContextMenu
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

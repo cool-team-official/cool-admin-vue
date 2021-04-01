@@ -145,7 +145,19 @@ export default {
 				}
 			],
 			isDev,
-			form: {}
+			form: {
+				name: "",
+				conf: {
+					showAMenu: false,
+					showRouteNav: true,
+					showProcess: true,
+					customMenu: false
+				},
+				theme: {
+					color: "",
+					url: ""
+				}
+			}
 		};
 	},
 

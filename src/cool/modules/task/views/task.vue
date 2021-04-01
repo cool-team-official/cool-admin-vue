@@ -42,7 +42,7 @@
 						item-key="id"
 						:data-type="item.params.type"
 						:data-status="item.params.status"
-						@end="(e) => onDragEnd(e, item)"
+						@end="onDragEnd"
 					>
 						<template #item="{ element }">
 							<li
@@ -125,7 +125,7 @@
 						class="more"
 						type="text"
 						size="mini"
-						@click="moreTask(index, item)"
+						@click="moreTask(index)"
 						>查看更多</el-button
 					>
 				</div>
@@ -182,7 +182,9 @@
 							@click="expandLog(item)"
 						>
 							<div class="h">
-								<span class="name">{{ index + 1 }} · {{ item.taskName }}</span>
+								<span class="name"
+									>{{ Number(index) + 1 }} · {{ item.taskName }}</span
+								>
 							</div>
 
 							<div class="remark" :class="{ _ellipsis: !item._expand }">

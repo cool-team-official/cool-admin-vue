@@ -113,7 +113,7 @@ const mutations = {
 
 	// 设置视图路由
 	SET_VIEW_ROUTES(state: any, list: MenuItem[]) {
-		router.$plugin.addViews(list);
+		router.$plugin?.addViews(list);
 
 		state.routes = list;
 		storage.set("viewRoutes", list);

@@ -5,7 +5,7 @@ import { deepMerge, isBoolean, isEmpty, isFunction, isObject, isString } from ".
 import Parse from "../../utils/parse";
 import { renderNode } from "../../utils/vnode";
 import { useAction } from "./helper";
-import { Browser } from "@/crud/types";
+import { Browser } from "../../types";
 
 export default defineComponent({
 	name: "cl-form",

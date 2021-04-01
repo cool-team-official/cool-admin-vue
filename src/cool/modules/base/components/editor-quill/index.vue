@@ -31,7 +31,7 @@ export default defineComponent({
 	emits: ["update:modelValue", "load"],
 
 	setup(props, { emit }) {
-		const { refs, setRefs } = useRefs();
+		const { refs, setRefs }: any = useRefs();
 
 		let quill: any = null;
 

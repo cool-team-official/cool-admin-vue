@@ -208,7 +208,7 @@ export function getBrowser() {
 }
 
 export function href(path: string, newWindow?: boolean) {
-	const { search, origin, pathname } = window.location;
+	const { origin, pathname } = window.location;
 
 	if (pathname == path) {
 		return false;
@@ -219,7 +219,7 @@ export function href(path: string, newWindow?: boolean) {
 	if (routerMode == "history") {
 		url = origin + import.meta.env.BASE_URL + path.substr(1);
 	} else {
-		url = origin + search + "#" + path;
+		url = origin + import.meta.env.BASE_URL + "#" + path;
 	}
 
 	if (newWindow) {
@@ -237,9 +237,9 @@ export function deepTree(list: Array<any>) {
 	const newList: Array<any> = [];
 	const map: any = {};
 
-	list.forEach(e => (map[e.id] = e));
+	list.forEach((e) => (map[e.id] = e));
 
-	list.forEach(e => {
+	list.forEach((e) => {
 		const parent = map[e.parentId];
 
 		if (parent) {
@@ -250,7 +250,7 @@ export function deepTree(list: Array<any>) {
 	});
 
 	const fn = (list: Array<any>) => {
-		list.map(e => {
+		list.map((e) => {
 			if (e.children instanceof Array) {
 				e.children = orderBy(e.children, "orderNum");
 
@@ -269,7 +269,7 @@ export function revDeepTree(list: Array<any> = []) {
 	let id = 0;
 
 	const deep = (list: Array<any>, parentId: any) => {
-		list.forEach(e => {
+		list.forEach((e) => {
 			if (!e.id) {
 				e.id = id++;
 			}

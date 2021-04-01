@@ -23,7 +23,7 @@
 			</ul>
 		</div>
 
-		<div class="cl-dept-tree__container" @contextmenu.prevent="openCM">
+		<div class="cl-dept-tree__container" @contextmenu.stop.prevent="openCM">
 			<el-tree
 				v-loading="loading"
 				node-key="id"
@@ -294,7 +294,7 @@ export default defineComponent({
 		}
 
 		// 右键菜单
-		function openCM(e: any, d: any, n: any) {
+		function openCM(e: any, d?: any, n?: any) {
 			if (!d) {
 				d = list.value[0] || {};
 			}

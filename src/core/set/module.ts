@@ -18,22 +18,14 @@ export default function (app: any) {
 		if (!error) {
 			local.push({
 				name,
-				value: files[i].default,
+				value: files[i].default
 			});
 		}
 	}
 
 	// 安装模块
 	function install(mod: any) {
-		const {
-			store: _store,
-			components,
-			service,
-			directives,
-			pages,
-			views,
-			name,
-		} = mod;
+		const { store: _store, components, service, directives, pages, views, name } = mod;
 
 		try {
 			// 注册vuex模块
@@ -82,7 +74,7 @@ export default function (app: any) {
 					}
 
 					if (e.path) {
-						router.$plugin.addViews([e]);
+						router.$plugin?.addViews([e]);
 					} else {
 						console.error(`[${name}-views]：缺少 path 参数`);
 					}
@@ -104,7 +96,7 @@ export default function (app: any) {
 		// Parse
 		if (isString(e)) {
 			mod = {
-				name: e,
+				name: e
 			};
 		} else if (isObject(e)) {
 			mod = e;
@@ -112,7 +104,7 @@ export default function (app: any) {
 			mod = {
 				name: e[0],
 				value: e[1],
-				options: e[2],
+				options: e[2]
 			};
 		} else {
 			console.error(e, "格式错误");
@@ -144,7 +136,7 @@ export default function (app: any) {
 			mod = {
 				name: mod.name,
 				options: mod.options || {},
-				...mod.value,
+				...mod.value
 			};
 
 			modules.push(mod);

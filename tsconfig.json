@@ -7,6 +7,7 @@
 		"jsx": "preserve",
 		"sourceMap": true,
 		"resolveJsonModule": true,
+		"experimentalDecorators": true,
 		"esModuleInterop": true,
 		"lib": ["esnext", "dom"],
 		"types": ["vite/client", "vite-svg-loader"],
@@ -15,5 +16,6 @@
 			"/#/*": ["./types/*"]
 		}
 	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+	"exclude": ["node_modules", "dist"]
 }

@@ -12,7 +12,7 @@ const clearReturn = /(\r)|(\n)/g;
 function findSvgFile(dir: string): string[] {
 	const svgRes = [];
 	const dirents = readdirSync(dir, {
-		withFileTypes: true,
+		withFileTypes: true
 	});
 	for (const dirent of dirents) {
 		if (dirent.isDirectory()) {
@@ -21,10 +21,10 @@ function findSvgFile(dir: string): string[] {
 			const svg = readFileSync(dir + dirent.name)
 				.toString()
 				.replace(clearReturn, "")
-				.replace(svgTitle, (_, $2) => {
+				.replace(svgTitle, (_: any, $2: any) => {
 					let width = 0;
 					let height = 0;
-					let content = $2.replace(clearHeightWidth, (s1, s2, s3) => {
+					let content = $2.replace(clearHeightWidth, (_: any, s2: any, s3: any) => {
 						if (s2 === "width") {
 							width = s3;
 						} else if (s2 === "height") {
@@ -47,7 +47,7 @@ function findSvgFile(dir: string): string[] {
 	return svgRes;
 }
 
-export const svgBuilder = (path: string, perfix = "icon"): Plugin => {
+export const svgBuilder = (path: string, perfix = "icon"): Plugin | null => {
 	if (path !== "") {
 		idPerfix = perfix;
 		const res = findSvgFile(path);
@@ -63,7 +63,9 @@ export const svgBuilder = (path: string, perfix = "icon"): Plugin => {
             </svg>
         `
 				);
-			},
+			}
 		};
+	} else {
+		return null;
 	}
 };

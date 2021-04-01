@@ -1,5 +1,5 @@
 Arguments: 
-  D:\node\node.exe C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add eslint-config-prettier -D
+  D:\node\node.exe C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js remove @types/node
 
 PATH: 
   C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;D:\Tortoise\bin;C:\Program Files\Git\cmd;C:\Program Files\python;C:\Program Files\python\Scripts;;D:\BtSoft\panel\script;D:\node\;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;;D:\cool\Microsoft VS Code\bin;C:\Users\Administrator\AppData\Roaming\npm
@@ -14,29 +14,18 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/eslint-config-prettier%20-D: Not found
-      at Request.params.callback [as _callback] (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66988:18)
-      at Request.self.callback (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140662:22)
-      at Request.emit (events.js:315:20)
-      at Request.<anonymous> (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141634:10)
-      at Request.emit (events.js:315:20)
-      at IncomingMessage.<anonymous> (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141556:12)
-      at Object.onceWrapper (events.js:421:28)
-      at IncomingMessage.emit (events.js:327:22)
-      at endReadableNT (internal/streams/readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
+  Error: EPERM: operation not permitted, copyfile 'C:\Users\Administrator\AppData\Local\Yarn\Cache\v6\npm-yallist-2.1.2-1c11f9218f076089a47dd512f93c6699a6a81d52-integrity\node_modules\yallist\README.md' -> 'D:\cool\srcs\admin\front-next\node_modules\editorconfig\node_modules\yallist\README.md'
 
 npm manifest: 
   {
   	"name": "front-next",
-  	"version": "0.0.1",
+  	"version": "0.1.0",
   	"scripts": {
   		"dev": "vite",
-  		"build": "vue-tsc --noEmit && vite build",
+  		"build": "vue-tsc --noEmit --skipLibCheck && vite build",
   		"serve": "vite preview",
-  		"lint": "prettier --write --loglevel warn \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
-  		"lint:eslint": "eslint \"{src,mock}/**/*.{vue,ts,tsx}\" --fix",
-  		"lint:ls": "ls-lint"
+  		"lint:prettier": "prettier --write --loglevel warn \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
+  		"lint:eslint": "eslint \"{src,mock}/**/*.{vue,ts,tsx}\" --fix"
   	},
   	"dependencies": {
   		"array.prototype.flat": "^1.2.4",
@@ -70,6 +59,8 @@ npm manifest:
   		"@vitejs/plugin-vue-jsx": "^1.1.2",
   		"@vue/compiler-sfc": "^3.0.5",
   		"eslint": "^7.23.0",
+  		"eslint-config-prettier": "^8.1.0",
+  		"eslint-plugin-prettier": "^3.3.1",
   		"eslint-plugin-vue": "^7.8.0",
   		"prettier": "^2.2.1",
   		"sass": "^1.32.8",
@@ -386,6 +377,11 @@ Lockfile:
     version "7.0.7"
     resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.7.tgz#98a993516c859eb0d5c4c8f098317a9ea68db9ad"
     integrity sha512-cxWFQVseBm6O9Gbw1IWb8r6OS4OhSt3hPZLkFApLjM8TEXROBuQGLAH2i2gZpcXdLBIrpXuTDhH7Vbm1iXmNGA==
+  
+  "@types/node@^14.14.37":
+    version "14.14.37"
+    resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.37.tgz#a3dd8da4eb84a996c36e331df98d82abd76b516e"
+    integrity sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
   
   "@typescript-eslint/eslint-plugin@^4.20.0":
     version "4.20.0"
@@ -1338,6 +1334,18 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
     integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
   
+  eslint-config-prettier@^8.1.0:
+    version "8.1.0"
+    resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.1.0.tgz#4ef1eaf97afe5176e6a75ddfb57c335121abc5a6"
+    integrity sha512-oKMhGv3ihGbCIimCAjqkdzx2Q+jthoqnXSP+d86M9tptwugycmTFdVR4IpLgq2c4SHifbwO90z2fQ8/Aio73yw==
+  
+  eslint-plugin-prettier@^3.3.1:
+    version "3.3.1"
+    resolved "https://registry.yarnpkg.com/eslint-plugin-prettier/-/eslint-plugin-prettier-3.3.1.tgz#7079cfa2497078905011e6f82e8dd8453d1371b7"
+    integrity sha512-Rq3jkcFY8RYeQLgk2cCwuc0P7SEFwDravPhsJZOQ5N4YI4DSg50NyqJ/9gdZHzQlHf8MvafSesbNJCcP/FF6pQ==
+    dependencies:
+      prettier-linter-helpers "^1.0.0"
+  
   eslint-plugin-vue@^7.8.0:
     version "7.8.0"
     resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-7.8.0.tgz#cb0e85d65b65fa8d15e783fbb03c049d2c4cfdae"
@@ -1534,6 +1542,11 @@ Lockfile:
     version "1.1.2"
     resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.1.2.tgz#4b62c42b8e03de3f848460b639079920695d0154"
     integrity sha512-KaJUt+M9t1qaIteSvjc6P3RbMdXsNhK61GRftR6SNxqmhthcd9MGIi4T+o0jD8LUSpSnSKXE20nLtJ3fOHxQig==
+  
+  fast-diff@^1.1.2:
+    version "1.2.0"
+    resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.2.0.tgz#73ee11982d86caaf7959828d519cfe927fac5f03"
+    integrity sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==
   
   fast-glob@^3.1.1:
     version "3.2.5"
@@ -2718,6 +2731,13 @@ Lockfile:
     version "1.2.1"
     resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
     integrity sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==
+  
+  prettier-linter-helpers@^1.0.0:
+    version "1.0.0"
+    resolved "https://registry.yarnpkg.com/prettier-linter-helpers/-/prettier-linter-helpers-1.0.0.tgz#d23d41fe1375646de2d0104d3454a3008802cf7b"
+    integrity sha512-GbK2cP9nraSSUF9N2XwUwqfzlAFlMNYYl+ShE/V+H8a9uNl/oUqB1w2EL54Jh0OlyRSd8RfWYJ3coVS4TROP2w==
+    dependencies:
+      fast-diff "^1.1.2"
   
   prettier@^2.2.1:
     version "2.2.1"

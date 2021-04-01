@@ -10,7 +10,7 @@ export default defineComponent({
 
 	setup(_: any, { emit }) {
 		const $service = inject<any>("service");
-		const { refs, setRefs } = useRefs();
+		const { refs, setRefs }: any = useRefs();
 
 		// 树形列表
 		const list = ref<any[]>([]);

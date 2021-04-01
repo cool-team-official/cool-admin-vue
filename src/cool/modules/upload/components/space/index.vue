@@ -116,11 +116,7 @@
 							:page-size="pagination.size"
 							:current-page="pagination.page"
 							:total="pagination.total"
-							@current-change="
-								(page) => {
-									refresh({ page });
-								}
-							"
+							@current-change="onCurrentChange"
 						/>
 					</div>
 				</div>
@@ -141,13 +137,16 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
+import { computed, defineComponent, inject, provide, reactive, ref, watch } from "vue";
+import { useStore } from "vuex";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { ElFile } from "element-plus/lib/el-upload/src/upload.type";
 import { isEmpty } from "/@/core/utils";
 import Category from "./category.vue";
 import FileItem from "./file-item.vue";
-import { mapGetters } from "vuex";
 
-export default {
+export default defineComponent({
 	name: "cl-upload-space",
 
 	components: {
@@ -155,13 +154,9 @@ export default {
 		FileItem
 	},
 
-	provide() {
-		return {
-			space: this
-		};
-	},
-
 	props: {
+		// 绑定值
+		modelValue: String,
 		// 上传的地址
 		action: String,
 		// 选择图片的长度
@@ -195,199 +190,243 @@ export default {
 
 	emits: ["update:modelValue", "confirm"],
 
-	data() {
-		return {
-			visible: false,
-			loading: false,
-			category: {
-				id: null,
-				visible: true
+	setup(props, { emit }) {
+		const store = useStore();
+		const $service = inject<any>("service");
+
+		// 是否可见
+		const visible = ref<boolean>(false);
+
+		// 是否加载中
+		const loading = ref<boolean>(false);
+
+		// 已选列表
+		const selection = ref<any[]>([]);
+
+		// 文件列表
+		const list = ref<any[]>([]);
+
+		// 类目数据
+		const category = reactive<any>({
+			id: "",
+			visible: true
+		});
+
+		// 分页信息
+		const pagination = reactive<any>({
+			page: 1,
+			size: 12,
+			total: 0
+		});
+
+		// 浏览器信息
+		const browser = computed(() => store.getters.browser);
+
+		// 监听屏幕大小变化
+		watch(
+			() => browser.value.isMini,
+			(val) => {
+				category.visible = val ? false : true;
 			},
-			selection: [],
-			list: [],
-			pagination: {
-				page: 1,
-				size: 12,
-				total: 0
+			{
+				immediate: true
 			}
-		};
-	},
+		);
 
-	computed: {
-		...mapGetters(["browser"]),
+		// 提示信息
+		const limitTip = computed(() => selection.value.length + "/" + props.limit);
 
-		limitTip() {
-			return this.selection.length + "/" + this.limit;
-		},
+		// 是否选中
+		const isSelected = computed(() => !isEmpty(selection.value));
 
-		isSelected() {
-			return !isEmpty(this.selection);
+		// Provide
+		provide("space", {
+			category,
+			selection
+		});
+
+		// 打开
+		function open() {
+			visible.value = true;
 		}
-	},
 
-	watch: {
-		"browser.isMini": {
-			immediate: true,
-			handler(val) {
-				this.category.visible = val ? false : true;
-			}
+		// 清空选择
+		function clear() {
+			selection.value = [];
 		}
-	},
 
-	methods: {
-		open() {
-			this.visible = true;
-		},
-
-		close() {
-			this.visible = false;
-			this.clear();
-		},
-
-		clear() {
-			this.selection = [];
-		},
+		// 关闭
+		function close() {
+			visible.value = false;
+			clear();
+		}
 
 		// 上传成功
-		onSuccess(res, file) {
-			const item = this.list.find((e) => file.uid == e.uid);
+		function onSuccess(res: any, file: ElFile) {
+			const item = list.value.find((e: any) => file.uid == e.uid);
 
 			if (item) {
 				item.url = res.data;
 
-				this.$service.space.info
+				$service.space.info
 					.add({
 						url: res.data,
 						type: item.type,
 						classifyId: item.classifyId
 					})
-					.then((res) => {
+					.then((res: any) => {
 						item.loading = false;
 						item.id = res.id;
 					})
-					.catch((err) => {
-						this.$message.error(err);
+					.catch((err: string) => {
+						ElMessage.error(err);
 					});
 			}
-		},
+		}
 
 		// 上传失败
-		onError(err, file) {
-			const item = this.list.find((e) => file.uid == e.uid);
+		function onError(err: string, file: ElFile) {
+			const item = list.value.find((e) => file.uid == e.uid);
 
 			if (item) {
 				item.loading = false;
-				this.$set(item, "error", err);
+				item.error = err;
 			}
-		},
+		}
 
 		// 上传前，添加文件
-		beforeUpload({ tempFilePath, type, uid }) {
-			this.list.unshift({
+		function beforeUpload({ tempFilePath, type, uid }: any) {
+			list.value.unshift({
 				url: tempFilePath,
 				type,
 				uid,
-				classifyId: this.category.id,
+				classifyId: category.id,
 				loading: true,
 				progress: "0%"
 			});
-		},
+		}
 
 		// 上传进度
-		onProgress({ percent }, file) {
-			const item = this.list.find(({ uid }) => uid == file.uid);
+		function onProgress({ percent }: any, file: ElFile) {
+			const item = list.value.find(({ uid }: any) => uid == file.uid);
 
 			if (item) {
 				item.progress = percent + "%";
 			}
-		},
+		}
 
 		// 刷新资源文件
-		refresh(params) {
+		function refresh(params: any = {}) {
 			// 清空选择
-			this.clear();
+			clear();
 
-			this.loading = true;
+			loading.value = true;
 
-			this.$service.space.info
+			$service.space.info
 				.page({
-					...this.pagination,
+					...pagination,
 					...params,
-					classifyId: this.category.id,
-					type: this.accept
+					classifyId: category.id,
+					type: props.accept
 				})
-				.then((res) => {
-					this.pagination = res.pagination;
+				.then((res: any) => {
+					Object.assign(pagination, res.pagination);
 
-					this.list = res.list.map((e) => {
-						e.loading = false;
-						return e;
+					list.value = res.list.map((e: any) => {
+						return {
+							...e,
+							loading: false
+						};
 					});
 				})
 				.done(() => {
-					this.loading = false;
+					loading.value = false;
 				});
-		},
+		}
 
 		// 确认选中
-		confirm() {
-			const urls = this.selection.map((e) => e.url).join(",");
+		function confirm() {
+			const urls = selection.value.map((e: any) => e.url).join(",");
 
-			this.$emit("update:modelValue", urls);
-			this.$emit("confirm", this.detailData ? this.selection : urls);
+			emit("update:modelValue", urls);
+			emit("confirm", props.detailData ? selection.value : urls);
 
-			this.close();
-		},
+			close();
+		}
 
 		// 选择
-		select(item) {
-			const index = this.selection.findIndex((e) => e.id === item.id);
+		function select(item: any) {
+			const index = selection.value.findIndex((e: any) => e.id === item.id);
 
 			if (index >= 0) {
-				this.selection.splice(index, 1);
+				selection.value.splice(index, 1);
 			} else {
-				if (this.selection.length < this.limit) {
-					this.selection.push(item);
+				if (selection.value.length < props.limit) {
+					selection.value.push(item);
 				}
 			}
-		},
+		}
 
 		// 删除选中
-		remove(...selection) {
-			if (isEmpty(selection)) {
-				selection = this.selection;
-			}
-
+		function remove(item: any) {
 			// 已选文件 id
-			const ids = selection.map((e) => e.id);
+			const ids: number[] = item ? [item.id] : selection.value.map((e: any) => e.id);
 
-			this.$confirm("此操作将删除文件, 是否继续?", "提示", {
+			ElMessageBox.confirm("此操作将删除文件, 是否继续?", "提示", {
 				type: "warning"
 			})
 				.then(() => {
-					this.$message.success("删除成功");
+					ElMessage.success("删除成功");
 
 					// 删除文件及选择
 					ids.forEach((id) => {
-						[this.list, this.selection].forEach((list) => {
-							const index = list.findIndex((e) => e.id === id);
+						[list.value, selection.value].forEach((list) => {
+							const index = list.findIndex((e: any) => e.id === id);
 							list.splice(index, 1);
 						});
 					});
 
 					// 删除请求
-					this.$service.space.info
+					$service.space.info
 						.delete({
 							ids
 						})
-						.catch((err) => {
-							this.$message.error(err);
+						.catch((err: string) => {
+							ElMessage.error(err);
 						});
 				})
 				.catch(() => null);
 		}
+
+		// 页面切换
+		function onCurrentChange(page: number) {
+			refresh({ page });
+		}
+
+		return {
+			visible,
+			loading,
+			selection,
+			list,
+			category,
+			pagination,
+			browser,
+			limitTip,
+			isSelected,
+			open,
+			close,
+			refresh,
+			remove,
+			confirm,
+			select,
+			onSuccess,
+			onError,
+			beforeUpload,
+			onProgress,
+			onCurrentChange
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss">

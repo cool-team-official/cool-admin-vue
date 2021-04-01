@@ -1,3 +1,4 @@
+// @ts-nocheck
 Promise.prototype.done = function (cb: Function) {
 	const P: any = this.constructor;
 

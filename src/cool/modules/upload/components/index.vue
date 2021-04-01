@@ -202,7 +202,7 @@ export default {
 			loading: false,
 			preview: {
 				visible: false,
-				url: null
+				url: ""
 			}
 		};
 	},

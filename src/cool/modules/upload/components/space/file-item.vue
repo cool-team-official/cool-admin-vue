@@ -6,32 +6,32 @@
 		@contextmenu.stop.prevent="openContextMenu"
 	>
 		<!-- 错误 -->
-		<template v-if="value.error">
-			<div class="cl-upload-space-item__error">上传失败：{{ value.error }}</div>
+		<template v-if="info.error">
+			<div class="cl-upload-space-item__error">上传失败：{{ info.error }}</div>
 		</template>
 
 		<!-- 成功 -->
 		<template v-else>
 			<!-- 图片 -->
 			<template v-if="type === 'image'">
-				<el-image fit="cover" :src="value.url" lazy />
+				<el-image fit="cover" :src="info.url" lazy />
 			</template>
 
 			<!-- 视频 -->
 			<template v-else-if="type === 'video'">
 				<video
 					controls
-					:src="value.url"
+					:src="info.url"
 					:style="{
-						'max-height': '100%',
-						'max-width': '100%'
+						maxHeight: '100%',
+						maxWidth: '100%'
 					}"
 				></video>
 			</template>
 
 			<!-- 其他 -->
 			<template v-else>
-				<span>{{ value.url }}</span>
+				<span>{{ info.url }}</span>
 			</template>
 		</template>
 
@@ -45,65 +45,86 @@
 	</div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { computed, defineComponent, inject } from "vue";
+import { ContextMenu } from "/@/crud";
+
+export default defineComponent({
 	name: "cl-upload-space-item",
 
-	inject: ["space"],
-
 	props: {
-		value: Object
+		modelValue: {
+			type: Object,
+			default: () => {
+				return {};
+			}
+		}
 	},
 
 	emits: ["select", "remove"],
 
-	computed: {
-		index() {
-			return this.space.selection.findIndex((e) => e.id === this.value.id);
-		},
+	setup(props, { emit }) {
+		const space = inject<any>("space");
 
-		isSelected() {
-			return this.index >= 0;
-		},
+		// 文件信息
+		const info = computed(() => props.modelValue);
 
-		type() {
-			return (this.value.type || "").split("/")[0];
+		// 已选的序号
+		const index = computed(() =>
+			space.selection.value.findIndex((e: any) => e.id === info.value.id)
+		);
+
+		// 是否已选择
+		const isSelected = computed(() => index.value >= 0);
+
+		// 文件类型
+		const type = computed(() => (info.value.type || "").split("/")[0]);
+
+		// 选择
+		function select() {
+			emit("select", info.value);
 		}
-	},
 
-	methods: {
-		select() {
-			this.$emit("select", this.value);
-		},
+		// 移除
+		function remove() {
+			emit("remove", info.value);
+		}
 
-		remove() {
-			this.$emit("remove", this.value);
-		},
-
-		openContextMenu(e) {
-			this.$crud.openContextMenu(e, {
+		// 右键菜单
+		function openContextMenu(e: any) {
+			ContextMenu.open(e, {
 				list: [
 					{
-						label: this.isSelected ? "取消选中" : "选中",
-						"suffix-icon": this.isSelected ? "el-icon-close" : "el-icon-check",
-						callback: (_, done) => {
-							this.select();
+						label: isSelected.value ? "取消选中" : "选中",
+						"suffix-icon": isSelected.value ? "el-icon-close" : "el-icon-check",
+						callback: (_: any, done: Function) => {
+							select();
 							done();
 						}
 					},
 					{
 						label: "删除",
 						"suffix-icon": "el-icon-delete",
-						callback: (_, done) => {
-							this.remove();
+						callback: (_: any, done: Function) => {
+							remove();
 							done();
 						}
 					}
 				]
 			});
 		}
+
+		return {
+			info,
+			index,
+			type,
+			isSelected,
+			select,
+			remove,
+			openContextMenu
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

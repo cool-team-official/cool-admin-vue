@@ -1,9 +1,9 @@
 {
 	"name": "front-next",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"scripts": {
 		"dev": "vite",
-		"build": "vue-tsc --noEmit && vite build",
+		"build": "vue-tsc --noEmit --skipLibCheck && vite build",
 		"serve": "vite preview",
 		"lint:prettier": "prettier --write --loglevel warn \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
 		"lint:eslint": "eslint \"{src,mock}/**/*.{vue,ts,tsx}\" --fix"
@@ -34,6 +34,8 @@
 		"vuex": "^4.0.0-0"
 	},
 	"devDependencies": {
+		"@types/lodash": "^4.14.168",
+		"@types/node": "^14.14.37",
 		"@typescript-eslint/eslint-plugin": "^4.20.0",
 		"@typescript-eslint/parser": "^4.20.0",
 		"@vitejs/plugin-vue": "^1.1.5",

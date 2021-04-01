@@ -29,7 +29,7 @@
 					'is-active': session ? item.id == session.id : false
 				}"
 				@click="toDetail(item)"
-				@contextmenu.stop.prevent="openCM($event, item.id, index)"
+				@contextmenu.stop.prevent="openCM($event, item.id, Number(index))"
 			>
 				<!-- 头像 -->
 				<div class="avatar">

@@ -477,7 +477,7 @@ export default defineComponent({
 		}
 
 		// 移动成员
-		async function toMove(e: any) {
+		async function toMove(e?: any) {
 			let ids = [];
 
 			if (!e) {
@@ -490,6 +490,7 @@ export default defineComponent({
 		}
 
 		return {
+			$service,
 			refs,
 			isExpand,
 			selects,

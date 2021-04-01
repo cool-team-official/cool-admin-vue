@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { CoolRouter } from "/@/core/types";
 
 // 忽略规则
 const ignore: any = {
@@ -28,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
 	history: createWebHistory(),
 	routes
-});
+}) as CoolRouter;
 
 export default router;
 export { ignore };

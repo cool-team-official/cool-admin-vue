@@ -10,6 +10,6 @@ async function bootstrap(app: any) {
 	SET_SERVICE(app);
 	SET_MODULE(app);
 
-	router.$plugin.addViews(store.getters.routes);
+	router.$plugin?.addViews(store.getters.routes);
 }
 export { Service, Permission, BaseService, bootstrap, useRefs };

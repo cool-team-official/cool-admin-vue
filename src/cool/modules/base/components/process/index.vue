@@ -12,11 +12,15 @@
 				class="app-process__item"
 				:class="{ active: item.active }"
 				:data-index="index"
-				@click="onTap(item)"
+				@click="onTap(item, Number(index))"
 				@contextmenu.stop.prevent="openCM($event, item)"
 			>
 				<span>{{ item.label }}</span>
-				<i v-if="index > 0" class="el-icon-close" @mousedown.stop="onDel(index)"></i>
+				<i
+					v-if="index > 0"
+					class="el-icon-close"
+					@mousedown.stop="onDel(Number(index))"
+				></i>
 			</div>
 		</div>
 
@@ -41,7 +45,7 @@ export default {
 		const router = useRouter();
 		const route = useRoute();
 		const store = useStore();
-		const { refs, setRefs } = useRefs();
+		const { refs, setRefs }: any = useRefs();
 
 		// 参数配置
 		const menu = reactive<any>({

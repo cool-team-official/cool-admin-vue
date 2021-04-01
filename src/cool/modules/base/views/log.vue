@@ -49,7 +49,7 @@ export default defineComponent({
 
 	setup() {
 		const $service = inject<any>("service");
-		const { refs, setRefs } = useRefs();
+		const { refs, setRefs }: any = useRefs();
 
 		// 天数
 		const day = ref<number>(1);
@@ -148,6 +148,7 @@ export default defineComponent({
 		});
 
 		return {
+			$service,
 			refs,
 			day,
 			table,
