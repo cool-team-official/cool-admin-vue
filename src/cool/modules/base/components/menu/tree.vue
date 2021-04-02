@@ -49,7 +49,7 @@ export default defineComponent({
 
 	setup(props, { emit }) {
 		// 请求服务
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		// 关键字
 		const keyword = ref<string>("");
@@ -70,7 +70,7 @@ export default defineComponent({
 
 		// 刷新列表
 		function refresh() {
-			$service.system.menu.list().then((res: any) => {
+			service.system.menu.list().then((res: any) => {
 				const _list = res.filter((e: any) => e.type != 2);
 
 				_list.unshift({

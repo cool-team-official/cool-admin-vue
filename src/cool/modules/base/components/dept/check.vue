@@ -52,7 +52,7 @@ export default defineComponent({
 
 	setup(props, { emit }) {
 		// 请求服务
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		// 表单值
 		const form = inject<any>("form");
@@ -81,7 +81,7 @@ export default defineComponent({
 
 		// 刷新树形列表
 		function refresh() {
-			$service.system.dept
+			service.system.dept
 				.list()
 				.then((res: any[]) => {
 					list.value = deepTree(res);

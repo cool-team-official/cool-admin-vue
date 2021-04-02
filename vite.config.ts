@@ -1,6 +1,5 @@
-// @ts-nocheck
 import path from "path";
-import type { UserConfig, ConfigEnv } from 'vite';
+import type { UserConfig, ConfigEnv } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { svgBuilder } from "./src/core/utils/svg";
@@ -31,27 +30,28 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
 		server: {
 			port: 9000,
 			hmr: {
-				overlay: true,
+				overlay: true
 			},
 			proxy: {
 				"/dev": {
 					target: "http://127.0.0.1:8001",
 					changeOrigin: true,
-					rewrite: path => path.replace(/^\/dev/, "")
+					rewrite: (path) => path.replace(/^\/dev/, "")
 				},
 
 				"/pro": {
 					target: "https://show.cool-admin.com",
 					changeOrigin: true,
-					rewrite: path => path.replace(/^\/pro/, "/api")
+					rewrite: (path) => path.replace(/^\/pro/, "/api")
 				}
 			}
 		},
-
-		optimizeDeps: {
-			include: [
-			],
-			exclude: ['vue-demi'],
+		build: {
+			sourcemap: false,
+			polyfillDynamicImport: false
 		},
+		optimizeDeps: {
+			exclude: ["vue-demi"]
+		}
 	};
 };

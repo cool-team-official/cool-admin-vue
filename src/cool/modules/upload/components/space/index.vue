@@ -77,7 +77,7 @@
 									v-for="item in list"
 									:key="item.id"
 									v-loading="item.loading"
-									:value="item"
+									:modelValue="item"
 									:element-loading-text="item.progress"
 									@select="select"
 									@remove="remove"
@@ -192,7 +192,7 @@ export default defineComponent({
 
 	setup(props, { emit }) {
 		const store = useStore();
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		// 是否可见
 		const visible = ref<boolean>(false);
@@ -268,7 +268,7 @@ export default defineComponent({
 			if (item) {
 				item.url = res.data;
 
-				$service.space.info
+				service.space.info
 					.add({
 						url: res.data,
 						type: item.type,
@@ -316,13 +316,14 @@ export default defineComponent({
 		}
 
 		// 刷新资源文件
-		function refresh(params: any = {}) {
+		async function refresh(params: any = {}) {
 			// 清空选择
 			clear();
 
+			// 加载中
 			loading.value = true;
 
-			$service.space.info
+			await service.space.info
 				.page({
 					...pagination,
 					...params,
@@ -338,10 +339,10 @@ export default defineComponent({
 							loading: false
 						};
 					});
-				})
-				.done(() => {
-					loading.value = false;
 				});
+
+			// 加载完成
+			loading.value = false;
 		}
 
 		// 确认选中
@@ -368,7 +369,7 @@ export default defineComponent({
 		}
 
 		// 删除选中
-		function remove(item: any) {
+		function remove(item?: any) {
 			// 已选文件 id
 			const ids: number[] = item ? [item.id] : selection.value.map((e: any) => e.id);
 
@@ -387,7 +388,7 @@ export default defineComponent({
 					});
 
 					// 删除请求
-					$service.space.info
+					service.space.info
 						.delete({
 							ids
 						})

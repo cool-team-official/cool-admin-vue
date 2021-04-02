@@ -85,7 +85,7 @@ const actions = {
 
 			// 监测自定义菜单
 			if (!getters.app.conf.customMenu) {
-				store.$service.common
+				store.service.common
 					.permMenu()
 					.then((res: any) => {
 						next(res);

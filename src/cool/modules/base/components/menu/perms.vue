@@ -28,7 +28,7 @@ export default defineComponent({
 	emits: ["update:modelValue"],
 
 	setup(props, { emit }) {
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		// 绑定值
 		const value = ref<any[]>([]);
@@ -58,7 +58,7 @@ export default defineComponent({
 				}
 			};
 
-			flat($service);
+			flat(service);
 
 			perms
 				.filter((e) => e.includes(":"))

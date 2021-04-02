@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, inject } from "vue";
-import { ContextMenu } from "/@/crud";
+import { ContextMenu } from "/@/cool/modules/crud";
 
 export default defineComponent({
 	name: "cl-upload-space-item",

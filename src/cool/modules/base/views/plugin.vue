@@ -51,17 +51,17 @@ import { ElMessage } from "element-plus";
 import { defineComponent, inject, reactive } from "vue";
 import { checkPerm } from "/@/cool/modules/base";
 import { useRefs } from "/@/core";
-import { CrudLoad, RefreshOp, Table } from "/@/crud/types";
+import { CrudLoad, RefreshOp, Table } from "/@/cool/modules/crud/types";
 
 export default defineComponent({
 	name: "plugin",
 
 	setup() {
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 		const { refs, setRefs } = useRefs();
 
 		// 编辑权限
-		const { config, getConfig, enable } = $service.plugin.info.permission;
+		const { config, getConfig, enable } = service.plugin.info.permission;
 
 		const perms = reactive<any>({
 			edit: checkPerm({
@@ -72,7 +72,7 @@ export default defineComponent({
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {
-			ctx.service($service.plugin.info)
+			ctx.service(service.plugin.info)
 				.set("dict", {
 					api: {
 						page: "list"
@@ -98,7 +98,7 @@ export default defineComponent({
 
 		// 开启、关闭
 		function onEnableChange(val: boolean, item: any) {
-			$service.plugin.info
+			service.plugin.info
 				.enable({
 					namespace: item.namespace,
 					enable: val
@@ -113,7 +113,7 @@ export default defineComponent({
 
 		// 打开配置
 		async function openConf({ name, namespace, view }: any) {
-			const form = await $service.plugin.info.getConfig({
+			const form = await service.plugin.info.getConfig({
 				namespace
 			});
 
@@ -131,7 +131,7 @@ export default defineComponent({
 				form,
 				on: {
 					submit: (data: any, { close, done }: any) => {
-						$service.plugin.info
+						service.plugin.info
 							.config({
 								namespace,
 								config: data

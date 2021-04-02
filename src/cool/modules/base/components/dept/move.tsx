@@ -9,7 +9,7 @@ export default defineComponent({
 	emits: ["success", "error"],
 
 	setup(_: any, { emit }) {
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 		const { refs, setRefs }: any = useRefs();
 
 		// 树形列表
@@ -17,7 +17,7 @@ export default defineComponent({
 
 		// 刷新列表
 		async function refresh() {
-			return await $service.system.dept.list().then(deepTree);
+			return await service.system.dept.list().then(deepTree);
 		}
 
 		// 转移
@@ -52,7 +52,7 @@ export default defineComponent({
 							type: "warning"
 						})
 							.then(() => {
-								$service.system.user
+								service.system.user
 									.move({
 										departmentId: id,
 										userIds: ids

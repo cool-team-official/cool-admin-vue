@@ -15,10 +15,10 @@ export default defineComponent({
 	setup(_, { emit }) {
 		const base64 = ref("");
 		const svg = ref("");
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		const refresh = () => {
-			$service.open
+			service.open
 				.captcha({
 					height: 36,
 					width: 110

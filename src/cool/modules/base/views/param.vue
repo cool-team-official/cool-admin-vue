@@ -37,13 +37,13 @@
 import { ElMessageBox } from "element-plus";
 import { defineComponent, inject, nextTick, reactive } from "vue";
 import { useRefs } from "/@/core";
-import { CrudLoad, Table, Upsert } from "/@/crud/types";
+import { CrudLoad, Table, Upsert } from "/@/cool/modules/crud/types";
 
 export default defineComponent({
 	name: "sys-param",
 
 	setup() {
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 		const { refs, setRefs } = useRefs();
 
 		// 选项卡
@@ -159,7 +159,7 @@ export default defineComponent({
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {
-			ctx.service($service.system.param).done();
+			ctx.service(service.system.param).done();
 			app.refresh();
 		}
 

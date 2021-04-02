@@ -20,7 +20,7 @@ export default defineComponent({
 
 	setup(props, { emit }) {
 		// 请求服务
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		// 数据列表
 		const list = ref<any[]>([]);
@@ -45,7 +45,7 @@ export default defineComponent({
 		);
 
 		onMounted(async () => {
-			list.value = await $service.system.role.list();
+			list.value = await service.system.role.list();
 		});
 
 		return {

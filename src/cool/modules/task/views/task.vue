@@ -218,7 +218,7 @@ import { computed, defineComponent, inject, onMounted, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Draggable from "vuedraggable";
 import { checkPerm } from "/@/cool/modules/base";
-import { ContextMenu } from "/@/crud";
+import { ContextMenu } from "/@/cool/modules/crud";
 import Cron from "../components/cron";
 import { useRefs } from "/@/core";
 
@@ -232,7 +232,7 @@ export default defineComponent({
 
 	setup() {
 		const { refs, setRefs } = useRefs();
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		// 任务列表
 		const list = reactive<any[]>([
@@ -312,7 +312,7 @@ export default defineComponent({
 		});
 
 		// 权限
-		const perm: any = computed(() => $service.task.info.permission);
+		const perm: any = computed(() => service.task.info.permission);
 
 		// 更多列表
 		function moreList(res: any, { list, pagination }: any) {
@@ -353,7 +353,7 @@ export default defineComponent({
 
 				item.loading = true;
 
-				const res = await $service.task.info.page(item.params);
+				const res = await service.task.info.page(item.params);
 
 				moreList(res, item);
 
@@ -374,7 +374,7 @@ export default defineComponent({
 			};
 
 			if (id) {
-				info = await $service.task.info.info({ id });
+				info = await service.task.info.info({ id });
 			}
 
 			if (info.every) {
@@ -553,7 +553,7 @@ export default defineComponent({
 							data.limit = null;
 						}
 
-						$service.task.info[id ? "update" : "add"]({
+						service.task.info[id ? "update" : "add"]({
 							...info,
 							...data,
 							every: data.every * 1000
@@ -579,7 +579,7 @@ export default defineComponent({
 				type: "warning"
 			})
 				.then(() => {
-					$service.task.info.delete({ ids: [id] }).then(() => {
+					service.task.info.delete({ ids: [id] }).then(() => {
 						refreshTask();
 					});
 				})
@@ -588,7 +588,7 @@ export default defineComponent({
 
 		// 开始任务
 		function start({ id, type }: any) {
-			$service.task.info
+			service.task.info
 				.start({ id, type })
 				.then(() => {
 					refreshTask();
@@ -600,7 +600,7 @@ export default defineComponent({
 
 		// 停止任务
 		function stop({ id }: any) {
-			$service.task.info
+			service.task.info
 				.stop({ id })
 				.then(() => {
 					refreshTask();
@@ -612,7 +612,7 @@ export default defineComponent({
 
 		// 任务执行一次
 		function once({ id }: any) {
-			$service.task.info
+			service.task.info
 				.once({ id })
 				.then(() => {
 					refreshTask();
@@ -662,7 +662,7 @@ export default defineComponent({
 
 			logs.loading = true;
 
-			const res = await $service.task.info.log(params);
+			const res = await service.task.info.log(params);
 
 			moreList(res, logs);
 

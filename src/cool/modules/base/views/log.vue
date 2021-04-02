@@ -4,7 +4,7 @@
 			<cl-refresh-btn />
 
 			<el-button
-				v-permission="$service.system.log.permission.clear"
+				v-permission="service.system.log.permission.clear"
 				size="mini"
 				type="danger"
 				@click="clear"
@@ -42,13 +42,13 @@
 import { defineComponent, inject, reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRefs } from "/@/core";
-import { CrudLoad, Table } from "/@/crud/types";
+import { CrudLoad, Table } from "/@/cool/modules/crud/types";
 
 export default defineComponent({
 	name: "sys-log",
 
 	setup() {
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 		const { refs, setRefs }: any = useRefs();
 
 		// 天数
@@ -112,13 +112,13 @@ export default defineComponent({
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {
-			ctx.service($service.system.log).done();
+			ctx.service(service.system.log).done();
 			app.refresh();
 		}
 
 		// 保存天数
 		function saveDay() {
-			$service.system.log.setKeep(day.value).then(() => {
+			service.system.log.setKeep(day.value).then(() => {
 				ElMessage.success("保存成功");
 			});
 		}
@@ -129,7 +129,7 @@ export default defineComponent({
 				type: "warning"
 			})
 				.then(() => {
-					$service.system.log
+					service.system.log
 						.clear()
 						.then(() => {
 							ElMessage.success("清空成功");
@@ -143,12 +143,12 @@ export default defineComponent({
 		}
 
 		// 获取天数
-		$service.system.log.getKeep().then((res: number) => {
+		service.system.log.getKeep().then((res: number) => {
 			day.value = Number(res);
 		});
 
 		return {
-			$service,
+			service,
 			refs,
 			day,
 			table,

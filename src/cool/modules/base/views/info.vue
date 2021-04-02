@@ -32,7 +32,7 @@ export default defineComponent({
 
 	setup() {
 		const store = useStore();
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		// 表单数据
 		const form = reactive<any>(store.getters.userInfo);
@@ -41,12 +41,12 @@ export default defineComponent({
 		const saving = ref<boolean>(false);
 
 		// 保存
-		function save() {
+		async function save() {
 			const { headImg, nickName, password } = form;
 
 			saving.value = true;
 
-			$service.common
+			await service.common
 				.userUpdate({
 					headImg,
 					nickName,
@@ -59,10 +59,9 @@ export default defineComponent({
 				})
 				.catch((err: string) => {
 					ElMessage.error(err);
-				})
-				.done(() => {
-					saving.value = false;
 				});
+
+			saving.value = false;
 		}
 
 		return {

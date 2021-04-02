@@ -35,10 +35,7 @@ export default {
 		store.set(key, value);
 
 		if (expires) {
-			store.set(
-				`${key}${this.suffix}`,
-				Date.parse(String(new Date())) + expires * 1000
-			);
+			store.set(`${key}${this.suffix}`, Date.parse(String(new Date())) + expires * 1000);
 		}
 	},
 
@@ -47,10 +44,7 @@ export default {
 	 * @param {string} key 关键字
 	 */
 	isExpired(key: string) {
-		return (
-			(this.getExpiration(key) || 0) - Date.parse(String(new Date())) <=
-			2000
-		);
+		return (this.getExpiration(key) || 0) - Date.parse(String(new Date())) <= 2000;
 	},
 
 	/**
@@ -83,5 +77,5 @@ export default {
 	 */
 	clearAll() {
 		store.clearAll();
-	},
+	}
 };

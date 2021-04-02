@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { TableColumn } from "/@/crud/types";
+import { TableColumn } from "/@/cool/modules/crud/types";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({

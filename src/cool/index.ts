@@ -1,5 +1,3 @@
-import Crud from "../crud";
-
 export default {
 	modules: [
 		// 基础模块
@@ -14,7 +12,6 @@ export default {
 		},
 		{
 			name: "crud",
-			value: Crud,
 			options: {
 				crud: {
 					dict: {

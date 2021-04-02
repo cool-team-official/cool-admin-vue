@@ -36,7 +36,7 @@ import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { last } from "/@/core/utils";
 import { useRefs } from "/@/core";
-import { ContextMenu } from "/@/crud";
+import { ContextMenu } from "/@/cool/modules/crud";
 
 export default {
 	name: "cl-process",

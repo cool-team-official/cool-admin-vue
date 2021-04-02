@@ -7,7 +7,7 @@ export default function (app: any) {
 
 	const modules: any = {};
 
-	for (let i in files) {
+	for (const i in files) {
 		const path: string = i.replace("/src/service/", "");
 		const inst: any = files[i].default;
 
@@ -15,9 +15,9 @@ export default function (app: any) {
 			continue;
 		}
 
-		let list = path.split("/");
-		let parents = list.slice(0, list.length - 1);
-		let name = last(list).replace(".ts", "");
+		const list = path.split("/");
+		const parents = list.slice(0, list.length - 1);
+		const name = last(list).replace(".ts", "");
 
 		let curr: any = modules;
 		let prev: any = null;
@@ -34,7 +34,7 @@ export default function (app: any) {
 		});
 
 		if (inst) {
-			let service = new inst();
+			const service = new inst();
 
 			if (name == "index") {
 				prev[key] = service;
@@ -46,6 +46,6 @@ export default function (app: any) {
 		}
 	}
 
-	app.config.globalProperties.$service = store.$service = modules;
+	app.config.globalProperties.service = store.service = modules;
 	app.provide("service", modules);
 }

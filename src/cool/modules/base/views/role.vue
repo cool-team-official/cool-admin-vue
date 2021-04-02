@@ -22,14 +22,14 @@
 </template>
 
 <script lang="ts">
-import { CrudLoad, Table, Upsert } from "/@/crud/types";
+import { CrudLoad, Table, Upsert } from "/@/cool/modules/crud/types";
 import { defineComponent, inject, reactive } from "vue";
 
 export default defineComponent({
 	name: "sys-role",
 
 	setup() {
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		// 表单值
 		const form = reactive<any>({
@@ -153,7 +153,7 @@ export default defineComponent({
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {
-			ctx.service($service.system.role).done();
+			ctx.service(service.system.role).done();
 			app.refresh();
 		}
 

@@ -81,7 +81,7 @@ import { useRefs } from "/@/core";
 import { deepTree } from "/@/core/utils";
 import { useRouter } from "vue-router";
 import { defineComponent, inject, reactive } from "vue";
-import { CrudLoad, Table, Upsert, RefreshOp } from "/@/crud/types";
+import { CrudLoad, Table, Upsert, RefreshOp } from "/@/cool/modules/crud/types";
 
 export default defineComponent({
 	name: "sys-menu",
@@ -89,17 +89,17 @@ export default defineComponent({
 	setup() {
 		const router = useRouter();
 		const { refs, setRefs } = useRefs();
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {
-			ctx.service($service.system.menu).done();
+			ctx.service(service.system.menu).done();
 			app.refresh();
 		}
 
 		// 刷新监听
 		function onRefresh(_: any, { render }: RefreshOp) {
-			$service.system.menu.list().then((list: any[]) => {
+			service.system.menu.list().then((list: any[]) => {
 				list.map((e) => {
 					e.permList = e.perms ? e.perms.split(",") : [];
 				});

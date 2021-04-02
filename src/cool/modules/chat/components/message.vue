@@ -128,7 +128,7 @@ export default defineComponent({
 	setup() {
 		const store = useStore();
 		const { refs, setRefs } = useRefs();
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 		const chat = inject<any>("chat");
 		const mitt = inject<any>("mitt");
 
@@ -270,7 +270,7 @@ export default defineComponent({
 				visible.value = true;
 			};
 
-			$service.im.message
+			service.im.message
 				.page(data)
 				.then((res: any) => {
 					// 防止脏数据

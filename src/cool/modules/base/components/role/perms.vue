@@ -42,7 +42,7 @@ export default defineComponent({
 	emits: ["update:modelValue"],
 
 	setup(props, { emit }) {
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		// 树形列表
 		const list = ref<any[]>([]);
@@ -85,7 +85,7 @@ export default defineComponent({
 
 		// 刷新列表
 		function refresh() {
-			$service.system.menu
+			service.system.menu
 				.list()
 				.then((res: any[]) => {
 					list.value = deepTree(res);

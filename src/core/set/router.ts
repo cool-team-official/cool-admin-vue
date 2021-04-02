@@ -27,12 +27,9 @@ export default function () {
 						) {
 							d.meta.iframeUrl = url;
 							d.component = () =>
-								import(
-									`/@/cool/modules/base/pages/iframe/index.vue`
-								);
+								import(`/@/cool/modules/base/pages/iframe/index.vue`);
 						} else {
-							d.component = () =>
-								import(/* @vite-ignore */ `/@/${url}`);
+							d.component = () => import(/* @vite-ignore */ `/@/${url}`);
 						}
 					} else {
 						d.redirect = "/404";
@@ -42,7 +39,7 @@ export default function () {
 				// Batch add route
 				router.addRoute("index", d);
 			});
-		},
+		}
 	};
 
 	router.beforeEach((to: any, from: any, next: any) => {
@@ -59,7 +56,7 @@ export default function () {
 				store.commit("ADD_PROCESS", {
 					keepAlive: to.meta?.keepAlive,
 					label: to.meta?.label || to.name,
-					value: to.fullPath,
+					value: to.fullPath
 				});
 			}
 		} else {
@@ -83,10 +80,7 @@ export default function () {
 			lock = true;
 
 			if (err.code == "MODULE_NOT_FOUND") {
-				console.error(
-					err.ElMessage.replace("Cannot find module ", ""),
-					"路由组件不存在"
-				);
+				console.error(err.ElMessage.replace("Cannot find module ", ""), "路由组件不存在");
 
 				ElMessage.error(`路由组件路径错误`);
 			} else {

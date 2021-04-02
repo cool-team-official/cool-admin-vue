@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from "vue-router";
 import { CoolRouter } from "/@/core/types";
+import { routerMode } from "/@/config/env";
 
 // 忽略规则
 const ignore: any = {
@@ -27,7 +28,7 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-	history: createWebHistory(),
+	history: routerMode == "history" ? createWebHistory() : createWebHashHistory(),
 	routes
 }) as CoolRouter;
 

@@ -472,7 +472,7 @@ export default {
 						data.append("file", file);
 
 						// 上传
-						this.$service.common
+						this.service.common
 							.request({
 								url: res.host,
 								method: "POST",
@@ -504,7 +504,7 @@ export default {
 							host: "/upload"
 						});
 					} else {
-						this.$service.common
+						this.service.common
 							.upload()
 							.then((res) => {
 								next(res);
@@ -516,7 +516,7 @@ export default {
 
 			this.loading = true;
 
-			upload(req.file)
+			await upload(req.file)
 				.then((url) => {
 					this._onSuccess({ data: url }, { raw: req.file });
 				})
@@ -528,15 +528,14 @@ export default {
 					if (this.onError) {
 						this.onError(err, req.file);
 					}
-				})
-				.done(() => {
-					this.loading = false;
 				});
+
+			this.loading = false;
 		},
 
 		// 上传模式
 		uploadMode() {
-			return this.$service.common.uploadMode().then((res) => res.mode);
+			return this.service.common.uploadMode().then((res) => res.mode);
 		}
 	}
 };

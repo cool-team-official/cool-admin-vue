@@ -10,7 +10,13 @@
 				<demo-form />
 				<demo-query />
 				<cl-flex1 />
-				<cl-search-key field="name" />
+				<cl-search-key
+					field="name"
+					:field-list="[
+						{ label: '姓名', value: 'name' },
+						{ label: '年龄', value: 'age' }
+					]"
+				/>
 				<demo-adv-search />
 			</el-row>
 
@@ -30,7 +36,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { CrudLoad } from "/@/crud/types";
+import { CrudLoad } from "/@/cool/modules/crud/types";
 import { TestService } from "../utils/service";
 import Dialog from "../components/crud/dialog.vue";
 import ContextMenu from "../components/crud/context-menu.vue";

@@ -23,7 +23,6 @@ export default {
 		el.setAttribute("data-clipboard-text", binding.value);
 	},
 	beforeUpdate: (el: HTMLElement, binding: any) => {
-		console.log(el);
 		el.setAttribute("data-clipboard-text", binding.value);
 	}
 };

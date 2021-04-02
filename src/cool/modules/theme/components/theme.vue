@@ -38,7 +38,11 @@
 					<ul>
 						<li v-if="!browser.isMini">
 							<span>显示一级菜单栏</span>
-							<el-switch v-model="form.conf.showAMenu" size="mini" />
+							<el-switch
+								v-model="form.conf.showAMenu"
+								size="mini"
+								@change="onAMenuChange"
+							/>
 						</li>
 						<li>
 							<span>显示路由导航栏</span>
@@ -150,8 +154,7 @@ export default {
 				conf: {
 					showAMenu: false,
 					showRouteNav: true,
-					showProcess: true,
-					customMenu: false
+					showProcess: true
 				},
 				theme: {
 					color: "",
@@ -171,7 +174,6 @@ export default {
 
 	watch: {
 		app: {
-			deep: true,
 			immediate: true,
 			handler(val) {
 				this.form = cloneDeep(val);
@@ -193,6 +195,12 @@ export default {
 
 		close() {
 			this.drawer.visible = false;
+		},
+
+		onAMenuChange() {
+			setTimeout(() => {
+				this.$store.commit("SET_MENU_LIST");
+			}, 0);
 		},
 
 		// 设置主题

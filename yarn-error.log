@@ -1,5 +1,5 @@
 Arguments: 
-  D:\node\node.exe C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js remove @types/node
+  D:\node\node.exe C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add vite-plugin-style-import -D
 
 PATH: 
   C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;D:\Tortoise\bin;C:\Program Files\Git\cmd;C:\Program Files\python;C:\Program Files\python\Scripts;;D:\BtSoft\panel\script;D:\node\;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;;D:\cool\Microsoft VS Code\bin;C:\Users\Administrator\AppData\Roaming\npm
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, copyfile 'C:\Users\Administrator\AppData\Local\Yarn\Cache\v6\npm-yallist-2.1.2-1c11f9218f076089a47dd512f93c6699a6a81d52-integrity\node_modules\yallist\README.md' -> 'D:\cool\srcs\admin\front-next\node_modules\editorconfig\node_modules\yallist\README.md'
+  Error: EPERM: operation not permitted, unlink 'D:\cool\srcs\admin\front-next\node_modules\esbuild\esbuild.exe'
 
 npm manifest: 
   {
@@ -53,6 +53,8 @@ npm manifest:
   		"vuex": "^4.0.0-0"
   	},
   	"devDependencies": {
+  		"@types/lodash": "^4.14.168",
+  		"@types/node": "^14.14.37",
   		"@typescript-eslint/eslint-plugin": "^4.20.0",
   		"@typescript-eslint/parser": "^4.20.0",
   		"@vitejs/plugin-vue": "^1.1.5",
@@ -377,6 +379,11 @@ Lockfile:
     version "7.0.7"
     resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.7.tgz#98a993516c859eb0d5c4c8f098317a9ea68db9ad"
     integrity sha512-cxWFQVseBm6O9Gbw1IWb8r6OS4OhSt3hPZLkFApLjM8TEXROBuQGLAH2i2gZpcXdLBIrpXuTDhH7Vbm1iXmNGA==
+  
+  "@types/lodash@^4.14.168":
+    version "4.14.168"
+    resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
+    integrity sha512-oVfRvqHV/V6D1yifJbVRU3TMp8OT6o6BG+U9MkwuJ3U8/CsDHvalRpsxBqivn71ztOFZBTfJMvETbqHiaNSj7Q==
   
   "@types/node@^14.14.37":
     version "14.14.37"
@@ -3373,6 +3380,11 @@ Lockfile:
     version "0.6.6"
     resolved "https://registry.yarnpkg.com/traverse/-/traverse-0.6.6.tgz#cbdf560fd7b9af632502fed40f918c157ea97137"
     integrity sha1-y99WD9e5r2MlAv7UD5GMFX6pcTc=
+  
+  ts-promise@^2.2.0:
+    version "2.2.0"
+    resolved "https://registry.yarnpkg.com/ts-promise/-/ts-promise-2.2.0.tgz#d2ad7ae4b34c17c31bf407cac2b29e4101ae94d1"
+    integrity sha512-zd4uLOBGg6DPqhX8DL1LW2R9AmwCeeCC2OPfUkStUfBxCsuRE1xtcf0eTPfxpEQpl2el9UzsnXoWBnY4V7rRuA==
   
   tslib@2.0.3:
     version "2.0.3"

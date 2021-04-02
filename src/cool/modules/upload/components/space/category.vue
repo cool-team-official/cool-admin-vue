@@ -37,8 +37,8 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { computed, defineComponent, inject, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { isEmpty } from "/@/core/utils";
-import { ContextMenu } from "/@/crud";
-import { useRefs } from "/@/crud/hooks/core";
+import { ContextMenu } from "/@/cool/modules/crud";
+import { useRefs } from "/@/cool/modules/crud/hooks/core";
 
 export default defineComponent({
 	name: "cl-upload-space-category",
@@ -52,7 +52,7 @@ export default defineComponent({
 	setup(_, { emit }) {
 		const store = useStore();
 		const { refs, setRefs }: any = useRefs();
-		const $service: any = inject("service");
+		const service: any = inject("service");
 		const space = inject<any>("space");
 
 		// 数据列表
@@ -76,7 +76,6 @@ export default defineComponent({
 		watch(
 			() => current.value,
 			(id: number | string) => {
-				console.log(id);
 				emit("update:modelValue", id);
 				emit("change", id);
 			}
@@ -84,7 +83,7 @@ export default defineComponent({
 
 		// 刷新分类
 		function refresh() {
-			return $service.space.type.list().then((res: any) => {
+			return service.space.type.list().then((res: any) => {
 				res.unshift({
 					name: "全部文件",
 					id: null
@@ -127,9 +126,9 @@ export default defineComponent({
 						let next = null;
 
 						if (!item.id) {
-							next = $service.space.type.add(data);
+							next = service.space.type.add(data);
 						} else {
-							next = $service.space.type.update({
+							next = service.space.type.update({
 								...data,
 								id: item.id
 							});
@@ -193,7 +192,7 @@ export default defineComponent({
 								}
 							)
 								.then(() => {
-									$service.space.type
+									service.space.type
 										.delete({
 											ids: [id]
 										})

@@ -62,12 +62,10 @@ export default defineComponent({
 			router.push("/login");
 		}
 
-		function reLogin() {
+		async function reLogin() {
 			isLogout.value = true;
-
-			store.dispatch("userLogout").done(() => {
-				href("/login");
-			});
+			await store.dispatch("userLogout");
+			href("/login");
 		}
 
 		function back() {

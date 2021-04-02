@@ -72,15 +72,14 @@ export default defineComponent({
 		const userInfo = computed<any>(() => store.getters.userInfo);
 
 		// 跳转官网
-		function onCommand(name: string) {
+		async function onCommand(name: string) {
 			switch (name) {
 				case "my":
 					router.push("/my/info");
 					break;
 				case "exit":
-					store.dispatch("userLogout").done(() => {
-						href("/login");
-					});
+					await store.dispatch("userLogout");
+					href("/login");
 					break;
 			}
 		}

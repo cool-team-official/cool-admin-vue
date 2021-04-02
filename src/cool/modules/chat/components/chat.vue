@@ -87,7 +87,7 @@ export default defineComponent({
 	setup(_, { emit }) {
 		const store = useStore();
 		const { refs, setRefs } = useRefs();
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 		const mitt = inject<any>("mitt");
 
 		// 当前会话
@@ -196,7 +196,7 @@ export default defineComponent({
 					mitt.emit("message.scrollToBottom");
 
 					// 阅读消息
-					$service.im.message.read({
+					service.im.message.read({
 						ids: [msgId],
 						session: session.value.id
 					});

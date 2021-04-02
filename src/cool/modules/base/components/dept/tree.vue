@@ -63,7 +63,7 @@
 <script lang="ts">
 import { defineComponent, inject, onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { ContextMenu } from "/@/crud";
+import { ContextMenu } from "/@/cool/modules/crud";
 import { useRefs } from "/@/core";
 import { deepTree, isArray, revDeepTree, isPc } from "/@/core/utils";
 
@@ -96,7 +96,7 @@ export default defineComponent({
 		const isDrag = ref<boolean>(false);
 
 		// 请求服务
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 
 		// 允许托的规则
 		function allowDrag({ data }: any) {
@@ -109,19 +109,16 @@ export default defineComponent({
 		}
 
 		// 刷新
-		function refresh() {
+		async function refresh() {
 			isDrag.value = false;
 			loading.value = true;
 
-			$service.system.dept
-				.list()
-				.then((res: any[]) => {
-					list.value = deepTree(res);
-					emit("list-change", list.value);
-				})
-				.done(() => {
-					loading.value = false;
-				});
+			await service.system.dept.list().then((res: any[]) => {
+				list.value = deepTree(res);
+				emit("list-change", list.value);
+			});
+
+			loading.value = false;
 		}
 
 		// 获取 ids
@@ -185,7 +182,7 @@ export default defineComponent({
 				],
 				on: {
 					submit: (data: any, { done, close }: any) => {
-						$service.system.dept[method]({
+						service.system.dept[method]({
 							id: e.id,
 							parentId: e.parentId,
 							name: data.name,
@@ -207,8 +204,8 @@ export default defineComponent({
 
 		// 删除部门
 		function rowDel(e: any) {
-			const del = (f: boolean) => {
-				$service.system.dept
+			const del = async (f: boolean) => {
+				await service.system.dept
 					.delete({
 						ids: [e.id],
 						deleteUser: f
@@ -222,10 +219,9 @@ export default defineComponent({
 								"删除成功"
 							);
 						}
-					})
-					.done(() => {
-						refresh();
 					});
+
+				refresh();
 			};
 
 			ElMessageBox.confirm(`该操作会删除 “${e.name}” 部门的所有用户，是否确认？`, "提示", {
@@ -250,7 +246,7 @@ export default defineComponent({
 				ElMessageBox.confirm("部门架构已发生改变，是否保存？", "提示", {
 					type: "warning"
 				})
-					.then(() => {
+					.then(async () => {
 						const ids: any[] = [];
 
 						const deep = (list: any[], pid: any) => {
@@ -266,7 +262,7 @@ export default defineComponent({
 
 						deep(list.value, null);
 
-						$service.system.dept
+						await service.system.dept
 							.order(
 								ids.map((e, i) => {
 									return {
@@ -281,11 +277,10 @@ export default defineComponent({
 							})
 							.catch((err: string) => {
 								ElMessage.error(err);
-							})
-							.done(() => {
-								refresh();
-								isDrag.value = false;
 							});
+
+						refresh();
+						isDrag.value = false;
 					})
 					.catch(() => null);
 			} else {

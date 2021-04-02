@@ -49,7 +49,7 @@ export default function (app: any) {
 			// 注册请求服务
 			if (service) {
 				// @ts-ignore
-				deepMerge(store.$service, service);
+				deepMerge(store.service, service);
 			}
 
 			// 注册指令
@@ -93,7 +93,7 @@ export default function (app: any) {
 
 		let mod: any = null;
 
-		// Parse
+		// 解析格式
 		if (isString(e)) {
 			mod = {
 				name: e
@@ -110,21 +110,22 @@ export default function (app: any) {
 			console.error(e, "格式错误");
 		}
 
-		// Set
-		if (mod.value) {
-			if (isFunction(mod.value.install)) {
-				mod.value = mod.value.install(app, mod.options);
-			}
-		} else {
+		// 匹配本地模块
+		if (!mod.value) {
 			const item = local.find((m: any) => m.name === mod.name);
 
 			if (item) {
 				mod.value = item.value;
+			} else {
+				console.error(mod.name, "不是一个有效的模块");
 			}
 		}
 
-		if (!mod.value) {
-			console.error(mod.name, "不是一个有效的模块");
+		// 兼容其他 vue 插件模式
+		if (mod.value) {
+			if (isFunction(mod.value.install)) {
+				mod.value = mod.value.install(app, mod.options);
+			}
 		}
 
 		// 是否开启

@@ -52,7 +52,7 @@
 import { defineComponent, ref, resolveComponent, h } from "vue";
 import Test from "./test.vue";
 import { TestService } from "../../utils/service";
-import { CrudLoad, FormItem, FormRef } from "/@/crud/types";
+import { CrudLoad, FormItem, FormRef } from "/@/cool/modules/crud/types";
 
 export default defineComponent({
 	setup() {

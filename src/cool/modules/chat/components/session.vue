@@ -57,13 +57,13 @@ import { computed, defineComponent, inject, onUnmounted, reactive, ref } from "v
 import { useStore } from "vuex";
 import { ElMessage } from "element-plus";
 import { isEmpty } from "/@/core/utils";
-import { ContextMenu } from "/@/crud";
+import { ContextMenu } from "/@/cool/modules/crud";
 import { parseContent } from "../utils";
 
 export default defineComponent({
 	setup() {
 		const store = useStore();
-		const $service = inject<any>("service");
+		const service = inject<any>("service");
 		const mitt = inject<any>("mitt");
 
 		// 当前会话信息
@@ -87,32 +87,29 @@ export default defineComponent({
 		const keyWord = ref<string>("");
 
 		// 刷新列表
-		function refresh(params?: any) {
+		async function refresh(params?: any) {
 			loading.value = true;
 
-			return new Promise((resolve, reject) => {
-				$service.im.session
-					.page({
-						...pagination,
-						keyWord: keyWord.value,
-						params,
-						order: "updateTime",
-						sort: "desc"
-					})
-					.then((res: any) => {
-						store.commit("SET_SESSION_LIST", res.list);
-						Object.assign(pagination, res.pagination);
+			const res = await service.im.session
+				.page({
+					...pagination,
+					keyWord: keyWord.value,
+					params,
+					order: "updateTime",
+					sort: "desc"
+				})
+				.then((res: any) => {
+					store.commit("SET_SESSION_LIST", res.list);
+					Object.assign(pagination, res.pagination);
+					return res;
+				})
+				.catch((err: string) => {
+					ElMessage.error(err);
+					return Promise.reject(err);
+				});
 
-						resolve(res);
-					})
-					.catch((err: string) => {
-						ElMessage.error(err);
-						reject(err);
-					})
-					.done(() => {
-						loading.value = false;
-					});
-			});
+			loading.value = false;
+			return res;
 		}
 
 		// 搜索关键字
@@ -166,7 +163,7 @@ export default defineComponent({
 						label: "删除",
 						icon: "el-icon-delete",
 						callback: (_: any, done: Function) => {
-							$service.im.session.delete({
+							service.im.session.delete({
 								ids: id
 							});
 
