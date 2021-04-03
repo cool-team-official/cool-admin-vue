@@ -17,7 +17,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
 		resolve: {
 			alias: {
 				"/@": resolve("src"),
-				"/#": resolve("types")
+				"/#": resolve("types"),
+				"/$": resolve("src/cool/modules")
 			}
 		},
 		css: {
@@ -48,7 +49,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
 		},
 		build: {
 			sourcemap: false,
-			polyfillDynamicImport: false
+			polyfillDynamicImport: false // 必须为false
 		},
 		optimizeDeps: {
 			exclude: ["vue-demi"]

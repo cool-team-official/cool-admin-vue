@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { AdvSearchItem } from "/@/cool/modules/crud/types";
+import { AdvSearchItem } from "/$/crud/types";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({

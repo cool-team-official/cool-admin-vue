@@ -7,10 +7,10 @@ import {
 	reactive,
 	ref
 } from "vue";
-import Mitt from "../../utils/mitt";
 import { useMitt, useRequest } from "./helper";
 import { bootstap } from "./app";
-import { deepMerge } from "/@/core/utils";
+import Mitt from "../../utils/mitt";
+import { deepMerge } from "../../utils";
 
 export default defineComponent({
 	name: "cl-crud",

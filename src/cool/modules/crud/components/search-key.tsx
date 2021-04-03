@@ -1,5 +1,5 @@
-import { Crud } from "/@/cool/modules/crud/types";
 import { defineComponent, inject, ref } from "vue";
+import { Crud } from "../types";
 
 export default defineComponent({
 	name: "cl-search-key",

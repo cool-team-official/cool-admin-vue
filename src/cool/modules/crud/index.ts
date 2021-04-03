@@ -2,8 +2,7 @@ import { reactive } from "vue";
 import * as components from "./components";
 import ContextMenu from "./components/context-menu/index";
 
-import "./common";
-import "./assets/index.scss";
+import "./static/index.scss";
 
 const CRUD = {
 	install(app: any, options: any = {}) {

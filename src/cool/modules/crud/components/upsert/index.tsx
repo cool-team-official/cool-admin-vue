@@ -1,8 +1,8 @@
 import { ElMessage } from "element-plus";
 import { defineComponent, h, inject, ref } from "vue";
-import { Crud } from "/@/cool/modules/crud/types";
 import { useFormApi } from "./helper";
 import { useForm, useRefs } from "../../hooks/core";
+import { Crud } from "../../types";
 
 export default defineComponent({
 	name: "cl-upsert",

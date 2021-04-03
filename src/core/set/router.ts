@@ -27,7 +27,7 @@ export default function () {
 						) {
 							d.meta.iframeUrl = url;
 							d.component = () =>
-								import(`/@/cool/modules/base/pages/iframe/index.vue`);
+								import(`/$/base/pages/iframe/index.vue`);
 						} else {
 							d.component = () => import(/* @vite-ignore */ `/@/${url}`);
 						}

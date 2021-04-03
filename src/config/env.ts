@@ -1,6 +1,6 @@
 import store from "store";
 import { getUrlParam } from "/@/core/utils";
-import { MenuItem } from "/@/cool/modules/base/types";
+import { MenuItem } from "/$/base/types";
 
 // 路由模式
 const routerMode = "history";

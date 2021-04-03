@@ -1,8 +1,8 @@
-import { inject, ref, watch } from "vue";
-import { Crud } from "/@/cool/modules/crud/types";
+import { defineComponent, inject, ref, watch } from "vue";
+import { Crud } from "../types";
 import { isArray } from "../utils";
 
-export default {
+export default defineComponent({
 	name: "cl-query",
 
 	props: {
@@ -21,7 +21,7 @@ export default {
 
 	emits: ["update:modelValue", "change"],
 
-	setup(props: any, { emit }: any) {
+	setup(props, { emit }) {
 		const crud = inject("crud") as Crud;
 
 		const list = ref<Array<any>>([]);
@@ -115,4 +115,4 @@ export default {
 			</div>
 		);
 	}
-};
+});

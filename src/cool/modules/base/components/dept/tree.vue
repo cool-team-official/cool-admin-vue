@@ -63,7 +63,7 @@
 <script lang="ts">
 import { defineComponent, inject, onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { ContextMenu } from "/@/cool/modules/crud";
+import { ContextMenu } from "/$/crud";
 import { useRefs } from "/@/core";
 import { deepTree, isArray, revDeepTree, isPc } from "/@/core/utils";
 

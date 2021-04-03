@@ -1,7 +1,7 @@
-import { h, inject, ref, watch } from "vue";
-import { Crud, Mitt } from "/@/cool/modules/crud/types";
+import { defineComponent, h, inject, ref, watch } from "vue";
+import { Crud, Mitt } from "../types";
 
-export default {
+export default defineComponent({
 	name: "cl-pagination",
 
 	props: {
@@ -13,7 +13,7 @@ export default {
 		}
 	},
 
-	setup(props: any) {
+	setup(props) {
 		const crud = inject("crud") as Crud;
 		const mitt = inject("mitt") as Mitt;
 
@@ -81,4 +81,4 @@ export default {
 			"page-size": ctx.pageSize
 		});
 	}
-};
+});

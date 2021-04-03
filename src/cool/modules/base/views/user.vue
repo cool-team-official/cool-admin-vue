@@ -112,7 +112,7 @@
 import { computed, defineComponent, inject, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRefs } from "/@/core";
-import { Table, Upsert } from "/@/cool/modules/crud/types";
+import { Table, Upsert } from "/$/crud/types";
 
 export default defineComponent({
 	name: "sys-user",

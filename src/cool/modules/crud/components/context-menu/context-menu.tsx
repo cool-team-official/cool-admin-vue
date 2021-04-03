@@ -1,16 +1,16 @@
-import { nextTick, onMounted, reactive, ref } from "vue";
+import { defineComponent, nextTick, onMounted, reactive, ref } from "vue";
 import { useRefs } from "../../hooks/core";
 import { contains } from "../../utils";
-import { ContextMenuItem, ContextMenuOptions } from "/@/cool/modules/crud/types";
+import { ContextMenuItem, ContextMenuOptions } from "../../types";
 
-export default {
+export default defineComponent({
 	name: "cl-context-menu",
 
 	props: {
 		visible: Boolean
 	},
 
-	setup(props: any) {
+	setup(props) {
 		const { refs, setRefs }: any = useRefs();
 
 		// 菜单是否可见
@@ -204,4 +204,4 @@ export default {
 			)
 		);
 	}
-};
+});

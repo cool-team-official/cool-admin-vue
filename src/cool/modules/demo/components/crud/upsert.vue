@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { UpsertItem, UpsertRef } from "/@/cool/modules/crud/types";
+import { UpsertItem, UpsertRef } from "/$/crud/types";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({

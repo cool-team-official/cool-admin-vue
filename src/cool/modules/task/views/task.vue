@@ -217,8 +217,8 @@
 import { computed, defineComponent, inject, onMounted, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Draggable from "vuedraggable";
-import { checkPerm } from "/@/cool/modules/base";
-import { ContextMenu } from "/@/cool/modules/crud";
+import { checkPerm } from "/$/base";
+import { ContextMenu } from "/$/crud";
 import Cron from "../components/cron";
 import { useRefs } from "/@/core";
 

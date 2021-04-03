@@ -49,9 +49,9 @@
 <script lang="ts">
 import { ElMessage } from "element-plus";
 import { defineComponent, inject, reactive } from "vue";
-import { checkPerm } from "/@/cool/modules/base";
+import { checkPerm } from "/$/base";
 import { useRefs } from "/@/core";
-import { CrudLoad, RefreshOp, Table } from "/@/cool/modules/crud/types";
+import { CrudLoad, RefreshOp, Table } from "/$/crud/types";
 
 export default defineComponent({
 	name: "plugin",

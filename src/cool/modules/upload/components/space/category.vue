@@ -37,8 +37,8 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { computed, defineComponent, inject, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { isEmpty } from "/@/core/utils";
-import { ContextMenu } from "/@/cool/modules/crud";
-import { useRefs } from "/@/cool/modules/crud/hooks/core";
+import { ContextMenu } from "/$/crud";
+import { useRefs } from "/$/crud/hooks/core";
 
 export default defineComponent({
 	name: "cl-upload-space-category",

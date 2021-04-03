@@ -1,130 +1,67 @@
 <template>
-	<div class="view-home scroller1">
-		<el-row :gutter="15">
-			<el-col :lg="6" :md="12" :xs="24">
-				<div class="card">
-					<count-sales />
-				</div>
-			</el-col>
-			<el-col :lg="6" :md="12" :xs="24">
-				<div class="card">
-					<count-views />
-				</div>
-			</el-col>
-			<el-col :lg="6" :md="12" :xs="24">
-				<div class="card">
-					<count-paid />
-				</div>
-			</el-col>
-			<el-col :lg="6" :md="12" :xs="24">
-				<div class="card">
-					<count-effect />
-				</div>
-			</el-col>
+	<cl-crud :ref="setRefs('crud')" @load="onLoad">
+		<el-row type="flex" align="middle">
+			<!-- 刷新按钮 -->
+			<cl-refresh-btn />
+			<!-- 新增按钮 -->
+			<cl-add-btn />
+			<!-- 删除按钮 -->
+			<cl-multi-delete-btn />
+			<cl-flex1 />
+			<!-- 关键字搜索 -->
+			<cl-search-key />
 		</el-row>
 
-		<el-row :gutter="15">
-			<el-col :lg="14" :xs="24">
-				<div class="card">
-					<tab-chart />
-				</div>
-			</el-col>
-			<el-col :lg="10" :xs="24">
-				<div class="card">
-					<sales-rank />
-				</div>
-			</el-col>
+		<el-row>
+			<!-- 数据表格 -->
+			<cl-table :ref="setRefs('table')" v-bind="table" />
 		</el-row>
 
-		<el-row :gutter="15">
-			<el-col :lg="14" :sm="24">
-				<div class="card card--last">
-					<hot-search />
-				</div>
-			</el-col>
-			<el-col :lg="10" :sm="24">
-				<div class="card card--last">
-					<category-ratio />
-				</div>
-			</el-col>
+		<el-row type="flex">
+			<cl-flex1 />
+			<!-- 分页控件 -->
+			<cl-pagination />
 		</el-row>
-	</div>
+
+		<!-- 新增、编辑 -->
+		<cl-upsert :ref="setRefs('upsert')" v-bind="upsert" />
+	</cl-crud>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import CategoryRatio from "./components/category-ratio.vue";
-import CountSales from "./components/count-sales.vue";
-import CountViews from "./components/count-views.vue";
-import CountPaid from "./components/count-paid.vue";
-import CountEffect from "./components/count-effect.vue";
-import TabChart from "./components/tab-chart.vue";
-import SalesRank from "./components/sales-rank.vue";
-import HotSearch from "./components/hot-search.vue";
+import { defineComponent, inject, reactive } from "vue";
+import { CrudLoad, Upsert, Table } from "/$/crud/types";
+import { useRefs } from "/@/core";
 
 export default defineComponent({
-	components: {
-		CategoryRatio,
-		CountSales,
-		CountViews,
-		CountPaid,
-		CountEffect,
-		TabChart,
-		SalesRank,
-		HotSearch
+	setup() {
+		const service = inject<any>("service");
+		const { refs, setRefs } = useRefs();
+
+		// 新增、编辑配置
+		const upsert = reactive<Upsert>({
+			items: []
+		});
+
+		// 表格配置
+		const table = reactive<Table>({
+			columns: []
+		});
+
+		// crud 加载
+		function onLoad({ ctx, app }: CrudLoad) {
+			// 绑定 service
+			ctx.service(service.xx).done();
+			app.refresh();
+		}
+
+		return {
+			refs,
+			setRefs,
+			upsert,
+			table,
+			onLoad
+		};
 	}
 });
 </script>
-
-<style lang="scss">
-.view-home {
-	.card {
-		background-color: #fff;
-		border-radius: 5px;
-		margin-bottom: 15px;
-		font-size: 12px;
-		letter-spacing: 0.5px;
-
-		&__header {
-			display: flex;
-			align-items: center;
-			height: 50px;
-			padding: 0 20px;
-
-			.label {
-				font-size: 12px;
-			}
-
-			.value {
-				font-size: 18px;
-				font-weight: bold;
-				margin-left: 10px;
-			}
-		}
-
-		&__container {
-			padding: 0 20px;
-			height: 50px;
-		}
-
-		&__footer {
-			display: flex;
-			align-items: center;
-			height: 50px;
-			border-top: 1px solid #f7f7f7;
-			font-size: 12px;
-			margin: 0 5px;
-			padding: 0 15px;
-			box-sizing: border-box;
-
-			.label {
-				margin-right: 10px;
-			}
-
-			.value {
-				font-size: 13px;
-			}
-		}
-	}
-}
-</style>

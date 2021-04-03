@@ -12,6 +12,7 @@
 		"lib": ["esnext", "dom"],
 		"types": ["vite/client", "vite-svg-loader"],
 		"paths": {
+			"/$/*": ["./src/cool/modules/*"],
 			"/@/*": ["./src/*"],
 			"/#/*": ["./types/*"]
 		}

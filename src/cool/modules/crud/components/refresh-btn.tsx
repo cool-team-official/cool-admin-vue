@@ -1,10 +1,10 @@
-import { Crud } from "/@/cool/modules/crud/types";
 import { defineComponent, inject } from "vue";
+import { Crud } from "../types";
 
 export default defineComponent({
 	name: "cl-refresh-btn",
 
-	setup(props: any, { slots }: any) {
+	setup(props, { slots }) {
 		const crud = inject("crud") as Crud;
 
 		return () => {
