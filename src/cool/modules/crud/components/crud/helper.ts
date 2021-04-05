@@ -125,7 +125,7 @@ export function useRequest({ mitt, props, crud }: any) {
 					type: "warning"
 				})
 					.then((res: any) => {
-						if (res === "crudirm") {
+						if (res === "confirm") {
 							// 验证方法
 							if (!crud.service[reqName]) {
 								return reject(`Request function '${reqName}' is not fount`);

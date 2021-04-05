@@ -1,8 +1,9 @@
 import { ElMessage } from "element-plus";
 import { defineComponent, h, inject, ref } from "vue";
+import type { PropType } from "vue";
 import { useFormApi } from "./helper";
 import { useForm, useRefs } from "../../hooks/core";
-import { Crud } from "../../types";
+import { Crud, UpsertItem } from "../../types";
 
 export default defineComponent({
 	name: "cl-upsert",
@@ -17,7 +18,7 @@ export default defineComponent({
 		},
 		// 表单项
 		items: {
-			type: Array,
+			type: Array as PropType<UpsertItem[]>,
 			default: () => []
 		},
 		// el-form 参数
@@ -258,7 +259,7 @@ export default defineComponent({
 		}
 
 		// 消息事件
-		(function mittEvent() {
+		(function () {
 			mitt.on("crud.add", add);
 			mitt.on("crud.append", append);
 			mitt.on("crud.edit", edit);

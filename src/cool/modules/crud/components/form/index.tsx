@@ -1,11 +1,11 @@
 import { defineComponent, h, inject, nextTick, provide, reactive, ref, watch } from "vue";
 import cloneDeep from "clone-deep";
+import { useAction } from "./helper";
 import { useRefs, useForm } from "../../hooks/core";
-import { deepMerge, isBoolean, isEmpty, isFunction, isObject, isString } from "../../utils";
+import { deepMerge, isBoolean, isEmpty, isObject, isString } from "../../utils";
 import Parse from "../../utils/parse";
 import { renderNode } from "../../utils/vnode";
-import { useAction } from "./helper";
-import { Browser } from "../../types";
+import { Browser, Form } from "../../types";
 
 export default defineComponent({
 	name: "cl-form",
@@ -40,18 +40,14 @@ export default defineComponent({
 		const form = setFormData();
 
 		// 表单配置
-		const conf = reactive<any>({
+		const conf = reactive<Form>({
 			title: "自定义表单",
 			width: "50%",
 			props: {
 				size: "small",
 				labelWidth: "100px"
 			},
-			on: {
-				open: null,
-				submit: null,
-				close: null
-			},
+			on: {},
 			op: {
 				hidden: false,
 				saveButtonText: "保存",
@@ -111,7 +107,7 @@ export default defineComponent({
 
 		// 表单关闭前事件
 		function beforeClose() {
-			if (conf.on.close) {
+			if (conf.on?.close) {
 				conf.on.close(close);
 			} else {
 				close();
@@ -135,7 +131,8 @@ export default defineComponent({
 					saving.value = true;
 
 					// 表单提交钩子
-					if (isFunction(conf.on.submit)) {
+					if (conf.on?.submit) {
+						// 拷贝表单值
 						const d = cloneDeep(form);
 
 						// 过滤隐藏的表单项
@@ -157,14 +154,16 @@ export default defineComponent({
 		}
 
 		// 打开表单
-		function open(options?: any) {
+		function open(options?: Form) {
 			if (!options) {
-				options = {};
+				options = {
+					items: []
+				};
 			}
 
 			clear();
 
-			// Merge conf
+			// 合并配置
 			for (const i in conf) {
 				switch (i) {
 					case "items":
@@ -187,7 +186,7 @@ export default defineComponent({
 			visible.value = true;
 
 			// 预设表单值
-			if (options.form) {
+			if (options?.form) {
 				for (const i in options.form) {
 					form[i] = options.form[i];
 				}
@@ -201,15 +200,15 @@ export default defineComponent({
 			});
 
 			// 打开回调
-			if (conf.on.open) {
-				nextTick(() => {
+			nextTick(() => {
+				if (conf.on?.open) {
 					conf.on.open(form, {
 						close,
 						submit,
 						done
 					});
-				});
-			}
+				}
+			});
 
 			return {
 				showLoading,

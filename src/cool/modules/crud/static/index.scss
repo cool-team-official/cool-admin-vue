@@ -58,6 +58,10 @@
 
 	&__select {
 		margin-right: 10px;
+
+		.el-input__inner {
+			width: 120px;
+		}
 	}
 
 	&__input {

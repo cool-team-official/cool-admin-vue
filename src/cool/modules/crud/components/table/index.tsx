@@ -1,17 +1,18 @@
 import { defineComponent, h, inject, nextTick, onMounted, ref } from "vue";
+import type { PropType } from "vue";
 import ContextMenu from "../context-menu/index";
 import { useElTableApi } from "./helper";
-import { cloneDeep, isArray, isEmpty, isFunction, isNull } from "../../utils";
+import { cloneDeep, isArray, isEmpty, isFunction, isNull, isBoolean } from "../../utils";
 import { renderNode } from "../../utils/vnode";
 import { useRefs } from "../../hooks/core";
-import { Crud, Mitt, Browser } from "../../types";
+import { Crud, Mitt, Browser, TableColumn } from "../../types";
 
 export default defineComponent({
 	name: "cl-table",
 
 	props: {
 		columns: {
-			type: Array,
+			type: Array as PropType<TableColumn[]>,
 			required: true,
 			default: () => []
 		},
@@ -61,6 +62,9 @@ export default defineComponent({
 			doLayout,
 			sort
 		} = useElTableApi({ refs });
+
+		// 是否可见，用于解决一些显示隐藏的副作用
+		const visible = ref<boolean>(true);
 
 		// 列表数据
 		const data = ref<Array<any>>([]);
@@ -246,8 +250,29 @@ export default defineComponent({
 			});
 		}
 
+		// 显示列
+		function showColumn(prop: string | string[], status?: boolean) {
+			const keys = isArray(prop) ? prop : [prop];
+			visible.value = false;
+
+			props.columns
+				.filter((e) => (e.prop ? keys.includes(e.prop) : false))
+				.forEach((e) => {
+					e.hidden = isBoolean(status) ? status : false;
+				});
+
+			nextTick(() => {
+				visible.value = true;
+			});
+		}
+
+		// 隐藏列
+		function hiddenColumn(prop: string | string[]) {
+			showColumn(prop, true);
+		}
+
 		// 监听事件
-		(function mittEvent() {
+		(function () {
 			// 刷新事件
 			mitt.on("crud.refresh", ({ list }: any) => {
 				data.value = list;
@@ -260,7 +285,7 @@ export default defineComponent({
 		})();
 
 		// 设置请求参数
-		(function setParams() {
+		(function () {
 			const { order, prop } = props.props["default-sort"] || {};
 
 			if (order && prop) {
@@ -275,9 +300,12 @@ export default defineComponent({
 
 		return {
 			refs,
+			visible,
 			data,
 			maxHeight,
 			setRefs,
+			showColumn,
+			hiddenColumn,
 			onSelectionChange,
 			onSortChange,
 			onRowContextMenu,
@@ -480,32 +508,36 @@ export default defineComponent({
 				data={ctx.data}></el-table>
 		);
 
-		return h(
-			ElTable,
-			{
-				onSortChange: ctx.onSortChange,
-				maxHeight: ctx.autoHeight ? ctx.maxHeight : null,
-				...ctx.props,
-				onSelectionChange: ctx.onSelectionChange,
-				onRowContextmenu: ctx.onRowContextMenu
-			},
-			{
-				default() {
-					return renderColumn();
-				},
-				empty() {
-					return (
-						<div class="cl-table__empty">{ctx.$slots.empty && ctx.$slots.empty()}</div>
-					);
-				},
-				append() {
-					return (
-						<div class="cl-table__append">
-							{ctx.$slots.append && ctx.$slots.append()}
-						</div>
-					);
-				}
-			}
-		);
+		return ctx.visible
+			? h(
+					ElTable,
+					{
+						onSortChange: ctx.onSortChange,
+						maxHeight: ctx.autoHeight ? ctx.maxHeight : null,
+						...ctx.props,
+						onSelectionChange: ctx.onSelectionChange,
+						onRowContextmenu: ctx.onRowContextMenu
+					},
+					{
+						default() {
+							return renderColumn();
+						},
+						empty() {
+							return (
+								<div class="cl-table__empty">
+									{ctx.$slots.empty && ctx.$slots.empty()}
+								</div>
+							);
+						},
+						append() {
+							return (
+								<div class="cl-table__append">
+									{ctx.$slots.append && ctx.$slots.append()}
+								</div>
+							);
+						}
+					}
+			  )
+			: null;
 	}
 });

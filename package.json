@@ -1,6 +1,6 @@
 {
 	"name": "front-next",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"scripts": {
 		"dev": "vite",
 		"build": "vue-tsc --noEmit --skipLibCheck && vite build",

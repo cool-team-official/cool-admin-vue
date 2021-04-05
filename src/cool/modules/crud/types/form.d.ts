@@ -27,12 +27,20 @@ export interface Form {
 	title?: string;
 	width?: string;
 	props?: any;
-	items?: Array<FormItem>;
+	items: Array<FormItem>;
+	form?: any;
 	on?: {
 		open?(form: any, { close, submit, done }: any): void;
-		close?(): void;
+		close?(done: Function): void;
 		submit?(data: any, { done, close }: any): void;
 	};
+	op?: any;
+	dialog?: {
+		props?: any;
+		hiddenControls: boolean;
+		controls: Array<"fullscreen" | "close">;
+	};
+	_data?: any;
 }
 
 export interface FormRef {

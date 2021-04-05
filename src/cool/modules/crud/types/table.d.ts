@@ -16,7 +16,9 @@ export interface TableOptions {
 }
 
 export interface TableColumn {
+	value?: any;
 	type?: "index" | "selection" | "expand" | "op";
+	hidden?: boolean | (({ scope }: any) => boolean);
 	component?: RenderOptions;
 	dict?: Array<{
 		label: string;

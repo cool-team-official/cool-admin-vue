@@ -1,15 +1,18 @@
 <template>
 	<div class="demo-table">
-		<cl-table :columns="columns" />
+		<cl-table :ref="setRefs('table')" :columns="columns" />
 	</div>
 </template>
 
 <script lang="ts">
 import { TableColumn } from "/$/crud/types";
-import { defineComponent, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
+import { useRefs } from "/@/core";
 
 export default defineComponent({
 	setup() {
+		const { refs, setRefs } = useRefs();
+
 		const columns = ref<TableColumn[]>([
 			{
 				type: "selection",
@@ -54,7 +57,21 @@ export default defineComponent({
 			}
 		]);
 
+		onMounted(function () {
+			setTimeout(() => {
+				console.log("隐藏昵称");
+				refs.value.table.hiddenColumn("name");
+
+				setTimeout(() => {
+					console.log("显示昵称");
+					refs.value.table.showColumn("name");
+				}, 1000);
+			}, 1000);
+		});
+
 		return {
+			refs,
+			setRefs,
 			columns
 		};
 	}

@@ -410,15 +410,17 @@ export default defineComponent({
 		async function onRefresh(params: any, { next, render }: any) {
 			const { list } = await next(params);
 
-			list.map((e: any) => {
-				if (e.roleName) {
-					e.roleNameList = e.roleName.split(",");
-				}
+			render(
+				list.map((e: any) => {
+					if (e.roleName) {
+						e.roleNameList = e.roleName.split(",");
+					}
 
-				e.status = Boolean(e.status);
-			});
+					e.status = Boolean(e.status);
 
-			render(list);
+					return e;
+				})
+			);
 		}
 
 		// 提交钩子
