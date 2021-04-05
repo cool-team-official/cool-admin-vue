@@ -26,8 +26,7 @@ export default function () {
 							)
 						) {
 							d.meta.iframeUrl = url;
-							d.component = () =>
-								import(`/$/base/pages/iframe/index.vue`);
+							d.component = () => import(`/$/base/pages/iframe/index.vue`);
 						} else {
 							d.component = () => import(/* @vite-ignore */ `/@/${url}`);
 						}

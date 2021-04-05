@@ -39,12 +39,7 @@
 
 		<!-- MP3 -->
 		<div class="mp3">
-			<audio
-				:ref="setRefs('sound')"
-				style="display: none"
-				src="../static/notify.mp3"
-				controls
-			></audio>
+			<audio :ref="setRefs('sound')" :src="NotifyMp3" controls style="display: none"></audio>
 		</div>
 	</div>
 </template>
@@ -61,6 +56,7 @@ import Message from "./message.vue";
 import Input from "./input.vue";
 import { parseContent } from "../utils";
 import { useRefs } from "/@/core";
+import NotifyMp3 from "../static/notify.mp3";
 
 export default defineComponent({
 	name: "cl-chat",
@@ -255,6 +251,7 @@ export default defineComponent({
 		});
 
 		return {
+			NotifyMp3,
 			refs,
 			session,
 			sessionVisible,

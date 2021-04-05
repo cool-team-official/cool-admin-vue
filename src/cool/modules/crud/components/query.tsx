@@ -24,7 +24,7 @@ export default defineComponent({
 	setup(props, { emit }) {
 		const crud = inject("crud") as Crud;
 
-		const list = ref<Array<any>>([]);
+		const list2 = ref<Array<any>>([]);
 
 		// 更新数据列表
 		const update = () => {
@@ -41,7 +41,7 @@ export default defineComponent({
 			}
 
 			// 默认选择
-			list.value = (props.list || []).map((e: any) => {
+			list2.value = (props.list || []).map((e: any) => {
 				e.active = arr.some((v) => v === e.value);
 				return e;
 			});
@@ -57,14 +57,14 @@ export default defineComponent({
 				if (props.multiple) {
 					item.active = true;
 				} else {
-					list.value.map((e: any) => {
+					list2.value.map((e: any) => {
 						e.active = e.value == item.value;
 					});
 				}
 			}
 
 			// 过滤未选中的
-			const selection = list.value.filter((e: any) => e.active).map((e: any) => e.value);
+			const selection = list2.value.filter((e: any) => e.active).map((e: any) => e.value);
 			// 处理多选情况
 			const value = props.multiple ? selection : selection[0];
 
@@ -92,7 +92,7 @@ export default defineComponent({
 		);
 
 		return {
-			list,
+			list2,
 			selectItem
 		};
 	},
@@ -100,7 +100,7 @@ export default defineComponent({
 	render(ctx: any) {
 		return (
 			<div class="cl-query">
-				{ctx.list.map((item: any, index: number) => {
+				{ctx.list2.map((item: any, index: number) => {
 					return (
 						<button
 							class={{ "is-active": item.active }}

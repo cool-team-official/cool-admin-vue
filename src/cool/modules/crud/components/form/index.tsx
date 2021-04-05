@@ -105,6 +105,10 @@ export default defineComponent({
 			done();
 		}
 
+		function onClosed() {
+			tabActive.value = null;
+		}
+
 		// 表单关闭前事件
 		function beforeClose() {
 			if (conf.on?.close) {
@@ -167,7 +171,7 @@ export default defineComponent({
 			for (const i in conf) {
 				switch (i) {
 					case "items":
-						conf.items = options.items || [];
+						conf.items = cloneDeep(options.items || []);
 						break;
 					case "title":
 					case "width":
@@ -240,6 +244,7 @@ export default defineComponent({
 			open,
 			beforeClose,
 			close,
+			onClosed,
 			done,
 			clear,
 			submit,
@@ -470,7 +475,8 @@ export default defineComponent({
 				props: {
 					...dialog.props,
 					"before-close": ctx.beforeClose
-				}
+				},
+				onClosed: ctx.onClosed
 			},
 			{
 				default() {

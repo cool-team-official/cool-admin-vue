@@ -21,7 +21,14 @@ export default defineComponent({
 			{
 				label: "姓名",
 				prop: "name",
-				minWidth: 120
+				minWidth: 120,
+				component: {
+					name: "el-input",
+					props: {
+						size: "mini",
+						clearable: true
+					}
+				}
 			},
 			{
 				label: "存款",
@@ -57,17 +64,7 @@ export default defineComponent({
 			}
 		]);
 
-		onMounted(function () {
-			setTimeout(() => {
-				console.log("隐藏昵称");
-				refs.value.table.hiddenColumn("name");
-
-				setTimeout(() => {
-					console.log("显示昵称");
-					refs.value.table.showColumn("name");
-				}, 1000);
-			}, 1000);
-		});
+		onMounted(function () {});
 
 		return {
 			refs,

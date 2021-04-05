@@ -14,7 +14,7 @@ export default defineComponent({
 		const { refs, setRefs }: any = useRefs();
 
 		// 菜单是否可见
-		const visible = ref<boolean>(props.visible);
+		const visible2 = ref<boolean>(props.visible);
 
 		// 按钮列表
 		const list = ref<Array<ContextMenuItem>>([]);
@@ -58,7 +58,7 @@ export default defineComponent({
 
 		// 关闭菜单
 		function close() {
-			visible.value = false;
+			visible2.value = false;
 			ids.value = "";
 		}
 
@@ -95,7 +95,7 @@ export default defineComponent({
 			stopDefault(event);
 
 			// 显示菜单
-			visible.value = true;
+			visible2.value = true;
 
 			return {
 				close
@@ -124,7 +124,7 @@ export default defineComponent({
 		}
 
 		onMounted(function () {
-			if (visible.value) {
+			if (visible2.value) {
 				// 添加到 body 下
 				document.body.appendChild(refs.value["context-menu"]);
 				// 关闭事件
@@ -139,7 +139,7 @@ export default defineComponent({
 
 		return {
 			refs,
-			visible,
+			visible2,
 			ids,
 			style,
 			list,
@@ -193,7 +193,7 @@ export default defineComponent({
 		}
 
 		return (
-			ctx.visible && (
+			ctx.visible2 && (
 				<div
 					class="cl-context-menu"
 					ref={ctx.setRefs("context-menu")}

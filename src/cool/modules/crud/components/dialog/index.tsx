@@ -62,7 +62,7 @@ export default defineComponent({
 		const browser = inject("browser") as Browser;
 
 		// 是否全屏
-		const fullscreen = ref<boolean>(false);
+		const fullscreen = ref<boolean>(props.props.fullscreen);
 
 		// 是否可见
 		const visible = ref<boolean>(props.modelValue);
@@ -114,6 +114,10 @@ export default defineComponent({
 		}
 
 		function onOpen() {
+			// 初始值
+			fullscreen.value = props.props.fullscreen;
+
+			// 是否缓存
 			if (!props.keepAlive) {
 				cacheKey.value += 1;
 			}

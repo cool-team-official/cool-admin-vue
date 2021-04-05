@@ -37,8 +37,8 @@ export interface Form {
 	op?: any;
 	dialog?: {
 		props?: any;
-		hiddenControls: boolean;
-		controls: Array<"fullscreen" | "close">;
+		hiddenControls?: boolean;
+		controls?: Array<"fullscreen" | "close">;
 	};
 	_data?: any;
 }

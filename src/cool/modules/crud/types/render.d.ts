@@ -1,4 +1,4 @@
-import { ComponentOptions } from "vue-demi";
+import { ComponentOptions } from "vue";
 
 export interface Options extends ComponentOptions {
 	name: string;

@@ -1,4 +1,4 @@
-import { isFunction, isString, isObject } from "./index";
+import { isFunction, isString, isObject, isEmpty } from "./index";
 import { h, resolveComponent, toRaw } from "vue";
 
 /**
@@ -20,19 +20,6 @@ const parseNode = (vnode: any, options: any) => {
 		}
 	}
 
-	if (scope) {
-		// 添加双向绑定
-		vnode.modelValue = scope[prop];
-		vnode["onUpdate:modelValue"] = function (val: any) {
-			scope[prop] = val;
-		};
-	}
-
-	// 组件实例渲染，转普通对象
-	if (vnode.render) {
-		return h(toRaw(vnode));
-	}
-
 	// 组件参数
 	const props = {
 		...vnode,
@@ -40,7 +27,21 @@ const parseNode = (vnode: any, options: any) => {
 		...vnode.props
 	};
 
+	// 删除多余数据
 	delete props._children;
+
+	if (props && scope) {
+		// 添加双向绑定
+		props.modelValue = scope[prop];
+		props["onUpdate:modelValue"] = function (val: any) {
+			scope[prop] = val;
+		};
+	}
+
+	// 组件实例渲染，转普通对象
+	if (props.render) {
+		return h(toRaw(props));
+	}
 
 	// @ts-ignore
 	return h(resolveComponent(vnode.name), props, {
