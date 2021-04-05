@@ -1,5 +1,5 @@
 import path from "path";
-import type { UserConfig, ConfigEnv } from "vite";
+import type { UserConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { svgBuilder } from "./src/core/utils/svg";
@@ -10,7 +10,7 @@ function resolve(dir: string) {
 
 // https://vitejs.dev/config/
 
-export default ({ command, mode }: ConfigEnv): UserConfig => {
+export default (): UserConfig => {
 	return {
 		base: "/",
 		plugins: [vue(), vueJsx(), svgBuilder("./src/icons/svg/")],

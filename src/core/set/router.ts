@@ -4,8 +4,14 @@ import router, { ignore } from "/@/router";
 import storage from "../utils/storage";
 import { cloneDeep } from "../utils";
 
+const views = import.meta.globEager("/src/**/views/**/*.vue");
+
+for (const i in views) {
+	views[i.slice(5)] = views[i];
+	delete views[i];
+}
+
 export default function () {
-	// @ts-ignore
 	router.$plugin = {
 		addViews: (list: Array<any>, options: any) => {
 			if (!options) {
@@ -28,7 +34,7 @@ export default function () {
 							d.meta.iframeUrl = url;
 							d.component = () => import(`/$/base/pages/iframe/index.vue`);
 						} else {
-							d.component = () => import(/* @vite-ignore */ `/@/${url}`);
+							d.component = () => Promise.resolve(views[url]);
 						}
 					} else {
 						d.redirect = "/404";

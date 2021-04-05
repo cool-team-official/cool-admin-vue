@@ -3,16 +3,16 @@ import { getUrlParam } from "/@/core/utils";
 import { MenuItem } from "/$/base/types";
 
 // 路由模式
-const routerMode = "history";
+const routerMode: String = "history";
 
 // 开发模式
-const isDev = import.meta.env.MODE === "development";
+const isDev: Boolean = import.meta.env.MODE === "development";
 
 // Host
-const host = "https://show.cool-admin.com";
+const host: String = "https://show.cool-admin.com";
 
 // 请求地址
-const baseUrl: string = (function () {
+const baseUrl: String = (function () {
 	let proxy = getUrlParam("proxy");
 
 	if (proxy) {
@@ -25,7 +25,7 @@ const baseUrl: string = (function () {
 })();
 
 // Socket
-const socketUrl: string = (isDev ? `${host}` : "") + "/socket";
+const socketUrl: String = (isDev ? `${host}` : "") + "/socket";
 
 // 阿里字体图标库 https://at.alicdn.com/t/**.css
 const iconfontUrl = ``;

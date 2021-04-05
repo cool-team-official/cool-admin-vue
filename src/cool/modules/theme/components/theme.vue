@@ -59,7 +59,7 @@
 					<slot></slot>
 				</div>
 
-				<div class="cl-theme__tips">
+				<div class="cl-theme__tips" v-if="isDev">
 					<el-alert
 						type="warning"
 						:closable="false"

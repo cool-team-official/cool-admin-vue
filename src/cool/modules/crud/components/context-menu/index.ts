@@ -13,7 +13,7 @@ class ContextMenu {
 		render(vm, document.createElement("div"));
 		this.ctx = vm.component.ctx;
 
-		return this.ctx.open(event, options);
+		return this.ctx?.open(event, options);
 	}
 
 	close() {
