@@ -1,7 +1,6 @@
 <template>
 	<div class="cl-menu-icons">
 		<el-popover
-			:visible="visible"
 			placement="bottom-start"
 			trigger="click"
 			width="480px"

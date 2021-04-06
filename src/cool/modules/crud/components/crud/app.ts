@@ -47,9 +47,7 @@ export const bootstap = (crud: any, { fn }: any) => {
 		return ctx;
 	};
 
-	ctx.done = function () {
-		console.log("crud done");
-	};
+	ctx.done = function () {};
 
 	return { ctx, app };
 };

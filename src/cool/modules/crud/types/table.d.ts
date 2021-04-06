@@ -8,6 +8,7 @@ export interface TableOptions {
 				| ContextMenuItem
 				| Function
 				| "refresh"
+				| "check"
 				| "update"
 				| "delete"
 				| "order-desc"

@@ -1,12 +1,12 @@
-import { isFunction, isString, isObject, isEmpty } from "./index";
-import { h, resolveComponent, toRaw } from "vue";
+import { h, resolveComponent } from "vue";
+import { isFunction, isString, isObject } from "./index";
 
 /**
  * 解析节点
  * @param {*} vnode
  * @param {{scope,prop,children}} options
  */
-const parseNode = (vnode: any, options: any) => {
+function parseNode(vnode: any, options: any) {
 	const { scope, prop, slots } = options || [];
 
 	// 插槽模式渲染
@@ -24,23 +24,24 @@ const parseNode = (vnode: any, options: any) => {
 	const props = {
 		...vnode,
 		...vnode.attrs,
-		...vnode.props
+		...vnode.props,
+		scope
 	};
 
 	// 删除多余数据
 	delete props._children;
 
+	// 添加双向绑定
 	if (props && scope) {
-		// 添加双向绑定
 		props.modelValue = scope[prop];
 		props["onUpdate:modelValue"] = function (val: any) {
 			scope[prop] = val;
 		};
 	}
 
-	// 组件实例渲染，转普通对象
+	// 组件实例渲染
 	if (props.render) {
-		return h(toRaw(props));
+		return h(props, props);
 	}
 
 	// @ts-ignore
@@ -49,7 +50,7 @@ const parseNode = (vnode: any, options: any) => {
 			return vnode._children;
 		}
 	});
-};
+}
 
 /**
  * 渲染节点

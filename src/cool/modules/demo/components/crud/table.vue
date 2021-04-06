@@ -5,9 +5,10 @@
 </template>
 
 <script lang="ts">
-import { TableColumn } from "/$/crud/types";
 import { defineComponent, onMounted, ref } from "vue";
+import { TableColumn } from "/$/crud/types";
 import { useRefs } from "/@/core";
+import Test2 from "./render/test2";
 
 export default defineComponent({
 	setup() {
@@ -22,13 +23,7 @@ export default defineComponent({
 				label: "姓名",
 				prop: "name",
 				minWidth: 120,
-				component: {
-					name: "el-input",
-					props: {
-						size: "mini",
-						clearable: true
-					}
-				}
+				component: Test2
 			},
 			{
 				label: "存款",

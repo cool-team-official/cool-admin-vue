@@ -34,7 +34,12 @@ export interface Form {
 		close?(done: Function): void;
 		submit?(data: any, { done, close }: any): void;
 	};
-	op?: any;
+	op?: {
+		hidden?: boolean;
+		saveButtonText?: string;
+		closeButtonText?: string;
+		buttons?: Array<"close" | "save">;
+	};
 	dialog?: {
 		props?: any;
 		hiddenControls?: boolean;

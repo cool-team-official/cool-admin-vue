@@ -179,6 +179,7 @@ export default defineComponent({
 						break;
 					case "props":
 					case "on":
+					case "op":
 					case "dialog":
 					case "_data":
 						conf[i] = deepMerge(conf[i], options[i] || {});

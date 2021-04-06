@@ -1,25 +1,35 @@
 Arguments: 
-  F:\node\node.exe C:\Users\sss\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @rollup/plugin-dynamic-import-vars -D
+  D:\node\node.exe C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add 1.0.2-beta.35
 
 PATH: 
-  C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;F:\node\;F:\Git\cmd;F:\tortoiseSVN\bin;C:\Program Files\python;C:\Program Files\python\Scripts;;F:\BtSoft\panel\script;C:\Users\sss\AppData\Local\Microsoft\WindowsApps;;F:\Microsoft VS Code\bin;C:\Users\sss\AppData\Roaming\npm
+  C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\windows\System32\OpenSSH\;D:\Tortoise\bin;C:\Program Files\Git\cmd;C:\Program Files\python;C:\Program Files\python\Scripts;;D:\BtSoft\panel\script;D:\node\;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;;D:\cool\Microsoft VS Code\bin;C:\Users\Administrator\AppData\Roaming\npm
 
 Yarn version: 
-  1.22.10
+  1.22.5
 
 Node version: 
-  12.16.3
+  14.16.0
 
 Platform: 
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'F:\project\cool-admin\front-next\node_modules\esbuild\esbuild.exe'
+  Error: https://registry.yarnpkg.com/1.0.2-beta.35: Not found
+      at Request.params.callback [as _callback] (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66988:18)
+      at Request.self.callback (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140662:22)
+      at Request.emit (events.js:315:20)
+      at Request.<anonymous> (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141634:10)
+      at Request.emit (events.js:315:20)
+      at IncomingMessage.<anonymous> (C:\Users\Administrator\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141556:12)
+      at Object.onceWrapper (events.js:421:28)
+      at IncomingMessage.emit (events.js:327:22)
+      at endReadableNT (internal/streams/readable.js:1327:12)
+      at processTicksAndRejections (internal/process/task_queues.js:80:21)
 
 npm manifest: 
   {
   	"name": "front-next",
-  	"version": "0.2.2",
+  	"version": "0.2.3",
   	"scripts": {
   		"dev": "vite",
   		"build": "vue-tsc --noEmit --skipLibCheck && vite build",
@@ -35,7 +45,7 @@ npm manifest:
   		"codemirror": "^5.60.0",
   		"core-js": "^3.6.5",
   		"echarts": "^5.0.2",
-  		"element-plus": "1.0.2-beta.35",
+  		"element-plus": "^1.0.2-beta.36",
   		"glob": "^7.1.6",
   		"js-beautify": "^1.13.5",
   		"lodash": "^4.17.21",
@@ -58,7 +68,7 @@ npm manifest:
   		"@types/node": "^14.14.37",
   		"@typescript-eslint/eslint-plugin": "^4.20.0",
   		"@typescript-eslint/parser": "^4.20.0",
-  		"@vitejs/plugin-vue": "^1.1.5",
+  		"@vitejs/plugin-vue": "^1.2.1",
   		"@vitejs/plugin-vue-jsx": "^1.1.3",
   		"@vue/compiler-sfc": "^3.0.5",
   		"@vue/composition-api": "^1.0.0-rc.6",
@@ -373,25 +383,6 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.1.tgz#7f554e7368c9ab679a11f4a042ca17149d70cf12"
     integrity sha512-DvJbbn3dUgMxDnJLH+RZQPnXak1h4ZVYQ7CWiFWjQwBFkVajT4rfw2PdpHLTSTwxrYfnoEXkuBiwkDm6tPMQeA==
   
-  "@rollup/plugin-dynamic-import-vars@^1.1.1":
-    version "1.1.1"
-    resolved "https://registry.npmjs.org/@rollup/plugin-dynamic-import-vars/-/plugin-dynamic-import-vars-1.1.1.tgz#d72142fd9e450bcf5e17624adf4f4d4c25d7daec"
-    integrity sha512-PqdfEKlsyPx0hPSSuOigCHgrQbOLW+y09KRRCFeWiBBnkuh4LlV6mfrDefmLQijj8XCWzyLct2rK+q89qvRp7A==
-    dependencies:
-      "@rollup/pluginutils" "^3.1.0"
-      estree-walker "^2.0.1"
-      globby "^11.0.1"
-      magic-string "^0.25.7"
-  
-  "@rollup/pluginutils@^3.1.0":
-    version "3.1.0"
-    resolved "https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-3.1.0.tgz#706b4524ee6dc8b103b3c995533e5ad680c02b9b"
-    integrity sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==
-    dependencies:
-      "@types/estree" "0.0.39"
-      estree-walker "^1.0.1"
-      picomatch "^2.2.2"
-  
   "@rollup/pluginutils@^4.1.0":
     version "4.1.0"
     resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-4.1.0.tgz#0dcc61c780e39257554feb7f77207dceca13c838"
@@ -404,11 +395,6 @@ Lockfile:
     version "1.2.10"
     resolved "https://registry.yarnpkg.com/@types/component-emitter/-/component-emitter-1.2.10.tgz#ef5b1589b9f16544642e473db5ea5639107ef3ea"
     integrity sha512-bsjleuRKWmGqajMerkzox19aGbscQX5rmmvvXl3wlIp5gMG1HgkiwPxsN5p070fBDKTNSPgojVbuY1+HWMbFhg==
-  
-  "@types/estree@0.0.39":
-    version "0.0.39"
-    resolved "https://registry.npmjs.org/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
-    integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
   
   "@types/json-schema@^7.0.3":
     version "7.0.7"
@@ -506,10 +492,10 @@ Lockfile:
       "@vue/babel-plugin-jsx" "^1.0.3"
       hash-sum "^2.0.0"
   
-  "@vitejs/plugin-vue@^1.1.5":
-    version "1.2.0"
-    resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-1.2.0.tgz#f0a92470b74761f90afc8cda204fa3bec9df09f4"
-    integrity sha512-IhSJfJH6IDNEAnhr91+2vhLLe/1SqkA/2BP19jwtn54DGI+cNbZIxiPhHIdKUpdRo0QwErOh6Jy1Maxk2uVo7A==
+  "@vitejs/plugin-vue@^1.2.1":
+    version "1.2.1"
+    resolved "https://registry.npmjs.org/@vitejs/plugin-vue/-/plugin-vue-1.2.1.tgz#6de49436fc346f829a56676066428e3f011522ac"
+    integrity sha512-TG+LbEUNwfFrx1VyN+iq+PsiGd9MT16hUdJY+BnMXj3MrLAF8m3VYUspTDM3aXoh48YDmAkMjG4gWFRg3lbG5A==
   
   "@vue/babel-helper-vue-transform-on@^1.0.2":
     version "1.0.2"
@@ -1358,10 +1344,10 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.701.tgz#5e796ed7ce88cd77bc7bf831cf311ef6b067c389"
     integrity sha512-Zd9ofdIMYHYhG1gvnejQDvC/kqSeXQvtXF0yRURGxgwGqDZm9F9Fm3dYFnm5gyuA7xpXfBlzVLN1sz0FjxpKfw==
   
-  element-plus@1.0.2-beta.35:
-    version "1.0.2-beta.35"
-    resolved "https://registry.yarnpkg.com/element-plus/-/element-plus-1.0.2-beta.35.tgz#158890bddf28f8495f261d02789bf394c5c97123"
-    integrity sha512-T12EfxbWoNOrWE2bzXFPJdOU3cl4YWuLwxE5QKM40oPw1VYPMRrRB8Uy5TwF8h3itxzsJQ5iFj2rdDO+q3Jcdg==
+  element-plus@^1.0.2-beta.36:
+    version "1.0.2-beta.36"
+    resolved "https://registry.yarnpkg.com/element-plus/-/element-plus-1.0.2-beta.36.tgz#78a7e1be10b9622c4fc342fdce0801650f30bb01"
+    integrity sha512-5Qc54rH0GGtFRXpfA4ilpcOzdAw6t2m4mBXMXYjs9c5RSYP+EV+gJyfhyolXqZoOtYZ35ovBcqljlIJJD6Nz7g==
     dependencies:
       "@popperjs/core" "^2.4.4"
       async-validator "^3.4.0"
@@ -1607,11 +1593,6 @@ Lockfile:
     version "5.2.0"
     resolved "https://registry.yarnpkg.com/estraverse/-/estraverse-5.2.0.tgz#307df42547e6cc7324d3cf03c155d5cdb8c53880"
     integrity sha512-BxbNGGNm0RyRYvUdHpIwv9IWzeM9XClbOxwoATuFdOE7ZE6wHL+HQ5T8hoPM+zHvmKzzsEqhgy0GrQ5X13afiQ==
-  
-  estree-walker@^1.0.1:
-    version "1.0.1"
-    resolved "https://registry.npmjs.org/estree-walker/-/estree-walker-1.0.1.tgz#31bc5d612c96b704106b477e6dd5d8aa138cb700"
-    integrity sha512-1fMXF3YP4pZZVozF8j/ZLfvnR8NSIljt56UhbZ5PeeDmmGHpgpdwQt7ITlGvYaQukCvuBRMLEiKiYC+oeIg4cg==
   
   estree-walker@^2.0.1:
     version "2.0.2"
@@ -3751,7 +3732,7 @@ Lockfile:
   
   vite@^2.1.5:
     version "2.1.5"
-    resolved "https://registry.yarnpkg.com/vite/-/vite-2.1.5.tgz#4857da441c62f7982c83cbd5f42a00330f20c9c1"
+    resolved "https://registry.npmjs.org/vite/-/vite-2.1.5.tgz#4857da441c62f7982c83cbd5f42a00330f20c9c1"
     integrity sha512-tYU5iaYeUgQYvK/CNNz3tiJ8vYqPWfCE9IQ7K0iuzYovWw7lzty7KRYGWwV3CQPh0NKxWjOczAqiJsCL0Xb+Og==
     dependencies:
       esbuild "^0.9.3"

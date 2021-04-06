@@ -123,7 +123,6 @@ export default defineComponent({
 
 		// 获取 ids
 		function rowClick(e: any) {
-			ContextMenu.close();
 			const ids = e.children ? revDeepTree(e.children).map((e) => e.id) : [];
 			ids.unshift(e.id);
 			emit("row-click", { item: e, ids });

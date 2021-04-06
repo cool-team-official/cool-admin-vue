@@ -1,4 +1,5 @@
 import { defineComponent, nextTick, onMounted, reactive, ref } from "vue";
+import type { PropType } from "vue";
 import { useRefs } from "../../hooks/core";
 import { contains } from "../../utils";
 import { ContextMenuItem, ContextMenuOptions } from "../../types";
@@ -7,7 +8,12 @@ export default defineComponent({
 	name: "cl-context-menu",
 
 	props: {
-		visible: Boolean
+		visible: Boolean,
+		options: {
+			type: Object as PropType<ContextMenuOptions>,
+			default: () => []
+		},
+		event: Object
 	},
 
 	setup(props) {
@@ -134,6 +140,9 @@ export default defineComponent({
 						close();
 					}
 				});
+
+				// 默认打开
+				open(props.event, props.options);
 			}
 		});
 

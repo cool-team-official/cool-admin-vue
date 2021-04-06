@@ -50,9 +50,10 @@
 
 <script lang="ts">
 import { defineComponent, ref, resolveComponent, h } from "vue";
-import Test from "./test.vue";
-import { TestService } from "../../utils/service";
 import { CrudLoad, FormItem, FormRef } from "/$/crud/types";
+import { TestService } from "../../utils/service";
+import Test from "./render/test.vue";
+import Test2 from "./render/test2";
 
 export default defineComponent({
 	setup() {
@@ -86,30 +87,10 @@ export default defineComponent({
 				component: Test
 			},
 			{
-				label: "jsx",
-				component: {
-					name: "render-jsx",
-
-					setup() {
-						const value = ref<string>("Hello");
-
-						return {
-							value
-						};
-					},
-
-					render(ctx: any) {
-						return h(
-							"p",
-							{},
-							{
-								default: () => {
-									return ctx.value;
-								}
-							}
-						);
-					}
-				}
+				label: "tsx",
+				prop: "tsx",
+				value: "Hello!",
+				component: Test2
 			},
 			{
 				props: {
@@ -295,7 +276,13 @@ export default defineComponent({
 				props: {
 					labelWidth: "140px"
 				},
-				items
+				items,
+				on: {
+					submit(data, { done }) {
+						console.log(data);
+						done();
+					}
+				}
 			});
 		}
 
