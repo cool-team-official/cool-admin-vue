@@ -40,3 +40,6 @@ bootstrap(app)
 	});
 
 store.dispatch("appLoad");
+
+// @ts-ignore
+window.__app__ = app;

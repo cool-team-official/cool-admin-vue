@@ -1,6 +1,6 @@
 import { ComponentOptions } from "vue";
 
-export interface Options extends ComponentOptions {
+export declare interface Options extends ComponentOptions {
 	name: string;
 
 	options?: Array<{
@@ -9,4 +9,4 @@ export interface Options extends ComponentOptions {
 	}>;
 }
 
-export type RenderOptions = Options | Function;
+export declare type RenderOptions = Options | Function;

@@ -1,8 +1,8 @@
 import { TableOptions } from "./table";
 
-export type ServiceName = "page" | "list" | "add" | "delete" | "update" | "info" | string;
+export declare type ServiceName = "page" | "list" | "add" | "delete" | "update" | "info" | string;
 
-export interface Service {
+export declare interface Service {
 	page?(
 		params?: any
 	): Promise<{
@@ -20,7 +20,7 @@ export interface Service {
 	info?(params: any): Promise<any>;
 }
 
-export interface Dict {
+export declare interface Dict {
 	api: {
 		list: string;
 		add: string;
@@ -53,7 +53,7 @@ export interface Dict {
 	};
 }
 
-export interface Permission {
+export declare interface Permission {
 	page?: boolean;
 	list?: boolean;
 	add?: boolean;
@@ -62,23 +62,23 @@ export interface Permission {
 	info?: boolean;
 }
 
-interface LoadCtx {
+declare interface LoadCtx {
 	service(s: Service): LoadCtx;
 	permission(p: Function | any): LoadCtx;
 	set(key: "dict" | "style", value: any): LoadCtx;
 	done(): void;
 }
 
-interface LoadApp {
+declare interface LoadApp {
 	refresh(params?: any): Promise<any>;
 }
 
-export interface CrudLoad {
+export declare interface CrudLoad {
 	app: LoadApp;
 	ctx: LoadCtx;
 }
 
-export interface CrudRef {
+export declare interface CrudRef {
 	getPermission(key?: string): boolean;
 	rowAdd(): any;
 	rowEdit(data: any): any;
@@ -90,7 +90,7 @@ export interface CrudRef {
 	refresh(params?: any): void;
 }
 
-export interface Crud extends CrudRef {
+export declare interface Crud extends CrudRef {
 	crudRef: any;
 	permission: Permission;
 	service: any;
@@ -101,7 +101,7 @@ export interface Crud extends CrudRef {
 	loading: boolean;
 }
 
-export interface Mitt {
+export declare interface Mitt {
 	on(name: string, ...args: any[]): void;
 	emit(name: string, ...args: any[]): void;
 	off(name: string, ...args: any[]): void;

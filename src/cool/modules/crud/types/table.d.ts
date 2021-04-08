@@ -1,7 +1,7 @@
 import { ContextMenuItem } from "./context-menu";
 import { RenderOptions } from "./render";
 
-export interface TableOptions {
+export declare interface TableOptions {
 	"context-menu"?:
 		| boolean
 		| Array<
@@ -16,7 +16,7 @@ export interface TableOptions {
 		  >;
 }
 
-export interface TableColumn {
+export declare interface TableColumn {
 	value?: any;
 	type?: "index" | "selection" | "expand" | "op";
 	hidden?: boolean | (({ scope }: any) => boolean);
@@ -60,7 +60,7 @@ export interface TableColumn {
 	sortOrders?: unknown[];
 }
 
-export interface Table extends TableOptions {
+export declare interface Table extends TableOptions {
 	props?: {};
 	columns: TableColumn[];
 }

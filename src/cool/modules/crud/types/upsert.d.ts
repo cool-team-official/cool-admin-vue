@@ -1,7 +1,7 @@
 import { Form, FormItem, FormRef } from "./form";
 
-export type UpsertItem = FormItem;
+export declare type UpsertItem = FormItem;
 
-export type UpsertRef = FormRef;
+export declare type UpsertRef = FormRef;
 
-export type Upsert = Form;
+export declare type Upsert = Form;

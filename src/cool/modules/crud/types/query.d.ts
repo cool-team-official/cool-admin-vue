@@ -1,4 +1,4 @@
-export interface QueryList {
+export declare interface QueryList {
 	label: string;
 	value: any;
 }

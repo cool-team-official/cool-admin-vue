@@ -84,6 +84,8 @@ export default defineComponent({
 			},
 			{
 				label: ".vue 组件",
+				value: 10,
+				prop: "vue",
 				component: Test
 			},
 			{

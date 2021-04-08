@@ -1,5 +1,8 @@
-import { h, resolveComponent } from "vue";
+// @ts-nocheck
+import { h, resolveComponent, toRaw } from "vue";
 import { isFunction, isString, isObject } from "./index";
+
+const Regs: string[] = [];
 
 /**
  * 解析节点
@@ -20,11 +23,21 @@ function parseNode(vnode: any, options: any) {
 		}
 	}
 
+	// 是否全局注册
+	let isReg: boolean = Regs.includes(vnode.name);
+
+	// 实例模式下，先注册到全局，再分解组件渲染
+	if (vnode.__file && !isReg) {
+		window.__app__.component(vnode.name, vnode);
+		isReg = true;
+		Regs.push(vnode.name);
+	}
+
 	// 组件参数
 	const props = {
+		...vnode.props,
 		...vnode,
 		...vnode.attrs,
-		...vnode.props,
 		scope
 	};
 
@@ -40,12 +53,11 @@ function parseNode(vnode: any, options: any) {
 	}
 
 	// 组件实例渲染
-	if (props.render) {
+	if (props.render && !isReg) {
 		return h(props, props);
 	}
 
-	// @ts-ignore
-	return h(resolveComponent(vnode.name), props, {
+	return h(toRaw(resolveComponent(vnode.name)), props, {
 		default: () => {
 			return vnode._children;
 		}

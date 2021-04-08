@@ -1,3 +1,3 @@
 import { FormItem } from "./form";
 
-export type AdvSearchItem = FormItem;
+export declare type AdvSearchItem = FormItem;

@@ -1,4 +1,4 @@
-export interface ContextMenuItem {
+export declare interface ContextMenuItem {
 	label: string;
 	"prefix-icon"?: string;
 	"suffix-icon"?: string;
@@ -10,6 +10,6 @@ export interface ContextMenuItem {
 	callback?(item: ContextMenuItem, done: Function): void;
 }
 
-export interface ContextMenuOptions {
+export declare interface ContextMenuOptions {
 	list?: ContextMenuItem[];
 }

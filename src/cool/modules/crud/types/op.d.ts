@@ -1,4 +1,4 @@
-export interface RefreshOp {
+export declare interface RefreshOp {
 	/**
 	 * 渲染
 	 * @param list 数据列表
@@ -18,11 +18,11 @@ export interface RefreshOp {
 	done(): void;
 }
 
-export interface DeleteOp {
+export declare interface DeleteOp {
 	next(params?: any): Promise<any>;
 }
 
-export interface UpsertOpenOp {
+export declare interface UpsertOpenOp {
 	/**
 	 * 提交表单
 	 * @param form 表单值
@@ -40,14 +40,14 @@ export interface UpsertOpenOp {
 	close(): void;
 }
 
-export interface UpsertCloseOp {
+export declare interface UpsertCloseOp {
 	/**
 	 * 关闭弹窗
 	 */
 	done(): void;
 }
 
-export interface UpsertInfoOp {
+export declare interface UpsertInfoOp {
 	/**
 	 * 继续执行获取详情
 	 * @param params 请求参数
@@ -65,7 +65,7 @@ export interface UpsertInfoOp {
 	close(): void;
 }
 
-export interface UpsertSubmitOp {
+export declare interface UpsertSubmitOp {
 	/**
 	 * 继续执行提交
 	 * @param params 请求参数
@@ -83,7 +83,7 @@ export interface UpsertSubmitOp {
 	close(): void;
 }
 
-export interface AdvOpenOp {
+export declare interface AdvOpenOp {
 	/**
 	 * 继续执行打开
 	 * @param data 筛选参数
@@ -91,14 +91,14 @@ export interface AdvOpenOp {
 	next(data: any): Promise<any>;
 }
 
-export interface AdvCloseOp {
+export declare interface AdvCloseOp {
 	/**
 	 * 关闭抽屉
 	 */
 	done(): void;
 }
 
-export interface AdvSearchOp {
+export declare interface AdvSearchOp {
 	/**
 	 * 继续执行搜索
 	 * @param params 请求参数

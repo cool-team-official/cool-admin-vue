@@ -1,6 +1,6 @@
 import { RenderOptions } from "./render";
 
-export interface FormItem {
+export declare interface FormItem {
 	type?: "tabs" | string;
 	prop?: string;
 	props?: {
@@ -23,16 +23,28 @@ export interface FormItem {
 	append?: RenderOptions;
 	rules?: any;
 }
-export interface Form {
+
+declare interface FormOpenEvent {
+	close(): void;
+	submit(): void;
+	done(): void;
+}
+
+declare interface FormSubmitEvent {
+	done(): void;
+	close(): void;
+}
+
+export declare interface Form {
 	title?: string;
 	width?: string;
 	props?: any;
 	items: Array<FormItem>;
 	form?: any;
 	on?: {
-		open?(form: any, { close, submit, done }: any): void;
+		open?(form: any, event: FormOpenEvent): void;
 		close?(done: Function): void;
-		submit?(data: any, { done, close }: any): void;
+		submit?(data: any, event: FormSubmitEvent): void;
 	};
 	op?: {
 		hidden?: boolean;
@@ -48,7 +60,7 @@ export interface Form {
 	_data?: any;
 }
 
-export interface FormRef {
+export declare interface FormRef {
 	create(options: Form): FormRef;
 	open(options: Form): FormRef;
 	close(): void;
