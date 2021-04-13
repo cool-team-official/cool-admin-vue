@@ -128,30 +128,44 @@ export default defineComponent({
 		}
 
 		// 表单提交
-		function submit() {
+		function submit(callback?: Function) {
 			// 验证表单
-			refs.value.form.validate(async (valid: boolean) => {
+			refs.value.form.validate(async (valid: boolean, error: any) => {
+				console.log(valid, error);
 				if (valid) {
 					saving.value = true;
 
-					// 表单提交钩子
-					if (conf.on?.submit) {
-						// 拷贝表单值
-						const d = cloneDeep(form);
+					// 拷贝表单值
+					const d = cloneDeep(form);
 
-						// 过滤隐藏的表单项
-						conf.items.forEach((e: any) => {
-							if (e._hidden) {
-								delete d[e.prop];
-							}
-						});
+					// 过滤隐藏的表单项
+					conf.items.forEach((e: any) => {
+						if (e._hidden) {
+							delete d[e.prop];
+						}
+					});
 
-						conf.on.submit(d, {
+					const submit = callback || conf.on?.submit;
+
+					// 提交事件
+					if (submit) {
+						submit(d, {
 							done,
 							close
 						});
 					} else {
-						console.error("Submit is not found");
+						console.error("Not found callback function");
+					}
+				} else {
+					// 判断是否使用form-tabs，切换到对应的选项卡
+					const keys = Object.keys(error);
+
+					if (tabActive.value) {
+						const item = conf.items.find((e) => e.prop === keys[0]);
+
+						if (item) {
+							tabActive.value = item.group;
+						}
 					}
 				}
 			});
@@ -275,14 +289,7 @@ export default defineComponent({
 			// 表单项列表
 			const children = ctx.conf.items.map((e: any) => {
 				if (e.type == "tabs") {
-					return (
-						<cl-form-tabs
-							v-model={ctx.tabActive}
-							{...e.props}
-							onChange={() => {
-								ctx.clearValidate();
-							}}></cl-form-tabs>
-					);
+					return <cl-form-tabs v-model={ctx.tabActive} {...e.props}></cl-form-tabs>;
 				}
 
 				// 隐藏处理
@@ -302,12 +309,11 @@ export default defineComponent({
 				}
 
 				return (
-					e._group &&
 					!e._hidden && (
 						<el-col span={24} {...e}>
 							{e.component &&
 								h(
-									<el-form-item></el-form-item>,
+									<el-form-item v-show={e._group}></el-form-item>,
 									{
 										prop: e.prop,
 										rules: e.rules,
