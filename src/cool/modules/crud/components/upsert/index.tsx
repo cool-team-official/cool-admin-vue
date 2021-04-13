@@ -198,7 +198,7 @@ export default defineComponent({
 
 				// 合并数据
 				if (data) {
-					Object.assign(form, data);
+					refs.value.form.reBindForm(data);
 				}
 			};
 

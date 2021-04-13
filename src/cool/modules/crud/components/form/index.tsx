@@ -6,6 +6,7 @@ import { deepMerge, isBoolean, isEmpty, isObject, isString } from "../../utils";
 import Parse from "../../utils/parse";
 import { renderNode } from "../../utils/vnode";
 import { Browser, Form } from "../../types";
+import FormHook from "../../hooks/form";
 
 export default defineComponent({
 	name: "cl-form",
@@ -131,7 +132,6 @@ export default defineComponent({
 		function submit(callback?: Function) {
 			// 验证表单
 			refs.value.form.validate(async (valid: boolean, error: any) => {
-				console.log(valid, error);
 				if (valid) {
 					saving.value = true;
 
@@ -142,6 +142,10 @@ export default defineComponent({
 					conf.items.forEach((e: any) => {
 						if (e._hidden) {
 							delete d[e.prop];
+						}
+
+						if (e.hook) {
+							d[e.prop] = FormHook.submit(d[e.prop], e.hook, d);
 						}
 					});
 
@@ -214,7 +218,11 @@ export default defineComponent({
 			// 设置表单数据
 			conf.items.map((e: any) => {
 				if (e.prop) {
-					form[e.prop] = form[e.prop] || cloneDeep(e.value);
+					form[e.prop] = FormHook.bind(
+						isEmpty(form[e.prop]) ? cloneDeep(e.value) : form[e.prop],
+						e.hook,
+						form
+					);
 				}
 			});
 
@@ -247,6 +255,14 @@ export default defineComponent({
 			};
 		}
 
+		// 重新绑定表单数据
+		function reBindForm(data: any) {
+			for (const i in data) {
+				const d: any = conf.items.find((e) => e.prop === i);
+				form[i] = d ? FormHook.bind(data[i], d.hook, form) : data[i];
+			}
+		}
+
 		return {
 			visible,
 			saving,
@@ -263,6 +279,7 @@ export default defineComponent({
 			done,
 			clear,
 			submit,
+			reBindForm,
 			showLoading,
 			hiddenLoading,
 			collapseItem,

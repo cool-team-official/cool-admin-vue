@@ -14,6 +14,34 @@ export default defineComponent({
 
 		const items = ref<UpsertItem[]>([
 			{
+				label: "测试hook",
+				prop: "hook",
+				hook: {
+					bind: ["split", "number"],
+					submit: "join"
+				},
+				component: {
+					name: "el-select",
+					props: {
+						multiple: true
+					},
+					options: [
+						{
+							label: "景天",
+							value: 1
+						},
+						{
+							label: "李逍遥",
+							value: 2
+						},
+						{
+							label: "宇文拓",
+							value: 3
+						}
+					]
+				}
+			},
+			{
 				type: "tabs",
 				props: {
 					labels: [
