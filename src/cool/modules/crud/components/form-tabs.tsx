@@ -1,4 +1,4 @@
-import { defineComponent, nextTick, onMounted, reactive, ref } from "vue";
+import { defineComponent, nextTick, onMounted, reactive, ref, watch } from "vue";
 import { useRefs } from "../hooks/core";
 import { isArray, isEmpty } from "../utils";
 
@@ -43,26 +43,36 @@ export default defineComponent({
 				const index = list.value.findIndex((e) => e.value === val);
 				const item = refs.value[`tab-${index}`];
 
-				// 下划线位置
-				line.width = item.clientWidth + "px";
-				line.transform = `translateX(${item.offsetLeft}px)`;
-				line.backgroundColor = props.color;
+				if (item) {
+					// 下划线位置
+					line.width = item.clientWidth + "px";
+					line.transform = `translateX(${item.offsetLeft}px)`;
+					line.backgroundColor = props.color;
 
-				// 靠左位置
-				let left: number = item.offsetLeft + item.clientWidth / 2 - 414 / 2 + 15;
+					// 靠左位置
+					let left: number = item.offsetLeft + item.clientWidth / 2 - 414 / 2 + 15;
 
-				if (left < 0) {
-					left = 0;
+					if (left < 0) {
+						left = 0;
+					}
+
+					// 设置滚动距离
+					refs.value.tabs.scrollLeft = left;
 				}
-
-				// 设置滚动距离
-				refs.value.tabs.scrollLeft = left;
 			});
 
 			active.value = val;
 			emit("update:modelValue", val);
 			emit("change", val);
 		}
+
+		// 监听绑定值变化
+		watch(
+			() => props.modelValue,
+			(val: any) => {
+				update(val);
+			}
+		);
 
 		onMounted(function () {
 			if (isArray(props.labels) && props.labels.length > 0) {
