@@ -1,3 +1,4 @@
+import { FormHook } from "./hook";
 import { RenderOptions } from "./render";
 
 export declare interface FormItem {
@@ -11,6 +12,7 @@ export declare interface FormItem {
 		inlineMessage?: boolean;
 		size?: "medium" | "small" | "mini";
 	};
+	hook?: FormHook;
 	group?: string;
 	collapse?: boolean;
 	value?: any;

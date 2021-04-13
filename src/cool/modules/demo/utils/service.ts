@@ -8,7 +8,8 @@ export const UserList = [
 		name: "刘一",
 		createTime: "2019年09月02日",
 		price: 75.99,
-		status: 1
+		status: 1,
+		hook: "1,2"
 	},
 	{
 		id: 2,
@@ -76,7 +77,9 @@ export const TestService = {
 	info: (d: any) => {
 		console.log("GET[info]", d);
 		return new Promise((resolve) => {
-			resolve(UserList.find((e) => e.id == d.id));
+			setTimeout(() => {
+				resolve(UserList.find((e) => e.id == d.id));
+			}, 500);
 		});
 	},
 	add: (d: any) => {
