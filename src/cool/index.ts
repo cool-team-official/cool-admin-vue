@@ -7,9 +7,12 @@ export default {
 			name: "upload",
 			options: {
 				icon: "el-icon-picture",
-				text: "选择图片"
+				text: ""
 			}
 		},
+		// Excel 导出模块
+		"export",
+		// crud 模块
 		{
 			name: "crud",
 			options: {

@@ -158,7 +158,8 @@ export function useRequest({ mitt, props, crud }: any) {
 	return {
 		rowDelete,
 		refresh,
-		getPermission
+		getPermission,
+		paramsReplace
 	};
 }
 
