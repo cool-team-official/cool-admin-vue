@@ -2615,10 +2615,10 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-cl-admin-crud@^1.6.9:
-  version "1.6.9"
-  resolved "https://registry.yarnpkg.com/cl-admin-crud/-/cl-admin-crud-1.6.9.tgz#bf17927e410cd10a4696c55f68e81439484bae5d"
-  integrity sha512-Me0s3dya0GTT65JZzbVjYmzdTHVcf+82qWZjkbeoC6UWE8DmOO/iy8o/YhKoY2THrHAdBeIhUhP1IGqMNacJPw==
+cl-admin-crud@^1.6.15:
+  version "1.6.15"
+  resolved "https://registry.nlark.com/cl-admin-crud/download/cl-admin-crud-1.6.15.tgz?cache=0&sync_timestamp=1618888315839&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcl-admin-crud%2Fdownload%2Fcl-admin-crud-1.6.15.tgz#c48cb67167ee3ff26779d7c7332073dc3c80e2cb"
+  integrity sha1-xIy2cWfuP/JnedfHMyBz3DyA4ss=
   dependencies:
     array.prototype.flat "^1.2.4"
     clone-deep "^4.0.1"
