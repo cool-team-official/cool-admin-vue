@@ -37,7 +37,7 @@
 import { ElMessageBox } from "element-plus";
 import { defineComponent, inject, nextTick, reactive } from "vue";
 import { useRefs } from "/@/core";
-import { CrudLoad, Table, Upsert } from "/$/crud/types";
+import { CrudLoad, Table, Upsert } from "cl-admin-crud-vue3/types";
 
 export default defineComponent({
 	name: "sys-param",

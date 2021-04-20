@@ -42,7 +42,7 @@
 import { defineComponent, inject, reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useRefs } from "/@/core";
-import { CrudLoad, Table } from "/$/crud/types";
+import { CrudLoad, Table } from "cl-admin-crud-vue3/types";
 
 export default defineComponent({
 	name: "sys-log",
