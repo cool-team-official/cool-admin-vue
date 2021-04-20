@@ -5,6 +5,17 @@ declare module "*.vue" {
 	export default component;
 }
 
+declare module "cl-admin-crud-vue3" {
+	import type { ClContextMenu } from "cl-admin-crud-vue3/types";
+	import type { Plugin } from "vue";
+
+	const ContextMenu: ClContextMenu;
+	const Crud: Plugin;
+
+	export { ContextMenu, Crud };
+	export * from "cl-admin-crud-vue3";
+}
+
 declare module "array.prototype.flat" {
 	function Flat(list: any[]): any[];
 	export default Flat;

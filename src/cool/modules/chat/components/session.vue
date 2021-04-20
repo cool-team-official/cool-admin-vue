@@ -57,7 +57,7 @@ import { computed, defineComponent, inject, onUnmounted, reactive, ref } from "v
 import { useStore } from "vuex";
 import { ElMessage } from "element-plus";
 import { isEmpty } from "/@/core/utils";
-import { ContextMenu } from "/$/crud";
+import { ContextMenu } from "cl-admin-crud-vue3";
 import { parseContent } from "../utils";
 
 export default defineComponent({

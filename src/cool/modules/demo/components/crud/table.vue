@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-import { TableColumn } from "/$/crud/types";
+import { TableColumn } from "cl-admin-crud-vue3/types";
 import { useRefs } from "/@/core";
 import Test2 from "./render/test2";
 

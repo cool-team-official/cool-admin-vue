@@ -36,7 +36,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { CrudLoad } from "/$/crud/types";
+import { CrudLoad } from "cl-admin-crud-vue3/types";
 import { TestService } from "../utils/service";
 import Dialog from "../components/crud/dialog.vue";
 import ContextMenu from "../components/crud/context-menu.vue";

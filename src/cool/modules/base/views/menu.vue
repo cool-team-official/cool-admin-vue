@@ -81,7 +81,7 @@ import { useRefs } from "/@/core";
 import { deepTree } from "/@/core/utils";
 import { useRouter } from "vue-router";
 import { defineComponent, inject, reactive } from "vue";
-import { CrudLoad, Table, Upsert, RefreshOp } from "/$/crud/types";
+import { CrudLoad, Table, Upsert, RefreshOp } from "cl-admin-crud-vue3/types";
 
 export default defineComponent({
 	name: "sys-menu",

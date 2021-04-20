@@ -34,7 +34,7 @@
 			"",
 			"<script lang=\"ts\">",
 			"import { defineComponent, inject, reactive } from \"vue\";",
-			"import { CrudLoad, Upsert, Table } from \"/$/crud/types\";",
+			"import { CrudLoad, Upsert, Table } from \"cl-admin-crud-vue3/types\";",
 			"import { useRefs } from \"/@/core\";",
 			"",
 			"export default defineComponent({",
