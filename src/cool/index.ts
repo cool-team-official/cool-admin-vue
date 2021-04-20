@@ -14,7 +14,7 @@ export default {
 			}
 		},
 		// Excel 导出模块
-		"export",
+		"excel-export",
 		// crud 模块
 		{
 			name: "crud",
