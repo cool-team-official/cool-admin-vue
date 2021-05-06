@@ -119,21 +119,21 @@ export default {
 
 <style lang="scss" scoped>
 .page-login {
-	height: 100vh;
-	width: 100vw;
 	position: relative;
+	width: 100vw;
+	height: 100vh;
 	background-color: #2f3447;
 
 	.box {
+		position: absolute;
+		top: calc(50% - 250px);
+		left: calc(50% - 250px);
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		height: 500px;
 		width: 500px;
-		position: absolute;
-		left: calc(50% - 250px);
-		top: calc(50% - 250px);
+		height: 500px;
 
 		.logo {
 			height: 50px;
@@ -141,13 +141,13 @@ export default {
 		}
 
 		.desc {
+			margin-bottom: 60px;
 			color: #ccc;
 			font-size: 12px;
-			margin-bottom: 60px;
 			letter-spacing: 1px;
 		}
 
-		/deep/.el-form {
+		/deep/ .el-form {
 			width: 300px;
 			border-radius: 3px;
 
@@ -161,24 +161,25 @@ export default {
 
 			.el-input {
 				.el-input__inner {
+					position: relative;
+					padding: 0 5px;
+					color: #ccc;
+					background-color: transparent;
 					border: 0;
 					border-bottom: 0.5px solid #999;
 					border-radius: 0;
-					padding: 0 5px;
-					background-color: transparent;
-					color: #ccc;
 					transition: border-color 0.3s;
-					position: relative;
 
 					&:focus {
-						border-color: #fff;
 						color: #fff;
+						border-color: #fff;
 					}
 
 					&:-webkit-autofill {
-						-webkit-text-fill-color: #fff !important;
-						-webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
 						transition: background-color 50000s ease-in-out 0s;
+
+						-webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+						-webkit-text-fill-color: #fff !important;
 					}
 				}
 			}
@@ -188,17 +189,17 @@ export default {
 
 				.value {
 					position: absolute;
-					bottom: 1px;
 					right: 0;
+					bottom: 1px;
 				}
 			}
 		}
 
 		.submit-btn {
-			margin-top: 40px;
-			border-radius: 30px;
 			padding: 10px 40px;
+			margin-top: 40px;
 			color: #000;
+			border-radius: 30px;
 		}
 	}
 }

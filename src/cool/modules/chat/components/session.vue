@@ -168,107 +168,107 @@ export default {
 
 <style lang="scss" scoped>
 .cl-chat-session {
-  overflow: hidden;
-  width: 0;
-  height: 100%;
-  background-color: #fff;
-  border-radius: 5px;
-  transition: width .2s ease-in-out;
+	overflow: hidden;
+	width: 0;
+	height: 100%;
+	background-color: #fff;
+	border-radius: 5px;
+	transition: width 0.2s ease-in-out;
 
-  &.is-show {
-    width: 250px;
-    max-width: 100%;
-    margin-right: 5px;
-  }
+	&.is-show {
+		width: 250px;
+		max-width: 100%;
+		margin-right: 5px;
+	}
 
-  &.is-position {
-    position: absolute;
-    top: 51px;
-    left: 5px;
-    z-index: 3000;
-    height: calc(100% - 56px);
+	&.is-position {
+		position: absolute;
+		top: 51px;
+		left: 5px;
+		z-index: 3000;
+		height: calc(100% - 56px);
 
-    &.is-show {
-      width: calc(100% - 10px);
-    }
-  }
+		&.is-show {
+			width: calc(100% - 10px);
+		}
+	}
 
-  &__search {
-    padding: 10px;
-  }
+	&__search {
+		padding: 10px;
+	}
 
-  &__list {
-    overflow: auto;
-    height: calc(100% - 52px);
+	&__list {
+		overflow: auto;
+		height: calc(100% - 52px);
 
-    li {
-      display: flex;
-      padding: 10px;
-      list-style: none;
-      border-left: 5px solid #fff;
+		li {
+			display: flex;
+			padding: 10px;
+			list-style: none;
+			border-left: 5px solid #fff;
 
-      .avatar {
-        margin-right: 12px;
+			.avatar {
+				margin-right: 12px;
 
-        img {
-          display: block;
-          width: 40px;
-          height: 40px;
-          background-color: #eee;
-          border-radius: 3px;
-        }
+				img {
+					display: block;
+					width: 40px;
+					height: 40px;
+					background-color: #eee;
+					border-radius: 3px;
+				}
 
-        .el-badge {
-          &__content {
-            height: 14px;
-            padding: 0 4px;
-            line-height: 14px;
-            background-color: #fa5151;
-            border: 0;
-          }
-        }
-      }
+				.el-badge {
+					&__content {
+						height: 14px;
+						padding: 0 4px;
+						line-height: 14px;
+						background-color: #fa5151;
+						border: 0;
+					}
+				}
+			}
 
-      .det {
-        flex: 1;
+			.det {
+				flex: 1;
 
-        .name {
-          margin-top: 1px;
-          font-size: 13px;
-        }
+				.name {
+					margin-top: 1px;
+					font-size: 13px;
+				}
 
-        .content {
-          margin-top: 5px;
-          color: #666;
-          font-size: 12px;
-        }
+				.content {
+					margin-top: 5px;
+					color: #666;
+					font-size: 12px;
+				}
 
-        .name,
-        .content {
-          display: -webkit-box;
-          overflow: hidden;
-          text-overflow: ellipsis;
+				.name,
+				.content {
+					display: -webkit-box;
+					overflow: hidden;
+					text-overflow: ellipsis;
 
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 1;
-        }
-      }
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 1;
+				}
+			}
 
-      &.is-active {
-        background-color: #eee;
-        border-color: $color-primary;
-      }
+			&.is-active {
+				background-color: #eee;
+				border-color: $color-primary;
+			}
 
-      &:hover {
-        background-color: #eee;
-        cursor: pointer;
-      }
-    }
-  }
+			&:hover {
+				background-color: #eee;
+				cursor: pointer;
+			}
+		}
+	}
 
-  &__empty {
-    margin-top: 10px;
-    text-align: center;
-  }
+	&__empty {
+		margin-top: 10px;
+		text-align: center;
+	}
 }
 </style>
