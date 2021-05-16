@@ -34,7 +34,7 @@
 				:on-preview="_onPreview"
 				:on-progress="onProgress"
 				:on-change="onChange"
-				:on-exceed="onExceed"
+				:on-exceed="_onExceed"
 				:before-upload="_beforeUpload"
 				:before-remove="beforeRemove"
 				:style="_style"
@@ -110,7 +110,7 @@
 <script>
 import { mapGetters } from "vuex";
 import path from "path";
-import { cloneDeep, last, isArray, isNumber, isBoolean } from "cl-admin/utils";
+import { cloneDeep, last, isArray, isNumber, isBoolean, isEmpty } from "cl-admin/utils";
 import { v4 as uuidv4 } from "uuid";
 
 export default {
@@ -222,7 +222,7 @@ export default {
 		},
 
 		_text() {
-			return this.text || this.conf.text || "选择文件";
+			return isEmpty(this.text) ? this.conf.text : this.text;
 		},
 
 		_accept() {
@@ -407,6 +407,15 @@ export default {
 			}
 		},
 
+		// 超出个数限制提示
+		_onExceed(file, fileList) {
+			if (this.onExceed) {
+				this.onExceed(file, fileList);
+			} else {
+				this.$message.warning(`当前限制选择 ${this.limit} 个文件`);
+			}
+		},
+
 		// 上传前
 		_beforeUpload(file) {
 			this.loading = true;
@@ -505,9 +514,7 @@ export default {
 					} else {
 						this.$service.common
 							.upload()
-							.then(res => {
-								next(res);
-							})
+							.then(next)
 							.catch(reject);
 					}
 				});
