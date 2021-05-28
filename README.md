@@ -1,4 +1,4 @@
-# cool-admin [vue2]
+pm# cool-admin [vue2]
 
 <p align="center">
   <a href="https://show.cool-admin.com/" target="blank"><img src="https://admin.cool-js.com/logo.png" width="200" alt="cool-admin Logo" /></a>
