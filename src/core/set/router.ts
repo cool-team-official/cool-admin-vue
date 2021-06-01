@@ -22,6 +22,9 @@ export default function () {
 			list.forEach((e: any) => {
 				const d: any = cloneDeep(e);
 
+				// avoid router repeat
+				d.name = d.router;
+
 				if (!d.component) {
 					const url = d.viewPath;
 

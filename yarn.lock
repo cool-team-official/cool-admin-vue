@@ -915,10 +915,10 @@ change-case@^4.1.2:
     snake-case "^3.0.4"
     tslib "^2.0.3"
 
-"chokidar@>=2.0.0 <4.0.0":
+"chokidar@>=3.0.0 <4.0.0":
   version "3.5.1"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.1.tgz#ee9ce7bbebd2b79f49f304799d5468e31e14e68a"
-  integrity sha512-9+s+Od+W0VJJzawDma/gvBNQqkTiqYTWLuZoyAsivsI4AaWTCzHG06/TMjsf1cYe9Cb97UCEhjz7HvnPk2p/tw==
+  resolved "https://registry.npm.taobao.org/chokidar/download/chokidar-3.5.1.tgz?cache=0&sync_timestamp=1610719440699&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fchokidar%2Fdownload%2Fchokidar-3.5.1.tgz#ee9ce7bbebd2b79f49f304799d5468e31e14e68a"
+  integrity sha1-7pznu+vSt59J8wR5nVRo4x4U5oo=
   dependencies:
     anymatch "~3.1.1"
     braces "~3.0.2"
@@ -930,10 +930,10 @@ change-case@^4.1.2:
   optionalDependencies:
     fsevents "~2.3.1"
 
-cl-admin-crud-vue3@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.nlark.com/cl-admin-crud-vue3/download/cl-admin-crud-vue3-0.1.3.tgz?cache=0&sync_timestamp=1618901222085&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcl-admin-crud-vue3%2Fdownload%2Fcl-admin-crud-vue3-0.1.3.tgz#fc53ce0b42cecd243db6707f862d26a78406dcdb"
-  integrity sha1-/FPOC0LOzSQ9tnB/hi0mp4QG3Ns=
+cl-admin-crud-vue3@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/cl-admin-crud-vue3/-/cl-admin-crud-vue3-0.1.6.tgz#65ca232ccae7764f627c71facc6d4ac720ae8c42"
+  integrity sha512-mzl/WyEYeywu5I3J3Noe+X4dhcQ3vKkMOadSTbVAbxJbhEcdg+G7cNm91f3uIdmM5RB8BEA0QNi/pIpMa8Gh/A==
   dependencies:
     array.prototype.flat "^1.2.4"
     core-js "^3.6.5"
@@ -1305,12 +1305,13 @@ electron-to-chromium@^1.3.649:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.701.tgz#5e796ed7ce88cd77bc7bf831cf311ef6b067c389"
   integrity sha512-Zd9ofdIMYHYhG1gvnejQDvC/kqSeXQvtXF0yRURGxgwGqDZm9F9Fm3dYFnm5gyuA7xpXfBlzVLN1sz0FjxpKfw==
 
-element-plus@1.0.2-beta.35:
-  version "1.0.2-beta.35"
-  resolved "https://registry.yarnpkg.com/element-plus/-/element-plus-1.0.2-beta.35.tgz#158890bddf28f8495f261d02789bf394c5c97123"
-  integrity sha512-T12EfxbWoNOrWE2bzXFPJdOU3cl4YWuLwxE5QKM40oPw1VYPMRrRB8Uy5TwF8h3itxzsJQ5iFj2rdDO+q3Jcdg==
+element-plus@^1.0.2-beta.40:
+  version "1.0.2-beta.40"
+  resolved "https://registry.npm.taobao.org/element-plus/download/element-plus-1.0.2-beta.40.tgz#30fc9b161496ae587fab86235c80b728ea43d909"
+  integrity sha1-MPybFhSWrlh/q4YjXIC3KOpD2Qk=
   dependencies:
     "@popperjs/core" "^2.4.4"
+    "@types/lodash" "^4.14.161"
     async-validator "^3.4.0"
     dayjs "1.x"
     lodash "^4.17.20"
@@ -1318,10 +1319,10 @@ element-plus@1.0.2-beta.35:
     normalize-wheel "^1.0.1"
     resize-observer-polyfill "^1.5.1"
 
-element-plus@^1.0.2-beta.40:
-  version "1.0.2-beta.40"
-  resolved "https://registry.npm.taobao.org/element-plus/download/element-plus-1.0.2-beta.40.tgz#30fc9b161496ae587fab86235c80b728ea43d909"
-  integrity sha1-MPybFhSWrlh/q4YjXIC3KOpD2Qk=
+element-plus@^1.0.2-beta.45:
+  version "1.0.2-beta.45"
+  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.45.tgz#d7d84d284ead4f9de5aa7289b9a2af4b7f109a1e"
+  integrity sha1-19hNKE6tT53lqnKJuaKvS38Qmh4=
   dependencies:
     "@popperjs/core" "^2.4.4"
     "@types/lodash" "^4.14.161"
@@ -1417,10 +1418,10 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-esbuild@^0.9.3:
-  version "0.9.7"
-  resolved "https://registry.yarnpkg.com/esbuild/-/esbuild-0.9.7.tgz#ea0d639cbe4b88ec25fbed4d6ff00c8d788ef70b"
-  integrity sha512-VtUf6aQ89VTmMLKrWHYG50uByMF4JQlVysb8dmg6cOgW8JnFCipmz7p+HNBl+RR3LLCuBxFGVauAe2wfnF9bLg==
+esbuild@^0.12.5:
+  version "0.12.5"
+  resolved "https://registry.nlark.com/esbuild/download/esbuild-0.12.5.tgz#36076a6bc1966ba2741981d30512e95e8aaff495"
+  integrity sha1-Ngdqa8GWa6J0GYHTBRLpXoqv9JU=
 
 escalade@^3.1.1:
   version "3.1.1"
@@ -2544,6 +2545,11 @@ nanoid@^3.1.20:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.22.tgz#b35f8fb7d151990a8aebd5aa5015c03cf726f844"
   integrity sha512-/2ZUaJX2ANuLtTvqTlgqBQNJoQO398KyJgZloL0PZkC0dpysjncRUPsFe3DUPzz/y3h+u7C46np8RMuvF3jsSQ==
 
+nanoid@^3.1.23:
+  version "3.1.23"
+  resolved "https://registry.nlark.com/nanoid/download/nanoid-3.1.23.tgz?cache=0&sync_timestamp=1620673983269&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fnanoid%2Fdownload%2Fnanoid-3.1.23.tgz#f744086ce7c2bc47ee0a8472574d5c78e4183a81"
+  integrity sha1-90QIbOfCvEfuCoRyV01ceOQYOoE=
+
 nanomatch@^1.2.1:
   version "1.2.13"
   resolved "https://registry.yarnpkg.com/nanomatch/-/nanomatch-1.2.13.tgz#b87a8aa4fc0de8fe6be88895b38983ff265bd119"
@@ -2845,7 +2851,7 @@ postcss@^7.0.0:
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
-postcss@^8.1.10, postcss@^8.2.1:
+postcss@^8.1.10:
   version "8.2.8"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.2.8.tgz#0b90f9382efda424c4f0f69a2ead6f6830d08ece"
   integrity sha512-1F0Xb2T21xET7oQV9eKuctbM9S7BC0fetoHCc4H13z0PT6haiRLP4T0ZY4XWh7iLP0usgqykT6p9B2RtOf4FPw==
@@ -2853,6 +2859,15 @@ postcss@^8.1.10, postcss@^8.2.1:
     colorette "^1.2.2"
     nanoid "^3.1.20"
     source-map "^0.6.1"
+
+postcss@^8.2.10:
+  version "8.3.0"
+  resolved "https://registry.nlark.com/postcss/download/postcss-8.3.0.tgz#b1a713f6172ca427e3f05ef1303de8b65683325f"
+  integrity sha1-sacT9hcspCfj8F7xMD3otlaDMl8=
+  dependencies:
+    colorette "^1.2.2"
+    nanoid "^3.1.23"
+    source-map-js "^0.6.2"
 
 posthtml-parser@^0.2.0, posthtml-parser@^0.2.1:
   version "0.2.1"
@@ -3121,20 +3136,20 @@ safe-regex@^1.1.0:
   dependencies:
     ret "~0.1.10"
 
-sass-loader@^11.0.1:
-  version "11.0.1"
-  resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-11.0.1.tgz#8672f896593466573b904f47693e0695368e38c9"
-  integrity sha512-Vp1LcP4slTsTNLEiDkTcm8zGN/XYYrZz2BZybQbliWA8eXveqA/AxsEjllQTpJbg2MzCsx/qNO48sHdZtOaxTw==
+sass-loader@^11.1.1:
+  version "11.1.1"
+  resolved "https://registry.nlark.com/sass-loader/download/sass-loader-11.1.1.tgz?cache=0&sync_timestamp=1620926321113&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fsass-loader%2Fdownload%2Fsass-loader-11.1.1.tgz#0db441bbbe197b2af96125bebb7f4be6476b13a7"
+  integrity sha1-DbRBu74Zeyr5YSW+u39L5kdrE6c=
   dependencies:
     klona "^2.0.4"
     neo-async "^2.6.2"
 
-sass@^1.32.8:
-  version "1.32.8"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.32.8.tgz#f16a9abd8dc530add8834e506878a2808c037bdc"
-  integrity sha512-Sl6mIeGpzjIUZqvKnKETfMf0iDAswD9TNlv13A7aAF3XZlRPMq4VvJWBC2N2DXbp94MQVdNSFG6LfF/iOXrPHQ==
+sass@^1.34.0:
+  version "1.34.0"
+  resolved "https://registry.nlark.com/sass/download/sass-1.34.0.tgz#e46d5932d8b0ecc4feb846d861f26a578f7f7172"
+  integrity sha1-5G1ZMtiw7MT+uEbYYfJqV49/cXI=
   dependencies:
-    chokidar ">=2.0.0 <4.0.0"
+    chokidar ">=3.0.0 <4.0.0"
 
 select@^1.1.2:
   version "1.1.2"
@@ -3284,6 +3299,11 @@ sortablejs@1.10.2:
   version "1.10.2"
   resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.10.2.tgz#6e40364d913f98b85a14f6678f92b5c1221f5290"
   integrity sha512-YkPGufevysvfwn5rfdlGyrGjt7/CRHwvRPogD/lC+TnvcN29jDpCifKP+rBqf+LRldfXSTh+0CGLcSg0VIxq3A==
+
+source-map-js@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.npm.taobao.org/source-map-js/download/source-map-js-0.6.2.tgz#0bb5de631b41cfbda6cfba8bd05a80efdfd2385e"
+  integrity sha1-C7XeYxtBz72mz7qL0FqA79/SOF4=
 
 source-map-resolve@^0.5.0:
   version "0.5.3"
@@ -3737,13 +3757,13 @@ vite-svg-loader@^1.5.1:
   dependencies:
     "@vue/compiler-sfc" "^3.0.5"
 
-vite@^2.1.5:
-  version "2.1.5"
-  resolved "https://registry.npmjs.org/vite/-/vite-2.1.5.tgz#4857da441c62f7982c83cbd5f42a00330f20c9c1"
-  integrity sha512-tYU5iaYeUgQYvK/CNNz3tiJ8vYqPWfCE9IQ7K0iuzYovWw7lzty7KRYGWwV3CQPh0NKxWjOczAqiJsCL0Xb+Og==
+vite@^2.3.5:
+  version "2.3.5"
+  resolved "https://registry.nlark.com/vite/download/vite-2.3.5.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fvite%2Fdownload%2Fvite-2.3.5.tgz#0f5e750317e6f00e5343dd8272f64c2261f026b3"
+  integrity sha1-D151Axfm8A5TQ92CcvZMImHwJrM=
   dependencies:
-    esbuild "^0.9.3"
-    postcss "^8.2.1"
+    esbuild "^0.12.5"
+    postcss "^8.2.10"
     resolve "^1.19.0"
     rollup "^2.38.5"
   optionalDependencies:

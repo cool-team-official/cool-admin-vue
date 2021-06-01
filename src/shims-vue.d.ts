@@ -21,6 +21,11 @@ declare module "array.prototype.flat" {
 	export default Flat;
 }
 
+declare module "vuedraggable/src/vuedraggable" {
+	const d: any;
+	export default d;
+}
+
 declare module "clone-deep" {
 	function CloneDeep(data: any): any;
 	export default CloneDeep;

@@ -216,7 +216,7 @@
 <script lang="ts">
 import { computed, defineComponent, inject, onMounted, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import Draggable from "vuedraggable";
+import Draggable from "vuedraggable/src/vuedraggable";
 import { checkPerm } from "/$/base";
 import { ContextMenu } from "cl-admin-crud-vue3";
 import Cron from "../components/cron";
