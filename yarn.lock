@@ -549,7 +549,11 @@ acorn@^7.1.1, acorn@^7.4.0:
 
 adler-32@~1.2.0:
   version "1.2.0"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/adler-32/download/adler-32-1.2.0.tgz#6a3e6bf0a63900ba15652808cb15c6813d1a5f25"
+=======
+  resolved "https://registry.nlark.com/adler-32/download/adler-32-1.2.0.tgz#6a3e6bf0a63900ba15652808cb15c6813d1a5f25"
+>>>>>>> dc22b39fea31872cad95ffe85501a7d5b2eba504
   integrity sha1-aj5r8KY5ALoVZSgIyxXGgT0aXyU=
   dependencies:
     exit-on-epipe "~1.0.1"
@@ -930,10 +934,17 @@ change-case@^4.1.2:
   optionalDependencies:
     fsevents "~2.3.1"
 
+<<<<<<< HEAD
 cl-admin-crud-vue3@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/cl-admin-crud-vue3/-/cl-admin-crud-vue3-0.1.6.tgz#65ca232ccae7764f627c71facc6d4ac720ae8c42"
   integrity sha512-mzl/WyEYeywu5I3J3Noe+X4dhcQ3vKkMOadSTbVAbxJbhEcdg+G7cNm91f3uIdmM5RB8BEA0QNi/pIpMa8Gh/A==
+=======
+cl-admin-crud-vue3@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.nlark.com/cl-admin-crud-vue3/download/cl-admin-crud-vue3-0.1.3.tgz?cache=0&sync_timestamp=1618901222085&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcl-admin-crud-vue3%2Fdownload%2Fcl-admin-crud-vue3-0.1.3.tgz#fc53ce0b42cecd243db6707f862d26a78406dcdb"
+  integrity sha1-/FPOC0LOzSQ9tnB/hi0mp4QG3Ns=
+>>>>>>> dc22b39fea31872cad95ffe85501a7d5b2eba504
   dependencies:
     array.prototype.flat "^1.2.4"
     core-js "^3.6.5"
@@ -1037,12 +1048,20 @@ commander@^2.19.0:
 
 commander@~2.14.1:
   version "2.14.1"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/commander/download/commander-2.14.1.tgz?cache=0&sync_timestamp=1616364009866&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.14.1.tgz#2235123e37af8ca3c65df45b026dbd357b01b9aa"
+=======
+  resolved "https://registry.nlark.com/commander/download/commander-2.14.1.tgz?cache=0&sync_timestamp=1618847060379&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcommander%2Fdownload%2Fcommander-2.14.1.tgz#2235123e37af8ca3c65df45b026dbd357b01b9aa"
+>>>>>>> dc22b39fea31872cad95ffe85501a7d5b2eba504
   integrity sha1-IjUSPjevjKPGXfRbAm29NXsBuao=
 
 commander@~2.17.1:
   version "2.17.1"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/commander/download/commander-2.17.1.tgz?cache=0&sync_timestamp=1616364009866&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
+=======
+  resolved "https://registry.nlark.com/commander/download/commander-2.17.1.tgz?cache=0&sync_timestamp=1618847060379&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcommander%2Fdownload%2Fcommander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
+>>>>>>> dc22b39fea31872cad95ffe85501a7d5b2eba504
   integrity sha1-vXerfebelCBc6sxy8XFtKfIKd78=
 
 component-emitter@^1.2.1, component-emitter@~1.3.0:
@@ -1323,6 +1342,20 @@ element-plus@^1.0.2-beta.45:
   version "1.0.2-beta.45"
   resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.45.tgz#d7d84d284ead4f9de5aa7289b9a2af4b7f109a1e"
   integrity sha1-19hNKE6tT53lqnKJuaKvS38Qmh4=
+  dependencies:
+    "@popperjs/core" "^2.4.4"
+    "@types/lodash" "^4.14.161"
+    async-validator "^3.4.0"
+    dayjs "1.x"
+    lodash "^4.17.20"
+    mitt "^2.1.0"
+    normalize-wheel "^1.0.1"
+    resize-observer-polyfill "^1.5.1"
+
+element-plus@^1.0.2-beta.40:
+  version "1.0.2-beta.40"
+  resolved "https://registry.npm.taobao.org/element-plus/download/element-plus-1.0.2-beta.40.tgz#30fc9b161496ae587fab86235c80b728ea43d909"
+  integrity sha1-MPybFhSWrlh/q4YjXIC3KOpD2Qk=
   dependencies:
     "@popperjs/core" "^2.4.4"
     "@types/lodash" "^4.14.161"
@@ -1683,7 +1716,11 @@ fastq@^1.6.0:
 
 fflate@^0.3.8:
   version "0.3.11"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/fflate/download/fflate-0.3.11.tgz?cache=0&sync_timestamp=1616295375703&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffflate%2Fdownload%2Ffflate-0.3.11.tgz#2c440d7180fdeb819e64898d8858af327b042a5d"
+=======
+  resolved "https://registry.nlark.com/fflate/download/fflate-0.3.11.tgz#2c440d7180fdeb819e64898d8858af327b042a5d"
+>>>>>>> dc22b39fea31872cad95ffe85501a7d5b2eba504
   integrity sha1-LEQNcYD964GeZImNiFivMnsEKl0=
 
 file-entry-cache@^6.0.1:
@@ -1695,7 +1732,11 @@ file-entry-cache@^6.0.1:
 
 file-saver@^2.0.5:
   version "2.0.5"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/file-saver/download/file-saver-2.0.5.tgz?cache=0&sync_timestamp=1605790887683&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffile-saver%2Fdownload%2Ffile-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
+=======
+  resolved "https://registry.npm.taobao.org/file-saver/download/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
+>>>>>>> dc22b39fea31872cad95ffe85501a7d5b2eba504
   integrity sha1-1hz+LOBZ9BTYmendbUEH7iVnDDg=
 
 fill-range@^4.0.0:
@@ -1740,7 +1781,11 @@ for-in@^1.0.2:
 
 frac@~1.1.2:
   version "1.1.2"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/frac/download/frac-1.1.2.tgz#3d74f7f6478c88a1b5020306d747dc6313c74d0b"
+=======
+  resolved "https://registry.nlark.com/frac/download/frac-1.1.2.tgz#3d74f7f6478c88a1b5020306d747dc6313c74d0b"
+>>>>>>> dc22b39fea31872cad95ffe85501a7d5b2eba504
   integrity sha1-PXT39keMiKG1AgMG10fcYxPHTQs=
 
 fragment-cache@^0.2.1:
@@ -2926,7 +2971,11 @@ prettier@^2.2.1:
 
 printj@~1.1.0, printj@~1.1.2:
   version "1.1.2"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/printj/download/printj-1.1.2.tgz#d90deb2975a8b9f600fb3a1c94e3f4c53c78a222"
+=======
+  resolved "https://registry.nlark.com/printj/download/printj-1.1.2.tgz#d90deb2975a8b9f600fb3a1c94e3f4c53c78a222"
+>>>>>>> dc22b39fea31872cad95ffe85501a7d5b2eba504
   integrity sha1-2Q3rKXWoufYA+zoclOP0xTx4oiI=
 
 process-nextick-args@~2.0.0:
@@ -3847,7 +3896,11 @@ which@^2.0.1:
 
 wmf@~1.0.1:
   version "1.0.2"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/wmf/download/wmf-1.0.2.tgz#7d19d621071a08c2bdc6b7e688a9c435298cc2da"
+=======
+  resolved "https://registry.nlark.com/wmf/download/wmf-1.0.2.tgz#7d19d621071a08c2bdc6b7e688a9c435298cc2da"
+>>>>>>> dc22b39fea31872cad95ffe85501a7d5b2eba504
   integrity sha1-fRnWIQcaCMK9xrfmiKnENSmMwto=
 
 word-wrap@^1.2.3:
@@ -3857,7 +3910,11 @@ word-wrap@^1.2.3:
 
 word@~0.3.0:
   version "0.3.0"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/word/download/word-0.3.0.tgz#8542157e4f8e849f4a363a288992d47612db9961"
+=======
+  resolved "https://registry.nlark.com/word/download/word-0.3.0.tgz#8542157e4f8e849f4a363a288992d47612db9961"
+>>>>>>> dc22b39fea31872cad95ffe85501a7d5b2eba504
   integrity sha1-hUIVfk+OhJ9KNjooiZLUdhLbmWE=
 
 wrappy@1:
@@ -3872,7 +3929,11 @@ ws@~7.4.2:
 
 xlsx@^0.16.9:
   version "0.16.9"
+<<<<<<< HEAD
   resolved "https://registry.npm.taobao.org/xlsx/download/xlsx-0.16.9.tgz?cache=0&sync_timestamp=1605857177269&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fxlsx%2Fdownload%2Fxlsx-0.16.9.tgz#dacd5bb46bda6dd3743940c9c3dc1e2171826256"
+=======
+  resolved "https://registry.nlark.com/xlsx/download/xlsx-0.16.9.tgz#dacd5bb46bda6dd3743940c9c3dc1e2171826256"
+>>>>>>> dc22b39fea31872cad95ffe85501a7d5b2eba504
   integrity sha1-2s1btGvabdN0OUDJw9weIXGCYlY=
   dependencies:
     adler-32 "~1.2.0"
