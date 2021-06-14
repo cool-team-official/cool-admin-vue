@@ -270,7 +270,7 @@ export default defineComponent({
 				visible.value = true;
 			};
 
-			service.im.message
+			service.chat.message
 				.page(data)
 				.then((res: any) => {
 					// 防止脏数据

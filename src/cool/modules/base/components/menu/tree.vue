@@ -70,7 +70,7 @@ export default defineComponent({
 
 		// 刷新列表
 		function refresh() {
-			service.system.menu.list().then((res: any) => {
+			service.base.system.menu.list().then((res: any) => {
 				const _list = res.filter((e: any) => e.type != 2);
 
 				_list.unshift({

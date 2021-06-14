@@ -17,7 +17,7 @@ export default defineComponent({
 
 		// 刷新列表
 		async function refresh() {
-			return await service.system.dept.list().then(deepTree);
+			return await service.base.system.dept.list().then(deepTree);
 		}
 
 		// 转移
@@ -52,7 +52,7 @@ export default defineComponent({
 							type: "warning"
 						})
 							.then(() => {
-								service.system.user
+								service.base.system.user
 									.move({
 										departmentId: id,
 										userIds: ids

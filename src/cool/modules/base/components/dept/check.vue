@@ -81,7 +81,7 @@ export default defineComponent({
 
 		// 刷新树形列表
 		function refresh() {
-			service.system.dept
+			service.base.system.dept
 				.list()
 				.then((res: any[]) => {
 					list.value = deepTree(res);

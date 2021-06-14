@@ -11,7 +11,7 @@ for (const i in views) {
 	delete views[i];
 }
 
-export default function () {
+function useRouter() {
 	router.$plugin = {
 		addViews: (list: Array<any>, options: any) => {
 			if (!options) {
@@ -101,3 +101,5 @@ export default function () {
 		}
 	});
 }
+
+export { useRouter };

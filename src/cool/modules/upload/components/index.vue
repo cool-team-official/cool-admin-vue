@@ -472,7 +472,7 @@ export default {
 						data.append("file", file);
 
 						// 上传
-						this.service.common
+						this.service.base.common
 							.request({
 								url: res.host,
 								method: "POST",
@@ -504,7 +504,7 @@ export default {
 							host: "/upload"
 						});
 					} else {
-						this.service.common
+						this.service.base.common
 							.upload()
 							.then((res) => {
 								next(res);
@@ -535,7 +535,7 @@ export default {
 
 		// 上传模式
 		uploadMode() {
-			return this.service.common.uploadMode().then((res) => res.mode);
+			return this.service.base.common.uploadMode().then((res) => res.mode);
 		}
 	}
 };

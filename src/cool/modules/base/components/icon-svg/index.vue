@@ -11,6 +11,10 @@ import { isNumber } from "/@/core/utils";
 export default defineComponent({
 	name: "icon-svg",
 
+	cool: {
+		global: true
+	},
+
 	props: {
 		name: {
 			type: String

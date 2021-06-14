@@ -1,15 +1,21 @@
-import { BaseService, Service, Permission } from "./service";
-import { SET_SERVICE, SET_ROUTER, SET_MODULE } from "./set";
+import BaseService from "./service/base";
+import { Service, Permission, useService } from "./service";
 import { useRefs } from "./hook/core";
+import { useRouter } from "./router";
+import { useModule } from "./module";
 import router from "/@/router";
 import store from "/@/store";
-import "./common";
+
+const services = useService();
 
 async function bootstrap(app: any) {
-	SET_ROUTER();
-	SET_SERVICE(app);
-	SET_MODULE(app);
+	app.config.globalProperties.service = store.service = services;
+	app.provide("service", services);
+
+	useRouter();
+	useModule(app);
 
 	router.$plugin?.addViews(store.getters.routes || []);
 }
-export { Service, Permission, BaseService, bootstrap, useRefs };
+
+export { Service, Permission, BaseService, services, bootstrap, useRefs };

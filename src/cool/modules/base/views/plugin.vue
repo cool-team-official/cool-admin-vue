@@ -61,7 +61,7 @@ export default defineComponent({
 		const { refs, setRefs } = useRefs();
 
 		// 编辑权限
-		const { config, getConfig, enable } = service.plugin.info.permission;
+		const { config, getConfig, enable } = service.base.plugin.info.permission;
 
 		const perms = reactive<any>({
 			edit: checkPerm({
@@ -72,7 +72,7 @@ export default defineComponent({
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {
-			ctx.service(service.plugin.info)
+			ctx.service(service.base.plugin.info)
 				.set("dict", {
 					api: {
 						page: "list"
@@ -98,7 +98,7 @@ export default defineComponent({
 
 		// 开启、关闭
 		function onEnableChange(val: boolean, item: any) {
-			service.plugin.info
+			service.base.plugin.info
 				.enable({
 					namespace: item.namespace,
 					enable: val
@@ -113,7 +113,7 @@ export default defineComponent({
 
 		// 打开配置
 		async function openConf({ name, namespace, view }: any) {
-			const form = await service.plugin.info.getConfig({
+			const form = await service.base.plugin.info.getConfig({
 				namespace
 			});
 
@@ -131,7 +131,7 @@ export default defineComponent({
 				form,
 				on: {
 					submit: (data: any, { close, done }: any) => {
-						service.plugin.info
+						service.base.plugin.info
 							.config({
 								namespace,
 								config: data

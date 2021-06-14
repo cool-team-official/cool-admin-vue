@@ -90,7 +90,7 @@ export default defineComponent({
 		async function refresh(params?: any) {
 			loading.value = true;
 
-			const res = await service.im.session
+			const res = await service.chat.session
 				.page({
 					...pagination,
 					keyWord: keyWord.value,
@@ -163,7 +163,7 @@ export default defineComponent({
 						label: "删除",
 						icon: "el-icon-delete",
 						callback: (_: any, done: Function) => {
-							service.im.session.delete({
+							service.chat.session.delete({
 								ids: id
 							});
 

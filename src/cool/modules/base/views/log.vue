@@ -4,7 +4,7 @@
 			<cl-refresh-btn />
 
 			<el-button
-				v-permission="service.system.log.permission.clear"
+				v-permission="service.base.system.log.permission.clear"
 				size="mini"
 				type="danger"
 				@click="clear"
@@ -112,13 +112,13 @@ export default defineComponent({
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {
-			ctx.service(service.system.log).done();
+			ctx.service(service.base.system.log).done();
 			app.refresh();
 		}
 
 		// 保存天数
 		function saveDay() {
-			service.system.log.setKeep(day.value).then(() => {
+			service.base.system.log.setKeep(day.value).then(() => {
 				ElMessage.success("保存成功");
 			});
 		}
@@ -129,7 +129,7 @@ export default defineComponent({
 				type: "warning"
 			})
 				.then(() => {
-					service.system.log
+					service.base.system.log
 						.clear()
 						.then(() => {
 							ElMessage.success("清空成功");
@@ -143,7 +143,7 @@ export default defineComponent({
 		}
 
 		// 获取天数
-		service.system.log.getKeep().then((res: number) => {
+		service.base.system.log.getKeep().then((res: number) => {
 			day.value = Number(res);
 		});
 

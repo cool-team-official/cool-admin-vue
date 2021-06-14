@@ -1,6 +1,6 @@
 {
 	"name": "front-next",
-	"version": "0.3.1",
+	"version": "0.4.0",
 	"scripts": {
 		"dev": "vite",
 		"build": "vue-tsc --noEmit --skipLibCheck && vite build",
@@ -17,7 +17,7 @@
 		"codemirror": "^5.60.0",
 		"core-js": "^3.6.5",
 		"echarts": "^5.0.2",
-		"element-plus": "^1.0.2-beta.45",
+		"element-plus": "^1.0.2-beta.48",
 		"file-saver": "^2.0.5",
 		"glob": "^7.1.6",
 		"js-beautify": "^1.13.5",

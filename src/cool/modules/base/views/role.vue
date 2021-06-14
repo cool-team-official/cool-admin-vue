@@ -153,7 +153,7 @@ export default defineComponent({
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {
-			ctx.service(service.system.role).done();
+			ctx.service(service.base.system.role).done();
 			app.refresh();
 		}
 

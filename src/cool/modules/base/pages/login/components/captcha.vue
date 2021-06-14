@@ -18,7 +18,7 @@ export default defineComponent({
 		const service = inject<any>("service");
 
 		const refresh = () => {
-			service.open
+			service.base.open
 				.captcha({
 					height: 36,
 					width: 110

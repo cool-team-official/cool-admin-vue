@@ -26,7 +26,7 @@ export default {
 
 	methods: {
 		refresh() {
-			this.service.im.session.unreadCount().then((res) => {
+			this.service.chat.session.unreadCount().then((res) => {
 				this.number = Number(res);
 			});
 		},

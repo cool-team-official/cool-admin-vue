@@ -17,7 +17,7 @@ const getters = {
 const actions = {
 	// 用户登录
 	userLogin({ commit }: any, form: any): Promise<any> {
-		return store.service.open.userLogin(form).then((res: Token) => {
+		return store.service.base.open.userLogin(form).then((res: Token) => {
 			commit("SET_TOKEN", res);
 			return res;
 		});
@@ -25,13 +25,13 @@ const actions = {
 
 	// 用户退出
 	async userLogout({ dispatch }: any): Promise<any> {
-		await store.service.common.userLogout();
+		await store.service.base.common.userLogout();
 		return dispatch("userRemove");
 	},
 
 	// 用户信息
 	userInfo({ commit }: any): Promise<any> {
-		return store.service.common.userInfo().then((res: any) => {
+		return store.service.base.common.userInfo().then((res: any) => {
 			commit("SET_USERINFO", res);
 			return res;
 		});
@@ -50,7 +50,7 @@ const actions = {
 	// 刷新token
 	refreshToken({ commit, dispatch }: any) {
 		return new Promise((resolve, reject) => {
-			store.service.open
+			store.service.base.open
 				.refreshToken(storage.get("refreshToken"))
 				.then((res: any) => {
 					commit("SET_TOKEN", res);

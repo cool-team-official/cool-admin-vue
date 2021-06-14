@@ -27,10 +27,10 @@ const app = createApp(App);
 
 bootstrap(app)
 	.then(() => {
-		// echarts 可视图表
+		// // echarts 可视图表
 		app.component("v-chart", VueECharts);
 
-		// 事件通讯
+		// // 事件通讯
 		app.provide("mitt", mitt());
 
 		app.use(store).use(router).use(ElementPlus, { locale }).mount("#app");

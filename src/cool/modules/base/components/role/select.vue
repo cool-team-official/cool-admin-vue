@@ -45,7 +45,7 @@ export default defineComponent({
 		);
 
 		onMounted(async () => {
-			list.value = await service.system.role.list();
+			list.value = await service.base.system.role.list();
 		});
 
 		return {

@@ -113,7 +113,7 @@ export default defineComponent({
 			isDrag.value = false;
 			loading.value = true;
 
-			await service.system.dept.list().then((res: any[]) => {
+			await service.base.system.dept.list().then((res: any[]) => {
 				list.value = deepTree(res);
 				emit("list-change", list.value);
 			});
@@ -181,7 +181,7 @@ export default defineComponent({
 				],
 				on: {
 					submit: (data: any, { done, close }: any) => {
-						service.system.dept[method]({
+						service.base.system.dept[method]({
 							id: e.id,
 							parentId: e.parentId,
 							name: data.name,
@@ -204,7 +204,7 @@ export default defineComponent({
 		// 删除部门
 		function rowDel(e: any) {
 			const del = async (f: boolean) => {
-				await service.system.dept
+				await service.base.system.dept
 					.delete({
 						ids: [e.id],
 						deleteUser: f
@@ -261,7 +261,7 @@ export default defineComponent({
 
 						deep(list.value, null);
 
-						await service.system.dept
+						await service.base.system.dept
 							.order(
 								ids.map((e, i) => {
 									return {

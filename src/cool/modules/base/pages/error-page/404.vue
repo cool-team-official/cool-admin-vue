@@ -6,6 +6,12 @@
 import ErrorPage from "./components/error-page.vue";
 
 export default {
+	cool: {
+		route: {
+			path: "/404"
+		}
+	},
+
 	components: {
 		ErrorPage
 	}

@@ -30,6 +30,15 @@ import { useStore } from "vuex";
 export default defineComponent({
 	name: "sys-info",
 
+	cool: {
+		route: {
+			path: "/my/info",
+			meta: {
+				label: "个人中心"
+			}
+		}
+	},
+
 	setup() {
 		const store = useStore();
 		const service = inject<any>("service");
@@ -46,7 +55,7 @@ export default defineComponent({
 
 			saving.value = true;
 
-			await service.common
+			await service.base.common
 				.userUpdate({
 					headImg,
 					nickName,

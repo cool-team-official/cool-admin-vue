@@ -62,6 +62,12 @@ import Captcha from "./components/captcha.vue";
 import { useRefs } from "/@/core";
 
 export default defineComponent({
+	cool: {
+		route: {
+			path: "/login"
+		}
+	},
+
 	components: {
 		Captcha
 	},
@@ -75,8 +81,8 @@ export default defineComponent({
 
 		// 登录表单数据
 		const form = reactive({
-			username: "admin",
-			password: "123456",
+			username: "",
+			password: "",
 			captchaId: "",
 			verifyCode: ""
 		});

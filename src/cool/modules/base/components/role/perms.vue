@@ -85,7 +85,7 @@ export default defineComponent({
 
 		// 刷新列表
 		function refresh() {
-			service.system.menu
+			service.base.system.menu
 				.list()
 				.then((res: any[]) => {
 					list.value = deepTree(res);

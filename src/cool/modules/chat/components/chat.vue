@@ -192,7 +192,7 @@ export default defineComponent({
 					mitt.emit("message.scrollToBottom");
 
 					// 阅读消息
-					service.im.message.read({
+					service.chat.message.read({
 						ids: [msgId],
 						session: session.value.id
 					});

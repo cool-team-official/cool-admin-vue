@@ -22,7 +22,7 @@ export default {
 		el.className = el.className + " _copy-btn";
 		el.setAttribute("data-clipboard-text", binding.value);
 	},
-	beforeUpdate: (el: HTMLElement, binding: any) => {
+	updated: (el: HTMLElement, binding: any) => {
 		el.setAttribute("data-clipboard-text", binding.value);
 	}
 };

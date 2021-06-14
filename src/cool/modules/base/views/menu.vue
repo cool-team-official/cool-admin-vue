@@ -93,13 +93,13 @@ export default defineComponent({
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {
-			ctx.service(service.system.menu).done();
+			ctx.service(service.base.system.menu).done();
 			app.refresh();
 		}
 
 		// 刷新监听
 		function onRefresh(_: any, { render }: RefreshOp) {
-			service.system.menu.list().then((list: any[]) => {
+			service.base.system.menu.list().then((list: any[]) => {
 				list.map((e) => {
 					e.permList = e.perms ? e.perms.split(",") : [];
 				});
