@@ -17,7 +17,7 @@
 			<cl-pagination />
 		</el-row>
 
-		<cl-upsert :ref="setRefs('upsert')" v-bind="upsert" @open="onUpsertOpen">
+		<cl-upsert :ref="setRefs('upsert')" v-bind="upsert" @opened="onUpsertOpen">
 			<template #slot-content="{ scope }">
 				<div v-for="(item, index) in tab.list" :key="index" class="editor">
 					<template v-if="tab.index == index">
