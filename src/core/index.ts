@@ -18,4 +18,24 @@ async function bootstrap(app: any) {
 	router.$plugin?.addViews(store.getters.routes || []);
 }
 
-export { Service, Permission, BaseService, services, bootstrap, useRefs };
+function usePermission(list: any[]) {
+	function deep(d: any) {
+		if (d.permission) {
+			d._permission = {};
+			for (const i in d.permission) {
+				d._permission[i] =
+					list.findIndex((e: string) =>
+						e.replace(/:/g, "/").includes(`${d.namespace}/${i}`)
+					) >= 0;
+			}
+		} else {
+			for (const i in d) {
+				deep(d[i]);
+			}
+		}
+	}
+
+	deep(services);
+}
+
+export { Service, Permission, BaseService, services, bootstrap, useRefs, usePermission };

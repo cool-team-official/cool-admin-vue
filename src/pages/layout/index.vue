@@ -16,7 +16,7 @@
 			</div>
 
 			<div class="page-layout__container">
-				<div class="page-layout__view">
+				<div class="page-layout__view" v-if="!appLoading">
 					<router-view v-slot="{ Component }">
 						<keep-alive :include="caches">
 							<component :is="Component" />
@@ -49,6 +49,9 @@ export default defineComponent({
 		// 应用信息
 		const app = computed<any>(() => store.getters.app);
 
+		// 应用加载
+		const appLoading = computed<boolean>(() => store.getters.appLoading);
+
 		// 缓存列表
 		const caches = computed(() => {
 			return store.getters.processList
@@ -66,6 +69,7 @@ export default defineComponent({
 		return {
 			menuCollapse,
 			app,
+			appLoading,
 			collapseMenu,
 			caches
 		};

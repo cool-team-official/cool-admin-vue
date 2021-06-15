@@ -33,9 +33,8 @@ function change(el: any, binding: any) {
 }
 
 export default {
-	mounted(el: any, binding: any) {
+	beforeMount(el: any, binding: any) {
 		el.setAttribute("_display", el.style.display || "");
-
 		change(el, binding);
 	},
 	updated: change

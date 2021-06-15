@@ -930,10 +930,10 @@ change-case@^4.1.2:
   optionalDependencies:
     fsevents "~2.3.1"
 
-cl-admin-crud-vue3@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.nlark.com/cl-admin-crud-vue3/download/cl-admin-crud-vue3-0.1.7.tgz#a90711127900f35873556a30673c62242ab1bd51"
-  integrity sha1-qQcREnkA81hzVWowZzxiJCqxvVE=
+cl-admin-crud-vue3@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/cl-admin-crud-vue3/-/cl-admin-crud-vue3-0.2.1.tgz#5d9e37efb4caf8d084ae759d6b097bc54b708999"
+  integrity sha512-UPEEMCiPo5xFcLYDBqrKwR/jk7QK9MN7uOz3HAbrxl728L3g4T/Ogh01kfSrbASXv3YwZ+PkqcixAvtnh7WAPA==
   dependencies:
     array.prototype.flat "^1.2.4"
     core-js "^3.6.5"

@@ -90,14 +90,7 @@
 							:ref="setRefs('upsert')"
 							:items="upsert.items"
 							:on-submit="onUpsertSubmit"
-						>
-							<template #slot-tips>
-								<div>
-									<i class="el-icon-warning"></i>
-									<span style="margin-left: 6px">新增用户默认密码为：123456</span>
-								</div>
-							</template>
-						</cl-upsert>
+						/>
 					</cl-crud>
 				</div>
 			</div>
@@ -236,7 +229,7 @@ export default defineComponent({
 				{
 					prop: "name",
 					label: "姓名",
-					span: 24,
+					span: 12,
 					component: {
 						name: "el-input",
 						props: {
@@ -284,7 +277,6 @@ export default defineComponent({
 					prop: "password",
 					label: "密码",
 					span: 12,
-					hidden: ":isAdd",
 					component: {
 						name: "el-input",
 						props: {
@@ -369,13 +361,6 @@ export default defineComponent({
 								value: 0
 							}
 						]
-					}
-				},
-				{
-					prop: "tips",
-					hidden: ":isEdit",
-					component: {
-						name: "slot-tips"
 					}
 				}
 			]

@@ -1,6 +1,7 @@
 import store from "store";
 import { deepMerge, getBrowser } from "/@/core/utils";
 import { app } from "/@/config/env";
+import { ElLoading } from "element-plus";
 
 const browser = getBrowser();
 
@@ -9,10 +10,13 @@ const state = {
 		...app
 	},
 	browser,
-	collapse: browser.isMini ? true : false
+	collapse: browser.isMini ? true : false,
+	loading: false
 };
 
 const getters = {
+	// 程序加载
+	appLoading: (state: any) => state.loading,
 	// 应用配置
 	app: (state: any) => state.info,
 	// 浏览器信息
@@ -22,17 +26,34 @@ const getters = {
 };
 
 const actions = {
-	appLoad({ getters, dispatch }: any) {
+	async appLoad({ getters, dispatch, commit }: any) {
 		if (getters.token) {
+			const loader = ElLoading.service({
+				text: "加载配置中"
+			});
+
+			commit("SHOW_LOADING");
+
 			// 读取菜单权限
-			dispatch("permMenu");
+			await dispatch("permMenu");
 			// 获取用户信息
 			dispatch("userInfo");
+
+			commit("HIDE_LOADING");
+			loader.close();
 		}
 	}
 };
 
 const mutations = {
+	SHOW_LOADING(state: any) {
+		state.loading = true;
+	},
+
+	HIDE_LOADING(state: any) {
+		state.loading = false;
+	},
+
 	// 设置浏览器信息
 	SET_BROWSER(state: any) {
 		state.browser = getBrowser();

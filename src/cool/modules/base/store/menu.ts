@@ -6,6 +6,7 @@ import { deepTree, revDeepTree, isArray, isEmpty } from "/@/core/utils";
 import { menuList } from "/@/config/env";
 import { revisePath } from "../utils";
 import { MenuItem } from "../types";
+import { usePermission } from "/@/core";
 
 const state = {
 	// 视图路由，type=1
@@ -141,6 +142,7 @@ const mutations = {
 	SET_PERMIESSION(state: any, list: Array<any>) {
 		state.permission = list;
 		storage.set("permission", list);
+		usePermission(list);
 	}
 };
 

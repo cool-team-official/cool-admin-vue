@@ -298,7 +298,9 @@ export default defineComponent({
 					{
 						label: "新增",
 						"suffix-icon": "el-icon-plus",
-						hidden: n && n.level >= props.level,
+						hidden:
+							(n && n.level >= props.level) ||
+							!service.base.system.dept._permission.add,
 						callback: (_: any, done: Function) => {
 							rowEdit({
 								name: "",
@@ -311,6 +313,7 @@ export default defineComponent({
 					{
 						label: "编辑",
 						"suffix-icon": "el-icon-edit",
+						hidden: !service.base.system.dept._permission.update,
 						callback: (_: any, done: Function) => {
 							rowEdit(d);
 							done();
@@ -319,7 +322,7 @@ export default defineComponent({
 					{
 						label: "删除",
 						"suffix-icon": "el-icon-delete",
-						hidden: !d.parentId,
+						hidden: !d.parentId || !service.base.system.dept._permission.delete,
 						callback: (_: any, done: Function) => {
 							rowDel(d);
 							done();
@@ -328,6 +331,7 @@ export default defineComponent({
 					{
 						label: "新增成员",
 						"suffix-icon": "el-icon-user",
+						hidden: !service.base.system.user._permission.add,
 						callback: (_: any, done: Function) => {
 							emit("user-add", d);
 							done();
