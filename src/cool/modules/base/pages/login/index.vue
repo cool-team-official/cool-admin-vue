@@ -60,8 +60,8 @@ export default {
 	data() {
 		return {
 			form: {
-				username: "admin",
-				password: "123456",
+				username: "",
+				password: "",
 				captchaId: "",
 				verifyCode: ""
 			},
@@ -123,7 +123,6 @@ export default {
 	width: 100vw;
 	position: relative;
 	background-color: #2f3447;
-
 	.box {
 		display: flex;
 		flex-direction: column;
@@ -134,31 +133,25 @@ export default {
 		position: absolute;
 		left: calc(50% - 250px);
 		top: calc(50% - 250px);
-
 		.logo {
 			height: 50px;
 			margin-bottom: 20px;
 		}
-
 		.desc {
 			color: #ccc;
 			font-size: 12px;
 			margin-bottom: 60px;
 			letter-spacing: 1px;
 		}
-
 		/deep/.el-form {
 			width: 300px;
 			border-radius: 3px;
-
 			.el-form-item {
 				margin-bottom: 20px;
-
 				&__label {
 					color: #ccc;
 				}
 			}
-
 			.el-input {
 				.el-input__inner {
 					border: 0;
@@ -169,12 +162,10 @@ export default {
 					color: #ccc;
 					transition: border-color 0.3s;
 					position: relative;
-
 					&:focus {
 						border-color: #fff;
 						color: #fff;
 					}
-
 					&:-webkit-autofill {
 						-webkit-text-fill-color: #fff !important;
 						-webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
@@ -182,10 +173,8 @@ export default {
 					}
 				}
 			}
-
 			.captcha {
 				position: relative;
-
 				.value {
 					position: absolute;
 					bottom: 1px;
@@ -193,7 +182,6 @@ export default {
 				}
 			}
 		}
-
 		.submit-btn {
 			margin-top: 40px;
 			border-radius: 30px;

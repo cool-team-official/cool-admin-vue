@@ -1,6 +1,6 @@
 {
 	"name": "cool-admin-vue",
-	"version": "3.2.0",
+	"version": "3.2.1",
 	"scripts": {
 		"serve": "vue-cli-service serve",
 		"build": "vue-cli-service build",

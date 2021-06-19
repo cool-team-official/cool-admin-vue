@@ -260,7 +260,6 @@ export default {
 						prop: "password",
 						label: "密码",
 						span: 12,
-						hidden: ":isAdd",
 						component: {
 							name: "el-input",
 							attrs: {
@@ -348,16 +347,6 @@ export default {
 								}
 							]
 						}
-					},
-					{
-						prop: "tips",
-						hidden: ":isEdit",
-						component: (
-							<div>
-								<i class="el-icon-warning"></i>
-								<span style="margin-left: 6px">新增用户默认密码为：123456</span>
-							</div>
-						)
 					}
 				]
 			}
@@ -473,7 +462,6 @@ export default {
 		width: 100%;
 		position: relative;
 	}
-
 	.dept {
 		height: 100%;
 		width: 300px;
@@ -482,17 +470,14 @@ export default {
 		transition: width 0.3s;
 		margin-right: 10px;
 		flex-shrink: 0;
-
 		&._collapse {
 			margin-right: 0;
 			width: 0;
 		}
 	}
-
 	.user {
 		width: calc(100% - 310px);
 		flex: 1;
-
 		.header {
 			display: flex;
 			align-items: center;
@@ -500,13 +485,11 @@ export default {
 			height: 40px;
 			position: relative;
 			background-color: #fff;
-
 			span {
 				font-size: 14px;
 				white-space: nowrap;
 				overflow: hidden;
 			}
-
 			.icon {
 				position: absolute;
 				left: 0;
@@ -521,7 +504,6 @@ export default {
 			}
 		}
 	}
-
 	.dept,
 	.user {
 		overflow: hidden;
@@ -529,7 +511,6 @@ export default {
 			height: calc(100% - 40px);
 		}
 	}
-
 	@media only screen and (max-width: 768px) {
 		.dept {
 			width: calc(100% - 100px);
