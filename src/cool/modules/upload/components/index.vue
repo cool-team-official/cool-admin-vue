@@ -108,9 +108,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { last, isArray, isNumber, isBoolean, basename } from "/@/core/utils";
+import { clone, last, isArray, isNumber, isBoolean, basename } from "/@/core/utils";
 import { v4 as uuidv4 } from "uuid";
-import { clone } from "/@/core/utils";
 
 export default {
 	name: "cl-upload",
@@ -223,7 +222,7 @@ export default {
 		},
 
 		_text() {
-			return this.text || this.conf.text || "选择文件";
+			return this.text === undefined ? this.conf.text : this.text;
 		},
 
 		_accept() {
