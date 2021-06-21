@@ -1,0 +1,3 @@
+<template>
+	<cl-about />
+</template>

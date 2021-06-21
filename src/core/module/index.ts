@@ -1,11 +1,11 @@
 import cool from "/@/cool";
 import store from "/@/store";
 import router from "/@/router";
-import { deepMerge, isFunction, isObject } from "../utils";
+import { deepMerge, isFunction, isObject, isEmpty } from "../utils";
 import { deepFiles } from "../service";
 
 // 模块列表
-const modules: any[] = [];
+const modules: any[] = [...cool.modules];
 
 function useModule(app: any) {
 	// 安装模块
@@ -28,13 +28,13 @@ function useModule(app: any) {
 
 			// 注册组件
 			if (components) {
-				components.forEach((e: any) => {
-					if (e.name) {
-						if (e.cool?.global || e.name.indexOf("cl-") === 0) {
-							app.component(e.name, e);
+				for (const i in components) {
+					if (components[i]) {
+						if (components[i].cool?.global || i.indexOf("cl-") === 0) {
+							app.component(components[i].name, components[i]);
 						}
 					}
-				});
+				}
 			}
 
 			// 注册指令
@@ -70,6 +70,7 @@ function useModule(app: any) {
 		}
 	}
 
+	// 扫描文件
 	const files = import.meta.globEager("/src/cool/modules/**/*");
 
 	for (const i in files) {
@@ -78,6 +79,36 @@ function useModule(app: any) {
 		const fname: string = (cname || "").split(".")[0];
 
 		function next(d: any) {
+			// 配置参数入口
+			if (fn == "config.ts") {
+				d.options = value || {};
+			}
+
+			// 模块入口
+			if (fn == "index.ts") {
+				if (value) {
+					// 阻止往下加载
+					d.isLoaded = true;
+
+					// 之前
+					d._beforeFn = (e: any) => {
+						if (e.components) {
+							for (const i in e.components) {
+								// 全局注册
+								e.components[i].cool = {
+									global: true
+								};
+							}
+						}
+					};
+
+					d.value = value;
+
+					return d;
+				}
+			}
+
+			// 其他功能
 			switch (fn) {
 				case "service":
 					d._services.push({
@@ -97,7 +128,7 @@ function useModule(app: any) {
 					break;
 
 				case "components":
-					d.components.push(value);
+					d.components[value.name] = value;
 					break;
 
 				case "store":
@@ -107,12 +138,6 @@ function useModule(app: any) {
 				case "directives":
 					d.directives[fname] = value;
 					break;
-
-				case "config.ts":
-					if (value) {
-						d.options = value;
-					}
-					break;
 			}
 
 			return d;
@@ -121,14 +146,16 @@ function useModule(app: any) {
 		const item: any = modules.find((e) => e.name === name);
 
 		if (item) {
-			next(item);
+			if (!item.isLoaded) {
+				next(item);
+			}
 		} else {
 			modules.push(
 				next({
 					name,
 					options: {},
 					directives: {},
-					components: [],
+					components: {},
 					pages: [],
 					views: [],
 					store: {},
@@ -138,25 +165,25 @@ function useModule(app: any) {
 		}
 	}
 
-	// 本地模块
-	modules.forEach((e) => {
-		e.service = deepFiles(e._services);
-		install(e);
-	});
-
-	// npm模块
-	cool.modules.forEach((e: any) => {
-		const d: any = e;
+	// 模块安装
+	modules.forEach((e: any) => {
+		if (!isEmpty(e._services)) {
+			e.service = deepFiles(e._services);
+		}
 
 		if (isObject(e.value)) {
 			if (isFunction(e.value.install)) {
-				Object.assign(d, e.value.install(app, e.options));
+				Object.assign(e, e.value.install(app, e.options));
 			} else {
-				Object.assign(d, e.value);
+				Object.assign(e, e.value);
 			}
 		}
 
-		install(d);
+		if (e._beforeFn) {
+			e._beforeFn(e);
+		}
+
+		install(e);
 	});
 
 	// 缓存模块
