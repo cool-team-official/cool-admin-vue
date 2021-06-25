@@ -123,14 +123,18 @@ export default defineComponent({
 
 		ul {
 			display: flex;
+			align-items: center;
 			justify-content: space-between;
 			width: 200px;
+			margin-right: 20px;
 
 			li {
 				list-style: none;
 				font-size: 14px;
 				cursor: pointer;
 				color: #d8d8d8;
+				white-space: nowrap;
+				margin-right: 10px;
 
 				&.active {
 					color: #000;
