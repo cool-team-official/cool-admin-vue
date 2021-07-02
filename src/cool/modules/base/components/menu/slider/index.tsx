@@ -51,7 +51,7 @@ export default defineComponent({
 	},
 
 	render(ctx: any) {
-		function deepMenu(list: any) {
+		function deepMenu(list: any, index: number) {
 			return list
 				.filter((e: any) => e.isShow)
 				.map((e: any) => {
@@ -62,21 +62,22 @@ export default defineComponent({
 							<el-submenu></el-submenu>,
 							{
 								index: String(e.id),
-								key: e.id
+								key: e.id,
+								"popper-class": "cl-slider-menu__popup"
 							},
 							{
 								title: () => {
-									return !ctx.menuCollapse ? (
+									return ctx.menuCollapse && index == 1 ? (
+										<icon-svg name={e.icon}></icon-svg>
+									) : (
 										<span>
 											<icon-svg name={e.icon}></icon-svg>
 											<span>{e.name}</span>
 										</span>
-									) : (
-										<icon-svg name={e.icon}></icon-svg>
 									);
 								},
 								default() {
-									return deepMenu(e.children);
+									return deepMenu(e.children, index + 1);
 								}
 							}
 						);
@@ -102,7 +103,7 @@ export default defineComponent({
 				});
 		}
 
-		const children = deepMenu(ctx.menuList);
+		const children = deepMenu(ctx.menuList, 1);
 
 		return (
 			ctx.visible && (
