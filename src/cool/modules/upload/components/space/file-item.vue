@@ -48,6 +48,8 @@
 <script lang="ts">
 import { computed, defineComponent, inject } from "vue";
 import { ContextMenu } from "cl-admin-crud-vue3";
+import { ElMessage } from "element-plus";
+import Clipboard from "clipboard";
 
 export default defineComponent({
 	name: "cl-upload-space-item",
@@ -94,6 +96,26 @@ export default defineComponent({
 		function openContextMenu(e: any) {
 			ContextMenu.open(e, {
 				list: [
+					{
+						label: "复制地址",
+						callback: (e: any, done: Function) => {
+							const clipboard: any = new Clipboard(e.target, {
+								text: () => info.value.url
+							});
+
+							clipboard.on("success", () => {
+								ElMessage.success("复制成功");
+								clipboard.destroy();
+							});
+
+							clipboard.on("error", () => {
+								clipboard.destroy();
+							});
+
+							clipboard.onClick(e);
+							done();
+						}
+					},
 					{
 						label: isSelected.value ? "取消选中" : "选中",
 						"suffix-icon": isSelected.value ? "el-icon-close" : "el-icon-check",

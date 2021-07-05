@@ -189,7 +189,12 @@ export default {
 		// 上传文件之前的钩子
 		beforeUpload: Function,
 		// 删除文件之前的钩子
-		beforeRemove: Function
+		beforeRemove: Function,
+		// 是否拼接
+		urlJoin: {
+			type: Boolean,
+			default: true
+		}
 	},
 
 	emits: ["update:modelValue", "change"],
@@ -270,7 +275,7 @@ export default {
 
 		_urls() {
 			const format = {
-				image: ["bmp", "jpg", "jpeg", "png", "tif", "gif", "svg"]
+				image: ["bmp", "jpg", "jpeg", "png", "tif", "gif", "svg", "webp"]
 			};
 
 			return this.urls
@@ -354,10 +359,12 @@ export default {
 
 		// 更新值
 		update() {
-			const urls = this.urls
-				.filter((e) => Boolean(e.url))
-				.map((e) => e.url)
-				.join(",");
+			let urls = this.urls.filter((e) => Boolean(e.url)).map((e) => e.url);
+
+			// 是否拼接
+			if (this.urlJoin) {
+				urls = urls.join(",");
+			}
 
 			this.$emit("update:modelValue", urls);
 			this.$emit("change", urls);
