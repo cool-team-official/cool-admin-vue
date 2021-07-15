@@ -3,7 +3,7 @@
 		<el-image :src="src" alt="">
 			<template #error>
 				<div class="image-slot">
-					<i class="el-icon-picture-outline"></i>
+					<i class="el-icon-user-solid" :style="{ color }"></i>
 				</div>
 			</template>
 		</el-image>
@@ -20,12 +20,20 @@ export default defineComponent({
 	props: {
 		src: String,
 		size: {
-			type: String,
-			default: "large"
+			type: [String, Number],
+			default: 36
 		},
 		shape: {
 			type: String,
 			default: "circle"
+		},
+		backgroundColor: {
+			type: String,
+			default: "#f7f7f7"
+		},
+		color: {
+			type: String,
+			default: "#ccc"
 		}
 	},
 
@@ -35,7 +43,8 @@ export default defineComponent({
 		const style = computed(() => {
 			return {
 				height: size,
-				width: size
+				width: size,
+				backgroundColor: props.backgroundColor
 			};
 		});
 
@@ -49,7 +58,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .cl-avatar {
 	overflow: hidden;
-	background-color: #f7f7f7;
 
 	&.large {
 		height: 50px;
@@ -94,10 +102,6 @@ export default defineComponent({
 				font-size: 20px;
 			}
 		}
-	}
-
-	.el-icon-picture-outline {
-		color: #ccc;
 	}
 }
 </style>

@@ -73,7 +73,25 @@ export default defineComponent({
 							maxExportLimit: props.maxExportLimit,
 							isExport: true
 						})
-						.then((res: any) => res.list)
+						.then((res: any) => {
+							return res.list.map((e: any) => {
+								for (const i in e) {
+									const col: any = props.columns.find((c: any) => c.prop == i);
+
+									if (col) {
+										if (col.dict) {
+											const d = col.dict.find((d: any) => d.value == e[i]);
+
+											if (d) {
+												e[i] = d.label;
+											}
+										}
+									}
+								}
+
+								return e;
+							});
+						})
 						.catch((err: string) => {
 							console.error(err);
 							return null;

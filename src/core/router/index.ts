@@ -87,13 +87,8 @@ function useRouter() {
 		if (!lock) {
 			lock = true;
 
-			if (err.code == "MODULE_NOT_FOUND") {
-				console.error(err.ElMessage.replace("Cannot find module ", ""), "路由组件不存在");
-
-				ElMessage.error(`路由组件路径错误`);
-			} else {
-				console.error(err);
-			}
+			ElMessage.error(`页面不存在或者未配置`);
+			console.error(err);
 
 			setTimeout(() => {
 				lock = false;
