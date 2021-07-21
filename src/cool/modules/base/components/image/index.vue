@@ -2,7 +2,7 @@
 	<div
 		class="cl-image"
 		:style="{
-			'justify-content': justify,
+			justifyContent: justify,
 			height: sty.h
 		}"
 	>

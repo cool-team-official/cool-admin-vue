@@ -6,4 +6,8 @@ $--color-info: $color-info;
 
 $--font-path: "element-plus/lib/theme-chalk/fonts";
 
+// 动态主题色，开发时可注释，会影响页面加载速度
 @import "element-plus/packages/theme-chalk/src/index";
+
+// 默认主题色
+// @import "element-plus/lib/theme-chalk/index.css";
