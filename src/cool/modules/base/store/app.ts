@@ -1,7 +1,6 @@
 import store from "store";
 import { deepMerge, getBrowser } from "/@/core/utils";
 import { app } from "/@/config/env";
-import { ElLoading } from "element-plus";
 
 const browser = getBrowser();
 
@@ -28,10 +27,6 @@ const getters = {
 const actions = {
 	async appLoad({ getters, dispatch, commit }: any) {
 		if (getters.token) {
-			const loader = ElLoading.service({
-				text: "加载配置中"
-			});
-
 			commit("SHOW_LOADING");
 
 			// 读取菜单权限
@@ -40,7 +35,6 @@ const actions = {
 			dispatch("userInfo");
 
 			commit("HIDE_LOADING");
-			loader.close();
 		}
 	}
 };

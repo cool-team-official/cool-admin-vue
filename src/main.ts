@@ -15,7 +15,6 @@ import "./mock";
 // element-plus
 import ElementPlus from "element-plus";
 import "./assets/css/element-variables.scss";
-import locale from "element-plus/lib/locale/lang/zh-cn";
 
 // mitt
 import mitt from "mitt";
@@ -33,12 +32,13 @@ bootstrap(app)
 		// // 事件通讯
 		app.provide("mitt", mitt());
 
-		app.use(store).use(router).use(ElementPlus, { locale }).mount("#app");
+		app.use(store).use(router).use(ElementPlus).mount("#app");
 	})
 	.catch((err: string) => {
 		console.error(`COOL-ADMIN 启动失败`, err);
 	});
 
+// 应用加载
 store.dispatch("appLoad");
 
 // @ts-ignore

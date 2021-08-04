@@ -4,7 +4,7 @@
 			<img class="logo" src="../../static/images/logo.png" alt="" />
 			<p class="desc">COOL ADMIN是一款快速开发后台权限管理系统</p>
 
-			<el-form class="form" size="medium" :disabled="saving">
+			<el-form label-position="top" class="form" size="medium" :disabled="saving">
 				<el-form-item label="用户名">
 					<el-input
 						v-model="form.username"
@@ -46,7 +46,7 @@
 				</el-form-item>
 			</el-form>
 
-			<el-button round size="mini" class="submit-btn" :loading="saving" @click="toLogin"
+			<el-button round size="small" class="submit-btn" :loading="saving" @click="toLogin"
 				>登录</el-button
 			>
 		</div>
@@ -216,8 +216,7 @@ export default defineComponent({
 
 		.submit-btn {
 			margin-top: 40px;
-			border-radius: 30px;
-			padding: 10px 40px;
+			padding: 9px 40px;
 			color: #000;
 		}
 	}
