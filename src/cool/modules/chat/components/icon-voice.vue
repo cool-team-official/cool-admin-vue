@@ -4,39 +4,37 @@
 	</div>
 </template>
 
-<script>
-export default {
-	props: {
-		play: Boolean
-	},
+<script lang="ts" setup>
+import { defineProps, ref, watch } from "vue";
 
-	data() {
-		return {
-			timer: null,
-			index: ""
-		};
-	},
+let timer: any = null;
 
-	watch: {
-		play(val) {
-			clearInterval(this.timer);
+const index = ref<any>("");
 
-			if (val) {
-				this.index = 1;
+const props = defineProps({
+	play: Boolean
+});
 
-				this.timer = setInterval(() => {
-					if (this.index == 1) {
-						this.index = "";
-					} else {
-						this.index += 1;
-					}
-				}, 500);
-			} else {
-				this.index = "";
-			}
+watch(
+	() => props.play,
+	(val: boolean) => {
+		clearInterval(timer);
+
+		if (val) {
+			index.value = 1;
+
+			timer = setInterval(() => {
+				if (index.value == 1) {
+					index.value = "";
+				} else {
+					index.value += 1;
+				}
+			}, 500);
+		} else {
+			index.value = "";
 		}
 	}
-};
+);
 </script>
 
 <style lang="scss" scoped>

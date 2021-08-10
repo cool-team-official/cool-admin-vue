@@ -5,42 +5,52 @@
 		</el-badge>
 
 		<!-- 聊天盒子 -->
-		<cl-chat ref="chat" @message="updateNum" />
+		<cl-chat :ref="setRefs('chat')" @message="updateNum" />
 	</div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, inject, onBeforeMount, ref } from "vue-demi";
+import { useRefs } from "/@/core";
+
+export default defineComponent({
 	name: "cl-chat-notice",
 
-	data() {
-		return {
-			visible: false,
-			number: 0
-		};
-	},
+	setup() {
+		const service = inject<any>("service");
+		const { refs, setRefs } = useRefs();
 
-	created() {
-		this.refresh();
-	},
+		const number = ref<number>(0);
 
-	methods: {
-		refresh() {
-			this.service.chat.session.unreadCount().then((res) => {
-				this.number = Number(res);
+		function refresh() {
+			service.chat.session.unreadCount().then((res: any) => {
+				number.value = Number(res);
 			});
-		},
-
-		updateNum(isOpen) {
-			this.number += isOpen ? 0 : 1;
-		},
-
-		openChatBox() {
-			this.$refs["chat"].open();
-			this.number = 0;
 		}
+
+		function updateNum(isOpen: boolean) {
+			number.value += isOpen ? 0 : 1;
+		}
+
+		function openChatBox() {
+			refs.value.chat.open();
+			number.value = 0;
+		}
+
+		onBeforeMount(() => {
+			refresh();
+		});
+
+		return {
+			refs,
+			setRefs,
+			number,
+			refresh,
+			updateNum,
+			openChatBox
+		};
 	}
-};
+});
 </script>
 
 <style lang="scss" scoped>

@@ -282,7 +282,7 @@ export default {
 				.filter((e) => Boolean(e.url))
 				.map((e) => {
 					const arr = e.url.split(".");
-					const suf = last(arr);
+					const suf = last(arr).toLowerCase();
 					e.type = format.image.includes(suf) ? "image" : null;
 					return e;
 				});

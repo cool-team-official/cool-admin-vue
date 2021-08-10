@@ -28,7 +28,7 @@
 			</div>
 		</template>
 
-		<p class="copyright">Copyright © cool-admin-pro 2020</p>
+		<p class="copyright">Copyright © cool-admin-next 2021</p>
 	</div>
 </template>
 
