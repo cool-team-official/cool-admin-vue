@@ -1,6 +1,6 @@
 {
 	"name": "front-next",
-	"version": "0.7.0",
+	"version": "0.7.1",
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
@@ -55,7 +55,7 @@
 		"sass-loader": "^11.1.1",
 		"svg-sprite-loader": "^6.0.2",
 		"typescript": "4.1.3",
-		"vite": "^2.4.1",
+		"vite": "^2.5.0",
 		"vite-plugin-style-import": "^1.0.1",
 		"vite-svg-loader": "^2.1.0"
 	}

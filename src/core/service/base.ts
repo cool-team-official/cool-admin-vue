@@ -1,13 +1,8 @@
+// @ts-nocheck
 import request from "/@/service/request";
 import { baseUrl, isDev } from "/@/config/env";
 
 export default class BaseService {
-	permission: any;
-	namespace: any;
-	proxy: any;
-	url: any;
-	mock: any;
-
 	constructor() {
 		const crud: any = {
 			page: "page",
