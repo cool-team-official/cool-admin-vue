@@ -966,20 +966,20 @@
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
 }
-.el-radio-button__orig-radio {
+.el-radio-button__original-radio {
 	opacity: 0;
 	outline: 0;
 	position: absolute;
 	z-index: -1;
 }
-.el-radio-button__orig-radio:checked + .el-radio-button__inner {
+.el-radio-button__original-radio:checked + .el-radio-button__inner {
 	color: #fff;
 	background-color: #d0378d;
 	border-color: #d0378d;
 	-webkit-box-shadow: -1px 0 0 0 #d0378d;
 	box-shadow: -1px 0 0 0 #d0378d;
 }
-.el-radio-button__orig-radio:disabled + .el-radio-button__inner {
+.el-radio-button__original-radio:disabled + .el-radio-button__inner {
 	color: #c0c4cc;
 	cursor: not-allowed;
 	background-image: none;
@@ -988,7 +988,7 @@
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
-.el-radio-button__orig-radio:disabled:checked + .el-radio-button__inner {
+.el-radio-button__original-radio:disabled:checked + .el-radio-button__inner {
 	background-color: #f2f6fc;
 }
 .el-radio-button:last-child .el-radio-button__inner {
