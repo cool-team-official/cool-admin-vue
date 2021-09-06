@@ -59,7 +59,7 @@ export default defineComponent({
 
 					if (e.type == 0) {
 						html = h(
-							<el-submenu></el-submenu>,
+							<el-sub-menu></el-sub-menu>,
 							{
 								index: String(e.id),
 								key: e.id,

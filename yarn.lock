@@ -971,14 +971,14 @@ change-case@^4.1.2:
   optionalDependencies:
     fsevents "~2.3.2"
 
-cl-admin-crud-vue3@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.nlark.com/cl-admin-crud-vue3/download/cl-admin-crud-vue3-0.7.0.tgz#e30401cd80b96ed971eec14e4340c58114a42acc"
-  integrity sha1-4wQBzYC5btlx7sFOQ0DFgRSkKsw=
+cl-admin-crud-vue3@^0.7.2:
+  version "0.7.2"
+  resolved "https://registry.nlark.com/cl-admin-crud-vue3/download/cl-admin-crud-vue3-0.7.2.tgz?cache=0&sync_timestamp=1629800578492&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcl-admin-crud-vue3%2Fdownload%2Fcl-admin-crud-vue3-0.7.2.tgz#9cc6b59673d54297ebd21ae750b36725076afebe"
+  integrity sha1-nMa1lnPVQpfr0hrnULNnJQdq/r4=
   dependencies:
     array.prototype.flat "^1.2.4"
     core-js "^3.6.5"
-    element-plus "^1.0.2-beta.65"
+    element-plus "^1.1.0-beta.1"
     merge "^2.1.1"
     mitt "^2.1.0"
     vue "^3.2.1"
@@ -1407,10 +1407,24 @@ electron-to-chromium@^1.3.811:
   resolved "https://registry.nlark.com/electron-to-chromium/download/electron-to-chromium-1.3.812.tgz?cache=0&sync_timestamp=1629324236911&other_urls=https%3A%2F%2Fregistry.nlark.com%2Felectron-to-chromium%2Fdownload%2Felectron-to-chromium-1.3.812.tgz#4c4fb407e0e1335056097f172e9f2c0a09efe77d"
   integrity sha1-TE+0B+DhM1BWCX8XLp8sCgnv530=
 
-element-plus@^1.0.2-beta.65:
-  version "1.0.2-beta.71"
-  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.0.2-beta.71.tgz?cache=0&sync_timestamp=1629258544058&other_urls=https%3A%2F%2Fregistry.nlark.com%2Felement-plus%2Fdownload%2Felement-plus-1.0.2-beta.71.tgz#148f16d5a0a800549989f7869bbf4d656c652d36"
-  integrity sha1-FI8W1aCoAFSZifeGm79NZWxlLTY=
+element-plus@^1.1.0-beta.1:
+  version "1.1.0-beta.4"
+  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.1.0-beta.4.tgz#c82afb73ad5e35fc0ee99274783c1bbcfd8493f1"
+  integrity sha1-yCr7c61eNfwO6ZJ0eDwbvP2Ek/E=
+  dependencies:
+    "@element-plus/icons" "^0.0.11"
+    "@popperjs/core" "^2.4.4"
+    async-validator "^3.4.0"
+    dayjs "1.x"
+    lodash "^4.17.20"
+    mitt "^2.1.0"
+    normalize-wheel "^1.0.1"
+    resize-observer-polyfill "^1.5.1"
+
+element-plus@^1.1.0-beta.6:
+  version "1.1.0-beta.6"
+  resolved "https://registry.nlark.com/element-plus/download/element-plus-1.1.0-beta.6.tgz#ba47b09b3ca434b17c6e21cc88934657d6b42ff8"
+  integrity sha1-ukewmzykNLF8biHMiJNGV9a0L/g=
   dependencies:
     "@element-plus/icons" "^0.0.11"
     "@popperjs/core" "^2.4.4"

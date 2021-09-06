@@ -10,7 +10,7 @@
 	.el-menu {
 		border-right: 0;
 
-		.el-submenu__title,
+		.el-sub-menu__title,
 		&-item {
 			&.is-active,
 			&:hover {
@@ -19,7 +19,7 @@
 			}
 		}
 
-		.el-submenu__title,
+		.el-sub-menu__title,
 		&-item,
 		&__title {
 			color: #eee;
@@ -42,7 +42,7 @@
 		}
 
 		&--collapse {
-			.el-submenu__title {
+			.el-sub-menu__title {
 				.icon-svg {
 					margin-left: 2px;
 					font-size: 19px;
@@ -63,7 +63,7 @@
 
 	&.el-menu {
 		&--vertical {
-			.el-submenu {
+			.el-sub-menu {
 				&__title {
 					display: flex;
 					align-items: center;

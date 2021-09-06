@@ -1,6 +1,6 @@
 <template>
 	<div class="demo-upsert">
-		<cl-upsert ref="upsertRef" :items="items" />
+		<cl-upsert ref="upsertRef" :items="items" :dialog="dialog" />
 	</div>
 </template>
 
@@ -11,6 +11,13 @@ import { defineComponent, ref } from "vue";
 export default defineComponent({
 	setup() {
 		const upsertRef = ref<UpsertRef>();
+
+		const dialog = {
+			props: {
+				fullscreen: false,
+				width: "1200px"
+			}
+		};
 
 		const items = ref<UpsertItem[]>([
 			{
@@ -136,7 +143,8 @@ export default defineComponent({
 
 		return {
 			items,
-			upsertRef
+			upsertRef,
+			dialog
 		};
 	}
 });

@@ -1,6 +1,6 @@
 {
 	"name": "front-next",
-	"version": "0.7.1",
+	"version": "0.7.2",
 	"scripts": {
 		"dev": "vite",
 		"build": "vite build",
@@ -11,13 +11,13 @@
 	"dependencies": {
 		"array.prototype.flat": "^1.2.4",
 		"axios": "^0.21.1",
-		"cl-admin-crud-vue3": "^0.7.0",
+		"cl-admin-crud-vue3": "^0.7.2",
 		"clipboard": "^2.0.8",
 		"clone-deep": "^4.0.1",
 		"codemirror": "^5.62.0",
 		"core-js": "^3.6.5",
 		"echarts": "^5.0.2",
-		"element-plus": "^1.0.2-beta.65",
+		"element-plus": "^1.1.0-beta.6",
 		"file-saver": "^2.0.5",
 		"glob": "^7.1.6",
 		"js-beautify": "^1.13.5",
