@@ -104,6 +104,10 @@ export default {
 		},
 
 		adScroll(index) {
+			if (index < 0) {
+				index = 0;
+			}
+
 			const el = this.$refs[`item-${index}`][0];
 
 			if (el) {
@@ -131,7 +135,6 @@ export default {
 	align-items: center;
 	height: 30px;
 	position: relative;
-
 	&__left,
 	&__right {
 		background-color: #fff;
@@ -140,32 +143,26 @@ export default {
 		padding: 0 2px;
 		border-radius: 3px;
 		cursor: pointer;
-
 		&:hover {
 			background-color: #eee;
 		}
 	}
-
 	&__left {
 		margin-right: 10px;
 	}
-
 	&__right {
 		margin-left: 10px;
 	}
-
 	&__scroller {
 		width: 100%;
 		flex: 1;
 		overflow-x: auto;
 		overflow-y: hidden;
 		white-space: nowrap;
-
 		&::-webkit-scrollbar {
 			display: none;
 		}
 	}
-
 	&__item {
 		display: inline-flex;
 		align-items: center;
@@ -178,40 +175,33 @@ export default {
 		margin-right: 10px;
 		color: #909399;
 		cursor: pointer;
-
 		&:last-child {
 			margin-right: 0;
 		}
-
 		i {
 			font-size: 14px;
 			width: 0;
 			overflow: hidden;
 			transition: all 0.3s;
-
 			&:hover {
 				color: #fff;
 				background-color: $color-primary;
 			}
 		}
-
 		&:hover {
 			.el-icon-close {
 				width: 14px;
 				margin-left: 5px;
 			}
 		}
-
 		&.active {
 			span {
 				color: $color-primary;
 			}
-
 			i {
 				width: auto;
 				margin-left: 5px;
 			}
-
 			&:before {
 				background-color: $color-primary;
 			}
