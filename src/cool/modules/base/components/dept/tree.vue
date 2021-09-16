@@ -142,7 +142,6 @@ export default defineComponent({
 					{
 						label: "部门名称",
 						prop: "name",
-						value: e.name,
 						component: {
 							name: "el-input",
 							props: {
@@ -156,8 +155,7 @@ export default defineComponent({
 					},
 					{
 						label: "上级部门",
-						prop: "parentId",
-						value: e.parentName || "...",
+						prop: "parentName",
 						component: {
 							name: "el-input",
 							props: {
@@ -168,7 +166,6 @@ export default defineComponent({
 					{
 						label: "排序",
 						prop: "orderNum",
-						value: e.orderNum || 0,
 						component: {
 							name: "el-input-number",
 							props: {
@@ -179,6 +176,7 @@ export default defineComponent({
 						}
 					}
 				],
+				form: e,
 				on: {
 					submit: (data: any, { done, close }: any) => {
 						service.base.system.dept[method]({
