@@ -39,3 +39,4 @@ function usePermission(list: any[]) {
 }
 
 export { Service, Permission, BaseService, services, bootstrap, useRefs, usePermission };
+export * from "./hook";

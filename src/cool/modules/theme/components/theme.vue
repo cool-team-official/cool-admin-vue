@@ -264,6 +264,7 @@ export default {
 
 		&__body {
 			height: calc(100% - 63px);
+			padding: 0 5px;
 		}
 	}
 

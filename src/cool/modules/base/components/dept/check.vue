@@ -14,7 +14,7 @@
 
 		<div v-if="visible" class="cl-dept-check__tree">
 			<el-tree
-				ref="treeRef"
+				:ref="setRefs('tree')"
 				highlight-current
 				node-key="id"
 				show-checkbox
@@ -36,6 +36,7 @@
 import { deepTree } from "/@/core/utils";
 import { ElMessage } from "element-plus";
 import { defineComponent, inject, nextTick, onMounted, ref, watch } from "vue";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	name: "cl-dept-check",
@@ -51,8 +52,7 @@ export default defineComponent({
 	emits: ["update:modelValue"],
 
 	setup(props, { emit }) {
-		// 请求服务
-		const service = inject<any>("service");
+		const { service, refs, setRefs } = useCool();
 
 		// 表单值
 		const form = inject<any>("form");
@@ -70,9 +70,7 @@ export default defineComponent({
 		const loading = ref<boolean>(false);
 
 		// 是否可见
-		const visible = ref<boolean>(false);
-
-		const treeRef = ref<any>({});
+		const visible = ref<boolean>(true);
 
 		// 刷新已选列表
 		function refreshTree(val: any[]) {
@@ -111,12 +109,12 @@ export default defineComponent({
 
 		// 监听选择
 		function onCheckChange() {
-			emit("update:modelValue", treeRef.value.getCheckedKeys());
+			emit("update:modelValue", refs.value.tree.getCheckedKeys());
 		}
 
 		// 监听过滤
 		watch(keyword, (val: string) => {
-			treeRef.value.filter(val);
+			refs.value.tree.filter(val);
 		});
 
 		// 刷新树
@@ -132,6 +130,8 @@ export default defineComponent({
 		});
 
 		return {
+			refs,
+			setRefs,
 			form,
 			list,
 			checked,
@@ -141,8 +141,7 @@ export default defineComponent({
 			refresh,
 			filterNode,
 			onCheckStrictlyChange,
-			onCheckChange,
-			treeRef
+			onCheckChange
 		};
 	}
 });
