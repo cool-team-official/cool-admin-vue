@@ -109,7 +109,9 @@ export default defineComponent({
 
 		// 监听选择
 		function onCheckChange() {
-			emit("update:modelValue", refs.value.tree.getCheckedKeys());
+			if (refs.value.tree) {
+				emit("update:modelValue", refs.value.tree.getCheckedKeys());
+			}
 		}
 
 		// 监听过滤
