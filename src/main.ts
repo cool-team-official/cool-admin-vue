@@ -14,7 +14,7 @@ import "./mock";
 
 // element-plus
 import ElementPlus from "element-plus";
-import "./assets/css/element-variables.scss";
+import "element-plus/theme-chalk/src/index.scss";
 
 // mitt
 import mitt from "mitt";

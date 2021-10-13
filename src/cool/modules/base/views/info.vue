@@ -26,6 +26,7 @@
 import { ElMessage } from "element-plus";
 import { defineComponent, inject, reactive, ref } from "vue";
 import { useStore } from "vuex";
+import { cloneDeep } from "/@/core/utils";
 
 export default defineComponent({
 	name: "sys-info",
@@ -44,7 +45,7 @@ export default defineComponent({
 		const service = inject<any>("service");
 
 		// 表单数据
-		const form = reactive<any>(store.getters.userInfo);
+		const form = reactive<any>(cloneDeep(store.getters.userInfo));
 
 		// 保存状态
 		const saving = ref<boolean>(false);

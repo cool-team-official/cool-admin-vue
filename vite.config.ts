@@ -2,7 +2,9 @@ import path from "path";
 import type { UserConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import viteCompression from "vite-plugin-compression";
 import { svgBuilder } from "./src/core/utils/svg";
+import Components from "unplugin-vue-components/vite";
 
 function resolve(dir: string) {
 	return path.resolve(__dirname, ".", dir);
@@ -13,7 +15,7 @@ function resolve(dir: string) {
 export default (): UserConfig => {
 	return {
 		base: "/",
-		plugins: [vue(), vueJsx(), svgBuilder("./src/icons/svg/")],
+		plugins: [vue(), viteCompression(), Components(), vueJsx(), svgBuilder("./src/icons/svg/")],
 		resolve: {
 			alias: {
 				"/@": resolve("src"),
@@ -24,7 +26,7 @@ export default (): UserConfig => {
 		css: {
 			preprocessorOptions: {
 				scss: {
-					additionalData: "@import './src/assets/css/common.scss';"
+					additionalData: `@use "./src/assets/css/element.scss" as *;`
 				}
 			}
 		},
