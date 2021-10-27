@@ -62,3 +62,5 @@ declare module "mockjs" {
 	const Mock: any;
 	export default Mock;
 }
+
+declare const __PROXY_LIST__: any[];
