@@ -56,10 +56,8 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
 import Captcha from "./components/captcha.vue";
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	cool: {
@@ -73,9 +71,7 @@ export default defineComponent({
 	},
 
 	setup() {
-		const router = useRouter();
-		const store = useStore();
-		const { refs, setRefs }: any = useRefs();
+		const { refs, setRefs, store, router }: any = useCool();
 
 		const saving = ref<boolean>(false);
 

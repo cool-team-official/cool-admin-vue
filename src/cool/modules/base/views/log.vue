@@ -39,17 +39,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, reactive, ref } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 import { CrudLoad, Table } from "cl-admin-crud-vue3/types";
 
 export default defineComponent({
 	name: "sys-log",
 
 	setup() {
-		const service = inject<any>("service");
-		const { refs, setRefs }: any = useRefs();
+		const { refs, setRefs, service }: any = useCool();
 
 		// 天数
 		const day = ref<number>(1);

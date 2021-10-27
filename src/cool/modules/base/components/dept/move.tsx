@@ -1,7 +1,7 @@
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 import { deepTree } from "/@/core/utils";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { defineComponent, h, inject, ref } from "vue";
+import { defineComponent, h, ref } from "vue";
 
 export default defineComponent({
 	name: "cl-dept-move",
@@ -9,8 +9,7 @@ export default defineComponent({
 	emits: ["success", "error"],
 
 	setup(_: any, { emit }) {
-		const service = inject<any>("service");
-		const { refs, setRefs }: any = useRefs();
+		const { refs, setRefs, service }: any = useCool();
 
 		// 树形列表
 		const list = ref<any[]>([]);

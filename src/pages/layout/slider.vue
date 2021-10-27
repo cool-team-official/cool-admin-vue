@@ -13,12 +13,12 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { useStore } from "vuex";
 import Logo from "/@/assets/icon/logo/silder-simple.png";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	setup() {
-		const store = useStore();
+		const { store } = useCool();
 
 		// 菜单是否展开
 		const menuCollapse = computed<any>(() => store.getters.menuCollapse);

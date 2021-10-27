@@ -113,9 +113,8 @@
 import { computed, defineComponent, inject, nextTick, onUnmounted, reactive, ref } from "vue";
 import dayjs from "dayjs";
 import { ElMessage } from "element-plus";
-import { useStore } from "vuex";
 import { isString } from "/@/core/utils";
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 import IconVoice from "./icon-voice.vue";
 
 import AvatarUrl from "../static/images/custom-avatar.png";
@@ -126,11 +125,10 @@ export default defineComponent({
 	},
 
 	setup() {
-		const store = useStore();
-		const { refs, setRefs } = useRefs();
-		const service = inject<any>("service");
+		const { refs, setRefs, service, store, mitt } = useCool();
+
+		// 聊天信息
 		const chat = inject<any>("chat");
-		const mitt = inject<any>("mitt");
 
 		// 当前会话信息
 		const session = computed(() => store.getters.session);

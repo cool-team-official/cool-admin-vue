@@ -102,18 +102,15 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, reactive, ref, watch } from "vue";
-import { useStore } from "vuex";
-import { useRefs } from "/@/core";
+import { computed, defineComponent, reactive, ref, watch } from "vue";
+import { useCool } from "/@/core";
 import { Table, Upsert } from "cl-admin-crud-vue3/types";
 
 export default defineComponent({
 	name: "sys-user",
 
 	setup() {
-		const service = inject<any>("service");
-		const store = useStore();
-		const { refs, setRefs } = useRefs();
+		const { refs, setRefs, store, service } = useCool();
 
 		// 是否展开
 		const isExpand = ref<boolean>(true);

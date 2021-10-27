@@ -77,19 +77,16 @@
 </template>
 
 <script lang="ts">
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 import { deepTree } from "/@/core/utils";
-import { useRouter } from "vue-router";
-import { defineComponent, inject, reactive } from "vue";
+import { defineComponent, reactive } from "vue";
 import { CrudLoad, Table, Upsert, RefreshOp } from "cl-admin-crud-vue3/types";
 
 export default defineComponent({
 	name: "sys-menu",
 
 	setup() {
-		const router = useRouter();
-		const { refs, setRefs } = useRefs();
-		const service = inject<any>("service");
+		const { refs, setRefs, service, router } = useCool();
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {

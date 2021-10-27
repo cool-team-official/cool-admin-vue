@@ -45,8 +45,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, h, inject, onUnmounted, provide, ref } from "vue";
-import { useStore } from "vuex";
+import { computed, defineComponent, h, onUnmounted, provide, ref } from "vue";
 import { ElNotification } from "element-plus";
 import dayjs from "dayjs";
 // import io from "socket.io-client";
@@ -55,7 +54,7 @@ import Session from "./session.vue";
 import Message from "./message.vue";
 import Input from "./input.vue";
 import { parseContent } from "../utils";
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 import NotifyMp3 from "../static/notify.mp3";
 
 export default defineComponent({
@@ -81,10 +80,7 @@ export default defineComponent({
 	emits: ["message"],
 
 	setup(_, { emit }) {
-		const store = useStore();
-		const { refs, setRefs } = useRefs();
-		const service = inject<any>("service");
-		const mitt = inject<any>("mitt");
+		const { refs, setRefs, service, mitt, store } = useCool();
 
 		// 当前会话
 		const session = computed(() => store.getters.session);

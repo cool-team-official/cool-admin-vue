@@ -11,9 +11,8 @@
 </template>
 
 <script lang="ts">
-import { ElFile } from "element-plus/lib/el-upload/src/upload.type";
 import { defineComponent, inject } from "vue";
-import { useStore } from "vuex";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	props: {
@@ -24,11 +23,13 @@ export default defineComponent({
 	emits: ["before-upload", "success"],
 
 	setup(props, { emit }) {
-		const store = useStore();
+		const { store } = useCool();
+
+		// 聊天信息
 		const chat = inject<any>("chat");
 
 		// 上传前
-		function onBeforeUpload(file: ElFile) {
+		function onBeforeUpload(file: any) {
 			// 先添加到列表中，等待上传
 			function next(options = {}) {
 				const data = {

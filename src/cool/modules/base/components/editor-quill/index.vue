@@ -16,7 +16,7 @@ import { computed, defineComponent, onMounted, ref, watch } from "vue";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { isNumber } from "/@/core/utils";
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	name: "cl-editor-quill",
@@ -31,7 +31,7 @@ export default defineComponent({
 	emits: ["update:modelValue", "load"],
 
 	setup(props, { emit }) {
-		const { refs, setRefs }: any = useRefs();
+		const { refs, setRefs }: any = useCool();
 
 		let quill: any = null;
 

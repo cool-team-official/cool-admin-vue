@@ -1,15 +1,12 @@
-import { useStore } from "vuex";
 import { computed, defineComponent, h, ref, watch } from "vue";
 import "./index.scss";
-import { useRoute, useRouter } from "vue-router";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	name: "cl-menu-slider",
 
 	setup() {
-		const router = useRouter();
-		const route = useRoute();
-		const store = useStore();
+		const { router, route, store } = useCool();
 
 		// 是否可见
 		const visible = ref<boolean>(true);

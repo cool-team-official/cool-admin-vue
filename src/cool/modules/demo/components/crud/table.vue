@@ -7,12 +7,12 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import { TableColumn } from "cl-admin-crud-vue3/types";
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 import Test2 from "./render/test2";
 
 export default defineComponent({
 	setup() {
-		const { refs, setRefs } = useRefs();
+		const { refs, setRefs } = useCool();
 
 		const columns = ref<TableColumn[]>([
 			{

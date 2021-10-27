@@ -32,20 +32,15 @@
 
 <script lang="ts">
 import { computed, reactive, watch } from "vue";
-import { useStore } from "vuex";
-import { useRoute, useRouter } from "vue-router";
 import { last } from "/@/core/utils";
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 import { ContextMenu } from "cl-admin-crud-vue3";
 
 export default {
 	name: "cl-process",
 
 	setup() {
-		const router = useRouter();
-		const route = useRoute();
-		const store = useStore();
-		const { refs, setRefs }: any = useRefs();
+		const { refs, setRefs, store, route, router }: any = useCool();
 
 		// 参数配置
 		const menu = reactive<any>({

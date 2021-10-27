@@ -21,7 +21,7 @@
 import { computed, defineComponent } from "vue";
 import { ElConfigProvider } from "element-plus";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
-import { useStore } from "vuex";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	components: {
@@ -29,7 +29,7 @@ export default defineComponent({
 	},
 
 	setup() {
-		const store = useStore();
+		const { store } = useCool();
 		const locale = zhCn;
 		const loading = computed(() => store.getters.appLoading);
 

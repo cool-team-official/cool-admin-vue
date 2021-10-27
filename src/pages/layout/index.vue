@@ -30,9 +30,9 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { useStore } from "vuex";
 import Topbar from "./topbar.vue";
 import Slider from "./slider.vue";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	components: {
@@ -41,7 +41,7 @@ export default defineComponent({
 	},
 
 	setup() {
-		const store = useStore();
+		const { store } = useCool();
 
 		// 菜单是否折叠
 		const menuCollapse = computed<boolean>(() => store.getters.menuCollapse);

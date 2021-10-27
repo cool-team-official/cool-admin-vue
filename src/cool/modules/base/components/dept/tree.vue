@@ -64,7 +64,7 @@
 import { defineComponent, inject, onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { ContextMenu } from "cl-admin-crud-vue3";
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 import { deepTree, isArray, revDeepTree, isPc } from "/@/core/utils";
 
 export default defineComponent({
@@ -84,7 +84,7 @@ export default defineComponent({
 	emits: ["list-change", "row-click", "user-add"],
 
 	setup(props, { emit }) {
-		const { refs, setRefs } = useRefs();
+		const { refs, setRefs } = useCool();
 
 		// 树形列表
 		const list = ref<any[]>([]);

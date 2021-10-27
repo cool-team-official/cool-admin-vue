@@ -42,9 +42,9 @@
 
 <script lang="ts">
 import { defineComponent, inject, nextTick, reactive, ref } from "vue";
-import { useStore } from "vuex";
 import Emoji from "./emoji.vue";
 import Upload from "./upload.vue";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	components: {
@@ -53,9 +53,10 @@ export default defineComponent({
 	},
 
 	setup() {
-		const store = useStore();
+		const { store, mitt } = useCool();
+
+		// 聊天信息
 		const chat = inject<any>("chat");
-		const mitt = inject<any>("mitt");
 
 		// 输入值
 		const text = ref<string>("");

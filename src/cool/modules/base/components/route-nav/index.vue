@@ -17,17 +17,15 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from "vue";
-import { useStore } from "vuex";
-import { useRoute } from "vue-router";
 import _ from "lodash";
 import { isEmpty } from "/@/core/utils";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	name: "cl-route-nav",
 
 	setup() {
-		const route = useRoute();
-		const store = useStore();
+		const { store, route } = useCool();
 
 		// 数据列表
 		const list = ref<any[]>([]);

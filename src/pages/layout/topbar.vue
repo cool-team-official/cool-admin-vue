@@ -50,14 +50,12 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { useCool } from "/@/core";
 import { href } from "/@/core/utils";
 
 export default defineComponent({
 	setup() {
-		const store = useStore();
-		const router = useRouter();
+		const { store, router } = useCool();
 
 		// 菜单是否展开
 		const menuCollapse = computed<any>(() => store.getters.menuCollapse);

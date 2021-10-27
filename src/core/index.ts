@@ -5,11 +5,11 @@ import { useModule } from "./module";
 import router from "/@/router";
 import store from "/@/store";
 
-const services = useService();
+const service = useService();
 
 async function bootstrap(app: any) {
-	app.config.globalProperties.service = store.service = services;
-	app.provide("service", services);
+	app.config.globalProperties.service = store.service = service;
+	app.provide("service", service);
 
 	useRouter();
 	useModule(app);
@@ -34,8 +34,8 @@ function usePermission(list: any[]) {
 		}
 	}
 
-	deep(services);
+	deep(service);
 }
 
-export { Service, Permission, BaseService, services, bootstrap, usePermission };
+export { Service, Permission, BaseService, service, bootstrap, usePermission };
 export * from "./hook";

@@ -214,13 +214,13 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, onMounted, reactive } from "vue";
+import { computed, defineComponent, onMounted, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Draggable from "vuedraggable/src/vuedraggable";
 import { checkPerm } from "/$/base";
 import { ContextMenu } from "cl-admin-crud-vue3";
 import Cron from "../components/cron";
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	name: "task",
@@ -231,8 +231,7 @@ export default defineComponent({
 	},
 
 	setup() {
-		const { refs, setRefs } = useRefs();
-		const service = inject<any>("service");
+		const { refs, setRefs, service } = useCool();
 
 		// 任务列表
 		const list = reactive<any[]>([

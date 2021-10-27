@@ -1,6 +1,9 @@
 import { BaseService, Service, Permission } from "/@/core";
 
-@Service("base/sys/department")
+@Service({
+	namespace: "base/sys/department",
+	proxy: "/dev"
+})
 class SysDepartment extends BaseService {
 	@Permission("order")
 	order(data: any) {

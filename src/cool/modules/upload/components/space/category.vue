@@ -35,10 +35,9 @@
 <script lang="ts">
 import { ElMessage, ElMessageBox } from "element-plus";
 import { computed, defineComponent, inject, ref, watch } from "vue";
-import { useStore } from "vuex";
 import { isEmpty } from "/@/core/utils";
 import { ContextMenu } from "cl-admin-crud-vue3";
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	name: "cl-upload-space-category",
@@ -50,9 +49,8 @@ export default defineComponent({
 	emits: ["update:modelValue", "change"],
 
 	setup(_, { emit }) {
-		const store = useStore();
-		const { refs, setRefs }: any = useRefs();
-		const service: any = inject("service");
+		const { refs, setRefs, service, store }: any = useCool();
+
 		const space = inject<any>("space");
 
 		// 数据列表

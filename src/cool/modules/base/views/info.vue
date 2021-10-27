@@ -24,8 +24,8 @@
 
 <script lang="ts">
 import { ElMessage } from "element-plus";
-import { defineComponent, inject, reactive, ref } from "vue";
-import { useStore } from "vuex";
+import { defineComponent, reactive, ref } from "vue";
+import { useCool } from "/@/core";
 import { cloneDeep } from "/@/core/utils";
 
 export default defineComponent({
@@ -41,8 +41,7 @@ export default defineComponent({
 	},
 
 	setup() {
-		const store = useStore();
-		const service = inject<any>("service");
+		const { store, service } = useCool();
 
 		// 表单数据
 		const form = reactive<any>(cloneDeep(store.getters.userInfo));

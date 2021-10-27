@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { useStore } from "vuex";
+import { useCool } from "/@/core";
 
 // 表情列表
 const emoji = {
@@ -130,7 +130,7 @@ export default defineComponent({
 	emits: ["select"],
 
 	setup(_, { emit }) {
-		const store = useStore();
+		const { store } = useCool();
 
 		// 是否可见
 		const visible = ref<boolean>(false);

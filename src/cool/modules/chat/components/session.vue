@@ -53,18 +53,16 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, onUnmounted, reactive, ref } from "vue";
-import { useStore } from "vuex";
+import { computed, defineComponent, onUnmounted, reactive, ref } from "vue";
 import { ElMessage } from "element-plus";
 import { isEmpty } from "/@/core/utils";
 import { ContextMenu } from "cl-admin-crud-vue3";
 import { parseContent } from "../utils";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	setup() {
-		const store = useStore();
-		const service = inject<any>("service");
-		const mitt = inject<any>("mitt");
+		const { store, service, mitt } = useCool();
 
 		// 当前会话信息
 		const session = computed(() => store.getters.session);

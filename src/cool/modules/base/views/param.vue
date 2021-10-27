@@ -35,16 +35,15 @@
 
 <script lang="ts">
 import { ElMessageBox } from "element-plus";
-import { defineComponent, inject, nextTick, reactive } from "vue";
-import { useRefs } from "/@/core";
+import { defineComponent, nextTick, reactive } from "vue";
+import { useCool } from "/@/core";
 import { CrudLoad, Table, Upsert } from "cl-admin-crud-vue3/types";
 
 export default defineComponent({
 	name: "sys-param",
 
 	setup() {
-		const service = inject<any>("service");
-		const { refs, setRefs } = useRefs();
+		const { refs, setRefs, service } = useCool();
 
 		// 选项卡
 		const tab = reactive<any>({

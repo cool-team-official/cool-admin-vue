@@ -48,17 +48,16 @@
 
 <script lang="ts">
 import { ElMessage } from "element-plus";
-import { defineComponent, inject, reactive } from "vue";
+import { defineComponent, reactive } from "vue";
 import { checkPerm } from "/$/base";
-import { useRefs } from "/@/core";
+import { useCool } from "/@/core";
 import { CrudLoad, RefreshOp, Table } from "cl-admin-crud-vue3/types";
 
 export default defineComponent({
 	name: "plugin",
 
 	setup() {
-		const service = inject<any>("service");
-		const { refs, setRefs } = useRefs();
+		const { refs, setRefs, service } = useCool();
 
 		// 编辑权限
 		const { config, getConfig, enable } = service.base.plugin.info.permission;

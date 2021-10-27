@@ -16,22 +16,14 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from "vue";
-import { useStore } from "vuex";
-import { useRoute, useRouter } from "vue-router";
 import { firstMenu } from "../../utils";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	name: "cl-menu-topbar",
 
 	setup() {
-		// 缓存
-		const store = useStore();
-
-		// 路由控制
-		const router = useRouter();
-
-		// 当页路由
-		const route = useRoute();
+		const { store, router, route } = useCool();
 
 		// 选中标识
 		const index = ref<string>("0");

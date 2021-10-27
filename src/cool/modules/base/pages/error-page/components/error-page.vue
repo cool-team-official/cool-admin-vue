@@ -33,10 +33,9 @@
 </template>
 
 <script lang="ts">
-import { useStore } from "vuex";
 import { computed, defineComponent, ref } from "vue";
-import { useRouter } from "vue-router";
 import { href } from "/@/core/utils";
+import { useCool } from "/@/core";
 
 export default defineComponent({
 	props: {
@@ -45,8 +44,7 @@ export default defineComponent({
 	},
 
 	setup() {
-		const store = useStore();
-		const router = useRouter();
+		const { store, router } = useCool();
 
 		const url = ref<string>("");
 		const isLogout = ref<boolean>(false);
