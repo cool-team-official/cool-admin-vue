@@ -1,17 +1,18 @@
 <template>
-	<div class="cl-menu-tree">
-		<el-popover
-			placement="bottom-start"
-			trigger="click"
-			width="500px"
-			popper-class="popper-menu-tree"
-		>
-			<el-input v-model="keyword" size="small">
-				<template #prefix>
-					<i class="el-input__icon el-icon-search"></i>
-				</template>
-			</el-input>
+	<el-popover
+		:visible="visible"
+		placement="bottom-start"
+		trigger="click"
+		width="500px"
+		popper-class="cl-menu-tree"
+	>
+		<el-input v-model="keyword" size="small">
+			<template #prefix>
+				<i class="el-input__icon el-icon-search"></i>
+			</template>
+		</el-input>
 
+		<div class="cl-menu-tree__scroller scroller1">
 			<el-tree
 				ref="treeRef"
 				node-key="menuId"
@@ -26,12 +27,12 @@
 				:filter-node-method="filterNode"
 				@current-change="onCurrentChange"
 			/>
+		</div>
 
-			<template #reference>
-				<el-input v-model="name" readonly placeholder="请选择" />
-			</template>
-		</el-popover>
-	</div>
+		<template #reference>
+			<el-input v-model="name" readonly placeholder="请选择" @click="visible = true" />
+		</template>
+	</el-popover>
 </template>
 
 <script lang="ts">
@@ -54,6 +55,8 @@ export default defineComponent({
 		// 关键字
 		const keyword = ref<string>("");
 
+		const visible = ref<boolean>(false);
+
 		// 树形列表
 		const list = ref<any[]>([]);
 
@@ -66,6 +69,7 @@ export default defineComponent({
 		// 绑定值回调
 		function onCurrentChange({ id }: any) {
 			emit("update:modelValue", id);
+			visible.value = false;
 		}
 
 		// 刷新列表
@@ -107,6 +111,7 @@ export default defineComponent({
 		});
 
 		return {
+			visible,
 			keyword,
 			list,
 			expandedKeys,
@@ -122,11 +127,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.popper-menu-tree {
+.cl-menu-tree {
 	box-sizing: border-box;
 
 	.el-input {
 		margin-bottom: 10px;
+	}
+
+	&__scroller {
+		max-height: 400px;
+		overflow: hidden auto;
 	}
 }
 </style>
