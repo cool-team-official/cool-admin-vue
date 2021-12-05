@@ -3,7 +3,7 @@ import request from "/@/service/request";
 import { baseUrl, isDev } from "/@/config/env";
 
 export default class BaseService {
-	constructor() {
+	constructor(options: any = {}) {
 		const crud: any = {
 			page: "page",
 			list: "list",
@@ -12,6 +12,10 @@ export default class BaseService {
 			delete: "delete",
 			update: "update"
 		};
+
+		if (options?.namespace) {
+			this.namespace = options?.namespace;
+		}
 
 		if (!this.permission) this.permission = {};
 
@@ -51,62 +55,50 @@ export default class BaseService {
 		return request(options);
 	}
 
-	list(params: any) {
+	list(data: any) {
 		return this.request({
 			url: "/list",
 			method: "POST",
-			data: {
-				...params
-			}
+			data
 		});
 	}
 
-	page(params: any) {
+	page(data: any) {
 		return this.request({
 			url: "/page",
 			method: "POST",
-			data: {
-				...params
-			}
+			data
 		});
 	}
 
 	info(params: any) {
 		return this.request({
 			url: "/info",
-			params: {
-				...params
-			}
+			params
 		});
 	}
 
-	update(params: any) {
+	update(data: any) {
 		return this.request({
 			url: "/update",
 			method: "POST",
-			data: {
-				...params
-			}
+			data
 		});
 	}
 
-	delete(params: any) {
+	delete(data: any) {
 		return this.request({
 			url: "/delete",
 			method: "POST",
-			data: {
-				...params
-			}
+			data
 		});
 	}
 
-	add(params: any) {
+	add(data: any) {
 		return this.request({
 			url: "/add",
 			method: "POST",
-			data: {
-				...params
-			}
+			data
 		});
 	}
 }

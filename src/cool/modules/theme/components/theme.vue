@@ -107,7 +107,7 @@
 <script>
 import { mapGetters } from "vuex";
 import { isDev } from "/@/config/env";
-import { isArray, cloneDeep } from "/@/core/utils";
+import { isArray, cloneDeep } from "/@/cool/utils";
 
 export default {
 	name: "cl-theme",

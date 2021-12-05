@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { ContextMenu } from "cl-admin-crud-vue3";
+import { ContextMenu } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
 import { defineComponent } from "vue";
 

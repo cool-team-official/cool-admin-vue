@@ -2,7 +2,7 @@
 	<div class="page-login">
 		<div class="box">
 			<img class="logo" src="../../static/images/logo.png" alt="" />
-			<p class="desc">COOL ADMIN是一款快速开发后台权限管理系统</p>
+			<p class="desc">{{ app.name }}是一款快速开发后台权限管理系统</p>
 
 			<el-form label-position="top" class="form" size="medium" :disabled="saving">
 				<el-form-item label="用户名">
@@ -57,7 +57,8 @@
 import { defineComponent, reactive, ref } from "vue";
 import { ElMessage } from "element-plus";
 import Captcha from "./components/captcha.vue";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
+import { useEps } from "/@/cool/core";
 
 export default defineComponent({
 	cool: {
@@ -71,7 +72,7 @@ export default defineComponent({
 	},
 
 	setup() {
-		const { refs, setRefs, store, router }: any = useCool();
+		const { refs, setRefs, store, router, app }: any = useCool();
 
 		const saving = ref<boolean>(false);
 
@@ -106,6 +107,9 @@ export default defineComponent({
 				// 用户信息
 				await store.dispatch("userInfo");
 
+				// 读取Eps
+				await useEps();
+
 				// 权限菜单
 				const [first] = await store.dispatch("permMenu");
 
@@ -114,7 +118,7 @@ export default defineComponent({
 				} else {
 					router.push("/");
 				}
-			} catch (err) {
+			} catch (err: any) {
 				ElMessage.error(err);
 				refs.value.captcha.refresh();
 			}
@@ -124,10 +128,11 @@ export default defineComponent({
 
 		return {
 			refs,
+			setRefs,
 			form,
 			saving,
 			toLogin,
-			setRefs
+			app
 		};
 	}
 });

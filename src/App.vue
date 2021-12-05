@@ -2,7 +2,7 @@
 	<el-config-provider :locale="locale">
 		<div class="preload" v-if="loading">
 			<div class="container">
-				<p class="name">COOL-ADMIN</p>
+				<p class="name">{{ app.name }}</p>
 				<div class="loading"></div>
 				<p class="title">正在加载菜单...</p>
 				<p class="sub-title">初次加载资源可能需要较多时间 请耐心等待</p>
@@ -21,7 +21,7 @@
 import { computed, defineComponent } from "vue";
 import { ElConfigProvider } from "element-plus";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	components: {
@@ -29,13 +29,14 @@ export default defineComponent({
 	},
 
 	setup() {
-		const { store } = useCool();
+		const { store, app } = useCool();
 		const locale = zhCn;
 		const loading = computed(() => store.getters.appLoading);
 
 		return {
 			locale,
-			loading
+			loading,
+			app
 		};
 	}
 });

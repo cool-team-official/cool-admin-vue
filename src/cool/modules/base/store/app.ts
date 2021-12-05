@@ -1,6 +1,7 @@
 import store from "store";
-import { deepMerge, getBrowser } from "/@/core/utils";
+import { deepMerge, getBrowser } from "/@/cool/utils";
 import { app } from "/@/config/env";
+import { useEps } from "/@/cool";
 
 const browser = getBrowser();
 
@@ -29,8 +30,12 @@ const actions = {
 		if (getters.token) {
 			commit("SHOW_LOADING");
 
+			// 读取Eps
+			await useEps();
+
 			// 读取菜单权限
 			await dispatch("permMenu");
+
 			// 获取用户信息
 			dispatch("userInfo");
 

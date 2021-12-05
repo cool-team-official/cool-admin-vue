@@ -1,4 +1,4 @@
-import { BaseService, Service } from "/@/core";
+import { BaseService, Service } from "/@/cool";
 
 @Service("base/comm")
 class Common extends BaseService {
@@ -73,6 +73,15 @@ class Common extends BaseService {
 	permMenu() {
 		return this.request({
 			url: "/permmenu"
+		});
+	}
+
+	/**
+	 * 数据接口
+	 */
+	eps() {
+		return this.request({
+			url: "/eps"
 		});
 	}
 }

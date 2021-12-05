@@ -44,7 +44,7 @@
 import { defineComponent, inject, nextTick, reactive, ref } from "vue";
 import Emoji from "./emoji.vue";
 import Upload from "./upload.vue";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	components: {

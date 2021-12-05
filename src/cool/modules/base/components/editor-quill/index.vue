@@ -15,8 +15,8 @@
 import { computed, defineComponent, onMounted, ref, watch } from "vue";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import { isNumber } from "/@/core/utils";
-import { useCool } from "/@/core";
+import { isNumber } from "/@/cool/utils";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	name: "cl-editor-quill",

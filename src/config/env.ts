@@ -1,5 +1,5 @@
 import store from "store";
-import { getUrlParam } from "/@/core/utils";
+import { getUrlParam } from "/@/cool/utils";
 import { MenuItem } from "/$/base/types";
 
 // 路由模式

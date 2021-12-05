@@ -3,7 +3,8 @@ import { UserConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import viteCompression from "vite-plugin-compression";
-import { svgBuilder } from "./src/core/utils/svg";
+import { svgBuilder } from "./build/plugins/svg";
+import { cool } from "./build/plugins/cool";
 import Components from "unplugin-vue-components/vite";
 
 function resolve(dir: string) {
@@ -30,7 +31,14 @@ export default (): UserConfig => {
 
 	return {
 		base: "/",
-		plugins: [vue(), viteCompression(), Components(), vueJsx(), svgBuilder("./src/icons/svg/")],
+		plugins: [
+			vue(),
+			viteCompression(),
+			Components(),
+			vueJsx(),
+			svgBuilder("./src/icons/svg/"),
+			cool()
+		],
 		resolve: {
 			alias: {
 				"/@": resolve("src"),

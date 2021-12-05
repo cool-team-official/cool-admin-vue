@@ -108,7 +108,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { clone, last, isArray, isNumber, isBoolean, basename } from "/@/core/utils";
+import { clone, last, isArray, isNumber, isBoolean, basename } from "/@/cool/utils";
 import { v4 as uuidv4 } from "uuid";
 
 export default {
@@ -274,22 +274,23 @@ export default {
 		},
 
 		_urls() {
-			const format = {
-				image: ["bmp", "jpg", "jpeg", "png", "tif", "gif", "svg", "webp"]
-			};
-
-			return this.urls
-				.filter((e) => Boolean(e.url))
-				.map((e) => {
-					const arr = e.url.split(".");
-					const suf = last(arr).toLowerCase();
-					e.type = format.image.includes(suf) ? "image" : null;
-					return e;
-				});
+			return this.urls.filter((e) => Boolean(e.url));
 		},
 
 		_file() {
-			return this._urls[0];
+			const d = this._urls[0];
+
+			if (d) {
+				const suf = last(d.url.split(".")).toLowerCase();
+
+				if (["bmp", "jpg", "jpeg", "png", "tif", "gif", "svg", "webp"].includes(suf)) {
+					d.type = "image";
+				}
+
+				return d;
+			} else {
+				return null;
+			}
 		},
 
 		_style() {
@@ -402,15 +403,25 @@ export default {
 
 		// 预览图片
 		_onPreview(file) {
-			this.preview.visible = true;
-			this.preview.url = file.url;
+			let url = "";
 
-			if (!file.url) {
-				const item = this.urls.find((e) => e.uid == file.uid);
+			if (file.raw) {
+				if (file.raw.type.indexOf("image/") == 0) {
+					const item = this.urls.find((e) => e.uid == file.uid);
 
-				if (item) {
-					this.preview.url = item.url;
+					if (item) {
+						url = item.url;
+					}
 				}
+			} else {
+				if (file.type == "image") {
+					url = file.url;
+				}
+			}
+
+			if (url) {
+				this.preview.visible = true;
+				this.preview.url = url;
 			}
 		},
 

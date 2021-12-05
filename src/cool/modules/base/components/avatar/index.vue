@@ -1,6 +1,6 @@
 <template>
 	<div class="cl-avatar" :class="[size, shape]" :style="[style]">
-		<el-image :src="src" alt="">
+		<el-image :src="src || modelValue" alt="">
 			<template #error>
 				<div class="image-slot">
 					<i class="el-icon-user-solid" :style="{ color }"></i>
@@ -12,12 +12,13 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { isNumber } from "/@/core/utils";
+import { isNumber } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "cl-avatar",
 
 	props: {
+		modelValue: String,
 		src: String,
 		size: {
 			type: [String, Number],

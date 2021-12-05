@@ -1,11 +1,11 @@
-import cool from "/@/cool";
+import { modules as mods } from "/@/cool/modules";
 import store from "/@/store";
 import router from "/@/router";
 import { deepMerge, isFunction, isObject, isEmpty } from "../utils";
 import { deepFiles } from "../service";
 
 // 模块列表
-const modules: any[] = [...cool.modules];
+const modules: any[] = [...mods];
 
 function useModule(app: any) {
 	// 安装模块
@@ -77,6 +77,10 @@ function useModule(app: any) {
 		const [, , , , name, fn, cname] = i.split("/");
 		const value: any = files[i].default;
 		const fname: string = (cname || "").split(".")[0];
+
+		if (name == "index.ts") {
+			continue;
+		}
 
 		function next(d: any) {
 			// 配置参数入口
@@ -159,7 +163,8 @@ function useModule(app: any) {
 					pages: [],
 					views: [],
 					store: {},
-					_services: []
+					_services: [],
+					_local: true
 				})
 			);
 		}

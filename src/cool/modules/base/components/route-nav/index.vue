@@ -18,8 +18,8 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from "vue";
 import _ from "lodash";
-import { isEmpty } from "/@/core/utils";
-import { useCool } from "/@/core";
+import { isEmpty } from "/@/cool/utils";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	name: "cl-route-nav",

@@ -50,8 +50,8 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { useCool } from "/@/core";
-import { href } from "/@/core/utils";
+import { useCool } from "/@/cool";
+import { href } from "/@/cool/utils";
 
 export default defineComponent({
 	setup() {

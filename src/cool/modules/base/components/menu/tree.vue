@@ -1,43 +1,45 @@
 <template>
-	<el-popover
-		:visible="visible"
-		placement="bottom-start"
-		trigger="click"
-		width="500px"
-		popper-class="cl-menu-tree"
-	>
-		<el-input v-model="keyword" size="small">
-			<template #prefix>
-				<i class="el-input__icon el-icon-search"></i>
+	<div class="cl-menu-tree__wrap">
+		<el-popover
+			v-model:visible="visible"
+			placement="bottom-start"
+			trigger="click"
+			width="500px"
+			popper-class="cl-menu-tree"
+		>
+			<el-input v-model="keyword" size="small">
+				<template #prefix>
+					<i class="el-input__icon el-icon-search"></i>
+				</template>
+			</el-input>
+
+			<div class="cl-menu-tree__scroller scroller1">
+				<el-tree
+					ref="treeRef"
+					node-key="menuId"
+					:data="treeList"
+					:props="{
+						label: 'name',
+						children: 'children'
+					}"
+					:highlight-current="true"
+					:expand-on-click-node="false"
+					:default-expanded-keys="expandedKeys"
+					:filter-node-method="filterNode"
+					@current-change="onCurrentChange"
+				/>
+			</div>
+
+			<template #reference>
+				<el-input v-model="name" readonly placeholder="请选择" @click="visible = true" />
 			</template>
-		</el-input>
-
-		<div class="cl-menu-tree__scroller scroller1">
-			<el-tree
-				ref="treeRef"
-				node-key="menuId"
-				:data="treeList"
-				:props="{
-					label: 'name',
-					children: 'children'
-				}"
-				:highlight-current="true"
-				:expand-on-click-node="false"
-				:default-expanded-keys="expandedKeys"
-				:filter-node-method="filterNode"
-				@current-change="onCurrentChange"
-			/>
-		</div>
-
-		<template #reference>
-			<el-input v-model="name" readonly placeholder="请选择" @click="visible = true" />
-		</template>
-	</el-popover>
+		</el-popover>
+	</div>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, inject, onMounted, ref, watch } from "vue";
-import { deepTree } from "/@/core/utils";
+import { deepTree } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "cl-menu-tree",
@@ -74,7 +76,7 @@ export default defineComponent({
 
 		// 刷新列表
 		function refresh() {
-			service.base.system.menu.list().then((res: any) => {
+			service.base.sys.menu.list().then((res: any) => {
 				const _list = res.filter((e: any) => e.type != 2);
 
 				_list.unshift({

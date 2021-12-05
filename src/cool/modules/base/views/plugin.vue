@@ -50,8 +50,8 @@
 import { ElMessage } from "element-plus";
 import { defineComponent, reactive } from "vue";
 import { checkPerm } from "/$/base";
-import { useCool } from "/@/core";
-import { CrudLoad, RefreshOp, Table } from "cl-admin-crud-vue3/types";
+import { useCool } from "/@/cool";
+import { CrudLoad, RefreshOp, Table } from "@cool-vue/crud/types";
 
 export default defineComponent({
 	name: "plugin",

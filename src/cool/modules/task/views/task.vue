@@ -218,9 +218,9 @@ import { computed, defineComponent, onMounted, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Draggable from "vuedraggable/src/vuedraggable";
 import { checkPerm } from "/$/base";
-import { ContextMenu } from "cl-admin-crud-vue3";
+import { ContextMenu } from "@cool-vue/crud";
 import Cron from "../components/cron";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	name: "task",

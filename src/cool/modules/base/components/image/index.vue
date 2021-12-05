@@ -27,12 +27,14 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { isArray, isNumber, isString } from "/@/core/utils";
+import { isArray, isNumber, isString } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "cl-image",
 
 	props: {
+		modelValue: [String, Array],
+		src: [String, Array],
 		size: {
 			type: [Number, Array],
 			default: 100
@@ -45,7 +47,6 @@ export default defineComponent({
 			type: String,
 			default: "cover"
 		},
-		src: [String, Array],
 		justify: {
 			type: String,
 			default: "center"
@@ -54,7 +55,7 @@ export default defineComponent({
 
 	setup(props) {
 		const urls = computed(() => {
-			const urls: any = props.src;
+			const urls: any = props.modelValue || props.src;
 
 			if (isArray(urls)) {
 				return urls;

@@ -5,15 +5,15 @@ declare module "*.vue" {
 	export default component;
 }
 
-declare module "cl-admin-crud-vue3" {
-	import type { ClContextMenu } from "cl-admin-crud-vue3/types";
+declare module "@cool-vue/crud" {
+	import type { ClContextMenu } from "@cool-vue/crud/types";
 	import type { Plugin } from "vue";
 
 	const ContextMenu: ClContextMenu;
 	const Crud: Plugin;
 
 	export { ContextMenu, Crud };
-	export * from "cl-admin-crud-vue3";
+	export * from "@cool-vue/crud";
 }
 
 declare module "array.prototype.flat" {

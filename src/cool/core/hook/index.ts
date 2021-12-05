@@ -1,4 +1,4 @@
-import { onBeforeUpdate, ref, inject } from "vue";
+import { onBeforeUpdate, ref, inject, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 
@@ -23,6 +23,7 @@ export function useCool() {
 	const store = useStore();
 	const route = useRoute();
 	const router = useRouter();
+	const app = computed(() => store.getters.app);
 
 	return {
 		store,
@@ -31,6 +32,18 @@ export function useCool() {
 		refs,
 		setRefs,
 		service,
-		mitt
+		mitt,
+		app
+	};
+}
+
+export function useModule() {
+	const store = useStore();
+	const moduleList = computed(() => store.getters.moduleList);
+	const modules = computed(() => store.getters.modules);
+
+	return {
+		moduleList,
+		modules
 	};
 }

@@ -9,6 +9,7 @@ export const UserList = [
 		createTime: "2019年09月02日",
 		price: 75.99,
 		status: 1,
+		urls: "https://images.quanjing.com/ojo003/thu/pe0082640.jpg,https://images.quanjing.com/rad005/thu/rad600-02347621.jpg",
 		hook: "1,2"
 	},
 	{
@@ -16,28 +17,32 @@ export const UserList = [
 		name: "陈二",
 		createTime: "2019年09月05日",
 		price: 242.1,
-		status: 1
+		urls: [
+			"https://images.quanjing.com/rad005/thu/rad600-02347621.jpg",
+			"https://images.quanjing.com/ojo003/thu/pe0082640.jpg"
+		],
+		status: 2
 	},
 	{
 		id: 3,
 		name: "张三",
 		createTime: "2019年09月12日",
 		price: 74.11,
-		status: 0
+		status: 3
 	},
 	{
 		id: 4,
 		name: "李四",
 		createTime: "2019年09月13日",
 		price: 276.64,
-		status: 0
+		status: 4
 	},
 	{
 		id: 5,
 		name: "王五",
 		createTime: "2019年09月18日",
 		price: 160.23,
-		status: 1
+		status: 5
 	}
 ];
 

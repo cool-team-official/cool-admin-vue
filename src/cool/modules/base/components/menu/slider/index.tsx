@@ -1,6 +1,6 @@
 import { computed, defineComponent, h, ref, watch } from "vue";
 import "./index.scss";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	name: "cl-menu-slider",

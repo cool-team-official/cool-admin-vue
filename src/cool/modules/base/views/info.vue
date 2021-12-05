@@ -25,8 +25,8 @@
 <script lang="ts">
 import { ElMessage } from "element-plus";
 import { defineComponent, reactive, ref } from "vue";
-import { useCool } from "/@/core";
-import { cloneDeep } from "/@/core/utils";
+import { useCool } from "/@/cool";
+import { cloneDeep } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "sys-info",

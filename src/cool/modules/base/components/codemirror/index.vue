@@ -17,7 +17,7 @@ import "codemirror/addon/hint/show-hint.css";
 import "codemirror/theme/hopscotch.css";
 import "codemirror/addon/hint/javascript-hint";
 import "codemirror/mode/javascript/javascript";
-import { deepMerge } from "/@/core/utils";
+import { deepMerge } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "cl-codemirror",

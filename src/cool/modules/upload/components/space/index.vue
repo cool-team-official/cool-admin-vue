@@ -140,10 +140,10 @@
 <script lang="ts">
 import { computed, defineComponent, provide, reactive, ref, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { isEmpty } from "/@/core/utils";
+import { isEmpty } from "/@/cool/utils";
 import Category from "./category.vue";
 import FileItem from "./file-item.vue";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	name: "cl-upload-space",
@@ -283,7 +283,7 @@ export default defineComponent({
 		}
 
 		// 上传失败
-		function onError(err: string, file: ElFile) {
+		function onError(err: string, file: any) {
 			const item = list.value.find((e) => file.uid == e.uid);
 
 			if (item) {
@@ -305,7 +305,7 @@ export default defineComponent({
 		}
 
 		// 上传进度
-		function onProgress({ percent }: any, file: ElFile) {
+		function onProgress({ percent }: any, file: any) {
 			const item = list.value.find(({ uid }: any) => uid == file.uid);
 
 			if (item) {

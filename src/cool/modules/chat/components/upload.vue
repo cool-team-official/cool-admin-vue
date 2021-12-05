@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { defineComponent, inject } from "vue";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	props: {
@@ -85,7 +85,7 @@ export default defineComponent({
 		}
 
 		// 上传中
-		function onUploadProgress(e: any, file: ElFile) {
+		function onUploadProgress(e: any, file: any) {
 			store.commit("UPDATE_MESSAGE", {
 				file,
 				data: {
@@ -95,7 +95,7 @@ export default defineComponent({
 		}
 
 		// 上传成功
-		function onUploadSuccess(res: any, file: ElFile) {
+		function onUploadSuccess(res: any, file: any) {
 			store.commit("UPDATE_MESSAGE", {
 				file,
 				data: {

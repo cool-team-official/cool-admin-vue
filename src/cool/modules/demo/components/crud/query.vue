@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { QueryList } from "cl-admin-crud-vue3/types";
+import { QueryList } from "@cool-vue/crud/types";
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({

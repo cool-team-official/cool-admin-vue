@@ -34,8 +34,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { href } from "/@/core/utils";
-import { useCool } from "/@/core";
+import { href } from "/@/cool/utils";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	props: {

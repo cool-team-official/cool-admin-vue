@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
 
 // 表情列表
 const emoji = {

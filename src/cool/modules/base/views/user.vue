@@ -28,7 +28,7 @@
 							<cl-add-btn />
 							<cl-multi-delete-btn />
 							<el-button
-								v-permission="service.base.system.user.permission.move"
+								v-permission="service.base.sys.user.permission.move"
 								size="mini"
 								type="success"
 								:disabled="selects.ids.length == 0"
@@ -71,7 +71,7 @@
 								<!-- 单个转移 -->
 								<template #slot-move-btn="{ scope }">
 									<el-button
-										v-permission="service.base.system.user.permission.move"
+										v-permission="service.base.sys.user.permission.move"
 										type="text"
 										size="mini"
 										@click="toMove(scope.row)"
@@ -103,8 +103,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, reactive, ref, watch } from "vue";
-import { useCool } from "/@/core";
-import { Table, Upsert } from "cl-admin-crud-vue3/types";
+import { useCool } from "/@/cool";
+import { Table, Upsert } from "@cool-vue/crud/types";
 
 export default defineComponent({
 	name: "sys-user",
@@ -379,7 +379,7 @@ export default defineComponent({
 
 		// crud 加载
 		function onLoad({ ctx, app }: any) {
-			ctx.service(service.base.system.user).done();
+			ctx.service(service.base.sys.user).done();
 			app.refresh();
 		}
 

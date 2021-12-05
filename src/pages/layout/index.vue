@@ -32,7 +32,7 @@
 import { computed, defineComponent } from "vue";
 import Topbar from "./topbar.vue";
 import Slider from "./slider.vue";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	components: {

@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { isNumber } from "/@/core/utils";
+import { isNumber } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "icon-svg",

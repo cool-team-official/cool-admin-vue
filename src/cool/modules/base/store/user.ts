@@ -1,4 +1,4 @@
-import { storage, href } from "/@/core/utils";
+import { storage, href } from "/@/cool/utils";
 import store from "/@/store";
 import { Token } from "../types";
 

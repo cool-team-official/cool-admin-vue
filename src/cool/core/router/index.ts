@@ -1,8 +1,7 @@
 import { ElMessage } from "element-plus";
 import store from "/@/store";
 import router, { ignore } from "/@/router";
-import storage from "../utils/storage";
-import { cloneDeep } from "../utils";
+import { cloneDeep, storage } from "../utils";
 
 const views = import.meta.globEager("/src/**/views/**/*.vue");
 

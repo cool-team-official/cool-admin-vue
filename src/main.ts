@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 
 // cool
-import { bootstrap } from "./core";
+import { bootstrap } from "./cool";
 
 // router
 import router from "./router";
@@ -10,6 +10,7 @@ import router from "./router";
 // store
 import store from "./store";
 
+// mock
 import "./mock";
 
 // element-plus
@@ -26,10 +27,10 @@ const app = createApp(App);
 
 bootstrap(app)
 	.then(() => {
-		// // echarts 可视图表
+		// echarts 可视图表
 		app.component("v-chart", VueECharts);
 
-		// // 事件通讯
+		// 事件通讯
 		app.provide("mitt", mitt());
 
 		app.use(store).use(router).use(ElementPlus).mount("#app");

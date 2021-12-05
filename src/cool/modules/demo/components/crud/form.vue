@@ -50,7 +50,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, resolveComponent, h } from "vue";
-import { CrudLoad, FormItem, FormRef } from "cl-admin-crud-vue3/types";
+import { CrudLoad, FormItem, FormRef } from "@cool-vue/crud/types";
 import { TestService } from "../../utils/service";
 import Test from "./render/test.vue";
 import Test2 from "./render/test2";

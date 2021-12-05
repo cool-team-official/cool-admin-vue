@@ -1,7 +1,5 @@
 import { isObject } from "../utils";
 
-console.log(__PROXY_LIST__);
-
 export function Permission(value: string) {
 	return function (target: any, key: any, descriptor: any) {
 		if (!target.permission) {

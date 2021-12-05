@@ -113,8 +113,8 @@
 import { computed, defineComponent, inject, nextTick, onUnmounted, reactive, ref } from "vue";
 import dayjs from "dayjs";
 import { ElMessage } from "element-plus";
-import { isString } from "/@/core/utils";
-import { useCool } from "/@/core";
+import { isString } from "/@/cool/utils";
+import { useCool } from "/@/cool";
 import IconVoice from "./icon-voice.vue";
 
 import AvatarUrl from "../static/images/custom-avatar.png";

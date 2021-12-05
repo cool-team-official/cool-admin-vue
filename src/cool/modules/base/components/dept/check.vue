@@ -33,10 +33,10 @@
 </template>
 
 <script lang="ts">
-import { deepTree } from "/@/core/utils";
+import { deepTree } from "/@/cool/utils";
 import { ElMessage } from "element-plus";
 import { defineComponent, inject, nextTick, onMounted, ref, watch } from "vue";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	name: "cl-dept-check",
@@ -79,7 +79,7 @@ export default defineComponent({
 
 		// 刷新树形列表
 		function refresh() {
-			service.base.system.dept
+			service.base.sys.department
 				.list()
 				.then((res: any[]) => {
 					list.value = deepTree(res);

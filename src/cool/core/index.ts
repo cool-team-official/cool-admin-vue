@@ -1,11 +1,8 @@
-import BaseService from "./service/base";
-import { Service, Permission, useService } from "./service";
-import { useRouter } from "./router";
-import { useModule } from "./module";
 import router from "/@/router";
 import store from "/@/store";
-
-const service = useService();
+import { service } from "./service";
+import { useRouter } from "./router";
+import { useModule } from "./module";
 
 async function bootstrap(app: any) {
 	app.config.globalProperties.service = store.service = service;
@@ -37,5 +34,6 @@ function usePermission(list: any[]) {
 	deep(service);
 }
 
-export { Service, Permission, BaseService, service, bootstrap, usePermission };
+export { service, bootstrap, usePermission };
+export { BaseService, Service, Permission, useEps } from "./service";
 export * from "./hook";

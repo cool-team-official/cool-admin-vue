@@ -1,4 +1,4 @@
-import { isBoolean } from "/@/core/utils";
+import { isBoolean } from "/@/cool/utils";
 
 const state = {
 	list: [],

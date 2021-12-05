@@ -14,7 +14,7 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import Logo from "/@/assets/icon/logo/silder-simple.png";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	setup() {

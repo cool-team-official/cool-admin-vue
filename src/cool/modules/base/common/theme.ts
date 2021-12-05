@@ -1,5 +1,5 @@
 import { iconfontUrl, app } from "/@/config/env";
-import { basename } from "/@/core/utils";
+import { basename } from "/@/cool/utils";
 import { createLink } from "../utils";
 
 // 主题初始化

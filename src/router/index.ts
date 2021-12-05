@@ -1,11 +1,17 @@
-import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from "vue-router";
-import { CoolRouter } from "/@/core/types";
+import {
+	createRouter,
+	createWebHashHistory,
+	createWebHistory,
+	Router,
+	RouteRecordRaw
+} from "vue-router";
 import { routerMode } from "/@/config/env";
 
-// 忽略规则
-const ignore: any = {
-	token: ["/login", "/403", "/404", "/500", "/502"]
-};
+declare interface CoolRouter extends Router {
+	$plugin?: {
+		addViews(list: any[], options?: any): void;
+	};
+}
 
 const routes: Array<RouteRecordRaw> = [
 	{
@@ -33,4 +39,7 @@ const router = createRouter({
 }) as CoolRouter;
 
 export default router;
-export { ignore };
+
+export const ignore: any = {
+	token: ["/login", "/403", "/404", "/500", "/502"]
+};

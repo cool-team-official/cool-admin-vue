@@ -1,10 +1,10 @@
 <template>
-	<div class="cl-menu-icons">
+	<div class="cl-menu-icons__wrap">
 		<el-popover
+			v-model:visible="visible"
 			placement="bottom-start"
-			trigger="click"
 			width="480px"
-			popper-class="popper-menu-icon"
+			popper-class="cl-menu-icons"
 		>
 			<el-row :gutter="10" class="list scroller1">
 				<el-col v-for="(item, index) in list" :key="index" :span="3" :xs="4">
@@ -91,7 +91,7 @@ export default defineComponent({
 
 .
 <style lang="scss">
-.popper-menu-icon {
+.cl-menu-icons {
 	max-width: 90%;
 	box-sizing: border-box;
 

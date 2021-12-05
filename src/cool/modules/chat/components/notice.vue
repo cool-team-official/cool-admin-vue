@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, onBeforeMount, ref } from "vue-demi";
-import { useCool } from "/@/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	name: "cl-chat-notice",

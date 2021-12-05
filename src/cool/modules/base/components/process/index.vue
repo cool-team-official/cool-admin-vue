@@ -32,9 +32,9 @@
 
 <script lang="ts">
 import { computed, reactive, watch } from "vue";
-import { last } from "/@/core/utils";
-import { useCool } from "/@/core";
-import { ContextMenu } from "cl-admin-crud-vue3";
+import { last } from "/@/cool/utils";
+import { useCool } from "/@/cool";
+import { ContextMenu } from "@cool-vue/crud";
 
 export default {
 	name: "cl-process",

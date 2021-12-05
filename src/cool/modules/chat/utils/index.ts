@@ -1,4 +1,4 @@
-import { isObject } from "/@/core/utils";
+import { isObject } from "/@/cool/utils";
 
 export function parseContent({ content, contentType }: any) {
 	const data = isObject(content) ? content : JSON.parse(content);

@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { CrudLoad, Table, Upsert } from "cl-admin-crud-vue3/types";
+import { CrudLoad, Table, Upsert } from "@cool-vue/crud/types";
 import { defineComponent, inject, reactive } from "vue";
 
 export default defineComponent({
@@ -153,7 +153,7 @@ export default defineComponent({
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {
-			ctx.service(service.base.system.role).done();
+			ctx.service(service.base.sys.role).done();
 			app.refresh();
 		}
 

@@ -3,6 +3,7 @@
 		<el-row type="flex">
 			<cl-refresh-btn />
 			<cl-add-btn />
+			<cl-menu-quick @success="refresh()" v-if="isDev" />
 		</el-row>
 
 		<el-row>
@@ -77,10 +78,11 @@
 </template>
 
 <script lang="ts">
-import { useCool } from "/@/core";
-import { deepTree } from "/@/core/utils";
+import { useCool } from "/@/cool";
+import { deepTree } from "/@/cool/utils";
 import { defineComponent, reactive } from "vue";
-import { CrudLoad, Table, Upsert, RefreshOp } from "cl-admin-crud-vue3/types";
+import { CrudLoad, Table, Upsert, RefreshOp } from "@cool-vue/crud/types";
+import { isDev } from "/@/config/env";
 
 export default defineComponent({
 	name: "sys-menu",
@@ -90,13 +92,13 @@ export default defineComponent({
 
 		// crud 加载
 		function onLoad({ ctx, app }: CrudLoad) {
-			ctx.service(service.base.system.menu).done();
+			ctx.service(service.base.sys.menu).done();
 			app.refresh();
 		}
 
 		// 刷新监听
 		function onRefresh(_: any, { render }: RefreshOp) {
-			service.base.system.menu.list().then((list: any[]) => {
+			service.base.sys.menu.list().then((list: any[]) => {
 				list.map((e) => {
 					e.permList = e.perms ? e.perms.split(",") : [];
 				});
@@ -133,6 +135,11 @@ export default defineComponent({
 		// 跳转
 		function toUrl(url: string) {
 			router.push(url);
+		}
+
+		// 刷新
+		function refresh() {
+			refs.value.crud.refresh();
 		}
 
 		// 表格配置
@@ -238,7 +245,9 @@ export default defineComponent({
 
 		// 新增、编辑配置
 		const upsert = reactive<Upsert>({
-			width: "800px",
+			dialog: {
+				width: "800px"
+			},
 			items: [
 				{
 					prop: "type",
@@ -273,10 +282,7 @@ export default defineComponent({
 							placeholder: "请输入节点名称"
 						}
 					},
-					rules: {
-						required: true,
-						message: "名称不能为空"
-					}
+					required: true
 				},
 				{
 					prop: "parentId",
@@ -294,7 +300,7 @@ export default defineComponent({
 					component: {
 						name: "el-input",
 						props: {
-							placeholder: "请输入节点路由"
+							placeholder: "请输入节点路由，如：/test"
 						}
 					}
 				},
@@ -383,7 +389,9 @@ export default defineComponent({
 			onRowClick,
 			upsertAppend,
 			setPermission,
-			toUrl
+			toUrl,
+			refresh,
+			isDev
 		};
 	}
 });

@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import { isPc } from "/@/core/utils";
+import { isPc } from "/@/cool/utils";
 
 export default defineComponent({
 	setup() {

@@ -1,5 +1,8 @@
-import { createStore } from "vuex";
-import { CoolStore } from "/@/core/types";
+import { createStore, Store } from "vuex";
+
+declare class CoolStore<S> extends Store<S> {
+	service?: any;
+}
 
 const store = createStore({
 	strict: true
