@@ -200,14 +200,14 @@ function datetimeMerge({ columns, item }: any) {
 		const key = item.prop.replace("start", "");
 
 		if (columns.find((e: any) => e.propertyName == "end" + key)) {
-			item.label = key == "time" ? "时间范围" : "日期访问";
+			item.label = key == "time" ? "时间范围" : "日期范围";
 			item.prop = key.toLocaleLowerCase();
 			item.hook = "datetimeRange";
 			item.component = {
 				name: "el-date-picker",
 				props: {
 					type: key == "time" ? "datetimerange" : "daterange",
-					valueFormat: "YYYY-MM-DD HH:mm:ss"
+					valueFormat: "time" ? "YYYY-MM-DD HH:mm:ss" : "YYYY-MM-DD 00:00:00"
 				}
 			};
 		}
