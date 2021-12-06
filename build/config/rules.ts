@@ -75,16 +75,20 @@ export default [
 		form: {
 			name: "el-date-picker",
 			props: {
-				type: "date"
+				type: "date",
+				valueFormat: "YYYY-MM-DD"
 			}
 		}
 	},
 	{
 		test: ["dates", "dateRange", "dateScope"],
 		form: {
-			name: "el-date-picker",
-			props: {
-				type: "daterange"
+			component: {
+				name: "el-date-picker",
+				props: {
+					type: "daterange",
+					valueFormat: "YYYY-MM-DD"
+				}
 			}
 		}
 	},
@@ -93,16 +97,20 @@ export default [
 		form: {
 			name: "el-date-picker",
 			props: {
-				type: "datetime"
+				type: "datetime",
+				valueFormat: "YYYY-MM-DD HH:mm:ss"
 			}
 		}
 	},
 	{
 		test: ["times", "timeRange", "timeScope"],
 		form: {
-			name: "el-date-picker",
-			props: {
-				type: "datetimerange"
+			component: {
+				name: "el-date-picker",
+				props: {
+					type: "datetimerange",
+					valueFormat: "YYYY-MM-DD HH:mm:ss"
+				}
 			}
 		}
 	},
