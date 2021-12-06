@@ -212,7 +212,13 @@ function createVue({ router, columns, prefix, api, module, filename }: any): voi
 			item.required = true;
 		}
 
-		if (item.component) {
+		if (!["createTime", "updateTime", "id"].includes(item.prop)) {
+			if (!item.component) {
+				item.component = {
+					name: "el-input"
+				};
+			}
+
 			upsert.items.push(format(item));
 		}
 
