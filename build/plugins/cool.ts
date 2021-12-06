@@ -20,7 +20,6 @@ function format(data: any) {
 
 // 颜色
 const colors = [
-	"",
 	"#409EFF",
 	"#67C23A",
 	"#E6A23C",
@@ -35,6 +34,9 @@ const colors = [
 
 // 组件处理器
 const handler = {
+	// 临时变量
+	d: {},
+
 	// 单选
 	dict({ comment }) {
 		const [label, ...arr] = comment.split(" ");
@@ -47,7 +49,7 @@ const handler = {
 				value: isNaN(Number(value)) ? value : Number(value)
 			};
 
-			if (colors[i]) {
+			if (i > 0 && colors[i]) {
 				d.color = colors[i];
 			}
 
@@ -192,6 +194,26 @@ function getPageName(router: string) {
 	return router ? `name: "${router.replace("/", "-")}",` : "";
 }
 
+// 时间合并
+function datetimeMerge({ columns, item }: any) {
+	if (["startTime", "startDate"].includes(item.prop)) {
+		const key = item.prop.replace("start", "");
+
+		if (columns.find((e: any) => e.propertyName == "end" + key)) {
+			item.label = key == "time" ? "时间范围" : "日期访问";
+			item.prop = key.toLocaleLowerCase();
+			item.hook = "datetimeRange";
+			item.component = {
+				name: "el-date-picker",
+				props: {
+					type: key == "time" ? "datetimerange" : "daterange",
+					valueFormat: "YYYY-MM-DD HH:mm:ss"
+				}
+			};
+		}
+	}
+}
+
 // 创建文件
 function createVue({ router, columns, prefix, api, module, filename }: any): void {
 	const upsert: any = {
@@ -212,7 +234,10 @@ function createVue({ router, columns, prefix, api, module, filename }: any): voi
 			item.required = true;
 		}
 
-		if (!["createTime", "updateTime", "id"].includes(item.prop)) {
+		// 忽略部分字段
+		if (!["createTime", "updateTime", "id", "endTime", "endDate"].includes(item.prop)) {
+			datetimeMerge({ columns, item });
+
 			if (!item.component) {
 				item.component = {
 					name: "el-input"
