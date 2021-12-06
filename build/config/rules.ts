@@ -72,6 +72,12 @@ export default [
 	},
 	{
 		test: ["date"],
+		table: {
+			name: "cl-date",
+			props: {
+				format: "YYYY-MM-DD"
+			}
+		},
 		form: {
 			name: "el-date-picker",
 			props: {
@@ -82,6 +88,12 @@ export default [
 	},
 	{
 		test: ["dates", "dateRange", "dateScope"],
+		table: {
+			name: "cl-date",
+			props: {
+				format: "YYYY-MM-DD"
+			}
+		},
 		form: {
 			component: {
 				name: "el-date-picker",
@@ -109,7 +121,8 @@ export default [
 				name: "el-date-picker",
 				props: {
 					type: "datetimerange",
-					valueFormat: "YYYY-MM-DD HH:mm:ss"
+					valueFormat: "YYYY-MM-DD HH:mm:ss",
+					defaultTime: [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]
 				}
 			}
 		}

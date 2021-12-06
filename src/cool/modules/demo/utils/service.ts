@@ -6,41 +6,36 @@ export const UserList = [
 	{
 		id: 1,
 		name: "刘一",
-		createTime: "2019年09月02日",
+		createTime: "2019-09-02 12:00:00",
 		price: 75.99,
 		status: 1,
-		urls: "https://images.quanjing.com/ojo003/thu/pe0082640.jpg,https://images.quanjing.com/rad005/thu/rad600-02347621.jpg",
 		hook: "1,2"
 	},
 	{
 		id: 2,
 		name: "陈二",
-		createTime: "2019年09月05日",
+		createTime: "2019-09-05",
 		price: 242.1,
-		urls: [
-			"https://images.quanjing.com/rad005/thu/rad600-02347621.jpg",
-			"https://images.quanjing.com/ojo003/thu/pe0082640.jpg"
-		],
 		status: 2
 	},
 	{
 		id: 3,
 		name: "张三",
-		createTime: "2019年09月12日",
+		createTime: "2019-09-12",
 		price: 74.11,
 		status: 3
 	},
 	{
 		id: 4,
 		name: "李四",
-		createTime: "2019年09月13日",
+		createTime: "2019-09-13",
 		price: 276.64,
 		status: 4
 	},
 	{
 		id: 5,
 		name: "王五",
-		createTime: "2019年09月18日",
+		createTime: "2019-09-18",
 		price: 160.23,
 		status: 5
 	}
@@ -92,7 +87,7 @@ export const TestService = {
 		UserList.push({
 			...d,
 			id: id++,
-			createTime: dayjs().format("YYYY年MM月DD日")
+			createTime: dayjs().format("YYYY-MM-DD日")
 		});
 		return Promise.resolve();
 	},

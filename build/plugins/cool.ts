@@ -34,9 +34,6 @@ const colors = [
 
 // 组件处理器
 const handler = {
-	// 临时变量
-	d: {},
-
 	// 单选
 	dict({ comment }) {
 		const [label, ...arr] = comment.split(" ");
@@ -207,7 +204,8 @@ function datetimeMerge({ columns, item }: any) {
 				name: "el-date-picker",
 				props: {
 					type: key == "time" ? "datetimerange" : "daterange",
-					valueFormat: "time" ? "YYYY-MM-DD HH:mm:ss" : "YYYY-MM-DD 00:00:00"
+					valueFormat: "time" ? "YYYY-MM-DD HH:mm:ss" : "YYYY-MM-DD 00:00:00",
+					defaultTime: [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]
 				}
 			};
 		}

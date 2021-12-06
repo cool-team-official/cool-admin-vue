@@ -63,7 +63,13 @@ export default defineComponent({
 			{
 				label: "创建时间",
 				prop: "createTime",
-				minWidth: 150
+				minWidth: 150,
+				component: {
+					name: "cl-date",
+					props: {
+						format: "YYYY-MM-DD"
+					}
+				}
 			},
 			{
 				label: "操作",

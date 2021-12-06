@@ -48,6 +48,22 @@ export default defineComponent({
 				component: {
 					name: "el-switch"
 				}
+			},
+			{
+				label: "时间",
+				prop: "time",
+				hook: "datetimeRange",
+				component: {
+					name: "el-date-picker",
+					props: {
+						type: "datetimerange",
+						valueFormat: "YYYY-MM-DD HH:mm:ss",
+						defaultTime: [
+							new Date(2000, 1, 1, 0, 0, 0),
+							new Date(2000, 1, 1, 23, 59, 59)
+						]
+					}
+				}
 			}
 		]);
 
