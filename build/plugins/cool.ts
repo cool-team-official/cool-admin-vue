@@ -246,7 +246,9 @@ function createVue({ router, columns, prefix, api, module, filename }: any): voi
 			upsert.items.push(format(item));
 		}
 
-		table.columns.push(format(column));
+		if (!["cl-codemirror", "cl-editor-quill"].includes(item.component.name)) {
+			table.columns.push(format(column));
+		}
 	});
 
 	// 服务
