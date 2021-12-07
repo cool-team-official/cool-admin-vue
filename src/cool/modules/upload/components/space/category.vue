@@ -81,7 +81,7 @@ export default defineComponent({
 
 		// 刷新分类
 		function refresh() {
-			return service.upload.type.list().then((res: any) => {
+			return service.space.type.list().then((res: any) => {
 				res.unshift({
 					name: "全部文件",
 					id: null
@@ -124,9 +124,9 @@ export default defineComponent({
 						let next = null;
 
 						if (!item.id) {
-							next = service.upload.type.add(data);
+							next = service.space.type.add(data);
 						} else {
-							next = service.upload.type.update({
+							next = service.space.type.update({
 								...data,
 								id: item.id
 							});
@@ -164,7 +164,7 @@ export default defineComponent({
 				list: [
 					{
 						label: "刷新",
-						"suffix-icon": "el-icon-edit",
+						"suffix-icon": "el-icon-refresh",
 						callback: (_: any, done: Function) => {
 							refresh();
 							done();
@@ -190,7 +190,7 @@ export default defineComponent({
 								}
 							)
 								.then(() => {
-									service.upload.type
+									service.space.type
 										.delete({
 											ids: [id]
 										})

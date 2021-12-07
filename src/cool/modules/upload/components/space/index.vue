@@ -266,7 +266,7 @@ export default defineComponent({
 			if (item) {
 				item.url = res.data;
 
-				service.upload.info
+				service.space.info
 					.add({
 						url: res.data,
 						type: item.type,
@@ -321,7 +321,7 @@ export default defineComponent({
 			// 加载中
 			loading.value = true;
 
-			await service.upload.info
+			await service.space.info
 				.page({
 					...pagination,
 					...params,
@@ -386,7 +386,7 @@ export default defineComponent({
 					});
 
 					// 删除请求
-					service.upload.info
+					service.space.info
 						.delete({
 							ids
 						})
