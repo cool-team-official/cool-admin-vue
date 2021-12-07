@@ -177,6 +177,9 @@ export default [
 	},
 	{
 		test: ["rich", "text", "html", "content", "introduce", "description", "desc"],
+		table: {
+			name: "cl-editor-quill"
+		},
 		form: {
 			name: "cl-editor-quill",
 			props: {
@@ -186,6 +189,9 @@ export default [
 	},
 	{
 		test: ["code", "codes"],
+		table: {
+			name: "cl-codemirror"
+		},
 		form: {
 			name: "cl-codemirror",
 			props: {
