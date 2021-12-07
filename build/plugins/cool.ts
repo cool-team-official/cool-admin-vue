@@ -197,14 +197,15 @@ function datetimeMerge({ columns, item }: any) {
 		const key = item.prop.replace("start", "");
 
 		if (columns.find((e: any) => e.propertyName == "end" + key)) {
-			item.label = key == "time" ? "时间范围" : "日期范围";
 			item.prop = key.toLocaleLowerCase();
+			item.label = item.prop == "time" ? "时间范围" : "日期范围";
 			item.hook = "datetimeRange";
 			item.component = {
 				name: "el-date-picker",
 				props: {
-					type: key == "time" ? "datetimerange" : "daterange",
-					valueFormat: "time" ? "YYYY-MM-DD HH:mm:ss" : "YYYY-MM-DD 00:00:00",
+					type: item.prop == "time" ? "datetimerange" : "daterange",
+					valueFormat:
+						item.prop == "time" ? "YYYY-MM-DD HH:mm:ss" : "YYYY-MM-DD 00:00:00",
 					defaultTime: [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]
 				}
 			};
