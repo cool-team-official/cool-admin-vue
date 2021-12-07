@@ -246,7 +246,7 @@ function createVue({ router, columns, prefix, api, module, filename }: any): voi
 			upsert.items.push(format(item));
 		}
 
-		if (!["cl-codemirror", "cl-editor-quill"].includes(item.component.name)) {
+		if (!["cl-codemirror", "cl-editor-quill"].includes(column.component?.name)) {
 			table.columns.push(format(column));
 		}
 	});
