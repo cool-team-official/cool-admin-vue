@@ -176,7 +176,7 @@ export default [
 		}
 	},
 	{
-		test: ["rich", "text", "html", "content"],
+		test: ["rich", "text", "html", "content", "introduce", "description", "desc"],
 		form: {
 			name: "cl-editor-quill",
 			props: {
