@@ -13,7 +13,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref, watch } from "vue";
+import { defineComponent, ref, watch } from "vue";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	name: "cl-menu-perms",
@@ -28,7 +29,7 @@ export default defineComponent({
 	emits: ["update:modelValue"],
 
 	setup(props, { emit }) {
-		const service = inject<any>("service");
+		const { service } = useCool();
 
 		// 绑定值
 		const value = ref<any[]>([]);
@@ -67,21 +68,23 @@ export default defineComponent({
 					const col = (i: number, d: any[]) => {
 						const key = arr[i];
 
-						const index = d.findIndex((e: any) => e.label == key);
+						if (d) {
+							const index = d.findIndex((e: any) => e.label == key);
 
-						if (index >= 0) {
-							col(i + 1, d[index].children);
-						} else {
-							const isLast = i == arr.length - 1;
+							if (index >= 0) {
+								col(i + 1, d[index].children);
+							} else {
+								const isLast = i == arr.length - 1;
 
-							d.push({
-								label: key,
-								value: key,
-								children: isLast ? null : []
-							});
+								d.push({
+									label: key,
+									value: key,
+									children: isLast ? null : []
+								});
 
-							if (!isLast) {
-								col(i + 1, d[d.length - 1].children || []);
+								if (!isLast) {
+									col(i + 1, d[d.length - 1].children || []);
+								}
 							}
 						}
 					};
