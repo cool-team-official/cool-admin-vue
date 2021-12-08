@@ -110,7 +110,8 @@ export default defineComponent({
 						background-color="transparent"
 						collapse-transition={false}
 						collapse={ctx.browser.isMini ? false : ctx.menuCollapse}
-						onSelect={ctx.toView}>
+						onSelect={ctx.toView}
+					>
 						{children}
 					</el-menu>
 				</div>

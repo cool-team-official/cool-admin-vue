@@ -26,11 +26,6 @@ declare module "vuedraggable/src/vuedraggable" {
 	export default d;
 }
 
-declare module "clone-deep" {
-	function CloneDeep(data: any): any;
-	export default CloneDeep;
-}
-
 declare module "store" {
 	export function set(key: string, value: any): void;
 	export function get(key: string): any;

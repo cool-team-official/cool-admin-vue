@@ -88,7 +88,7 @@
 
 						<cl-upsert
 							:ref="setRefs('upsert')"
-							:items="upsert.items"
+							v-bind="upsert"
 							:on-submit="onUpsertSubmit"
 						/>
 					</cl-crud>
@@ -210,6 +210,10 @@ export default defineComponent({
 
 		// 新增、编辑配置
 		const upsert = reactive<Upsert>({
+			dialog: {
+				width: "800px"
+			},
+
 			items: [
 				{
 					prop: "headImg",

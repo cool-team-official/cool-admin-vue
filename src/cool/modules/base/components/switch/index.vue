@@ -27,7 +27,7 @@
 <script lang="ts">
 import { ElMessage } from "element-plus";
 import { defineComponent, inject, ref, watch } from "vue";
-import { useCool } from "/@/cool/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	name: "cl-switch",

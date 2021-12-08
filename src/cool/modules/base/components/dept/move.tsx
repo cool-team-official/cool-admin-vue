@@ -97,7 +97,8 @@ export default defineComponent({
 										border: "1px solid #eee",
 										borderRadius: "3px",
 										padding: "2px"
-									}}>
+									}}
+								>
 									<el-tree
 										data={ctx.list}
 										props={{
@@ -107,7 +108,8 @@ export default defineComponent({
 										highlight-current
 										onNodeClick={(e: any) => {
 											scope["dept"] = e;
-										}}></el-tree>
+										}}
+									></el-tree>
 								</div>
 							);
 						}

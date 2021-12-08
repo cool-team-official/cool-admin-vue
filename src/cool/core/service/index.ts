@@ -129,8 +129,6 @@ function useEps() {
 				});
 			}
 
-			console.log(service);
-
 			return res;
 		})
 		.catch((err: string) => {

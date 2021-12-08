@@ -6,16 +6,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { ElMessage } from "element-plus";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	emits: ["update:modelValue", "change"],
 
 	setup(_, { emit }) {
+		const { service } = useCool();
 		const base64 = ref("");
 		const svg = ref("");
-		const service = inject<any>("service");
 
 		const refresh = () => {
 			service.base.open

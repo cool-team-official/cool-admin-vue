@@ -101,7 +101,9 @@ export default defineComponent({
 
 		// 新增编辑配置
 		const upsert = reactive<Upsert>({
-			width: "1000px",
+			dialog: {
+				width: "1000px"
+			},
 
 			items: [
 				{

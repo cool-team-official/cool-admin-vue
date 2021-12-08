@@ -53,20 +53,24 @@ const handler = {
 			return d;
 		});
 
-		const d = {
+		const d: any = {
 			table: {
 				label,
 				dict: list
 			},
 			form: {
 				label,
-				value: list[0]?.value,
 				component: {
 					name: "",
 					options: list
 				}
 			}
 		};
+
+		// 默认值
+		if (list[0]) {
+			d.form.value = list[0].value;
+		}
 
 		// 匹配组件
 		d.form.component.name = arr.length > 4 ? "el-select" : "el-radio-group";

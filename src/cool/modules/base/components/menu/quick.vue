@@ -6,10 +6,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { useModule } from "/@/cool";
 import { last, isEmpty } from "/@/cool/utils";
 import { ElMessage } from "element-plus";
-import { useCool } from "/@/cool/core";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	name: "cl-menu-quick",

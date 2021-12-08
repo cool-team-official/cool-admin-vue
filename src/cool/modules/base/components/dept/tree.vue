@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { ContextMenu } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
@@ -84,7 +84,7 @@ export default defineComponent({
 	emits: ["list-change", "row-click", "user-add"],
 
 	setup(props, { emit }) {
-		const { refs, setRefs } = useCool();
+		const { refs, setRefs, service } = useCool();
 
 		// 树形列表
 		const list = ref<any[]>([]);
@@ -94,9 +94,6 @@ export default defineComponent({
 
 		// 是否能拖动
 		const isDrag = ref<boolean>(false);
-
-		// 请求服务
-		const service = inject<any>("service");
 
 		// 允许托的规则
 		function allowDrag({ data }: any) {

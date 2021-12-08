@@ -23,13 +23,14 @@
 
 <script lang="ts">
 import { CrudLoad, Table, Upsert } from "@cool-vue/crud/types";
-import { defineComponent, inject, reactive } from "vue";
+import { defineComponent, reactive } from "vue";
+import { useCool } from "/@/cool";
 
 export default defineComponent({
 	name: "sys-role",
 
 	setup() {
-		const service = inject<any>("service");
+		const { service } = useCool();
 
 		// 表单值
 		const form = reactive<any>({
@@ -38,7 +39,9 @@ export default defineComponent({
 
 		// 新增、编辑配置
 		const upsert = reactive<Upsert>({
-			width: "800px",
+			dialog: {
+				width: "800px"
+			},
 
 			items: [
 				{

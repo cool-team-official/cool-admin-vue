@@ -23,9 +23,8 @@ $--colors: (
 );
 
 @forward "element-plus/theme-chalk/src/common/var.scss" with (
-    $colors: $--colors,
+	$colors: $--colors
 );
-
 
 :export {
 	colorPrimary: $color-primary;

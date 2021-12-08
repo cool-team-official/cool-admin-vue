@@ -63,7 +63,8 @@ export default defineComponent({
 			<el-popover
 				visible={ctx.visible}
 				disabled={ctx.disabled || ctx.readonly}
-				width="600px"></el-popover>
+				width="600px"
+			></el-popover>
 		);
 
 		return (
@@ -89,7 +90,8 @@ export default defineComponent({
 									readonly={ctx.readonly}
 									v-model={ctx.cron}
 									placeholder={ctx.placeholder}
-									onClick={ctx.open}></el-input>
+									onClick={ctx.open}
+								></el-input>
 							);
 						}
 					}

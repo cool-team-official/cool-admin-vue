@@ -38,7 +38,8 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, onMounted, ref, watch } from "vue";
+import { computed, defineComponent, onMounted, ref, watch } from "vue";
+import { useCool } from "/@/cool";
 import { deepTree } from "/@/cool/utils";
 
 export default defineComponent({
@@ -52,7 +53,7 @@ export default defineComponent({
 
 	setup(props, { emit }) {
 		// 请求服务
-		const service = inject<any>("service");
+		const { service } = useCool();
 
 		// 关键字
 		const keyword = ref<string>("");

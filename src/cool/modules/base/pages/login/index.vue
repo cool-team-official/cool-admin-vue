@@ -57,8 +57,7 @@
 import { defineComponent, reactive, ref } from "vue";
 import { ElMessage } from "element-plus";
 import Captcha from "./components/captcha.vue";
-import { useCool } from "/@/cool";
-import { useEps } from "/@/cool/core";
+import { useEps, useCool } from "/@/cool";
 
 export default defineComponent({
 	cool: {
