@@ -37,7 +37,7 @@ export function Service(value: any) {
 
 			if (proxy) {
 				target.prototype.proxy = proxy;
-				target.prototype.url = url || item ? item.target : null;
+				target.prototype.url = url || (item ? item.target : null);
 			}
 		}
 	};
