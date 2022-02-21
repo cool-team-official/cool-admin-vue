@@ -117,7 +117,7 @@ export default defineComponent({
 
 		// 保存天数
 		function saveDay() {
-			service.base.sys.log.setKeep(day.value).then(() => {
+			service.base.sys.log.setKeep({ value: day.value }).then(() => {
 				ElMessage.success("保存成功");
 			});
 		}
