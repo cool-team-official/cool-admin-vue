@@ -316,6 +316,9 @@ export default defineComponent({
 
 		// 更多列表
 		function moreList(res: any, { list, pagination }: any) {
+			if (!res) {
+				return;
+			}
 			const { page, size } = res.pagination;
 			const len = res.list.length;
 			const max = list.length;
@@ -486,7 +489,7 @@ export default defineComponent({
 						component: {
 							name: "el-input",
 							props: {
-								placeholder: "sys.test.add(params)"
+								placeholder: "taskDemoService.test([1,2])"
 							}
 						}
 					},
