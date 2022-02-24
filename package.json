@@ -9,7 +9,7 @@
 		"lint:eslint": "eslint \"{src,mock}/**/*.{vue,ts,tsx}\" --fix"
 	},
 	"dependencies": {
-		"@cool-vue/crud": "^1.0.4",
+		"@cool-vue/crud": "^1.0.6",
 		"array.prototype.flat": "^1.2.4",
 		"axios": "^0.21.1",
 		"clipboard": "^2.0.8",
