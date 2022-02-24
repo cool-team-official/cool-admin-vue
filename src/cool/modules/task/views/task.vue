@@ -373,7 +373,10 @@ export default defineComponent({
 			const { id, type } = params || {};
 
 			let info: any = {
-				type
+				type,
+				service: "",
+				name: "",
+				cron: ""
 			};
 
 			if (id) {
