@@ -387,8 +387,8 @@ export default defineComponent({
 				info.every /= 1000;
 			}
 
-			if (!info.limit) {
-				info.limit = undefined;
+			if (!info.repeatCount) {
+				info.repeatCount = undefined;
 			}
 
 			const { setForm } = refs.value.form.open({
@@ -431,7 +431,7 @@ export default defineComponent({
 							on: {
 								change: (v: number) => {
 									if (v == 0) {
-										setForm("limit", undefined);
+										setForm("repeatCount", undefined);
 										setForm("every", undefined);
 									} else {
 										setForm("cron", undefined);
@@ -456,7 +456,7 @@ export default defineComponent({
 					},
 					{
 						label: "次数",
-						prop: "limit",
+						prop: "repeatCount",
 						hidden: ({ scope }: any) => {
 							return scope.taskType == 0;
 						},
@@ -554,8 +554,8 @@ export default defineComponent({
 				},
 				on: {
 					submit: (data: any, { close, done }: any) => {
-						if (!data.limit) {
-							data.limit = null;
+						if (!data.repeatCount) {
+							data.repeatCount = null;
 						}
 
 						service.task.info[id ? "update" : "add"]({

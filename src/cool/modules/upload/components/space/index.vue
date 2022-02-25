@@ -43,6 +43,7 @@
 							:on-error="onError"
 							:on-progress="onProgress"
 							:before-upload="beforeUpload"
+							multiple
 						>
 							<el-button size="mini" type="primary">点击上传</el-button>
 						</cl-upload>
