@@ -281,7 +281,7 @@
 
 "@cool-vue/crud@^1.0.6":
   version "1.0.6"
-  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-1.0.6.tgz#7794c08a62612e30473f8c470bd04983900fe3e5"
+  resolved "https://registry.npmmirror.com/@cool-vue/crud/-/crud-1.0.6.tgz#7794c08a62612e30473f8c470bd04983900fe3e5"
   integrity sha512-oWVL8VisXzGiGswOWhl0wNHx3MKqvM9Ksqc32qYbZHNRt/kqSTu6HUPlPbanGHcdnsZ+h/Am5/6/+pT64wQcvQ==
   dependencies:
     array.prototype.flat "^1.2.4"
