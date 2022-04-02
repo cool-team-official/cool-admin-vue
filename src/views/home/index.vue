@@ -51,8 +51,7 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import CategoryRatio from "./components/category-ratio.vue";
 import CountSales from "./components/count-sales.vue";
 import CountViews from "./components/count-views.vue";
@@ -61,19 +60,6 @@ import CountEffect from "./components/count-effect.vue";
 import TabChart from "./components/tab-chart.vue";
 import SalesRank from "./components/sales-rank.vue";
 import HotSearch from "./components/hot-search.vue";
-
-export default defineComponent({
-	components: {
-		CategoryRatio,
-		CountSales,
-		CountViews,
-		CountPaid,
-		CountEffect,
-		TabChart,
-		SalesRank,
-		HotSearch
-	}
-});
 </script>
 
 <style lang="scss">

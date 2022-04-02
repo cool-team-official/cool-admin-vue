@@ -3,8 +3,8 @@ import { UserConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import viteCompression from "vite-plugin-compression";
-import { svgBuilder } from "./build/plugins/svg";
-import { cool } from "./build/plugins/cool";
+import { svgBuilder } from "./build/svg";
+import { cool } from "./build/cool";
 import Components from "unplugin-vue-components/vite";
 
 function resolve(dir: string) {
@@ -20,6 +20,12 @@ export default (): UserConfig => {
 			target: "http://127.0.0.1:8001",
 			changeOrigin: true,
 			rewrite: (path: string) => path.replace(/^\/dev/, "")
+		},
+
+		"/ap": {
+			target: "http://dev.frp.cool-js.cloud",
+			changeOrigin: true,
+			rewrite: (path: string) => path.replace(/^\/ap/, "")
 		},
 
 		"/pro": {
@@ -43,7 +49,7 @@ export default (): UserConfig => {
 			alias: {
 				"/@": resolve("src"),
 				"/#": resolve("types"),
-				"/$": resolve("src/cool/modules")
+				"/$": resolve("src/modules")
 			}
 		},
 		css: {
@@ -61,14 +67,12 @@ export default (): UserConfig => {
 			}
 		},
 		define: {
-			__PROXY_LIST__: JSON.stringify(proxy)
+			__PROXY_LIST__: JSON.stringify(proxy),
+			__SERVER_PORT__: 9100
 		},
 		build: {
 			sourcemap: false,
 			polyfillDynamicImport: false // 必须为false
-		},
-		optimizeDeps: {
-			exclude: ["vue-demi"]
 		}
 	};
 };

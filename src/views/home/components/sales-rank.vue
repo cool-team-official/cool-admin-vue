@@ -23,7 +23,6 @@
 					v-model="date"
 					class="hidden-xs-only"
 					type="datetimerange"
-					size="mini"
 					range-separator="至"
 					start-placeholder="开始日期"
 					end-placeholder="结束日期"
@@ -61,44 +60,33 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script lang="ts" setup>
+import { ref } from "vue";
 
-export default defineComponent({
-	setup() {
-		const date = ref<Array<string>>([]);
-		const type = ref<string>("day");
-		const types = ref<Array<any>>([
-			{
-				label: "今日",
-				value: "day"
-			},
-			{
-				label: "本周",
-				value: "week"
-			},
-			{
-				label: "本月",
-				value: "month"
-			},
-			{
-				label: "全年",
-				value: "year"
-			}
-		]);
-
-		const changeDate = (value: string) => {
-			type.value = value;
-		};
-
-		return {
-			changeDate,
-			types,
-			date,
-			type
-		};
+const date = ref<string[]>([]);
+const type = ref<string>("day");
+const types = ref<any[]>([
+	{
+		label: "今日",
+		value: "day"
+	},
+	{
+		label: "本周",
+		value: "week"
+	},
+	{
+		label: "本月",
+		value: "month"
+	},
+	{
+		label: "全年",
+		value: "year"
 	}
-});
+]);
+
+function changeDate(value: string) {
+	type.value = value;
+}
 </script>
 
 <style lang="scss" scoped>
