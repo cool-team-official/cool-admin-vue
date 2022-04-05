@@ -209,7 +209,6 @@ function close() {
 
 // 上传成功
 function onSuccess(data: any) {
-	console.log(data.classifyId);
 	service.space.info
 		.add(data)
 		.then((res) => {

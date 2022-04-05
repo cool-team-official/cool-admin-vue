@@ -22,12 +22,6 @@ export default (): UserConfig => {
 			rewrite: (path: string) => path.replace(/^\/dev/, "")
 		},
 
-		"/ap": {
-			target: "http://dev.frp.cool-js.cloud",
-			changeOrigin: true,
-			rewrite: (path: string) => path.replace(/^\/ap/, "")
-		},
-
 		"/pro": {
 			target: "https://show.cool-admin.com",
 			changeOrigin: true,
@@ -60,7 +54,7 @@ export default (): UserConfig => {
 			}
 		},
 		server: {
-			port: 9100,
+			port: 9000,
 			proxy,
 			hmr: {
 				overlay: true
@@ -68,7 +62,7 @@ export default (): UserConfig => {
 		},
 		define: {
 			__PROXY_LIST__: JSON.stringify(proxy),
-			__SERVER_PORT__: 9100
+			__SERVER_PORT__: 9000
 		},
 		build: {
 			sourcemap: false,

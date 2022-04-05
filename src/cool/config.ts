@@ -1,37 +1,42 @@
-import { getUrlParam } from "./utils";
-import storage from "./utils/storage";
-
-// 路由模式
-export const routerMode: String = "history";
+import { getUrlParam, storage } from "./utils";
 
 // 开发模式
-export const isDev: Boolean = import.meta.env.MODE === "development";
+const isDev: Boolean = import.meta.env.MODE === "development";
 
 // Host
-export const host: String = "https://show.cool-admin.com";
+const host: String = "https://show.cool-admin.com";
 
 // 请求地址
-export const baseUrl: String = (function () {
+const baseUrl: String = (function () {
 	let proxy = getUrlParam("proxy");
 
 	if (proxy) {
 		storage.set("proxy", proxy);
 	} else {
-		proxy = storage.get("proxy") || "dev";
+		proxy = storage.get("proxy") || "pro";
 	}
 
 	return isDev ? `/${proxy}` : `/api`;
 })();
 
-// 字体图标库
-export const iconfont = [];
-
-// 程序配置参数
-export const app: any = {
+// 应用配置
+const app = {
 	name: "COOL-ADMIN",
 
-	// 自定义菜单列表
-	menuList: [],
+	// 菜单
+	menu: {
+		list: []
+	},
+
+	// 路由
+	router: {
+		// 模式
+		mode: "history",
+		// 页面
+		pages: [],
+		// 视图 / 路由下的 children
+		views: []
+	},
 
 	// 主题
 	theme: {
@@ -39,11 +44,14 @@ export const app: any = {
 		color: "",
 		// 样式地址
 		url: ""
-	}
+	},
+
+	// 字体图标库
+	iconfont: []
 };
 
 // 忽略规则
-export const ignore = {
+const ignore = {
 	// 不显示请求进度条
 	NProgress: ["/sys/info/record"],
 	// 页面不需要登录验证
@@ -51,8 +59,10 @@ export const ignore = {
 };
 
 // 测试
-export const test = {
+const test = {
 	token: "",
 	mock: false,
 	eps: true
 };
+
+export { isDev, host, baseUrl, app, ignore, test };

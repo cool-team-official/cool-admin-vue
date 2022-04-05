@@ -7,7 +7,7 @@
 <script lang="ts">
 import { defineComponent, computed } from "vue";
 import { isArray, isString, last } from "/@/cool/utils";
-import { Link } from "@element-plus/icons";
+import { Link } from "@element-plus/icons-vue";
 
 export default defineComponent({
 	name: "cl-link",

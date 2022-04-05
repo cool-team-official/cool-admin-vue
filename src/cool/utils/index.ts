@@ -1,4 +1,4 @@
-import { routerMode } from "../config";
+import { app } from "../config";
 import storage from "./storage";
 import module from "./module";
 
@@ -317,7 +317,7 @@ export function href(path: string, newWindow?: boolean) {
 
 	let url = "";
 
-	if (routerMode == "history") {
+	if (app.router.mode == "history") {
 		url = origin + import.meta.env.BASE_URL + path.substr(1);
 	} else {
 		url = origin + import.meta.env.BASE_URL + "#" + path;

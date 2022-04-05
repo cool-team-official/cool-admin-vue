@@ -81,8 +81,6 @@ const Form = useForm();
 
 // 编辑分类
 function edit(item: any = {}) {
-	console.log(item);
-
 	Form.value?.open({
 		title: "添加分类",
 		width: "400px",

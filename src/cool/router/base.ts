@@ -8,12 +8,9 @@ import {
 } from "vue-router";
 import { storage } from "/@/cool";
 import { useBaseStore } from "/$/base";
-import { routerMode } from "/@/cool/config";
+import { app, ignore } from "/@/cool/config";
 
-// 忽略
-const ignore: any = {
-	token: ["/login", "/403", "/404", "/500", "/502"]
-};
+const { views, pages, mode } = app.router;
 
 // 默认路由
 const routes: RouteRecordRaw[] = [
@@ -26,9 +23,11 @@ const routes: RouteRecordRaw[] = [
 				path: "/",
 				name: "数据统计",
 				component: () => import("/@/views/home/index.vue")
-			}
+			},
+			...views
 		]
 	},
+	...pages,
 	{
 		path: "/:catchAll(.*)",
 		name: "404",
@@ -38,7 +37,7 @@ const routes: RouteRecordRaw[] = [
 
 // 创建
 const router = createRouter({
-	history: routerMode == "history" ? createWebHistory() : createWebHashHistory(),
+	history: mode == "history" ? createWebHistory() : createWebHashHistory(),
 	routes
 });
 

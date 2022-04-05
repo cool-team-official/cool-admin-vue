@@ -57,7 +57,6 @@ const { service } = useCool();
 const Tree = ref<any>();
 
 const Form = useForm(() => {
-	console.log(111);
 	refresh();
 });
 

@@ -64,6 +64,7 @@ import HotSearch from "./components/hot-search.vue";
 
 <style lang="scss">
 .view-home {
+	padding-right: 10px;
 	.card {
 		background-color: #fff;
 		border-radius: 5px;

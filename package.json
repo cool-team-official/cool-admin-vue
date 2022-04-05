@@ -9,9 +9,8 @@
 		"lint:eslint": "eslint \"{src,mock}/**/*.{vue,ts,tsx}\" --fix"
 	},
 	"dependencies": {
-		"@cool-vue/crud": "^1.0.6",
+		"@cool-vue/crud": "^5.0.0",
 		"@element-plus/icons-vue": "^1.1.3",
-		"@types/quill": "^2.0.9",
 		"axios": "^0.26.1",
 		"clipboard": "^2.0.10",
 		"codemirror": "^5.62.0",
@@ -38,6 +37,7 @@
 		"@types/lodash": "^4.14.168",
 		"@types/node": "^16.10.2",
 		"@types/nprogress": "^0.2.0",
+		"@types/quill": "^2.0.9",
 		"@types/uuid": "^8.3.4",
 		"@typescript-eslint/eslint-plugin": "^4.20.0",
 		"@typescript-eslint/parser": "^4.20.0",

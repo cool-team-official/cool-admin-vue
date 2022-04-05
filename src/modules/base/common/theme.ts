@@ -1,4 +1,4 @@
-import { iconfont, app } from "/@/cool/config";
+import { app } from "/@/cool/config";
 import { basename } from "/@/cool/utils";
 import { createLink } from "../utils";
 
@@ -14,8 +14,8 @@ if (app.theme) {
 }
 
 // 字体图标库加载
-if (iconfont) {
-	iconfont.forEach((e: string) => {
+if (app.iconfont) {
+	app.iconfont.forEach((e: string) => {
 		createLink(e);
 	});
 }

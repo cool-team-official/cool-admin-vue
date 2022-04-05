@@ -64,7 +64,6 @@ export default defineComponent({
 									})
 									.then(() => {
 										ElMessage.success("转移成功");
-										console.log(Crud);
 										Crud.value?.refresh();
 										close();
 									})

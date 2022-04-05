@@ -1,5 +1,5 @@
 <template>
-	<el-config-provider :locale="locale">
+	<el-config-provider :locale="zhCn">
 		<div class="preload" v-if="app.loading">
 			<div class="container">
 				<p class="name">{{ app.info.name }}</p>
@@ -17,26 +17,12 @@
 	</el-config-provider>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { ElConfigProvider } from "element-plus";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { useBaseStore } from "/$/base";
 
-export default defineComponent({
-	components: {
-		[ElConfigProvider.name]: ElConfigProvider
-	},
-
-	setup() {
-		const locale = zhCn;
-
-		return {
-			locale,
-			...useBaseStore()
-		};
-	}
-});
+const { app } = useBaseStore();
 </script>
 
 <style lang="scss" src="./assets/css/index.scss"></style>

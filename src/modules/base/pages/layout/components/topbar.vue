@@ -16,12 +16,7 @@
 		<div class="flex1"></div>
 
 		<!-- 工具栏 -->
-		<ul class="app-topbar__tools">
-			<!-- 主题 -->
-			<!-- <li v-if="modules.theme">
-				<cl-theme />
-			</li> -->
-		</ul>
+		<ul class="app-topbar__tools"></ul>
 
 		<!-- 用户信息 -->
 		<div class="app-topbar__user" v-if="user.info">
