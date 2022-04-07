@@ -366,9 +366,10 @@ const Upsert = useUpsert({
 		});
 	},
 
-	async onOpen() {
+	async onOpen(isEdit) {
 		const list = await service.base.sys.role.list();
 
+		// 设置权限列表
 		Upsert.value?.setOptions(
 			"roleIdList",
 			list.map((e: any) => {
@@ -378,6 +379,15 @@ const Upsert = useUpsert({
 				};
 			})
 		);
+
+		// 编辑密码不必填
+		if (isEdit) {
+			Upsert.value?.setData("password", {
+				rules: {
+					required: false
+				}
+			});
+		}
 	}
 });
 

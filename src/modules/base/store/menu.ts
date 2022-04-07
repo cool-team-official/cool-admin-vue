@@ -5,6 +5,7 @@ import { deepTree, isArray, isEmpty, isObject, revDeepTree, storage } from "/@/c
 import { app } from "/@/cool/config";
 import { addViews, service } from "/@/cool";
 import { revisePath } from "../utils";
+import { orderBy } from "lodash";
 
 declare enum Type {
 	"目录" = 0,
@@ -75,7 +76,9 @@ export const useMenuStore = defineStore("menu", function () {
 					for (const i in d.permission) {
 						d._permission[i] =
 							list.findIndex((e: any) =>
-								e.replace(/:/g, "/").includes(`${d.namespace}/${i}`)
+								e
+									.replace(/:/g, "/")
+									.includes(`${d.namespace.replace("admin/", "")}/${i}`)
 							) >= 0;
 					}
 				} else {
@@ -102,8 +105,8 @@ export const useMenuStore = defineStore("menu", function () {
 
 	// 设置菜单组
 	function setGroup(list: Item[]) {
-		group.value = list;
-		storage.set("menu.group", list);
+		group.value = orderBy(list, "orderNum");
+		storage.set("menu.group", group.value);
 	}
 
 	// 获取菜单，权限信息
@@ -154,8 +157,7 @@ export const useMenuStore = defineStore("menu", function () {
 				resolve(group.value);
 			}
 
-			// 自定义菜单
-			if (isEmpty(app.menuList)) {
+			if (isEmpty(app.menu.list)) {
 				service.base.comm
 					.permmenu()
 					.then((res) => {
@@ -166,8 +168,9 @@ export const useMenuStore = defineStore("menu", function () {
 						reject(err);
 					});
 			} else {
+				// 自定义菜单
 				next({
-					menus: revDeepTree([])
+					menus: revDeepTree(app.menu.list)
 				});
 			}
 		});

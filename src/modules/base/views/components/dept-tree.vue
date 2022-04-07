@@ -23,7 +23,7 @@
 			</ul>
 		</div>
 
-		<div class="dept-tree__container" @contextmenu.stop.prevent="openCM">
+		<div class="dept-tree__container" @contextmenu.stop.prevent="onContextMenu">
 			<el-tree
 				v-loading="loading"
 				node-key="id"
@@ -37,7 +37,7 @@
 				:allow-drag="allowDrag"
 				:allow-drop="allowDrop"
 				:expand-on-click-node="false"
-				@node-contextmenu="openCM"
+				@node-contextmenu="onContextMenu"
 			>
 				<template #default="{ node, data }">
 					<div class="dept-tree__node">
@@ -47,7 +47,7 @@
 						<span
 							v-if="app.browser.isMini"
 							class="dept-tree__node-icon"
-							@click="openCM($event, data, node)"
+							@click="onContextMenu($event, data, node)"
 						>
 							<el-icon><more-filled /></el-icon>
 						</span>
@@ -288,7 +288,7 @@ export default defineComponent({
 		}
 
 		// 右键菜单
-		function openCM(e: any, d?: any, n?: any) {
+		function onContextMenu(e: any, d?: any, n?: any) {
 			if (!d) {
 				d = list.value[0] || {};
 			}
@@ -346,7 +346,7 @@ export default defineComponent({
 			list,
 			loading,
 			isDrag,
-			openCM,
+			onContextMenu,
 			allowDrag,
 			allowDrop,
 			refresh,

@@ -5,7 +5,7 @@
 
 		<template v-if="user.token || isLogout">
 			<div class="router">
-				<el-select v-model="url" size="medium" filterable>
+				<el-select v-model="url" filterable>
 					<el-option v-for="(item, index) in menu.routes" :key="index" :value="item.path">
 						<span style="float: left">{{ item.name }}</span>
 						<span style="float: right">{{ item.path }}</span>

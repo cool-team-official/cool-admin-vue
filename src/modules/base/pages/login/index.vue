@@ -169,8 +169,6 @@ export default defineComponent({
 			font-size: 16px;
 			letter-spacing: 1px;
 			margin-bottom: 50px;
-			transform: skewX(-15deg);
-			-webkit-box-reflect: below 0 -webkit-linear-gradient(transparent, transparent 40%, rgba(255, 255, 255, 0.4));
 		}
 
 		.el-form {
@@ -178,6 +176,7 @@ export default defineComponent({
 
 			:deep(.el-form-item) {
 				margin-bottom: 20px;
+				border-bottom: 1px solid #eee;
 
 				.el-form-item__label {
 					color: #ccc;
@@ -188,7 +187,6 @@ export default defineComponent({
 				background-color: transparent;
 				color: #fff;
 				border: 0;
-				border-bottom: 1px solid #eee;
 				height: 40px;
 				width: calc(100% - 4px);
 				margin: 0 2px;
