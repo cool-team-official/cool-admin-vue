@@ -13,7 +13,7 @@ const baseUrl: String = (function () {
 	if (proxy) {
 		storage.set("proxy", proxy);
 	} else {
-		proxy = storage.get("proxy") || "pro";
+		proxy = storage.get("proxy") || "dev";
 	}
 
 	return isDev ? `/${proxy}` : `/api`;
