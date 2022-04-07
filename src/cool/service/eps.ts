@@ -5,7 +5,7 @@ import { storage, toCamel } from "../utils";
 // 获取标签名
 function getNames(v: any) {
 	return Object.getOwnPropertyNames(v.constructor.prototype).filter(
-		(e) => !["namespace", "constructor", "request"].includes(e)
+		(e) => !["namespace", "constructor", "request", "permission"].includes(e)
 	);
 }
 
@@ -70,9 +70,15 @@ export function useEps(service: Service) {
 					url: "/admin/base/open/eps"
 				})
 				.then(async (res) => {
+					const isLoaded: boolean = storage.get("eps");
 					storage.set("eps", res);
-					set(res, true);
-					console.log("[Eps] 初始化成功。");
+
+					if (!isLoaded) {
+						location.reload();
+					} else {
+						set(res, true);
+						console.log("[Eps] 初始化成功。");
+					}
 				})
 				.catch((err) => {
 					console.error("[Eps] 获取失败！", err.message);
@@ -147,12 +153,14 @@ export function useEps(service: Service) {
 							if (!d[k].permission) {
 								d[k].permission = {};
 
-								for (const i in d[k]) {
-									d[k].permission[i] = `${d[k].namespace.replace(
+								const ks = Array.from(new Set([...names, ...getNames(d[k])]));
+
+								ks.forEach((e) => {
+									d[k].permission[e] = `${d[k].namespace.replace(
 										"admin/",
 										""
-									)}/${i}`.replace(/\//g, ":");
-								}
+									)}/${e}`.replace(/\//g, ":");
+								});
 							}
 
 							list.push(e);
