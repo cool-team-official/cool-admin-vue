@@ -172,7 +172,7 @@ function getPageName(router: string) {
 		router = router.substr(1, router.length);
 	}
 
-	return router ? `name: "${router.replace("/", "-")}",` : "";
+	return router ? router.replace("/", "-") : "";
 }
 
 // 时间合并
@@ -283,73 +283,56 @@ export async function createMenu({ router, columns, prefix, api, module, filenam
 
 	// 代码模板
 	const temp = `<template>
-    <cl-crud :ref="setRefs('crud')" @load="onLoad">
-        <el-row type="flex" align="middle">
-            <!-- 刷新按钮 -->
-            <cl-refresh-btn />
-            ${permission.add ? "<!-- 新增按钮 -->\n<cl-add-btn />" : ""}
-            ${permission.del ? "<!-- 删除按钮 -->\n<cl-multi-delete-btn />" : ""}
-            <cl-flex1 />
-            <!-- 关键字搜索 -->
-            <cl-search-key />
-        </el-row>
+	<cl-crud ref="Crud">
+		<el-row>
+			<!-- 刷新按钮 -->
+			<cl-refresh-btn />
+			${permission.add ? "<!-- 新增按钮 -->\n<cl-add-btn />" : ""}
+			${permission.del ? "<!-- 删除按钮 -->\n<cl-multi-delete-btn />" : ""}
+			<cl-flex1 />
+			<!-- 关键字搜索 -->
+			<cl-search-key />
+		</el-row>
 
-        <el-row>
-            <!-- 数据表格 -->
-            <cl-table :ref="setRefs('table')" v-bind="table" />
-        </el-row>
+		<el-row>
+			<!-- 数据表格 -->
+			<cl-table ref="Table" />
+		</el-row>
 
-        <el-row type="flex">
-            <cl-flex1 />
-            <!-- 分页控件 -->
-            <cl-pagination />
-        </el-row>
+		<el-row>
+			<cl-flex1 />
+			<!-- 分页控件 -->
+			<cl-pagination />
+		</el-row>
 
-        ${
-			permission.update
-				? '<!-- 新增、编辑 -->\n<cl-upsert :ref="setRefs(\'upsert\')" v-bind="upsert" />'
-				: ""
-		}
-    </cl-crud>
+		<!-- 新增、编辑 -->
+		<cl-upsert ref="Upsert" />
+	</cl-crud>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive } from "vue";
-import { CrudLoad, Table${permission.upsert ? ", Upsert" : ""} } from "@cool-vue/crud/types";
+<script lang="ts" setup>
+import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 
-export default defineComponent({
-	${getPageName(router)}
+const { service, named } = useCool();
 
-    setup() {
-        const { refs, setRefs, service } = useCool();
+named("${getPageName(router)}");
 
-        ${
-			permission.upsert
-				? "// 新增、编辑配置\nconst upsert = reactive<Upsert>(" +
-				  JSON.stringify(upsert) +
-				  ");"
-				: ""
-		}
+// cl-upsert 配置
+const Upsert = useUpsert(${JSON.stringify(upsert)});
 
-        // cl-table 配置
-        const table = reactive<Table>(${JSON.stringify(table)});
+// cl-table 配置
+const Table = useTable(${JSON.stringify(table)});
 
-        // crud 加载
-        function onLoad({ ctx, app }: CrudLoad) {
-            // 绑定 service
-            ctx.service(${service}).done();
-            app.refresh();
-        }
-
-        return {
-            refs,
-            setRefs,${permission.upsert ? "upsert," : ""}
-            table,
-            onLoad
-        };
-    }
-});
+// cl-crud 配置
+const Crud = useCrud(
+	{
+		service: ${service}
+	},
+	(app) => {
+		app.refresh();
+	}
+);
 </script>`;
 
 	const content = prettier.format(temp, {
@@ -365,7 +348,7 @@ export default defineComponent({
 	});
 
 	// views 目录是否存在
-	const dir = join(__dirname, `../../src/modules/${module}/views`);
+	const dir = join(__dirname, `../../../../src/modules/${module}/views`);
 
 	// 创建目录
 	createDir(dir);

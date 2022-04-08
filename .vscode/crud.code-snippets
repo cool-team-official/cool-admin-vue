@@ -1,6 +1,6 @@
 {
 	"cl-crud": {
-		"prefix": "cl-crud-ts",
+		"prefix": "cl-crud",
 		"body": [
 			"<template>",
 			"    <cl-crud ref=\"Crud\">",

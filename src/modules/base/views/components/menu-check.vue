@@ -1,10 +1,11 @@
 <template>
 	<div class="menu-check__wrap">
 		<el-popover
-			v-model="visible"
+			v-model:visible="visible"
 			placement="bottom-start"
 			width="660px"
 			popper-class="menu-check"
+			trigger="click"
 		>
 			<el-input v-model="keyword" :prefix-icon="Search"> </el-input>
 

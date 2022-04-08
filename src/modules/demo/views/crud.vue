@@ -56,11 +56,10 @@ export default {
 
 <script lang="tsx" setup>
 import { useCrud, useUpsert, useTable, useForm, useAdvSearch } from "@cool-vue/crud";
-import { TestService } from "../utils/service";
 
 const Crud = useCrud(
 	{
-		service: TestService
+		service: "test"
 	},
 	(app) => {
 		app.refresh();
@@ -131,11 +130,21 @@ const Table = useTable({
 		},
 		{
 			label: "姓名",
-			prop: "brandName"
+			prop: "name"
 		},
 		{
-			label: "price",
-			prop: "maxTradePrice"
+			label: "状态",
+			prop: "status",
+			dict: [
+				{
+					label: "开启",
+					value: 1
+				},
+				{
+					label: "关闭",
+					value: 0
+				}
+			]
 		},
 		{
 			type: "op",
@@ -170,7 +179,7 @@ const filter = {
 // 内嵌
 const Crud2 = useCrud(
 	{
-		service: TestService
+		service: "test"
 	},
 	(app) => {
 		app.refresh();
@@ -253,18 +262,3 @@ function openForm() {
 	});
 }
 </script>
-
-<style lang="scss">
-* {
-	padding: 0;
-	margin: 0;
-}
-
-#app {
-	height: 100vh;
-
-	.demo {
-		height: 100%;
-	}
-}
-</style>

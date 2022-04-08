@@ -10,6 +10,7 @@ import { ElMessage } from "element-plus";
 import { useCool } from "/@/cool";
 import { useForm } from "@cool-vue/crud";
 import MenuCheck from "./menu-check.vue";
+import IconCheck from "./icon-check.vue";
 
 export default defineComponent({
 	name: "menu-create",
@@ -24,7 +25,7 @@ export default defineComponent({
 		async function create() {
 			// 模块列表
 			const modules = await service.request({
-				url: "/__cool_modules"
+				url: `http://localhost:${__SERVER_PORT__}/__cool_modules`
 			});
 
 			// 数据结构列表
@@ -53,11 +54,7 @@ export default defineComponent({
 				items: [
 					{
 						prop: "module",
-						label: {
-							text: "模块名称",
-							tip: "菜单文件存放在所选模块的 views 目录下",
-							icon: "el-icon-question"
-						},
+						label: "模块名称",
 						span: 9,
 						component: {
 							name: "el-select",
@@ -76,11 +73,7 @@ export default defineComponent({
 					},
 					{
 						prop: "entity",
-						label: {
-							text: "数据结构",
-							tip: "所选实体会通过规则配置自动转换",
-							icon: "el-icon-question"
-						},
+						label: "数据结构",
 						span: 15,
 						component: {
 							name: "el-select",
@@ -153,7 +146,7 @@ export default defineComponent({
 						prop: "icon",
 						label: "菜单图标",
 						component: {
-							name: "cl-menu-icons"
+							vm: IconCheck
 						}
 					},
 					{
@@ -218,7 +211,7 @@ export default defineComponent({
 									close();
 
 									service.request({
-										url: "/__cool_createMenu",
+										url: `http://localhost:${__SERVER_PORT__}/__cool_createMenu`,
 										method: "POST",
 										data: {
 											...item,
