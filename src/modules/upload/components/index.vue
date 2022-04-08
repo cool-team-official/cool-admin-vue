@@ -383,7 +383,7 @@ function fileType(path: string) {
 
 // 更新
 function update() {
-	const check = list.value.find((e) => e.url);
+	const check = list.value.find((e) => !e.url);
 
 	if (!check) {
 		emit("update:modelValue", list.value.map((e: Item) => e.url).join(","));
@@ -451,11 +451,7 @@ defineExpose({
 	}
 
 	.is-drag {
-		margin: 5px;
-	}
-
-	.un-drag {
-		margin: 5px;
+		margin: 0 0 5px 5px;
 	}
 
 	&--file {
