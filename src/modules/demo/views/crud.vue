@@ -59,42 +59,7 @@ import { useCrud, useUpsert, useTable, useForm, useAdvSearch } from "@cool-vue/c
 
 const Crud = useCrud(
 	{
-		service: {
-			page() {
-				return Promise.resolve({
-					list: [
-						{
-							id: 1,
-							name: "A"
-						},
-						{
-							id: 2,
-							name: "B"
-						},
-						{
-							id: 3,
-							name: "C"
-						}
-					],
-					pagination: {
-						total: 3,
-						size: 10,
-						page: 1
-					}
-				});
-			},
-			info() {
-				return Promise.resolve({
-					id: 1,
-					name: "A"
-				});
-			},
-			update() {
-				return Promise.reject({
-					message: "错误"
-				});
-			}
-		}
+		service: "test"
 	},
 	(app) => {
 		app.refresh();
@@ -131,8 +96,6 @@ const Upsert = useUpsert({
 		},
 		{
 			label: "crud",
-			group: "2",
-			hidden: ":isEdit",
 			component: {
 				name: "slot-crud"
 			}

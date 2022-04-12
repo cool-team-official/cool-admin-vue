@@ -20,42 +20,32 @@ function mix(color1: string, color2: string, weight: number) {
 export const themes = [
 	{
 		label: "钴蓝",
-		name: "blue",
-		color: "#4165d7",
-		rules: {
-			"--menu-bg-color": "#2f3447",
-			"--menu-font-color": "#ffffff"
-		}
+		name: "default",
+		color: "#4165d7"
 	},
 	{
 		label: "极黑",
-		name: "black",
-		color: "#2f3447"
+		name: "jihei",
+		color: "#222222"
 	},
 	{
 		label: "果绿",
-		name: "green",
+		name: "guolv",
 		color: "#51C21A"
 	},
 	{
 		label: "酱紫",
-		name: "purple",
-		color: "#d0378d",
-		rules: {
-			"--view-bg-color": "#f7f7f7",
-			"--menu-bg-color": "#ffffff",
-			"--menu-font-color": "#000000"
-		}
+		name: "jiangzi",
+		color: "#d0378d"
 	}
 ];
 
 declare interface Options {
 	color?: string;
 	name?: string;
-	rules?: any;
 }
 
-export function setTheme({ color, name, rules }: Options) {
+export function setTheme({ color, name }: Options) {
 	// 主题配置
 	const theme = store.get("theme") || {};
 
@@ -76,16 +66,8 @@ export function setTheme({ color, name, rules }: Options) {
 		const item = themes.find((e) => e.name == name);
 
 		if (item) {
-			theme.name = name;
 			color = item.color;
-			rules = item.rules;
-
-			switch (name) {
-				case "blue":
-					break;
-				case "black":
-					break;
-			}
+			document.querySelector("#app")?.setAttribute("class", `theme-${name}`);
 		}
 	}
 
@@ -99,18 +81,11 @@ export function setTheme({ color, name, rules }: Options) {
 			el.style.setProperty(`${pre}-light-${i}`, mix(color, mixWhite, i * 0.1));
 			el.style.setProperty(`${pre}-dark-${i}`, mix(color, mixBlack, i * 0.1));
 		}
-
-		// 缓存
-		theme.color = color;
 	}
 
-	if (rules) {
-		for (const i in rules) {
-			el.style.setProperty(i, rules[i]);
-		}
-	}
-
-	console.log(theme);
+	// 缓存
+	theme.name = name;
+	theme.color = color;
 
 	store.set("theme", theme);
 }

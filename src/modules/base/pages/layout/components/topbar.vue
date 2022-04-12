@@ -17,7 +17,9 @@
 
 		<!-- 工具栏 -->
 		<ul class="app-topbar__tools">
-			<cl-theme />
+			<li>
+				<cl-theme />
+			</li>
 		</ul>
 
 		<!-- 用户信息 -->
@@ -107,16 +109,12 @@ function onCommand(name: string) {
 			align-items: center;
 			list-style: none;
 			height: 45px;
-			padding: 0 10px;
-			margin-right: 10px;
+			width: 45px;
+			border-radius: 3px;
 			cursor: pointer;
 
-			i {
-				font-size: 18px;
-
-				&:hover {
-					opacity: 0.8;
-				}
+			&:hover {
+				background-color: rgba(0, 0, 0, 0.1);
 			}
 		}
 	}

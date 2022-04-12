@@ -155,7 +155,7 @@ export default defineComponent({
 .app-slider {
 	height: 100%;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-	background-color: var(--menu-bg-color);
+	background-color: #2f3447;
 
 	&__logo {
 		display: flex;
@@ -215,7 +215,6 @@ export default defineComponent({
 
 					.icon-svg,
 					span {
-						// color: var(--menu-font-color);
 						color: #fff;
 					}
 				}
@@ -224,7 +223,7 @@ export default defineComponent({
 			.el-sub-menu__title,
 			&-item,
 			&__title {
-				color: var(--menu-font-color);
+				color: #eee;
 				letter-spacing: 0.5px;
 				height: 50px;
 				line-height: 50px;

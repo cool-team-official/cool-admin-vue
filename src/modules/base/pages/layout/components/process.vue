@@ -1,7 +1,7 @@
 <template>
 	<div class="app-process">
-		<div class="app-process__left hidden-xs-only" @click="toScroll(true)">
-			<el-icon><arrow-left /></el-icon>
+		<div class="app-process__back" @click="router.back">
+			<el-icon :size="15"><arrow-left /></el-icon>
 		</div>
 
 		<div :ref="setRefs('scroller')" class="app-process__scroller">
@@ -16,18 +16,10 @@
 				@contextmenu.stop.prevent="openCM($event, item)"
 			>
 				<span>{{ item.label }}</span>
-				<el-icon
-					v-if="index > 0"
-					class="el-icon-close"
-					@mousedown.stop="onDel(Number(index))"
-				>
+				<el-icon v-if="index > 0" @mousedown.stop="onDel(Number(index))">
 					<close />
 				</el-icon>
 			</div>
-		</div>
-
-		<div class="app-process__right hidden-xs-only" @click="toScroll(false)">
-			<el-icon><arrow-right /></el-icon>
 		</div>
 	</div>
 </template>
@@ -36,11 +28,11 @@
 import { watch } from "vue";
 import { last } from "/@/cool/utils";
 import { useCool } from "/@/cool";
-import { ArrowLeft, ArrowRight, Close } from "@element-plus/icons-vue";
+import { ArrowLeft, Close } from "@element-plus/icons-vue";
 import { ContextMenu } from "@cool-vue/crud";
 import { useBaseStore } from "/$/base";
 
-const { refs, setRefs, store, route, router }: any = useCool();
+const { refs, setRefs, route, router } = useCool();
 const { process } = useBaseStore();
 
 // 跳转
@@ -59,11 +51,6 @@ function scrollTo(left: number) {
 		left,
 		behavior: "smooth"
 	});
-}
-
-// 左右移动
-function toScroll(f: boolean) {
-	scrollTo(refs.value.scroller.scrollLeft + (f ? -100 : 100));
 }
 
 // 调整滚动位置
@@ -103,8 +90,7 @@ function openCM(e: any, item: any) {
 			{
 				label: "关闭其他",
 				callback(done) {
-					store.commit(
-						"SET_PROCESS",
+					process.set(
 						process.list.filter((e: any) => e.value == item.value || e.value == "/")
 					);
 					done();
@@ -114,10 +100,7 @@ function openCM(e: any, item: any) {
 			{
 				label: "关闭所有",
 				callback(done) {
-					store.commit(
-						"SET_PROCESS",
-						process.list.filter((e: any) => e.value == "/")
-					);
+					process.set(process.list.filter((e: any) => e.value == "/"));
 					done();
 					toPath();
 				}
@@ -143,28 +126,20 @@ watch(
 	margin-bottom: 10px;
 	padding: 0 10px;
 
-	&__left,
-	&__right {
+	&__back {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		background-color: #fff;
 		height: 30px;
-		padding: 0 2px;
+		padding: 0 10px;
 		border-radius: 3px;
 		cursor: pointer;
+		margin-right: 10px;
 
 		&:hover {
 			background-color: #eee;
 		}
-	}
-
-	&__left {
-		margin-right: 10px;
-	}
-
-	&__right {
-		margin-left: 10px;
 	}
 
 	&__scroller {
@@ -222,6 +197,8 @@ watch(
 		&.active {
 			span {
 				color: var(--color-primary);
+				font-weight: bold;
+				user-select: none;
 			}
 
 			i {
