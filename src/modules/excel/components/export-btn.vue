@@ -15,8 +15,10 @@
 </template>
 
 <script lang="ts">
+import { useCrud } from "@cool-vue/crud";
 import { defineComponent, inject, ref } from "vue";
 import { currentDate, export_json_to_excel } from "../utils";
+import { service } from "../../../cool/service/index";
 
 export default defineComponent({
 	name: "cl-export-btn",
@@ -52,7 +54,7 @@ export default defineComponent({
 
 	setup(props) {
 		const loading = ref<boolean>(false);
-		const crud = inject<any>("crud");
+		const Crud = useCrud();
 
 		async function getHeader(columns: any[], fields: any[]) {
 			return (
@@ -67,9 +69,9 @@ export default defineComponent({
 				if (props.data) {
 					return props.data;
 				} else {
-					return crud.service
+					return Crud.value?.service
 						.page({
-							...crud.paramsReplace(crud.params),
+							...Crud.value?.paramsReplace(Crud.value.params),
 							maxExportLimit: props.maxExportLimit,
 							isExport: true
 						})

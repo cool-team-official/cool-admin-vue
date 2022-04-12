@@ -44,6 +44,13 @@ export default (): UserConfig => {
 			svgBuilder("./src/icons/svg/"),
 			cool()
 		],
+		css: {
+			preprocessorOptions: {
+				scss: {
+					charset: false
+				}
+			}
+		},
 		resolve: {
 			alias: {
 				"/@": resolve("src"),
