@@ -59,7 +59,42 @@ import { useCrud, useUpsert, useTable, useForm, useAdvSearch } from "@cool-vue/c
 
 const Crud = useCrud(
 	{
-		service: "test"
+		service: {
+			page() {
+				return Promise.resolve({
+					list: [
+						{
+							id: 1,
+							name: "A"
+						},
+						{
+							id: 2,
+							name: "B"
+						},
+						{
+							id: 3,
+							name: "C"
+						}
+					],
+					pagination: {
+						total: 3,
+						size: 10,
+						page: 1
+					}
+				});
+			},
+			info() {
+				return Promise.resolve({
+					id: 1,
+					name: "A"
+				});
+			},
+			update() {
+				return Promise.reject({
+					message: "错误"
+				});
+			}
+		}
 	},
 	(app) => {
 		app.refresh();

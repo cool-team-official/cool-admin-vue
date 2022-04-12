@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 import { isNumber } from "/@/cool/utils";
 import { User } from "@element-plus/icons-vue";
 
@@ -30,8 +30,8 @@ export default defineComponent({
 			default: 36
 		},
 		shape: {
-			type: String,
-			default: "circle"
+			type: String as PropType<"square" | "circle">,
+			default: "square"
 		},
 		backgroundColor: {
 			type: String,
@@ -64,6 +64,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .cl-avatar {
 	overflow: hidden;
+	margin: 0 auto;
 
 	&.large {
 		height: 50px;

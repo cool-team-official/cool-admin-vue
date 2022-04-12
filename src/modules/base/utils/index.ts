@@ -1,4 +1,4 @@
-export const revisePath = (path: string) => {
+export function revisePath(path: string) {
 	if (!path) {
 		return "";
 	}
@@ -8,7 +8,7 @@ export const revisePath = (path: string) => {
 	} else {
 		return `/${path}`;
 	}
-};
+}
 
 export function firstMenu(list: Array<any>) {
 	let path = "";

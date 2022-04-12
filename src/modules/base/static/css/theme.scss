@@ -29,6 +29,8 @@
 }
 
 .el-message {
+	z-index: 10000 !important;
+
 	&.el-message--success,
 	&.el-message--error,
 	&.el-message--info,

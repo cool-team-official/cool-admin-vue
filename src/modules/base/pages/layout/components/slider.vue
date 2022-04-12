@@ -102,7 +102,9 @@ export default defineComponent({
 											return (
 												<div class="wrap">
 													<icon-svg name={e.icon}></icon-svg>
-													<span>{e.name}</span>
+													<span v-show={!app.isFold || index != 1}>
+														{e.name}
+													</span>
 												</div>
 											);
 										}
@@ -153,7 +155,7 @@ export default defineComponent({
 .app-slider {
 	height: 100%;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-	background-color: #2f3447;
+	background-color: var(--menu-bg-color);
 
 	&__logo {
 		display: flex;
@@ -209,10 +211,11 @@ export default defineComponent({
 			&-item {
 				&.is-active,
 				&:hover {
-					background-color: $color-primary !important;
+					background-color: var(--color-primary) !important;
 
 					.icon-svg,
 					span {
+						// color: var(--menu-font-color);
 						color: #fff;
 					}
 				}
@@ -221,7 +224,7 @@ export default defineComponent({
 			.el-sub-menu__title,
 			&-item,
 			&__title {
-				color: #eee;
+				color: var(--menu-font-color);
 				letter-spacing: 0.5px;
 				height: 50px;
 				line-height: 50px;

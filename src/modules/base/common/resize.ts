@@ -1,3 +1,4 @@
+import { useEventListener } from "@vueuse/core";
 import { useBaseStore } from "../store";
 
 function resize() {
@@ -7,6 +8,6 @@ function resize() {
 }
 
 window.onload = function () {
-	window.addEventListener("resize", resize);
+	useEventListener(window, "resize", resize);
 	resize();
 };

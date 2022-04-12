@@ -123,8 +123,8 @@ export default defineComponent({
 
 		.el-button {
 			margin-left: 15px;
-			background-color: $color-primary;
-			border-color: $color-primary;
+			background-color: var(--color-primary);
+			border-color: var(--color-primary);
 			color: #fff;
 			padding: 0 30px;
 			letter-spacing: 1px;
@@ -145,7 +145,7 @@ export default defineComponent({
 			list-style: none;
 
 			&:hover {
-				color: $color-primary;
+				color: var(--color-primary);
 			}
 		}
 	}

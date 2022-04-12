@@ -6,6 +6,8 @@ import viteCompression from "vite-plugin-compression";
 import { svgBuilder } from "./build/svg";
 import { cool } from "./build/cool";
 import Components from "unplugin-vue-components/vite";
+import Unocss from "unocss/vite";
+import { presetUno } from "unocss";
 
 function resolve(dir: string) {
 	return path.resolve(__dirname, ".", dir);
@@ -36,6 +38,9 @@ export default (): UserConfig => {
 			viteCompression(),
 			Components(),
 			vueJsx(),
+			Unocss({
+				presets: [presetUno()]
+			}),
 			svgBuilder("./src/icons/svg/"),
 			cool()
 		],
@@ -44,13 +49,6 @@ export default (): UserConfig => {
 				"/@": resolve("src"),
 				"/#": resolve("types"),
 				"/$": resolve("src/modules")
-			}
-		},
-		css: {
-			preprocessorOptions: {
-				scss: {
-					additionalData: `@use "./src/assets/css/element.scss" as *;`
-				}
 			}
 		},
 		server: {

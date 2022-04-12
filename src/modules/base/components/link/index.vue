@@ -61,7 +61,7 @@ export default defineComponent({
 	display: inline-flex;
 	align-items: center;
 	text-align: left;
-	background-color: $color-primary;
+	background-color: var(--color-primary);
 	color: #fff;
 	padding: 0 5px;
 	border-radius: 5px;

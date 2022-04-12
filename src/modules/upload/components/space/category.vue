@@ -248,7 +248,7 @@ onMounted(() => {
 				cursor: pointer;
 
 				&.is-active {
-					color: $color-primary;
+					color: var(--color-primary);
 				}
 
 				&:hover {

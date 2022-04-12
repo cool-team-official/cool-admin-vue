@@ -396,7 +396,7 @@ defineExpose({
 			cursor: pointer;
 
 			&:hover {
-				border-color: $color-primary;
+				border-color: var(--color-primary);
 			}
 
 			i {

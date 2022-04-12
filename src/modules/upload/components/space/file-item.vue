@@ -55,12 +55,14 @@
 
 <script lang="ts" setup>
 import { computed, inject } from "vue";
-import { ElMessage } from "element-plus";
-import Clipboard from "clipboard";
 import { ContextMenu } from "@cool-vue/crud";
 import { Document } from "@element-plus/icons-vue";
 import { extname } from "/@/cool/utils";
 import { fileSize, fileName } from "../../utils";
+import { useClipboard } from "@vueuse/core";
+import { ElMessage } from "element-plus";
+
+const { copy } = useClipboard();
 
 const props = defineProps({
 	data: Object
@@ -107,20 +109,8 @@ function onContextMenu(e: any) {
 			{
 				label: "复制地址",
 				callback(done) {
-					const clipboard: any = new Clipboard(e.target, {
-						text: () => info.value.url
-					});
-
-					clipboard.on("success", () => {
-						ElMessage.success("复制成功");
-						clipboard.destroy();
-					});
-
-					clipboard.on("error", () => {
-						clipboard.destroy();
-					});
-
-					clipboard.onClick(e);
+					copy(info.value.url);
+					ElMessage.success("复制成功");
 					done();
 				}
 			},

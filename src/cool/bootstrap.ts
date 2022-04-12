@@ -7,6 +7,7 @@ import mitt from "mitt";
 import VueECharts from "vue-echarts";
 import ElementPlus from "element-plus";
 import "element-plus/theme-chalk/src/index.scss";
+import "uno.css";
 
 export async function bootstrap(Vue: App) {
 	// 缓存

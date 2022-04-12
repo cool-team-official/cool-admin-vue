@@ -900,7 +900,7 @@ onMounted(() => {
 							margin-right: 5px;
 
 							&._warning {
-								background-color: $color-warning;
+								background-color: #e6a23c;
 								color: #fff;
 							}
 						}
@@ -1002,7 +1002,7 @@ onMounted(() => {
 					}
 
 					&._error {
-						background-color: $color-danger;
+						background-color: #f56c6c;
 						color: #fff;
 
 						.remark {
@@ -1093,7 +1093,7 @@ onMounted(() => {
 						}
 
 						&:hover {
-							background-color: $color-danger;
+							background-color: #f56c6c;
 							color: #fff;
 						}
 					}

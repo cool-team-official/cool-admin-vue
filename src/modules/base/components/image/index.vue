@@ -15,6 +15,7 @@
 				height: sty.h,
 				width: sty.w
 			}"
+			preview-teleported
 		>
 			<template #error>
 				<div class="image-slot">
@@ -28,9 +29,14 @@
 <script lang="ts">
 import { computed, defineComponent } from "vue";
 import { isArray, isNumber, isString } from "/@/cool/utils";
+import { PictureFilled } from "@element-plus/icons-vue";
 
 export default defineComponent({
 	name: "cl-image",
+
+	components: {
+		PictureFilled
+	},
 
 	props: {
 		modelValue: [String, Array],

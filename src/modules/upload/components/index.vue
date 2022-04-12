@@ -520,7 +520,7 @@ defineExpose({
 
 		&:hover {
 			border-color: currentColor;
-			color: $color-primary;
+			color: var(--color-primary);
 
 			.cl-upload__actions {
 				display: inline-flex;

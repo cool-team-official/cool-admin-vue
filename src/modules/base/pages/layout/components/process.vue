@@ -204,7 +204,7 @@ watch(
 
 			&:hover {
 				color: #fff;
-				background-color: $color-primary;
+				background-color: var(--color-primary);
 			}
 		}
 
@@ -221,7 +221,7 @@ watch(
 
 		&.active {
 			span {
-				color: $color-primary;
+				color: var(--color-primary);
 			}
 
 			i {
@@ -230,7 +230,7 @@ watch(
 			}
 
 			&:before {
-				background-color: $color-primary;
+				background-color: var(--color-primary);
 			}
 		}
 	}

@@ -12,7 +12,7 @@
 
 			<!-- 成员列表 -->
 			<div class="user">
-				<div class="header">
+				<div class="user__header">
 					<div class="icon" @click="deptExpand">
 						<el-icon v-if="isExpand"><arrow-left /></el-icon>
 						<el-icon v-else><arrow-right /></el-icon>
@@ -21,7 +21,7 @@
 					<span>成员列表</span>
 				</div>
 
-				<div class="container">
+				<div class="user__container">
 					<cl-crud ref="Crud">
 						<el-row>
 							<cl-refresh-btn />
@@ -47,16 +47,6 @@
 								}"
 								@selection-change="onSelectionChange"
 							>
-								<!-- 头像 -->
-								<template #column-headImg="{ scope }">
-									<cl-avatar
-										shape="square"
-										size="medium"
-										:src="scope.row.headImg"
-										:style="{ margin: 'auto' }"
-									/>
-								</template>
-
 								<!-- 权限 -->
 								<template #column-roleName="{ scope }">
 									<el-tag
@@ -156,7 +146,10 @@ const Table = useTable({
 		},
 		{
 			prop: "headImg",
-			label: "头像"
+			label: "头像",
+			component: {
+				name: "cl-avatar"
+			}
 		},
 		{
 			prop: "name",
@@ -486,7 +479,7 @@ async function toMove(e?: any) {
 		width: calc(100% - 310px);
 		flex: 1;
 
-		.header {
+		&__header {
 			display: flex;
 			align-items: center;
 			justify-content: center;
@@ -518,7 +511,7 @@ async function toMove(e?: any) {
 	.dept,
 	.user {
 		overflow: hidden;
-		.container {
+		&__container {
 			height: calc(100% - 40px);
 		}
 	}

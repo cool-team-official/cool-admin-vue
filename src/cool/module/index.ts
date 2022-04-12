@@ -15,10 +15,6 @@ function main() {
 		// 模块名
 		const [, , , name, action] = i.split("/");
 
-		if (name == "index.ts") {
-			continue;
-		}
-
 		// 文件内容
 		let value: any = null;
 
@@ -41,6 +37,11 @@ function main() {
 			// 配置参数入口
 			if (action == "config.ts") {
 				d.options = value || {};
+			}
+
+			// 模块入口
+			if (action == "index.ts") {
+				d.value = value || {};
 			}
 
 			// 其他功能
