@@ -66,8 +66,7 @@ export default (): UserConfig => {
 			}
 		},
 		define: {
-			__PROXY_LIST__: JSON.stringify(proxy),
-			__SERVER_PORT__: 9000
+			__PROXY_LIST__: JSON.stringify(proxy)
 		},
 		build: {
 			sourcemap: false,

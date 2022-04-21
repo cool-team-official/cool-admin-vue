@@ -25,7 +25,7 @@ export default defineComponent({
 		async function create() {
 			// 模块列表
 			const modules = await service.request({
-				url: `http://localhost:${__SERVER_PORT__}/__cool_modules`
+				url: `${location.origin}/__cool_modules`
 			});
 
 			// 数据结构列表
@@ -211,7 +211,7 @@ export default defineComponent({
 									close();
 
 									service.request({
-										url: `http://localhost:${__SERVER_PORT__}/__cool_createMenu`,
+										url: `${location.origin}/__cool_createMenu`,
 										method: "POST",
 										data: {
 											...item,

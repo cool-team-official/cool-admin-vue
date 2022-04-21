@@ -10,5 +10,4 @@ declare module "*.vue" {
 
 declare const __PROXY_LIST__: any[];
 declare const __EPS__: string;
-declare const __SERVER_PORT__: string;
 declare const __modules__: any[];

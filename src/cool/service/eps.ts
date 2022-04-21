@@ -53,7 +53,7 @@ export function useEps(service: Service) {
 
 		// 本地服务
 		return service.request({
-			url: `http://localhost:${__SERVER_PORT__}/__cool_eps`,
+			url: `${location.origin}/__cool_eps`,
 			method: "POST",
 			data: {
 				service,
