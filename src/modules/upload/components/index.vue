@@ -158,12 +158,16 @@ const props = defineProps({
 		type: String as PropType<"image" | "file">,
 		default: "image"
 	},
+	accept: String,
 	multiple: Boolean,
 	limit: Number,
 	limitSize: Number,
 	size: [String, Number, Array],
 	text: String,
-	prefixPath: String,
+	prefixPath: {
+		type: String,
+		default: "app"
+	},
 	showFileList: {
 		type: Boolean,
 		default: true
@@ -230,7 +234,7 @@ const drag = reactive<any>({
 
 // 文件格式
 const accept = computed(() => {
-	return props.type == "file" ? "*" : "image/*";
+	return props.accept || (props.type == "file" ? "*" : "image/*");
 });
 
 // 能否添加
@@ -260,7 +264,7 @@ function beforeUpload(file: any, item?: Item) {
 		if (isAdd.value) {
 			list.value.push(d);
 		} else {
-			return false;
+			list.value = [d];
 		}
 	} else {
 		Object.assign(item, d);
@@ -294,7 +298,7 @@ async function httpRequest(req: any, item?: any) {
 
 	try {
 		// 文件名 uuid + filename
-		const fileName = uuidv4() + "_" + req.file.name;
+		let fileName = uuidv4() + "_" + req.file.name;
 		const { mode, type } = await service.base.comm.uploadMode();
 
 		// 多种上传请求
@@ -311,7 +315,8 @@ async function httpRequest(req: any, item?: any) {
 				if (mode == "local") {
 					data.append("key", fileName);
 				} else {
-					data.append("key", `${props.prefixPath}/${fileName}`);
+					fileName = props.prefixPath ? `${props.prefixPath}/${fileName}` : fileName;
+					data.append("key", fileName);
 				}
 
 				data.append("file", req.file);
@@ -329,13 +334,14 @@ async function httpRequest(req: any, item?: any) {
 						onUploadProgress(e: any) {
 							item.progress = parseInt((e.loaded / e.total) * 100);
 							emit("progress", item);
-						}
+						},
+						proxy: mode == "local" ? true : false
 					})
 					.then((res) => {
 						if (mode === "local") {
 							item.url = res;
 						} else {
-							item.url = `${params.host}/${props.prefixPath}/${fileName}`;
+							item.url = `${params.host}/${fileName}`;
 						}
 
 						emit("success", item);
@@ -451,7 +457,11 @@ defineExpose({
 	}
 
 	.is-drag {
-		margin: 0 0 5px 5px;
+		margin: 0 5px 5px 0;
+	}
+
+	.un-drag {
+		margin-right: 5px;
 	}
 
 	&--file {
@@ -460,6 +470,7 @@ defineExpose({
 
 			.un-drag {
 				width: 100%;
+				margin-bottom: 5px;
 			}
 		}
 	}
@@ -467,7 +478,7 @@ defineExpose({
 	&__list {
 		display: flex;
 		flex-wrap: wrap;
-		margin: 0 5px 0 -5px;
+		margin: 0 5px 0 0;
 	}
 
 	&__text {

@@ -70,8 +70,8 @@ export class BaseService {
 			ns += "/" + this.namespace;
 		}
 
-		// 处理 http
-		if (options.url.indexOf("http") !== 0) {
+		// 处理地址
+		if (options.proxy === undefined || options.proxy) {
 			options.url = ns + options.url;
 		}
 

@@ -1,6 +1,6 @@
 import { isDev, test } from "../config";
 import { BaseService } from "./base";
-import { storage, toCamel } from "../utils";
+import { storage, toCamel, isArray } from "../utils";
 
 // 获取标签名
 function getNames(v: any) {
@@ -53,8 +53,9 @@ export function useEps(service: Service) {
 
 		// 本地服务
 		return service.request({
-			url: `${location.origin}/__cool_eps`,
+			url: "/__cool_eps",
 			method: "POST",
+			proxy: false,
 			data: {
 				service,
 				list
@@ -96,80 +97,82 @@ export function useEps(service: Service) {
 		}
 
 		for (const i in d) {
-			d[i].forEach((e: any) => {
-				// 分隔路径
-				const arr = e.prefix
-					.replace(/\//, "")
-					.replace("admin", "")
-					.split("/")
-					.filter(Boolean)
-					.map(toCamel);
+			if (isArray(d[i])) {
+				d[i].forEach((e: any) => {
+					// 分隔路径
+					const arr = e.prefix
+						.replace(/\//, "")
+						.replace("admin", "")
+						.split("/")
+						.filter(Boolean)
+						.map(toCamel);
 
-				// 遍历
-				function deep(d: any, i: number) {
-					const k = arr[i];
+					// 遍历
+					function deep(d: any, i: number) {
+						const k = arr[i];
 
-					if (k) {
-						// 是否最后一个
-						if (arr[i + 1]) {
-							if (!d[k]) {
-								d[k] = {};
-							}
+						if (k) {
+							// 是否最后一个
+							if (arr[i + 1]) {
+								if (!d[k]) {
+									d[k] = {};
+								}
 
-							deep(d[k], i + 1);
-						} else {
-							// 本地不存在则创建实例
-							if (!d[k]) {
-								d[k] = new BaseService({
-									namespace: e.prefix.substr(1, e.prefix.length - 1)
-								});
-							}
+								deep(d[k], i + 1);
+							} else {
+								// 本地不存在则创建实例
+								if (!d[k]) {
+									d[k] = new BaseService({
+										namespace: e.prefix.substr(1, e.prefix.length - 1)
+									});
+								}
 
-							// 创建方法
-							e.api.forEach((a: any) => {
-								// 方法名
-								const n = (a.name || a.path).replace("/", "");
+								// 创建方法
+								e.api.forEach((a: any) => {
+									// 方法名
+									const n = (a.name || a.path).replace("/", "");
 
-								// 过滤
-								if (!names.includes(n)) {
-									// 本地不存在则创建
-									if (!d[k][n]) {
-										if (n && !/[-:]/g.test(n)) {
-											d[k][n] = function (data: any) {
-												return this.request({
-													url: a.path,
-													method: a.method,
-													[a.method.toLocaleLowerCase() == "post"
-														? "data"
-														: "params"]: data
-												});
-											};
+									// 过滤
+									if (!names.includes(n)) {
+										// 本地不存在则创建
+										if (!d[k][n]) {
+											if (n && !/[-:]/g.test(n)) {
+												d[k][n] = function (data: any) {
+													return this.request({
+														url: a.path,
+														method: a.method,
+														[a.method.toLocaleLowerCase() == "post"
+															? "data"
+															: "params"]: data
+													});
+												};
+											}
 										}
 									}
-								}
-							});
-
-							// 创建权限
-							if (!d[k].permission) {
-								d[k].permission = {};
-
-								const ks = Array.from(new Set([...names, ...getNames(d[k])]));
-
-								ks.forEach((e) => {
-									d[k].permission[e] = `${d[k].namespace.replace(
-										"admin/",
-										""
-									)}/${e}`.replace(/\//g, ":");
 								});
-							}
 
-							list.push(e);
+								// 创建权限
+								if (!d[k].permission) {
+									d[k].permission = {};
+
+									const ks = Array.from(new Set([...names, ...getNames(d[k])]));
+
+									ks.forEach((e) => {
+										d[k].permission[e] = `${d[k].namespace.replace(
+											"admin/",
+											""
+										)}/${e}`.replace(/\//g, ":");
+									});
+								}
+
+								list.push(e);
+							}
 						}
 					}
-				}
 
-				deep(service, 0);
-			});
+					deep(service, 0);
+				});
+			}
 		}
 
 		if (isDev && c) {
