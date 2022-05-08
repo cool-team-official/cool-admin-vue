@@ -140,6 +140,7 @@ import { ElMessage } from "element-plus";
 import { useBaseStore } from "/$/base";
 import Draggable from "vuedraggable";
 import { fileSize, fileName } from "../utils";
+import dayjs from "dayjs";
 
 interface Item {
 	url: string;
@@ -315,7 +316,9 @@ async function httpRequest(req: any, item?: any) {
 				if (mode == "local") {
 					data.append("key", fileName);
 				} else {
-					fileName = props.prefixPath ? `${props.prefixPath}/${fileName}` : fileName;
+					fileName = [props.prefixPath, dayjs().format("YYYY-MM-DD"), fileName]
+						.filter(Boolean)
+						.join("/");
 					data.append("key", fileName);
 				}
 
