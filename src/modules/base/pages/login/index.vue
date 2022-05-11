@@ -1,7 +1,7 @@
 <template>
 	<div class="page-login">
 		<div class="box">
-			<img class="logo" :src="Logo" alt="Logo" />
+			<img class="logo" src="/@/assets/logo-text.png" alt="Logo" />
 			<p class="desc">一款快速开发后台权限管理系统</p>
 
 			<el-form label-position="top" class="form" :disabled="saving" size="large">
@@ -60,7 +60,6 @@ import { ElMessage } from "element-plus";
 import { useCool } from "/@/cool";
 import { useBaseStore } from "/$/base";
 import Captcha from "./components/captcha.vue";
-import Logo from "/@/assets/logo-text.png";
 
 export default defineComponent({
 	cool: {
@@ -88,6 +87,27 @@ export default defineComponent({
 			verifyCode: ""
 		});
 
+		// 获取第一个菜单路径
+		function getPath(list: any[]) {
+			let path = "";
+
+			function deep(arr: any[]) {
+				arr.forEach((e: any) => {
+					if (e.type == 1) {
+						if (!path) {
+							path = e.path;
+						}
+					} else {
+						deep(e.children);
+					}
+				});
+			}
+
+			deep(list);
+
+			return path || "/";
+		}
+
 		// 登录
 		async function toLogin() {
 			if (!form.username) {
@@ -114,12 +134,12 @@ export default defineComponent({
 				await user.get();
 
 				// 权限菜单
-				const [first] = await menu.get();
+				const path = getPath(await menu.get());
 
-				if (!first) {
-					ElMessage.error("该账号没有权限！");
+				if (path) {
+					router.push(path);
 				} else {
-					router.push("/");
+					ElMessage.error("该账号没有权限！");
 				}
 			} catch (err: any) {
 				refs.value.captcha.refresh();
@@ -134,8 +154,7 @@ export default defineComponent({
 			setRefs,
 			form,
 			saving,
-			toLogin,
-			Logo
+			toLogin
 		};
 	}
 });

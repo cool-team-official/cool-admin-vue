@@ -3,31 +3,7 @@ export function revisePath(path: string) {
 		return "";
 	}
 
-	if (path[0] == "/") {
-		return path;
-	} else {
-		return `/${path}`;
-	}
-}
-
-export function firstMenu(list: Array<any>) {
-	let path = "";
-
-	const fn = (arr: Array<any>) => {
-		arr.forEach((e: any) => {
-			if (e.type == 1) {
-				if (!path) {
-					path = e.path;
-				}
-			} else {
-				fn(e.children);
-			}
-		});
-	};
-
-	fn(list);
-
-	return path || "/404";
+	return path[0] == "/" ? path : `/${path}`;
 }
 
 export function createLink(url: string, id?: string) {

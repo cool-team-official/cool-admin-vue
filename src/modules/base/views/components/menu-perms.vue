@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch } from "vue";
 import { useCool } from "/@/cool";
-import { isObject } from "/@/cool/utils";
+import { isObject } from "lodash";
 
 export default defineComponent({
 	name: "menu-perms",

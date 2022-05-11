@@ -35,7 +35,7 @@
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox } from "element-plus";
 import { computed, inject, onMounted, ref } from "vue";
-import { isEmpty } from "/@/cool/utils";
+import { isEmpty } from "lodash";
 import { useCool } from "/@/cool";
 import { ContextMenu, useForm } from "@cool-vue/crud";
 import { useBaseStore } from "/$/base/store";

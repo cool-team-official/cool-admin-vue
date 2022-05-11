@@ -56,7 +56,9 @@
 				<template #slot-add="{ scope }">
 					<el-button
 						v-if="scope.row.type != 2"
-						type="text"
+						type="primary"
+						text
+						bg
 						@click="upsertAppend(scope.row)"
 						>新增</el-button
 					>
@@ -201,6 +203,7 @@ const Table = useTable({
 		{
 			label: "操作",
 			type: "op",
+			width: 250,
 			buttons: ["slot-add", "edit", "delete"]
 		}
 	]

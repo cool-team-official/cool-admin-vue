@@ -213,7 +213,7 @@ const Table = useTable({
 		{
 			type: "op",
 			buttons: ["slot-btn", "edit", "delete"],
-			width: 160
+			width: 180
 		}
 	]
 });

@@ -1,6 +1,7 @@
 import { isDev, test } from "../config";
 import { BaseService } from "./base";
-import { storage, toCamel, isArray } from "../utils";
+import { storage, toCamel } from "../utils";
+import { isArray, isEmpty } from "lodash";
 
 // 获取标签名
 function getNames(v: any) {
@@ -71,14 +72,16 @@ export function useEps(service: Service) {
 					url: "/admin/base/open/eps"
 				})
 				.then(async (res) => {
-					const isLoaded: boolean = storage.get("eps");
-					storage.set("eps", res);
+					if (!isEmpty(res)) {
+						const isLoaded: boolean = storage.get("eps");
+						storage.set("eps", res);
 
-					if (!isLoaded) {
-						location.reload();
-					} else {
-						set(res, true);
-						console.log("[Eps] 初始化成功。");
+						if (!isLoaded) {
+							location.reload();
+						} else {
+							set(res, true);
+							console.log("[Eps] 初始化成功。");
+						}
 					}
 				})
 				.catch((err) => {
@@ -190,23 +193,17 @@ export function useEps(service: Service) {
 			getEps();
 		}
 	} else {
-		const eps: any[] = [];
-
-		JSON.parse(__EPS__).forEach((e: any) => {
-			const [prefix, api] = e;
-
-			eps.push({
+		const eps = JSON.parse(__EPS__).map(([prefix, api]: any[]) => {
+			return {
 				prefix,
-				api: api.map((e: string[]) => {
-					const [method, path, name] = e;
-
+				api: api.map(([method, path, name]: string[]) => {
 					return {
 						method,
 						path,
 						name
 					};
 				})
-			});
+			};
 		});
 
 		// 文件数据

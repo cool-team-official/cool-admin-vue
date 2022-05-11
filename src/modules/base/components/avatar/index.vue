@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
-import { isNumber } from "/@/cool/utils";
+import { isNumber } from "lodash";
 import { User } from "@element-plus/icons-vue";
 
 export default defineComponent({

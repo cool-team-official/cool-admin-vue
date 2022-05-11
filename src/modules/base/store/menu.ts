@@ -1,11 +1,11 @@
 import { ElMessage } from "element-plus";
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { deepTree, isArray, isEmpty, isObject, revDeepTree, storage } from "/@/cool/utils";
+import { deepTree, revDeepTree, storage } from "/@/cool/utils";
+import { isArray, isEmpty, isObject, orderBy } from "lodash";
 import { app } from "/@/cool/config";
 import { addViews, service } from "/@/cool";
 import { revisePath } from "../utils";
-import { orderBy } from "lodash";
 
 declare enum Type {
 	"目录" = 0,
@@ -133,7 +133,7 @@ export const useMenuStore = defineStore("menu", function () {
 							name: e.name,
 							icon: e.icon,
 							orderNum: e.orderNum,
-							isShow: isEmpty(e.isShow) ? true : e.isShow,
+							isShow: e.isShow === undefined ? true : e.isShow,
 							meta: {
 								label: e.name,
 								keepAlive: e.keepAlive
@@ -160,9 +160,7 @@ export const useMenuStore = defineStore("menu", function () {
 			if (isEmpty(app.menu.list)) {
 				service.base.comm
 					.permmenu()
-					.then((res) => {
-						next(res);
-					})
+					.then(next)
 					.catch((err) => {
 						ElMessage.error("菜单加载异常！");
 						reject(err);

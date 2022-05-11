@@ -107,7 +107,8 @@ export default {
 <script lang="ts" setup>
 import { computed, onMounted, provide, reactive, ref, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { isEmpty, module } from "/@/cool/utils";
+import { module } from "/@/cool/utils";
+import { isEmpty } from "lodash";
 import Category from "./space/category.vue";
 import FileItem from "./space/file-item.vue";
 import { useCool } from "/@/cool";

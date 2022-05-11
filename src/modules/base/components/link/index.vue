@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { isArray, isString, last } from "/@/cool/utils";
+import { isArray, isString, last } from "lodash";
 import { Link } from "@element-plus/icons-vue";
 
 export default defineComponent({

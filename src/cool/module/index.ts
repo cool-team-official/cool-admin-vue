@@ -1,6 +1,7 @@
 import modules from "/@/modules";
 import { router, addViews } from "../router";
-import { isFunction, isObject, filename } from "../utils";
+import { filename } from "../utils";
+import { isFunction, isObject } from "lodash";
 import { App } from "vue";
 import module from "../utils/module";
 
