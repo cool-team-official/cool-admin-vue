@@ -133,9 +133,9 @@ export default {
 <script lang="ts" setup>
 import { PictureFilled, ZoomIn, Delete, Document } from "@element-plus/icons-vue";
 import { computed, ref, reactive, watch, PropType } from "vue";
-import { v4 as uuidv4 } from "uuid";
 import { useCool } from "/@/cool";
-import { isArray, extname, module, isNumber } from "/@/cool/utils";
+import { extname, module, uuid } from "/@/cool/utils";
+import { isArray, isNumber } from "lodash";
 import { ElMessage } from "element-plus";
 import { useBaseStore } from "/$/base";
 import Draggable from "vuedraggable";
@@ -299,7 +299,7 @@ async function httpRequest(req: any, item?: any) {
 
 	try {
 		// 文件名 uuid + filename
-		let fileName = uuidv4() + "_" + req.file.name;
+		let fileName = uuid() + "_" + req.file.name;
 		const { mode, type } = await service.base.comm.uploadMode();
 
 		// 多种上传请求
@@ -415,7 +415,7 @@ watch(
 					return {
 						type: fileType(url),
 						progress: 0,
-						uid: uuidv4(),
+						uid: uuid(),
 						url,
 						preload: url
 					};

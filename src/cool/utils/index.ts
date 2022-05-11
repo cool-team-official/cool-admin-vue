@@ -1,74 +1,7 @@
+import { isArray, orderBy } from "lodash";
 import { app } from "../config";
 import storage from "./storage";
 import module from "./module";
-
-// 是否Array类型
-export function isArray(value: any): boolean {
-	if (typeof Array.isArray === "function") {
-		return Array.isArray(value);
-	} else {
-		return Object.prototype.toString.call(value) === "[object Array]";
-	}
-}
-
-// 是否Object类型
-export function isObject(value: any): boolean {
-	return Object.prototype.toString.call(value) === "[object Object]";
-}
-
-// 是否Function类型
-export function isFunction(value: any): boolean {
-	return typeof value === "function";
-}
-
-// 是否String类型
-export function isString(value: any): boolean {
-	return typeof value === "string";
-}
-
-// 是否Boolean类型
-export function isBoolean(value: any): boolean {
-	return typeof value === "boolean";
-}
-
-// 是否数字类型
-export function isNumber(value: any): boolean {
-	return typeof value === "number" && !isNaN(value);
-}
-
-// 是否Promise类型
-export function isPromise(value: any): boolean {
-	return (
-		value !== null &&
-		(typeof value === "object" || typeof value === "function") &&
-		typeof value.then === "function"
-	);
-}
-
-// 是否为空
-export function isEmpty(value: any): boolean {
-	if (isArray(value)) {
-		return value.length === 0;
-	}
-
-	if (isObject(value)) {
-		return Object.keys(value).length === 0;
-	}
-
-	return value === "" || value === undefined || value === null;
-}
-
-// 比较值
-export function compareValue(a: any, b: any) {
-	return String(a) === String(b);
-}
-
-// 取最后一个值
-export function last(data: string | any[]) {
-	if (isArray(data) || isString(data)) {
-		return data[data.length - 1];
-	}
-}
 
 // 首字母大写
 export function firstUpperCase(value: string): string {
@@ -80,29 +13,6 @@ export function firstUpperCase(value: string): string {
 // 获取方法名
 export function getNames(value: any) {
 	return Object.getOwnPropertyNames(value.constructor.prototype);
-}
-
-// 深拷贝
-export function cloneDeep(v: any) {
-	if (isObject(v)) {
-		const d: any = {};
-
-		for (const k in v) {
-			if (v.hasOwnProperty && v.hasOwnProperty(k)) {
-				if (v[k] && typeof v[k] === "object") {
-					d[k] = cloneDeep(v[k]);
-				} else {
-					d[k] = v[k];
-				}
-			}
-		}
-
-		return d;
-	} else if (isArray(v)) {
-		return v.map(cloneDeep);
-	} else {
-		return v;
-	}
 }
 
 // 深度合并
@@ -121,11 +31,6 @@ export function getUrlParam(name: string): string | null {
 	const r = window.location.search.substr(1).match(reg);
 	if (r != null) return decodeURIComponent(r[2]);
 	return null;
-}
-
-// 根据某个字段排序
-export function orderBy(list: any[], key: string): any[] {
-	return list.sort((a, b) => b[key] - a[key]);
 }
 
 // 文件路径转对象

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { baseUrl, isDev, test } from "../config";
-import { isObject } from "../utils";
+import { isObject } from "lodash";
 import request from "./request";
 
 export function Service(

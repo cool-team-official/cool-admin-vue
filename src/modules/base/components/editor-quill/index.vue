@@ -9,7 +9,7 @@
 import { computed, defineComponent, onMounted, ref, watch } from "vue";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import { isNumber } from "/@/cool/utils";
+import { isNumber } from "lodash";
 
 export default defineComponent({
 	name: "cl-editor-quill",

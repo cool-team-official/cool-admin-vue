@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { isNumber } from "/@/cool/utils";
+import { isNumber } from "lodash";
 
 export default defineComponent({
 	name: "icon-svg",

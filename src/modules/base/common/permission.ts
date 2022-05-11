@@ -1,5 +1,5 @@
 import { useBaseStore } from "../store";
-import { isObject } from "/@/cool/utils";
+import { isObject } from "lodash";
 
 function parse(value: any) {
 	const { menu } = useBaseStore();

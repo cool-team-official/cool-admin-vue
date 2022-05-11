@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { isArray, isNumber, isString } from "/@/cool/utils";
+import { isArray, isNumber, isString } from "lodash";
 import { PictureFilled } from "@element-plus/icons-vue";
 
 export default defineComponent({

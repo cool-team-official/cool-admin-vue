@@ -1,7 +1,7 @@
 import { useCrud } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
 import { defineComponent, ref, watch } from "vue";
-import { isBoolean } from "/@/cool/utils";
+import { isBoolean } from "lodash";
 
 export default defineComponent({
 	name: "cl-switch",

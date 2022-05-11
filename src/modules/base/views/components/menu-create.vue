@@ -5,7 +5,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { last, isEmpty } from "/@/cool/utils";
+import { last, isEmpty } from "lodash";
 import { ElMessage } from "element-plus";
 import { useCool } from "/@/cool";
 import { useForm } from "@cool-vue/crud";
@@ -202,7 +202,7 @@ export default defineComponent({
 												":"
 											)
 										)
-										.join(";");
+										.join(",");
 
 									perms.push(d);
 								});

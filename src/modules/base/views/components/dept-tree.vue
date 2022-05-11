@@ -64,10 +64,11 @@
 import { defineComponent, onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useCool } from "/@/cool";
-import { deepTree, isArray, revDeepTree } from "/@/cool/utils";
+import { deepTree, revDeepTree } from "/@/cool/utils";
+import { isArray } from "lodash";
 import { ContextMenu, useForm } from "@cool-vue/crud";
 import { Refresh, Operation, MoreFilled } from "@element-plus/icons-vue";
-import { useBaseStore } from "../../store";
+import { useBaseStore } from "/$/base";
 
 export default defineComponent({
 	name: "dept-tree",
