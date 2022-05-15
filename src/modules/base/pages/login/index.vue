@@ -1,7 +1,7 @@
 <template>
 	<div class="page-login">
 		<div class="box">
-			<img class="logo" src="/@/assets/logo-text.png" alt="Logo" />
+			<img class="logo" :src="Logo" alt="Logo" />
 			<p class="desc">一款快速开发后台权限管理系统</p>
 
 			<el-form label-position="top" class="form" :disabled="saving" size="large">
@@ -25,7 +25,7 @@
 				</el-form-item>
 
 				<el-form-item label="验证码">
-					<div class="captcha">
+					<div class="row">
 						<input
 							v-model="form.verifyCode"
 							placeholder="图片验证码"
@@ -60,6 +60,7 @@ import { ElMessage } from "element-plus";
 import { useCool } from "/@/cool";
 import { useBaseStore } from "/$/base";
 import Captcha from "./components/captcha.vue";
+import Logo from "/@/assets/logo-text.png";
 
 export default defineComponent({
 	cool: {
@@ -76,7 +77,7 @@ export default defineComponent({
 		const { refs, setRefs, router, service } = useCool();
 		const { user, menu } = useBaseStore();
 
-		// 状态
+		// 状态1
 		const saving = ref<boolean>(false);
 
 		// 表单数据
@@ -154,7 +155,8 @@ export default defineComponent({
 			setRefs,
 			form,
 			saving,
-			toLogin
+			toLogin,
+			Logo
 		};
 	}
 });
@@ -185,7 +187,7 @@ export default defineComponent({
 
 		.desc {
 			color: #eee;
-			font-size: 16px;
+			font-size: 14px;
 			letter-spacing: 1px;
 			margin-bottom: 50px;
 		}
@@ -195,7 +197,6 @@ export default defineComponent({
 
 			:deep(.el-form-item) {
 				margin-bottom: 20px;
-				border-bottom: 1px solid #eee;
 
 				.el-form-item__label {
 					color: #ccc;
@@ -212,7 +213,8 @@ export default defineComponent({
 				padding: 0 2px;
 				box-sizing: border-box;
 				-webkit-text-fill-color: #fff;
-				font-size: 16px;
+				font-size: 15px;
+				border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 
 				&:-webkit-autofill {
 					box-shadow: 0 0 0px 1000px transparent inset !important;
@@ -222,12 +224,23 @@ export default defineComponent({
 				&::-webkit-input-placeholder {
 					font-size: 12px;
 				}
+
+				&:focus {
+					border-color: #fff;
+				}
 			}
 
-			.captcha {
+			.row {
 				display: flex;
 				align-items: center;
 				width: 100%;
+				position: relative;
+
+				.captcha {
+					position: absolute;
+					right: 0;
+					bottom: 1px;
+				}
 			}
 		}
 
@@ -235,6 +248,7 @@ export default defineComponent({
 			display: flex;
 			justify-content: center;
 			margin-top: 50px;
+
 			:deep(.el-button) {
 				width: 140px;
 			}
