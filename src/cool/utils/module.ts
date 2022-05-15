@@ -1,7 +1,25 @@
 // @ts-nocheck
 
+interface Item {
+	name: string;
+	options: {
+		[key: string]: any;
+	};
+	value: any;
+	service?: any[];
+	pages?: any[];
+	views?: any[];
+	components?: {
+		[key: string]: any;
+	};
+}
+
 const module = {
-	set(list: any[]) {
+	get list(): Item[] {
+		return window.__modules__ || [];
+	},
+
+	set(list: Item[]) {
 		window.__modules__ = list;
 	},
 

@@ -1,9 +1,8 @@
+import { App } from "vue";
 import modules from "/@/modules";
 import { router, addViews } from "../router";
-import { filename } from "../utils";
+import { filename, module } from "../utils";
 import { isFunction, isObject } from "lodash";
-import { App } from "vue";
-import module from "../utils/module";
 
 // 扫描文件
 const files = import.meta.globEager("/src/modules/**/*");

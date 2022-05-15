@@ -115,40 +115,30 @@ axios.interceptors.response.use(
 
 		if (error.response) {
 			const { status, config } = error.response;
+			const message = `${config.url} ${status}`;
 
-			switch (status) {
-				case 401:
-					href("/401");
-					break;
+			console.error(message);
 
-				case 403:
-					if (isDev) {
-						ElMessage.error(`${config.url} 无权限访问！！`);
-					} else {
+			if (isDev) {
+				ElMessage.error(message);
+			} else {
+				switch (status) {
+					case 401:
+						href("/401");
+						break;
+
+					case 403:
 						href("/403");
-					}
-					break;
+						break;
 
-				case 404:
-					break;
-
-				case 500:
-					if (!isDev) {
+					case 500:
 						href("/500");
-					}
-					break;
+						break;
 
-				case 502:
-					if (isDev) {
-						ElMessage.error(`${config.url} 服务异常！！`);
-					} else {
+					case 502:
 						href("/502");
-					}
-					break;
-
-				default:
-					console.error(status, config.url);
-					break;
+						break;
+				}
 			}
 		}
 

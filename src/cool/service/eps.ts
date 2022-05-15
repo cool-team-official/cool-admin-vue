@@ -66,7 +66,7 @@ export function useEps(service: Service) {
 
 	// 获取 eps
 	function getEps() {
-		if (isDev) {
+		if (isDev && test.eps) {
 			service
 				.request({
 					url: "/admin/base/open/eps"
@@ -183,30 +183,28 @@ export function useEps(service: Service) {
 		}
 	}
 
-	// 获取
-	if (isDev) {
-		// 缓存数据
-		set(storage.get("eps"));
+	// 解析
+	try {
+		const eps =
+			storage.get("eps") ||
+			JSON.parse(__EPS__ || "[]").map(([prefix, api]: any[]) => {
+				return {
+					prefix,
+					api: api.map(([method, path, name]: string[]) => {
+						return {
+							method,
+							path,
+							name
+						};
+					})
+				};
+			});
 
-		// 接口数据
-		if (test.eps) {
-			getEps();
-		}
-	} else {
-		const eps = JSON.parse(__EPS__).map(([prefix, api]: any[]) => {
-			return {
-				prefix,
-				api: api.map(([method, path, name]: string[]) => {
-					return {
-						method,
-						path,
-						name
-					};
-				})
-			};
-		});
-
-		// 文件数据
 		set({ eps });
+	} catch (err) {
+		console.error("[Eps] 解析失败！", err);
 	}
+
+	// 获取
+	getEps();
 }
