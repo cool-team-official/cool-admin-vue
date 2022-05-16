@@ -294,13 +294,14 @@ export default defineComponent({
 				d = list.value[0] || {};
 			}
 
+			// 权限
+			const prem = service.base.sys.department._permission;
+
 			ContextMenu.open(e, {
 				list: [
 					{
 						label: "新增",
-						hidden:
-							(n && n.level >= props.level) ||
-							!service.base.sys.department.permission.add,
+						hidden: (n && n.level >= props.level) || !prem.add,
 						callback(done) {
 							rowEdit({
 								name: "",
@@ -312,7 +313,7 @@ export default defineComponent({
 					},
 					{
 						label: "编辑",
-						hidden: !service.base.sys.department.permission.update,
+						hidden: !prem.update,
 						callback(done) {
 							rowEdit(d);
 							done();
@@ -320,7 +321,7 @@ export default defineComponent({
 					},
 					{
 						label: "删除",
-						hidden: !d.parentId || !service.base.sys.department.permission.delete,
+						hidden: !d.parentId || !prem.delete,
 						callback(done) {
 							rowDel(d);
 							done();

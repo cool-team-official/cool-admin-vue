@@ -89,8 +89,8 @@
 				<template #header>
 					<el-upload
 						ref="Upload"
-						class="un-drag"
 						action=""
+						class="un-drag"
 						:accept="accept"
 						:show-file-list="false"
 						:before-upload="beforeUpload"
@@ -108,7 +108,7 @@
 							</template>
 
 							<template v-else-if="type == 'file'">
-								<div>
+								<div class="cl-upload__btn">
 									<el-button type="success">{{ text }}</el-button>
 								</div>
 							</template>
@@ -308,7 +308,7 @@ async function httpRequest(req: any, item?: any) {
 				const data = new FormData();
 
 				for (const i in params) {
-					if (i != "host") {
+					if (!["host", "publicDomain", "fileKey", "uploadUrl", "preview"].includes(i)) {
 						data.append(i, params[i]);
 					}
 				}
@@ -344,7 +344,7 @@ async function httpRequest(req: any, item?: any) {
 						if (mode === "local") {
 							item.url = res;
 						} else {
-							item.url = `${params.host}/${fileName}`;
+							item.url = `${params.preview}/${fileName}`;
 						}
 
 						emit("success", item);
@@ -352,10 +352,12 @@ async function httpRequest(req: any, item?: any) {
 						update();
 					})
 					.catch((err) => {
-						ElMessage.error(err.message);
-						item.error = err.message;
-						emit("error", item);
-						reject(err);
+						if (mode == "local") {
+							ElMessage.error(err.message);
+							item.error = err.message;
+							emit("error", item);
+							reject(err);
+						}
 					});
 			}
 
@@ -364,7 +366,16 @@ async function httpRequest(req: any, item?: any) {
 					host: "/admin/base/comm/upload"
 				});
 			} else {
-				service.base.comm.upload().then(next).catch(reject);
+				service.base.comm
+					.upload()
+					.then((res) => {
+						next({
+							host: res.uploadUrl,
+							preview: res.host || res.publicDomain,
+							...res
+						});
+					})
+					.catch(reject);
 			}
 		});
 	} catch (err) {
@@ -464,7 +475,13 @@ defineExpose({
 	}
 
 	.un-drag {
-		margin-right: 5px;
+		.cl-upload__item {
+			margin-right: 5px;
+		}
+
+		.cl-upload__btn {
+			margin-bottom: 5px;
+		}
 	}
 
 	&--file {
@@ -473,7 +490,6 @@ defineExpose({
 
 			.un-drag {
 				width: 100%;
-				margin-bottom: 5px;
 			}
 		}
 	}
@@ -531,6 +547,7 @@ defineExpose({
 		color: #333;
 		box-sizing: border-box;
 		overflow: hidden;
+		user-select: none;
 
 		&:hover {
 			border-color: currentColor;

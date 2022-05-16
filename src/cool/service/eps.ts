@@ -5,7 +5,7 @@ import { isArray, isEmpty } from "lodash";
 
 // 获取标签名
 function getNames(v: any) {
-	return Object.getOwnPropertyNames(v.constructor.prototype).filter(
+	return [...Object.getOwnPropertyNames(v.constructor.prototype), ...Object.keys(v)].filter(
 		(e) => !["namespace", "constructor", "request", "permission"].includes(e)
 	);
 }

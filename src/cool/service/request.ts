@@ -7,7 +7,7 @@ import { href, storage } from "/@/cool/utils";
 import { useBaseStore } from "/$/base";
 
 axios.defaults.timeout = 30000;
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = false;
 
 NProgress.configure({
 	showSpinner: false
