@@ -92,11 +92,14 @@ export function useEps(service: Service) {
 
 	// 设置
 	async function set(d: any, c?: boolean) {
-		// 接口列表
 		const list: any[] = [];
 
 		if (!d) {
 			return false;
+		}
+
+		if (isArray(d)) {
+			d = { d };
 		}
 
 		for (const i in d) {
@@ -200,7 +203,7 @@ export function useEps(service: Service) {
 				};
 			});
 
-		set({ eps });
+		set(eps);
 	} catch (err) {
 		console.error("[Eps] 解析失败！", err);
 	}
