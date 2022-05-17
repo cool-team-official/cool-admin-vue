@@ -19,7 +19,7 @@ export default defineComponent({
 		// base64
 		const base64 = ref<string>("");
 
-		// svg1233
+		// svg
 		const svg = ref<string>("");
 
 		function refresh() {

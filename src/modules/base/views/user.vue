@@ -49,15 +49,17 @@
 							>
 								<!-- 权限 -->
 								<template #column-roleName="{ scope }">
-									<el-tag
-										v-for="(item, index) in scope.row.roleNameList"
-										:key="index"
-										disable-transitions
-										size="small"
-										effect="dark"
-										style="margin: 2px"
-										>{{ item }}</el-tag
-									>
+									<template v-if="scope.row.roleName">
+										<el-tag
+											v-for="(item, index) in scope.row.roleName.split(',')"
+											:key="index"
+											disable-transitions
+											size="small"
+											effect="dark"
+											style="margin: 2px"
+											>{{ item }}</el-tag
+										>
+									</template>
 								</template>
 
 								<!-- 单个转移 -->
@@ -115,22 +117,7 @@ const dept = ref<any[]>([]);
 // cl-crud 配置
 const Crud = useCrud(
 	{
-		service: service.base.sys.user,
-		async onRefresh(params, { next, render }) {
-			const { list } = await next(params);
-
-			render(
-				list.map((e: any) => {
-					if (e.roleName) {
-						e.roleNameList = e.roleName.split(",");
-					}
-
-					e.status = Boolean(e.status);
-
-					return e;
-				})
-			);
-		}
+		service: service.base.sys.user
 	},
 	(app) => {
 		app.refresh();
@@ -175,7 +162,15 @@ const Table = useTable({
 			prop: "roleName",
 			label: "角色",
 			headerAlign: "center",
-			minWidth: 200
+			minWidth: 120
+		},
+		{
+			prop: "status",
+			label: "状态",
+			minWidth: 120,
+			component: {
+				name: "cl-switch"
+			}
 		},
 		{
 			prop: "phone",
@@ -188,23 +183,6 @@ const Table = useTable({
 			minWidth: 150
 		},
 		{
-			prop: "status",
-			label: "状态",
-			minWidth: 120,
-			dict: [
-				{
-					label: "启用",
-					value: 1,
-					type: "success"
-				},
-				{
-					label: "禁用",
-					value: 0,
-					type: "danger"
-				}
-			]
-		},
-		{
 			prop: "createTime",
 			label: "创建时间",
 			sortable: "custom",
@@ -213,7 +191,7 @@ const Table = useTable({
 		{
 			type: "op",
 			buttons: ["slot-btn", "edit", "delete"],
-			width: 180
+			width: 240
 		}
 	]
 });
@@ -494,6 +472,8 @@ async function toMove(e?: any) {
 			}
 
 			.icon {
+				display: flex;
+				align-items: center;
 				position: absolute;
 				left: 0;
 				top: 0;
@@ -502,7 +482,6 @@ async function toMove(e?: any) {
 				background-color: #fff;
 				height: 40px;
 				width: 80px;
-				line-height: 40px;
 				padding-left: 10px;
 			}
 		}

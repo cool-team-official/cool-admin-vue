@@ -17,8 +17,8 @@
 				</li>
 
 				<li v-show="isDrag" class="no">
-					<el-button type="text" @click="treeOrder(true)">保存</el-button>
-					<el-button type="text" @click="treeOrder(false)">取消</el-button>
+					<el-button type="text" @click="treeOrder(true)" size="small">保存</el-button>
+					<el-button type="text" @click="treeOrder(false)" size="small">取消</el-button>
 				</li>
 			</ul>
 		</div>
@@ -68,7 +68,7 @@ import { deepTree, revDeepTree } from "/@/cool/utils";
 import { isArray } from "lodash";
 import { ContextMenu, useForm } from "@cool-vue/crud";
 import { Refresh, Operation, MoreFilled } from "@element-plus/icons-vue";
-import { useBaseStore } from "/$/base";
+import { useBaseStore, checkPerm } from "/$/base";
 
 export default defineComponent({
 	name: "dept-tree",
@@ -181,7 +181,7 @@ export default defineComponent({
 				],
 				form: e,
 				on: {
-					submit: (data: any, { done, close }: any) => {
+					submit(data, { done, close }) {
 						service.base.sys.department[method]({
 							id: e.id,
 							parentId: e.parentId,
@@ -295,13 +295,13 @@ export default defineComponent({
 			}
 
 			// 权限
-			const prem = service.base.sys.department._permission;
+			const perm = service.base.sys.department.permission;
 
 			ContextMenu.open(e, {
 				list: [
 					{
 						label: "新增",
-						hidden: (n && n.level >= props.level) || !prem.add,
+						hidden: (n && n.level >= props.level) || !checkPerm(perm.add),
 						callback(done) {
 							rowEdit({
 								name: "",
@@ -313,7 +313,7 @@ export default defineComponent({
 					},
 					{
 						label: "编辑",
-						hidden: !prem.update,
+						hidden: !checkPerm(perm.update),
 						callback(done) {
 							rowEdit(d);
 							done();
@@ -321,7 +321,7 @@ export default defineComponent({
 					},
 					{
 						label: "删除",
-						hidden: !d.parentId || !prem.delete,
+						hidden: !d.parentId || !checkPerm(perm.delete),
 						callback(done) {
 							rowDel(d);
 							done();
@@ -329,7 +329,7 @@ export default defineComponent({
 					},
 					{
 						label: "新增成员",
-						hidden: !service.base.sys.user.permission.add,
+						hidden: !checkPerm(perm.add),
 						callback(done) {
 							emit("user-add", d);
 							done();
