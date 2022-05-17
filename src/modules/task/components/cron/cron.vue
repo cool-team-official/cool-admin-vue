@@ -447,11 +447,6 @@
 				</div>
 			</el-tab-pane>
 		</el-tabs>
-
-		<div class="vue-cron__footer">
-			<el-button @click="close">{{ text.Close }}</el-button>
-			<el-button type="success" @click="save">{{ text.Save }}</el-button>
-		</div>
 	</div>
 </template>
 
@@ -469,7 +464,7 @@ export default {
 		showYear: Boolean
 	},
 
-	emits: ["update:modelValue", "change", "close"],
+	emits: ["update:modelValue", "change"],
 
 	data() {
 		return {
@@ -718,20 +713,14 @@ export default {
 	watch: {
 		data() {
 			this.rest(this.$data);
+		},
+		cron(val) {
+			this.$emit("update:modelValue", val);
+			this.$emit("change", val);
 		}
 	},
 
 	methods: {
-		save() {
-			this.$emit("update:modelValue", this.cron);
-			this.$emit("change", this.cron);
-			this.close();
-		},
-
-		close() {
-			this.$emit("close");
-		},
-
 		rest(data) {
 			for (const i in data) {
 				if (data[i] instanceof Object) {
@@ -754,6 +743,8 @@ export default {
 
 <style lang="scss" scoped>
 .vue-cron {
+	margin-top: 10px;
+
 	:deep(.el-tabs) {
 		box-shadow: none;
 
@@ -764,10 +755,15 @@ export default {
 		.el-tabs__header {
 			margin-bottom: 0;
 		}
+
+		.el-tabs__item {
+			height: 30px;
+			line-height: 30px;
+		}
 	}
 
 	&__item {
-		max-height: 300px;
+		max-height: 250px;
 		overflow: auto;
 		padding: 10px;
 		border: 1px solid #eee;
@@ -777,10 +773,13 @@ export default {
 		.el-row {
 			min-height: 32px;
 			line-height: 32px;
-			margin-bottom: 10px;
 
 			.el-radio {
 				line-height: 32px;
+			}
+
+			:deep(.el-radio__label) {
+				font-size: 12px;
 			}
 		}
 	}

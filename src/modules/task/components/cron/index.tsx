@@ -25,15 +25,6 @@ export default defineComponent({
 
 	setup(props, { emit }) {
 		const cron = ref<string>("");
-		const visible = ref<boolean>(false);
-
-		function open() {
-			visible.value = true;
-		}
-
-		function close() {
-			visible.value = false;
-		}
 
 		watch(cron, (val: string) => {
 			emit("update:modelValue", val);
@@ -52,44 +43,23 @@ export default defineComponent({
 
 		return {
 			cron,
-			visible,
 			open,
 			close
 		};
 	},
 
 	render(ctx: any) {
-		const ElPopover = (
-			<el-popover
-				v-model:visible={ctx.visible}
-				disabled={ctx.disabled || ctx.readonly}
-				width="600px"
-			></el-popover>
-		);
-
 		return (
 			<div class="cl-cron">
-				{h(
-					ElPopover,
-					{},
-					{
-						default() {
-							return <cron v-model={ctx.cron} onClose={ctx.close}></cron>;
-						},
-						reference() {
-							return (
-								<el-input
-									clearable
-									disabled={ctx.disabled}
-									readonly={ctx.readonly}
-									v-model={ctx.cron}
-									placeholder={ctx.placeholder}
-									onClick={ctx.open}
-								></el-input>
-							);
-						}
-					}
-				)}
+				<el-input
+					clearable
+					disabled={ctx.disabled}
+					readonly={ctx.readonly}
+					v-model={ctx.cron}
+					placeholder={ctx.placeholder}
+				></el-input>
+
+				<cron v-model={ctx.cron} onClose={ctx.close}></cron>
 			</div>
 		);
 	}

@@ -1,10 +1,5 @@
 <template>
-	<el-popover
-		v-model:visible="visible"
-		placement="bottom-start"
-		width="660px"
-		popper-class="icon-check"
-	>
+	<el-popover placement="bottom-start" width="660px" popper-class="icon-check" trigger="click">
 		<el-row :gutter="10" class="list scroller1">
 			<el-col v-for="(item, index) in list" :key="index" :span="2" :xs="4">
 				<el-button :class="{ 'is-active': item === name }" @click="onChange(item)">
@@ -14,13 +9,7 @@
 		</el-row>
 
 		<template #reference>
-			<el-input
-				v-model="name"
-				placeholder="请选择"
-				clearable
-				@click="open"
-				@input="onChange"
-			/>
+			<el-input v-model="name" placeholder="请选择" clearable @input="onChange" />
 		</template>
 	</el-popover>
 </template>
@@ -42,9 +31,6 @@ export default defineComponent({
 	emits: ["update:modelValue"],
 
 	setup(props, { emit }) {
-		// 是否可见
-		const visible = ref<boolean>(false);
-
 		// 图标列表
 		const list = ref<any[]>(iconList());
 
@@ -58,14 +44,6 @@ export default defineComponent({
 			}
 		);
 
-		function open() {
-			visible.value = true;
-		}
-
-		function close() {
-			visible.value = false;
-		}
-
 		function onChange(val: string) {
 			emit("update:modelValue", val);
 			close();
@@ -74,7 +52,6 @@ export default defineComponent({
 		return {
 			name,
 			list,
-			visible,
 			open,
 			close,
 			onChange

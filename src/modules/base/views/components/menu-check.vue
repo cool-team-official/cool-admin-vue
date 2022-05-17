@@ -1,7 +1,6 @@
 <template>
 	<div class="menu-check__wrap">
 		<el-popover
-			v-model:visible="visible"
 			placement="bottom-start"
 			width="660px"
 			popper-class="menu-check"
@@ -27,7 +26,7 @@
 			</div>
 
 			<template #reference>
-				<el-input v-model="name" readonly placeholder="请选择" @click="visible = true" />
+				<el-input v-model="name" readonly placeholder="请选择" />
 			</template>
 		</el-popover>
 	</div>
@@ -55,8 +54,6 @@ export default defineComponent({
 		// 关键字
 		const keyword = ref<string>("");
 
-		const visible = ref<boolean>(false);
-
 		// 树形列表
 		const list = ref<any[]>([]);
 
@@ -69,7 +66,6 @@ export default defineComponent({
 		// 绑定值回调
 		function onCurrentChange({ id }: any) {
 			emit("update:modelValue", id);
-			visible.value = false;
 		}
 
 		// 刷新列表
@@ -111,7 +107,6 @@ export default defineComponent({
 		});
 
 		return {
-			visible,
 			keyword,
 			list,
 			expandedKeys,
@@ -136,7 +131,7 @@ export default defineComponent({
 	}
 
 	&__scroller {
-		max-height: 400px;
+		max-height: 300px;
 		overflow: hidden auto;
 	}
 }
