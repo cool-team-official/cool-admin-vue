@@ -204,7 +204,7 @@ export default defineComponent({
 												":"
 											)
 										)
-										.join(";");
+										.join(",");
 
 									perms.push(d);
 								});
