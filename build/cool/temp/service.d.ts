@@ -635,232 +635,6 @@ declare interface SpaceType {
 	};
 }
 
-declare interface StudyFinish {
-	/**
-	 * 分页查询
-	 * @returns Promise<PageResponse>
-	 */
-	page(data?: any): Promise<PageResponse>;
-	/**
-	 * list
-	 * @returns Promise<any>
-	 */
-	list(data?: any): Promise<any>;
-	/**
-	 * info
-	 * @returns Promise<any>
-	 */
-	info(data?: any): Promise<any>;
-	/**
-	 * update
-	 * @returns Promise<any>
-	 */
-	update(data?: any): Promise<any>;
-	/**
-	 * delete
-	 * @returns Promise<any>
-	 */
-	delete(data?: any): Promise<any>;
-	/**
-	 * add
-	 * @returns Promise<any>
-	 */
-	add(data?: any): Promise<any>;
-	/**
-	 * 权限
-	 */
-	permission: {
-		page: string;
-		list: string;
-		info: string;
-		update: string;
-		delete: string;
-		add: string;
-	};
-}
-
-declare interface StudyLearn {
-	/**
-	 * 删除
-	 * @returns Promise<any>
-	 */
-	delete(data?: any): Promise<any>;
-	/**
-	 * 修改
-	 * @returns Promise<any>
-	 */
-	update(data?: any): Promise<any>;
-	/**
-	 * 单个信息
-	 * @returns Promise<any>
-	 */
-	info(data?: any): Promise<any>;
-	/**
-	 * 列表查询
-	 * @returns Promise<any>
-	 */
-	list(data?: any): Promise<any>;
-	/**
-	 * 分页查询
-	 * @returns Promise<PageResponse>
-	 */
-	page(data?: any): Promise<PageResponse>;
-	/**
-	 * 新增
-	 * @returns Promise<any>
-	 */
-	add(data?: any): Promise<any>;
-	/**
-	 * 权限
-	 */
-	permission: {
-		delete: string;
-		update: string;
-		info: string;
-		list: string;
-		page: string;
-		add: string;
-	};
-}
-
-declare interface StudyMusic {
-	/**
-	 * 删除
-	 * @returns Promise<any>
-	 */
-	delete(data?: any): Promise<any>;
-	/**
-	 * 修改
-	 * @returns Promise<any>
-	 */
-	update(data?: any): Promise<any>;
-	/**
-	 * 单个信息
-	 * @returns Promise<any>
-	 */
-	info(data?: any): Promise<any>;
-	/**
-	 * 列表查询
-	 * @returns Promise<any>
-	 */
-	list(data?: any): Promise<any>;
-	/**
-	 * 分页查询
-	 * @returns Promise<PageResponse>
-	 */
-	page(data?: any): Promise<PageResponse>;
-	/**
-	 * 新增
-	 * @returns Promise<any>
-	 */
-	add(data?: any): Promise<any>;
-	/**
-	 * 权限
-	 */
-	permission: {
-		delete: string;
-		update: string;
-		info: string;
-		list: string;
-		page: string;
-		add: string;
-	};
-}
-
-declare interface StudyTopic {
-	/**
-	 * 省份统计
-	 * @returns Promise<any>
-	 */
-	provinceCount(data?: any): Promise<any>;
-	/**
-	 * 删除
-	 * @returns Promise<any>
-	 */
-	delete(data?: any): Promise<any>;
-	/**
-	 * 修改
-	 * @returns Promise<any>
-	 */
-	update(data?: any): Promise<any>;
-	/**
-	 * 单个信息
-	 * @returns Promise<any>
-	 */
-	info(data?: any): Promise<any>;
-	/**
-	 * 列表查询
-	 * @returns Promise<any>
-	 */
-	list(data?: any): Promise<any>;
-	/**
-	 * 分页查询
-	 * @returns Promise<PageResponse>
-	 */
-	page(data?: any): Promise<PageResponse>;
-	/**
-	 * 新增
-	 * @returns Promise<any>
-	 */
-	add(data?: any): Promise<any>;
-	/**
-	 * 权限
-	 */
-	permission: {
-		provinceCount: string;
-		delete: string;
-		update: string;
-		info: string;
-		list: string;
-		page: string;
-		add: string;
-	};
-}
-
-declare interface StudyWorks {
-	/**
-	 * 删除
-	 * @returns Promise<any>
-	 */
-	delete(data?: any): Promise<any>;
-	/**
-	 * 修改
-	 * @returns Promise<any>
-	 */
-	update(data?: any): Promise<any>;
-	/**
-	 * 单个信息
-	 * @returns Promise<any>
-	 */
-	info(data?: any): Promise<any>;
-	/**
-	 * 列表查询
-	 * @returns Promise<any>
-	 */
-	list(data?: any): Promise<any>;
-	/**
-	 * 分页查询
-	 * @returns Promise<PageResponse>
-	 */
-	page(data?: any): Promise<PageResponse>;
-	/**
-	 * 新增
-	 * @returns Promise<any>
-	 */
-	add(data?: any): Promise<any>;
-	/**
-	 * 权限
-	 */
-	permission: {
-		delete: string;
-		update: string;
-		info: string;
-		list: string;
-		page: string;
-		add: string;
-	};
-}
-
 declare interface TaskInfo {
 	/**
 	 * 删除
@@ -929,34 +703,34 @@ declare interface TaskInfo {
 	};
 }
 
-declare interface UserInfo {
+declare interface Test {
 	/**
-	 * 删除
-	 * @returns Promise<any>
-	 */
-	delete(data?: any): Promise<any>;
-	/**
-	 * 修改
-	 * @returns Promise<any>
-	 */
-	update(data?: any): Promise<any>;
-	/**
-	 * 单个信息
-	 * @returns Promise<any>
-	 */
-	info(data?: any): Promise<any>;
-	/**
-	 * 列表查询
+	 * list
 	 * @returns Promise<any>
 	 */
 	list(data?: any): Promise<any>;
 	/**
-	 * 分页查询
+	 * page
 	 * @returns Promise<PageResponse>
 	 */
 	page(data?: any): Promise<PageResponse>;
 	/**
-	 * 新增
+	 * info
+	 * @returns Promise<any>
+	 */
+	info(data?: any): Promise<any>;
+	/**
+	 * update
+	 * @returns Promise<any>
+	 */
+	update(data?: any): Promise<any>;
+	/**
+	 * delete
+	 * @returns Promise<any>
+	 */
+	delete(data?: any): Promise<any>;
+	/**
+	 * add
 	 * @returns Promise<any>
 	 */
 	add(data?: any): Promise<any>;
@@ -964,11 +738,11 @@ declare interface UserInfo {
 	 * 权限
 	 */
 	permission: {
-		delete: string;
-		update: string;
-		info: string;
 		list: string;
 		page: string;
+		info: string;
+		update: string;
+		delete: string;
 		add: string;
 	};
 }
@@ -989,13 +763,6 @@ declare type Service = {
 	};
 	demo: { goods: DemoGoods };
 	space: { info: SpaceInfo; type: SpaceType };
-	study: {
-		finish: StudyFinish;
-		learn: StudyLearn;
-		music: StudyMusic;
-		topic: StudyTopic;
-		works: StudyWorks;
-	};
 	task: { info: TaskInfo };
-	user: { info: UserInfo };
+	test: Test;
 };

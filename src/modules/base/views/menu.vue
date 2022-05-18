@@ -77,9 +77,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useCool } from "/@/cool";
+import { useCool, isDev } from "/@/cool";
 import { deepTree } from "/@/cool/utils";
-import { isDev } from "/@/cool/config";
 import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import MenuCreate from "./components/menu-create.vue";
 import MenuCheck from "./components/menu-check.vue";

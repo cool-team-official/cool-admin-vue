@@ -1,6 +1,6 @@
 import { App } from "vue";
 import modules from "/@/modules";
-import { router, addViews } from "../router";
+import { router, viewer } from "../router";
 import { filename, module } from "../utils";
 import { isFunction, isObject } from "lodash";
 
@@ -149,7 +149,7 @@ export function useModule(app: App) {
 					}
 
 					if (e.path) {
-						addViews([e]);
+						viewer.add([e]);
 					} else {
 						console.error(`[${name}-views]：缺少 path 参数`);
 					}

@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { app } from "/@/cool/config";
+import { config } from "/@/cool";
 import { deepMerge, getBrowser, storage } from "/@/cool/utils";
 
 export const useAppStore = defineStore("app", function () {
 	// 基本信息
 	const info = ref<any>({
-		...app
+		...config.app
 	});
 
 	// 浏览器信息

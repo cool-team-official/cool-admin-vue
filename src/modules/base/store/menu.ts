@@ -3,8 +3,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { deepTree, revDeepTree, storage } from "/@/cool/utils";
 import { isArray, isEmpty, isObject, orderBy } from "lodash";
-import { app } from "/@/cool/config";
-import { addViews, service } from "/@/cool";
+import { viewer, service, config } from "/@/cool";
 import { revisePath } from "../utils";
 
 declare enum Type {
@@ -57,7 +56,8 @@ export const useMenuStore = defineStore("menu", function () {
 			i = index.value;
 		}
 
-		if (app.showAMenu) {
+		// 显示一级菜单
+		if (config.app.theme.showAMenu) {
 			const { children = [] } = group.value[i] || {};
 
 			index.value = i;
@@ -97,7 +97,7 @@ export const useMenuStore = defineStore("menu", function () {
 
 	// 设置视图
 	function setRoutes(list: Item[]) {
-		addViews(list);
+		viewer.add(list);
 
 		routes.value = list;
 		storage.set("menu.routes", list);
@@ -157,7 +157,7 @@ export const useMenuStore = defineStore("menu", function () {
 				resolve(group.value);
 			}
 
-			if (isEmpty(app.menu.list)) {
+			if (isEmpty(config.app.menu.list)) {
 				service.base.comm
 					.permmenu()
 					.then(next)
@@ -168,7 +168,7 @@ export const useMenuStore = defineStore("menu", function () {
 			} else {
 				// 自定义菜单
 				next({
-					menus: revDeepTree(app.menu.list)
+					menus: revDeepTree(config.app.menu.list)
 				});
 			}
 		});

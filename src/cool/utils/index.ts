@@ -1,5 +1,4 @@
 import { isArray, orderBy } from "lodash";
-import { app } from "../config";
 import storage from "./storage";
 import module from "./module";
 
@@ -210,29 +209,6 @@ export function getBrowser() {
 		isMini,
 		screen
 	};
-}
-
-// 跳转
-export function href(path: string, newWindow?: boolean) {
-	const { origin, pathname } = window.location;
-
-	if (pathname == path) {
-		return false;
-	}
-
-	let url = "";
-
-	if (app.router.mode == "history") {
-		url = origin + import.meta.env.BASE_URL + path.substr(1);
-	} else {
-		url = origin + import.meta.env.BASE_URL + "#" + path;
-	}
-
-	if (newWindow) {
-		window.open(url);
-	} else {
-		window.location.href = url;
-	}
 }
 
 // 列表转树形

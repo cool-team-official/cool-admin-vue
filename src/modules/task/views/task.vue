@@ -118,7 +118,7 @@
 					<el-button
 						v-if="item.pagination.total >= item.pagination.size"
 						class="more"
-						type="text"
+						text
 						@click="moreTask(index)"
 						>查看更多</el-button
 					>

@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { href, storage } from "/@/cool/utils";
-import { test } from "/@/cool/config";
-import { service } from "/@/cool";
+import { service, config } from "/@/cool";
 
 interface User {
 	id: number;
@@ -23,7 +22,7 @@ const data = storage.info();
 
 export const useUserStore = defineStore("user", function () {
 	// 标识
-	const token = ref<string>(test.token || data.token);
+	const token = ref<string>(config.test.token || data.token);
 
 	// 设置标识
 	function setToken(data: {
@@ -77,9 +76,11 @@ export const useUserStore = defineStore("user", function () {
 
 	// 退出
 	async function logout() {
-		await service.base.comm.logout();
+		try {
+			await service.base.comm.logout();
+		} catch {}
 		clear();
-		href("/login");
+		location.href = "/login";
 	}
 
 	// 获取用户信息

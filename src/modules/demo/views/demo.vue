@@ -9,7 +9,6 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
 import ContextMenu from "../components/demo/context-menu.vue";
 import Crud from "../components/demo/crud.vue";
 import Upload from "../components/demo/upload.vue";
@@ -17,7 +16,7 @@ import EditorQuill from "../components/demo/editor-quill.vue";
 import Svg from "../components/demo/svg.vue";
 import Copy from "../components/demo/copy.vue";
 
-const list = ref([ContextMenu, Crud, Upload, EditorQuill, Svg, Copy]);
+const list = [ContextMenu, Crud, Upload, EditorQuill, Svg, Copy];
 </script>
 
 <style lang="scss">

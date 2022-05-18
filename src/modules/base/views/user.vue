@@ -66,7 +66,8 @@
 								<template #slot-btn="{ scope }">
 									<el-button
 										v-permission="service.base.sys.user.permission.move"
-										type="text"
+										text
+										bg
 										@click="toMove(scope.row)"
 										>转移</el-button
 									>

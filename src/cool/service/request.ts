@@ -2,15 +2,16 @@ import axios from "axios";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { ElMessage } from "element-plus";
-import { isDev, ignore } from "/@/cool/config";
+import { isDev, config } from "/@/cool";
 import { href, storage } from "/@/cool/utils";
 import { useBaseStore } from "/$/base";
+import { router } from "../router";
 
 axios.defaults.timeout = 30000;
 axios.defaults.withCredentials = false;
 
 NProgress.configure({
-	showSpinner: false
+	showSpinner: true
 });
 
 // 请求队列
@@ -24,39 +25,38 @@ axios.interceptors.request.eject(axios._req);
 
 // @ts-ignore
 axios._req = axios.interceptors.request.use(
-	(config: any) => {
+	(req: any) => {
 		const { user } = useBaseStore();
 
-		if (config.url) {
+		if (req.url) {
 			// 请求进度条
-			if (!ignore.NProgress.some((e) => config.url.includes(e))) {
+			if (!config.ignore.NProgress.some((e: string) => req.url.includes(e))) {
 				NProgress.start();
 			}
 		}
 
 		// 请求信息
 		if (isDev) {
-			console.group(config.url);
-			console.log("method:", config.method);
-			console.table("data:", config.method == "get" ? config.params : config.data);
+			console.group(req.url);
+			console.log("method:", req.method);
+			console.table("data:", req.method == "get" ? req.params : req.data);
 			console.groupEnd();
 		}
 
 		// 验证 token
 		if (user.token) {
 			// 请求标识
-			config.headers["Authorization"] = user.token;
+			req.headers["Authorization"] = user.token;
 
-			if (config.url.includes("refreshToken")) {
-				return config;
+			if (req.url.includes("refreshToken")) {
+				return req;
 			}
 
 			// 判断 token 是否过期
 			if (storage.isExpired("token")) {
 				// 判断 refreshToken 是否过期
 				if (storage.isExpired("refreshToken")) {
-					user.clear();
-					return href("/login");
+					return user.logout();
 				}
 
 				// 是否在刷新中
@@ -78,14 +78,14 @@ axios._req = axios.interceptors.request.use(
 					// 继续请求
 					requests.push((token: string) => {
 						// 重新设置 token
-						config.headers["Authorization"] = token;
-						resolve(config);
+						req.headers["Authorization"] = token;
+						resolve(req);
 					});
 				});
 			}
 		}
 
-		return config;
+		return req;
 	},
 	(error) => {
 		return Promise.reject(error);
@@ -124,19 +124,19 @@ axios.interceptors.response.use(
 			} else {
 				switch (status) {
 					case 401:
-						href("/401");
+						router.push("/401");
 						break;
 
 					case 403:
-						href("/403");
+						router.push("/403");
 						break;
 
 					case 500:
-						href("/500");
+						router.push("/500");
 						break;
 
 					case 502:
-						href("/502");
+						router.push("/502");
 						break;
 				}
 			}

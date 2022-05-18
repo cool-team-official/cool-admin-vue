@@ -1,7 +1,7 @@
 import { createPinia } from "pinia";
 import { App } from "vue";
 import { useModule } from "./module";
-import { router, addViews } from "./router";
+import { router, viewer } from "./router";
 import { useBaseStore } from "/$/base";
 import mitt from "mitt";
 import VueECharts from "vue-echarts";
@@ -29,7 +29,7 @@ export async function bootstrap(Vue: App) {
 	useModule(Vue);
 
 	// 取缓存视图
-	addViews(menu.routes);
+	viewer.add(menu.routes);
 
 	// 路由
 	Vue.use(router);

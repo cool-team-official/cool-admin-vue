@@ -1,4 +1,4 @@
-import { isDev, test } from "../config";
+import { isDev, config } from "../config";
 import { BaseService } from "./base";
 import { storage, toCamel } from "../utils";
 import { isArray, isEmpty } from "lodash";
@@ -66,7 +66,7 @@ export function useEps(service: Service) {
 
 	// 获取 eps
 	function getEps() {
-		if (isDev && test.eps) {
+		if (isDev && config.test.eps) {
 			service
 				.request({
 					url: "/admin/base/open/eps"

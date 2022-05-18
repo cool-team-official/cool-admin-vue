@@ -1,10 +1,10 @@
-import { app } from "/@/cool/config";
+import { config } from "/@/cool";
 import { basename } from "/@/cool/utils";
 import { createLink } from "../utils";
 
 // 主题初始化
-if (app.theme) {
-	const { url, color } = app.theme;
+if (config.app.theme) {
+	const { url, color } = config.app.theme;
 
 	if (url) {
 		createLink(url, "theme-style");
@@ -14,8 +14,8 @@ if (app.theme) {
 }
 
 // 字体图标库加载
-if (app.iconfont) {
-	app.iconfont.forEach((e: string) => {
+if (config.app.iconfont) {
+	config.app.iconfont.forEach((e: string) => {
 		createLink(e);
 	});
 }

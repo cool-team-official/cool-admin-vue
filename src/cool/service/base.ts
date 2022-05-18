@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { baseUrl, isDev, test } from "../config";
+import { isDev, config, proxy } from "../config";
 import { isObject } from "lodash";
 import request from "./request";
 
@@ -23,8 +23,13 @@ export function Service(
 			target.prototype.namespace = value.namespace;
 			target.prototype.mock = value.mock;
 
-			if (value.url) {
-				target.prototype.url = value.url;
+			// 代理
+			if (value.proxy) {
+				target.prototype.url = proxy[value.proxy].target;
+			} else {
+				if (value.url) {
+					target.prototype.url = value.url;
+				}
 			}
 		}
 	};
@@ -55,13 +60,13 @@ export class BaseService {
 		let ns = "";
 
 		// 是否 mock 模式
-		if (this.mock || test.mock) {
+		if (this.mock || config.test.mock) {
 			// 测试
 		} else {
 			if (isDev) {
-				ns = this.proxy || baseUrl;
+				ns = this.proxy || config.baseUrl;
 			} else {
-				ns = this.proxy ? this.url : baseUrl;
+				ns = this.proxy ? this.url : config.baseUrl;
 			}
 		}
 

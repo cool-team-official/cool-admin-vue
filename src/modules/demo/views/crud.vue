@@ -44,16 +44,6 @@
 	</div>
 </template>
 
-<script lang="tsx">
-export default {
-	cool: {
-		route: {
-			path: "/crud"
-		}
-	}
-};
-</script>
-
 <script lang="tsx" setup>
 import { useCrud, useUpsert, useTable, useForm, useAdvSearch } from "@cool-vue/crud";
 

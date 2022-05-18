@@ -17,8 +17,8 @@
 				</li>
 
 				<li v-show="isDrag" class="no">
-					<el-button type="text" @click="treeOrder(true)" size="small">保存</el-button>
-					<el-button type="text" @click="treeOrder(false)" size="small">取消</el-button>
+					<el-button @click="treeOrder(true)" size="small">保存</el-button>
+					<el-button @click="treeOrder(false)" size="small">取消</el-button>
 				</li>
 			</ul>
 		</div>
