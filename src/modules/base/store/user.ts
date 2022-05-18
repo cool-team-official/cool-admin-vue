@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { href, storage } from "/@/cool/utils";
-import { service, config } from "/@/cool";
+import { service, config, router } from "/@/cool";
 
 interface User {
 	id: number;
@@ -79,8 +79,9 @@ export const useUserStore = defineStore("user", function () {
 		try {
 			await service.base.comm.logout();
 		} catch {}
+
 		clear();
-		location.href = "/login";
+		router.href("login");
 	}
 
 	// 获取用户信息

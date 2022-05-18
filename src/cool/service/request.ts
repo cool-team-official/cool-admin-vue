@@ -3,7 +3,7 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { ElMessage } from "element-plus";
 import { isDev, config } from "/@/cool";
-import { href, storage } from "/@/cool/utils";
+import { storage } from "/@/cool/utils";
 import { useBaseStore } from "/$/base";
 import { router } from "../router";
 
@@ -115,28 +115,25 @@ axios.interceptors.response.use(
 
 		if (error.response) {
 			const { status, config } = error.response;
-			const message = `${config.url} ${status}`;
-
-			console.error(message);
 
 			if (isDev) {
-				ElMessage.error(message);
+				ElMessage.error(`${config.url} ${status}`);
 			} else {
 				switch (status) {
 					case 401:
-						router.push("/401");
+						router.href("401");
 						break;
 
 					case 403:
-						router.push("/403");
+						router.href("403");
 						break;
 
 					case 500:
-						router.push("/500");
+						router.href("500");
 						break;
 
 					case 502:
-						router.push("/502");
+						router.href("502");
 						break;
 				}
 			}

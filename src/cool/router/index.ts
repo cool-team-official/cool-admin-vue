@@ -46,7 +46,7 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
 	history: config.app.router.mode == "history" ? createWebHistory() : createWebHashHistory(),
 	routes
-});
+}) as CoolRouter;
 
 // 路由守卫
 router.beforeEach((to: any, _: any, next: NavigationGuardNext) => {
@@ -74,6 +74,15 @@ router.beforeEach((to: any, _: any, next: NavigationGuardNext) => {
 
 	next();
 });
+
+// 自定义
+router.href = function (path: string) {
+	const url = import.meta.env.BASE_URL + path;
+
+	if (url != location.pathname) {
+		location.href = url;
+	}
+};
 
 let lock = false;
 
