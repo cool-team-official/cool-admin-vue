@@ -1,0 +1,60 @@
+.theme {
+	&-jihei {
+		.page-layout {
+			background-color: rgba(47, 52, 71, 0.9);
+
+			.app-topbar {
+				background-color: transparent;
+				color: #fff;
+
+				span {
+					color: #fff;
+				}
+
+				.el-breadcrumb {
+					span {
+						color: #ddd;
+					}
+
+					&__item {
+						&:last-child {
+							span {
+								color: #fff;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	&-jiangzi {
+		.page-layout {
+			.app-slider__logo {
+				background-color: var(--color-primary);
+			}
+
+			.app-slider {
+				background-color: #fff;
+
+				.el-sub-menu__title,
+				.el-menu-item {
+					color: #000;
+					background-color: transparent !important;
+
+					&:hover,
+					&.is-active {
+						.icon-svg,
+						span {
+							color: var(--color-primary);
+						}
+					}
+
+					&.is-active {
+						border-right: 3px solid var(--color-primary);
+					}
+				}
+			}
+		}
+	}
+}
