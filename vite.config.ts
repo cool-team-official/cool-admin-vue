@@ -8,7 +8,7 @@ import Unocss from "unocss/vite";
 import { presetUno } from "unocss";
 import { proxy } from "./src/cool/config/proxy";
 import { cool } from "./build/cool";
-import { svgBuilder } from "./build/svg";
+import { svgBuilder, findSvgFolders } from "./build/svg";
 
 function resolve(dir: string) {
 	return path.resolve(__dirname, ".", dir);
@@ -27,7 +27,7 @@ export default (): UserConfig => {
 			Unocss({
 				presets: [presetUno()]
 			}),
-			svgBuilder("./src/icons/svg/"),
+			svgBuilder(["./src/icons/svg/",...findSvgFolders("./src/modules/")]),
 			cool()
 		],
 		css: {
