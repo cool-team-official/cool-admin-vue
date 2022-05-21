@@ -1,6 +1,7 @@
 import { Plugin } from "vite";
 import { readFileSync, readdirSync, accessSync } from "fs";
 import path from "path";
+import { isArray } from "lodash";
 
 let idPerfix = "";
 const svgTitle = /<svg([^>+].*?)>/;
@@ -51,9 +52,10 @@ function findSvgFile(dir: string, uniqueNames: Record<string, boolean>): string[
 	return svgRes;
 }
 
-export const svgBuilder = (paths: string[], perfix = "icon"): Plugin | null => {
-	if (paths.length > 0) {
+export const svgBuilder = (paths: string | string[], perfix = "icon"): Plugin | null => {
+	if (paths) {
 		idPerfix = perfix;
+		paths = isArray(paths) ? paths : [paths];
 		const uniqueNames: Record<string, boolean> = {};
 		const res = paths.reduce(
 			(previousValue, currentValue) =>
