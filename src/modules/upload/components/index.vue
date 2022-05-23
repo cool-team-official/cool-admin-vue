@@ -352,12 +352,10 @@ async function httpRequest(req: any, item?: any) {
 						update();
 					})
 					.catch((err) => {
-						if (mode == "local") {
-							ElMessage.error(err.message);
-							item.error = err.message;
-							emit("error", item);
-							reject(err);
-						}
+						ElMessage.error(err.message);
+						item.error = err.message;
+						emit("error", item);
+						reject(err);
 					});
 			}
 
