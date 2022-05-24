@@ -103,6 +103,10 @@ axios.interceptors.response.use(
 
 		const { code, data, message } = res.data;
 
+		if (!code) {
+			return res.data;
+		}
+
 		switch (code) {
 			case 1000:
 				return data;
