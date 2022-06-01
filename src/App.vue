@@ -20,9 +20,9 @@
 <script lang="ts" setup>
 import { ElConfigProvider } from "element-plus";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
-import { useBaseStore } from "/$/base";
+import { useBase } from "/$/base";
 
-const { app } = useBaseStore();
+const { app } = useBase();
 </script>
 
 <style lang="scss" src="./assets/css/index.scss"></style>

@@ -1,8 +1,8 @@
 import { useEventListener } from "@vueuse/core";
-import { useBaseStore } from "../store";
+import { useStore } from "../store";
 
 function resize() {
-	const { app } = useBaseStore();
+	const { app } = useStore();
 	app.setBrowser();
 	app.isFold = app.browser.isMini;
 }

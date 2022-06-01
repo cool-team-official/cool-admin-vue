@@ -2,7 +2,7 @@ import { createPinia } from "pinia";
 import { App } from "vue";
 import { useModule } from "./module";
 import { router, viewer } from "./router";
-import { useBaseStore } from "/$/base";
+import { useBase } from "/$/base";
 import mitt from "mitt";
 import VueECharts from "vue-echarts";
 import ElementPlus from "element-plus";
@@ -23,7 +23,7 @@ export async function bootstrap(Vue: App) {
 	Vue.component("v-chart", VueECharts);
 
 	// 基础
-	const { app, user, menu } = useBaseStore();
+	const { app, user, menu } = useBase();
 
 	// 加载模块
 	useModule(Vue);

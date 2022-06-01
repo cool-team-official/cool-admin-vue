@@ -1,4 +1,10 @@
+import { useStore } from "./store";
 import "./static/css/index.scss";
 
-export * from "./store";
+export function useBase() {
+	return {
+		...useStore()
+	};
+}
+
 export * from "./common";

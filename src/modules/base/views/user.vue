@@ -3,11 +3,7 @@
 		<div class="pane">
 			<!-- 组织架构 -->
 			<div class="dept" :class="[isExpand ? '_expand' : '_collapse']">
-				<dept-tree
-					@row-click="onDeptRowClick"
-					@user-add="onDeptUserAdd"
-					@list-change="onDeptListChange"
-				/>
+				<dept-tree @row-click="onDeptRowClick" @user-add="onDeptUserAdd" />
 			</div>
 
 			<!-- 成员列表 -->
@@ -18,7 +14,7 @@
 						<el-icon v-else><arrow-right /></el-icon>
 					</div>
 
-					<span>成员列表</span>
+					<span>成员列表（{{ selects.dept?.name }}）</span>
 				</div>
 
 				<div class="user__container">
@@ -94,12 +90,12 @@ import { useTable, useUpsert, useCrud } from "@cool-vue/crud";
 import { reactive, ref, watch } from "vue";
 import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
 import { useCool } from "/@/cool";
-import { useBaseStore } from "../store";
+import { useBase } from "/$/base";
 import DeptMoveForm from "./components/dept-move";
 import DeptTree from "./components/dept-tree.vue";
 
 const { service } = useCool();
-const { app } = useBaseStore();
+const { app } = useBase();
 
 const DeptMove = ref<any>();
 
@@ -112,18 +108,10 @@ const selects = reactive<any>({
 	ids: []
 });
 
-// 部门列表
-const dept = ref<any[]>([]);
-
 // cl-crud 配置
-const Crud = useCrud(
-	{
-		service: service.base.sys.user
-	},
-	(app) => {
-		app.refresh();
-	}
-);
+const Crud = useCrud({
+	service: service.base.sys.user
+});
 
 // cl-table 配置
 const Table = useTable({
@@ -322,19 +310,9 @@ const Upsert = useUpsert({
 	],
 
 	onSubmit(_, data, { next }) {
-		let departmentId = data.departmentId;
-
-		if (!departmentId) {
-			departmentId = selects.dept.id;
-
-			if (!departmentId) {
-				departmentId = dept.value[0].id;
-			}
-		}
-
 		next({
 			...data,
-			departmentId
+			departmentId: selects.dept.id
 		});
 	},
 
@@ -362,17 +340,6 @@ const Upsert = useUpsert({
 		}
 	}
 });
-
-// 监听屏幕大小变化
-watch(
-	() => app.browser.isMini,
-	(val: boolean) => {
-		isExpand.value = !val;
-	},
-	{
-		immediate: true
-	}
-);
 
 // 刷新列表
 function refresh(params: any) {
@@ -406,11 +373,6 @@ function onDeptUserAdd(item: any) {
 	});
 }
 
-// 部门列表监听
-function onDeptListChange(list: any[]) {
-	dept.value = list;
-}
-
 // 是否显示部门
 function deptExpand() {
 	isExpand.value = !isExpand.value;
@@ -428,6 +390,17 @@ async function toMove(e?: any) {
 
 	DeptMove.value.toMove(ids);
 }
+
+// 监听屏幕大小变化
+watch(
+	() => app.browser.isMini,
+	(val: boolean) => {
+		isExpand.value = !val;
+	},
+	{
+		immediate: true
+	}
+);
 </script>
 
 <style lang="scss" scoped>

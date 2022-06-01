@@ -10,9 +10,9 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { useBaseStore } from "/$/base";
+import { useBase } from "/$/base";
 
-const { app, process } = useBaseStore();
+const { app, process } = useBase();
 
 // 缓存列表
 const caches = computed(() => {

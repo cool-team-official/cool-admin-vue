@@ -2,6 +2,7 @@
 	<div class="app-process">
 		<div class="app-process__back" @click="router.back">
 			<el-icon :size="15"><arrow-left /></el-icon>
+			<span>返回</span>
 		</div>
 
 		<div :ref="setRefs('scroller')" class="app-process__scroller">
@@ -30,10 +31,10 @@ import { last } from "lodash";
 import { useCool } from "/@/cool";
 import { ArrowLeft, Close } from "@element-plus/icons-vue";
 import { ContextMenu } from "@cool-vue/crud";
-import { useBaseStore } from "/$/base";
+import { useBase } from "/$/base";
 
 const { refs, setRefs, route, router } = useCool();
-const { process } = useBaseStore();
+const { process } = useBase();
 
 // 跳转
 function toPath() {

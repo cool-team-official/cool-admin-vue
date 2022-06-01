@@ -58,7 +58,7 @@
 import { defineComponent, reactive, ref } from "vue";
 import { ElMessage } from "element-plus";
 import { useCool } from "/@/cool";
-import { useBaseStore } from "/$/base";
+import { useBase } from "/$/base";
 import Captcha from "./components/captcha.vue";
 import Logo from "/@/assets/logo-text.png";
 
@@ -75,7 +75,7 @@ export default defineComponent({
 
 	setup() {
 		const { refs, setRefs, router, service } = useCool();
-		const { user, menu } = useBaseStore();
+		const { user, menu } = useBase();
 
 		// 状态1
 		const saving = ref<boolean>(false);
