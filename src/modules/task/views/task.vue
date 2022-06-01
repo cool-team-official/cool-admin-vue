@@ -199,11 +199,7 @@
 		</div>
 
 		<!-- 表单 -->
-		<cl-form ref="Form">
-			<template #slot-cron="{ scope }">
-				<cron v-model="scope.cron" />
-			</template>
-		</cl-form>
+		<cl-form ref="Form" />
 	</div>
 </template>
 
@@ -214,7 +210,6 @@ import Draggable from "vuedraggable/src/vuedraggable";
 import { checkPerm } from "/$/base";
 import { useCool } from "/@/cool";
 import { ContextMenu, useForm } from "@cool-vue/crud";
-import Cron from "../components/cron";
 import {
 	Refresh,
 	CirclePlus,
@@ -428,7 +423,6 @@ async function edit(params: any) {
 					props: {
 						onChange(v: number) {
 							if (v == 0) {
-								Form.value?.setForm("limit", undefined);
 								Form.value?.setForm("every", undefined);
 							} else {
 								Form.value?.setForm("cron", undefined);
@@ -442,23 +436,14 @@ async function edit(params: any) {
 				prop: "cron",
 				hidden: ({ scope }) => scope.taskType == 1,
 				component: {
-					name: "slot-cron"
+					name: "el-input",
+					props: {
+						placeholder: "* * * * * *"
+					}
 				},
 				rules: {
 					required: true,
 					message: "cron不能为空"
-				}
-			},
-			{
-				label: "次数",
-				prop: "limit",
-				hidden: ({ scope }) => scope.taskType == 0,
-				component: {
-					name: "el-input-number",
-					props: {
-						min: 1,
-						max: 10000
-					}
 				}
 			},
 			{
@@ -490,18 +475,7 @@ async function edit(params: any) {
 			{
 				label: "开始时间",
 				prop: "startDate",
-				hidden: ({ scope }: any) => scope.taskType == 1,
-				component: {
-					name: "el-date-picker",
-					props: {
-						type: "datetime",
-						"value-format": "YYYY-MM-DD HH:mm:ss"
-					}
-				}
-			},
-			{
-				label: "结束时间",
-				prop: "endDate",
+				hidden: ({ scope }) => scope.taskType == 1,
 				component: {
 					name: "el-date-picker",
 					props: {
