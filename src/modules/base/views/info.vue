@@ -40,12 +40,12 @@ export default {
 <script lang="ts" setup>
 import { ElMessage } from "element-plus";
 import { reactive, ref } from "vue";
-import { useBaseStore } from "/$/base";
+import { useBase } from "/$/base";
 import { useCool } from "/@/cool";
 import { cloneDeep } from "lodash";
 
 const { service } = useCool();
-const { user } = useBaseStore();
+const { user } = useBase();
 
 // 表单数据
 const form = reactive<any>(cloneDeep(user.info));

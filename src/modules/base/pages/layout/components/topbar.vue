@@ -48,12 +48,12 @@
 </template>
 
 <script lang="ts" setup>
-import { useBaseStore } from "/$/base";
+import { useBase } from "/$/base";
 import { useCool } from "/@/cool";
 import RouteNav from "./route-nav.vue";
 
 const { router } = useCool();
-const { user, app } = useBaseStore();
+const { user, app } = useBase();
 
 // 跳转
 function onCommand(name: string) {

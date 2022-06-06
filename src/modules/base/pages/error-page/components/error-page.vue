@@ -35,7 +35,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useCool } from "/@/cool";
-import { useBaseStore } from "/$/base/store";
+import { useBase } from "/$/base";
 
 export default defineComponent({
 	props: {
@@ -45,7 +45,7 @@ export default defineComponent({
 
 	setup() {
 		const { router } = useCool();
-		const { user, menu } = useBaseStore();
+		const { user, menu } = useBase();
 
 		const url = ref<string>("");
 		const isLogout = ref<boolean>(false);

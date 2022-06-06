@@ -27,7 +27,6 @@
 			<el-tree
 				v-loading="loading"
 				node-key="id"
-				highlight-current
 				default-expand-all
 				:data="list"
 				:props="{
@@ -41,9 +40,14 @@
 			>
 				<template #default="{ node, data }">
 					<div class="dept-tree__node">
-						<span class="dept-tree__node-label" @click="rowClick(data)">{{
-							node.label
-						}}</span>
+						<span
+							class="dept-tree__node-label"
+							:class="{
+								'is-active': data.id == info?.id
+							}"
+							@click="rowClick(data)"
+							>{{ node.label }}</span
+						>
 						<span
 							v-if="app.browser.isMini"
 							class="dept-tree__node-icon"
@@ -68,7 +72,7 @@ import { deepTree, revDeepTree } from "/@/cool/utils";
 import { isArray } from "lodash";
 import { ContextMenu, useForm } from "@cool-vue/crud";
 import { Refresh, Operation, MoreFilled } from "@element-plus/icons-vue";
-import { useBaseStore, checkPerm } from "/$/base";
+import { useBase, checkPerm } from "/$/base";
 
 export default defineComponent({
 	name: "dept-tree",
@@ -98,6 +102,9 @@ export default defineComponent({
 		// 树形列表
 		const list = ref<any[]>([]);
 
+		// 选中
+		const info = ref();
+
 		// 加载中
 		const loading = ref<boolean>(false);
 
@@ -119,12 +126,18 @@ export default defineComponent({
 
 		// 刷新
 		async function refresh() {
-			isDrag.value = false;
 			loading.value = true;
+			isDrag.value = false;
 
 			await service.base.sys.department.list().then((res: any[]) => {
 				list.value = deepTree(res);
-				emit("list-change", list.value);
+
+				if (!info.value) {
+					info.value = list.value[0];
+				}
+
+				// 模拟点击
+				rowClick(info.value);
 			});
 
 			loading.value = false;
@@ -132,9 +145,12 @@ export default defineComponent({
 
 		// 获取 ids
 		function rowClick(e: any) {
-			const ids = e.children ? revDeepTree(e.children).map((e) => e.id) : [];
-			ids.unshift(e.id);
-			emit("row-click", { item: e, ids });
+			if (e) {
+				const ids = e.children ? revDeepTree(e.children).map((e) => e.id) : [];
+				ids.unshift(e.id);
+				info.value = e;
+				emit("row-click", { item: e, ids });
+			}
 		}
 
 		// 编辑部门
@@ -211,6 +227,10 @@ export default defineComponent({
 						deleteUser: f
 					})
 					.then(() => {
+						if (e.id == info.value.id) {
+							info.value = null;
+						}
+
 						if (f) {
 							ElMessage.success("删除成功");
 						} else {
@@ -346,6 +366,7 @@ export default defineComponent({
 		return {
 			Form,
 			list,
+			info,
 			loading,
 			isDrag,
 			onContextMenu,
@@ -356,7 +377,7 @@ export default defineComponent({
 			rowEdit,
 			rowDel,
 			treeOrder,
-			...useBaseStore()
+			...useBase()
 		};
 	}
 });
@@ -433,6 +454,11 @@ export default defineComponent({
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
+
+			&.is-active {
+				color: var(--color-primary);
+				font-weight: bold;
+			}
 		}
 
 		&-icon {

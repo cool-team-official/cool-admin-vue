@@ -38,12 +38,12 @@ import { computed, inject, onMounted, ref } from "vue";
 import { isEmpty } from "lodash";
 import { useCool } from "/@/cool";
 import { ContextMenu, useForm } from "@cool-vue/crud";
-import { useBaseStore } from "/$/base/store";
+import { useBase } from "/$/base";
 
 const { service } = useCool();
 
 // 缓存
-const { app } = useBaseStore();
+const { app } = useBase();
 
 // 接收
 const space = inject<any>("space");

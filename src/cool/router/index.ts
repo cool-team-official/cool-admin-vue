@@ -8,7 +8,7 @@ import {
 	RouteRecordRaw
 } from "vue-router";
 import { storage, config } from "/@/cool";
-import { useBaseStore } from "/$/base";
+import { useBase } from "/$/base";
 import { cloneDeep, isArray } from "lodash";
 
 // 视图文件
@@ -50,7 +50,7 @@ const router = createRouter({
 
 // 路由守卫
 router.beforeEach((to: any, _: any, next: NavigationGuardNext) => {
-	const { user, process } = useBaseStore();
+	const { user, process } = useBase();
 
 	if (user.token) {
 		if (to.path.includes("/login")) {

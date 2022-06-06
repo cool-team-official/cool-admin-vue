@@ -3,7 +3,7 @@ import { useMenuStore } from "./menu";
 import { useProcessStore } from "./process";
 import { useUserStore } from "./user";
 
-export function useBaseStore() {
+export function useStore() {
 	const app = useAppStore();
 	const menu = useMenuStore();
 	const process = useProcessStore();

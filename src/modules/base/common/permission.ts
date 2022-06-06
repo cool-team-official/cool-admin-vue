@@ -1,8 +1,8 @@
-import { useBaseStore } from "../store";
+import { useStore } from "../store";
 import { isObject } from "lodash";
 
 function parse(value: any) {
-	const { menu } = useBaseStore();
+	const { menu } = useStore();
 
 	if (typeof value == "string") {
 		return value ? menu.perms.some((e: any) => e.includes(value.replace(/\s/g, ""))) : false;

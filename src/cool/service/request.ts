@@ -4,7 +4,7 @@ import "nprogress/nprogress.css";
 import { ElMessage } from "element-plus";
 import { isDev, config } from "/@/cool";
 import { storage } from "/@/cool/utils";
-import { useBaseStore } from "/$/base";
+import { useBase } from "/$/base";
 import { router } from "../router";
 
 axios.defaults.timeout = 30000;
@@ -26,7 +26,7 @@ axios.interceptors.request.eject(axios._req);
 // @ts-ignore
 axios._req = axios.interceptors.request.use(
 	(req: any) => {
-		const { user } = useBaseStore();
+		const { user } = useBase();
 
 		if (req.url) {
 			// 请求进度条

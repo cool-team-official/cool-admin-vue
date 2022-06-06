@@ -19,14 +19,14 @@
 import { computed, defineComponent, ref, watch } from "vue";
 import _ from "lodash";
 import { useCool } from "/@/cool";
-import { useBaseStore } from "/$/base/store";
+import { useBase } from "/$/base";
 
 export default defineComponent({
 	name: "route-nav",
 
 	setup() {
 		const { route } = useCool();
-		const { app, menu } = useBaseStore();
+		const { app, menu } = useBase();
 
 		// 数据列表
 		const list = ref<any[]>([]);

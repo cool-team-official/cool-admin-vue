@@ -112,7 +112,7 @@ import { isEmpty } from "lodash";
 import Category from "./space/category.vue";
 import FileItem from "./space/file-item.vue";
 import { useCool } from "/@/cool";
-import { useBaseStore } from "/$/base";
+import { useBase } from "/$/base";
 import { Notebook, ArrowLeft, UploadFilled } from "@element-plus/icons-vue";
 
 const props = defineProps({
@@ -134,7 +134,7 @@ const emit = defineEmits(["update:modelValue", "confirm"]);
 const { service } = useCool();
 
 // 缓存
-const { app } = useBaseStore();
+const { app } = useBase();
 
 // 模块配置
 const { options } = module.get("upload");

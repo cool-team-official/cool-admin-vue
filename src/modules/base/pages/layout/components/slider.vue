@@ -13,7 +13,7 @@
 
 <script lang="tsx">
 import { defineComponent, ref, watch, h } from "vue";
-import { useBaseStore } from "/$/base";
+import { useBase } from "/$/base";
 import { useCool } from "/@/cool";
 import Logo from "/@/assets/logo.png";
 
@@ -24,7 +24,7 @@ export default defineComponent({
 		MenuNav: {
 			setup() {
 				const { router, route } = useCool();
-				const { menu } = useBaseStore();
+				const { menu } = useBase();
 
 				// 是否可见
 				const visible = ref<boolean>(true);
@@ -58,7 +58,7 @@ export default defineComponent({
 			},
 
 			render(ctx: any) {
-				const { app } = useBaseStore();
+				const { app } = useBase();
 
 				function deepMenu(list: any[], index: number) {
 					return list
@@ -145,7 +145,7 @@ export default defineComponent({
 		return {
 			toHome,
 			Logo,
-			...useBaseStore()
+			...useBase()
 		};
 	}
 });
