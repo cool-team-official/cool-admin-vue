@@ -43,9 +43,10 @@ export const themes = [
 declare interface Options {
 	color?: string;
 	name?: string;
+	isGroup?: boolean;
 }
 
-export function setTheme({ color, name }: Options) {
+export function setTheme({ color, name, isGroup }: Options) {
 	// 主题配置
 	const theme = store.get("theme") || {};
 
@@ -69,6 +70,8 @@ export function setTheme({ color, name }: Options) {
 			color = item.color;
 			document.querySelector("#app")?.setAttribute("class", `theme-${name}`);
 		}
+
+		theme.name = name;
 	}
 
 	// 设置主色
@@ -81,11 +84,14 @@ export function setTheme({ color, name }: Options) {
 			el.style.setProperty(`${pre}-light-${i}`, mix(color, mixWhite, i * 0.1));
 			el.style.setProperty(`${pre}-dark-${i}`, mix(color, mixBlack, i * 0.1));
 		}
+
+		theme.color = color;
 	}
 
-	// 缓存
-	theme.name = name;
-	theme.color = color;
+	// 菜单分组显示
+	if (isGroup !== undefined) {
+		theme.isGroup = isGroup;
+	}
 
 	store.set("theme", theme);
 }

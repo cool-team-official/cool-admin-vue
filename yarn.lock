@@ -984,10 +984,10 @@
     "@babel/helper-validator-identifier" "^7.16.7"
     to-fast-properties "^2.0.0"
 
-"@cool-vue/crud@^5.0.7":
-  version "5.0.7"
-  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-5.0.7.tgz#60459f3e58b04a08c621aa41e25c03618645bd6b"
-  integrity sha512-/I4f6KFpPHiJE86w2pHAwu2Gn2WAd2LCFn6Bc3jzgg6RdYlAeIyRB9Ph8KasE7CCjyPdb2kyDYEQsZhOfODy9g==
+"@cool-vue/crud@^5.0.10":
+  version "5.0.10"
+  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-5.0.10.tgz#c2d70504fccdf89c907e1d32e62a93dd777fba9c"
+  integrity sha512-a3jZPS+Y/+7IJTA3iYjD7PK83rwtIDrnE0tcf5LfenZ7JnnlXs+QFMRybGypJfoeswsG97JmWFeSY6o/JyALDw==
   dependencies:
     array.prototype.flat "^1.2.4"
     core-js "^3.21.1"

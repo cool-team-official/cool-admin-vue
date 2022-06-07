@@ -12,6 +12,9 @@ export const config = {
 
 		// 菜单
 		menu: {
+			// 是否分组显示
+			isGroup: false,
+			// 自定义菜单列表
 			list: []
 		},
 
@@ -23,16 +26,6 @@ export const config = {
 			pages: [],
 			// 视图 / 路由下的 children
 			views: []
-		},
-
-		// 主题
-		theme: {
-			// 主色
-			color: "",
-			// 样式地址
-			url: "",
-			// 显示一级菜单
-			showAMenu: false
 		},
 
 		// 字体图标库

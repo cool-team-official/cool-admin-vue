@@ -135,8 +135,9 @@ watch(
 		height: 30px;
 		padding: 0 10px;
 		border-radius: 3px;
-		cursor: pointer;
 		margin-right: 10px;
+		font-size: 12px;
+		cursor: pointer;
 
 		&:hover {
 			background-color: #eee;

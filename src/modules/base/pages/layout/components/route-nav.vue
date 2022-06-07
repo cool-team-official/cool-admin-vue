@@ -64,7 +64,8 @@ export default defineComponent({
 				}
 			},
 			{
-				immediate: true
+				immediate: true,
+				deep: true
 			}
 		);
 

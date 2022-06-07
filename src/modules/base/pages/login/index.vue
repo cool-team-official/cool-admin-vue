@@ -78,7 +78,7 @@ export default defineComponent({
 		const { user, menu } = useBase();
 
 		// 状态1
-		const saving = ref<boolean>(false);
+		const saving = ref(false);
 
 		// 表单数据
 		const form = reactive({
@@ -87,27 +87,6 @@ export default defineComponent({
 			captchaId: "",
 			verifyCode: ""
 		});
-
-		// 获取第一个菜单路径
-		function getPath(list: any[]) {
-			let path = "";
-
-			function deep(arr: any[]) {
-				arr.forEach((e: any) => {
-					if (e.type == 1) {
-						if (!path) {
-							path = e.path;
-						}
-					} else {
-						deep(e.children);
-					}
-				});
-			}
-
-			deep(list);
-
-			return path || "/";
-		}
 
 		// 登录
 		async function toLogin() {
@@ -135,7 +114,10 @@ export default defineComponent({
 				await user.get();
 
 				// 权限菜单
-				const path = getPath(await menu.get());
+				await menu.get();
+
+				// 跳转地址
+				const path = menu.getPath();
 
 				if (path) {
 					router.push(path);

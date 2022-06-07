@@ -51,13 +51,13 @@ export const useMenuStore = defineStore("menu", function () {
 	const perms = ref<any[]>(data["menu.perms"] || []);
 
 	// 设置左侧菜单
-	function setMenu(i: number) {
-		if (isEmpty(index)) {
+	function setMenu(i?: number) {
+		if (i === undefined) {
 			i = index.value;
 		}
 
-		// 显示一级菜单
-		if (config.app.theme.showAMenu) {
+		// 显示分组显示菜单
+		if (config.app.menu.isGroup) {
 			const { children = [] } = group.value[i] || {};
 
 			index.value = i;
@@ -105,12 +105,12 @@ export const useMenuStore = defineStore("menu", function () {
 
 	// 设置菜单组
 	function setGroup(list: Item[]) {
-		group.value = orderBy(list, "orderNum");
+		group.value = orderBy(list, "orderNum").filter((e) => e.isShow);
 		storage.set("menu.group", group.value);
 	}
 
 	// 获取菜单，权限信息
-	function get(): Promise<any[]> {
+	function get(): Promise<Item[]> {
 		return new Promise((resolve, reject) => {
 			function next(res: any) {
 				if (!isArray(res.menus)) {
@@ -174,6 +174,29 @@ export const useMenuStore = defineStore("menu", function () {
 		});
 	}
 
+	// 获取菜单路径
+	function getPath(list?: Item[]) {
+		list = list || group.value;
+
+		let path = "";
+
+		function deep(arr: Item[]) {
+			arr.forEach((e: Item) => {
+				if (e.type == 1) {
+					if (!path) {
+						path = e.path;
+					}
+				} else {
+					deep(e.children || []);
+				}
+			});
+		}
+
+		deep(list);
+
+		return path || "/";
+	}
+
 	return {
 		routes,
 		group,
@@ -184,6 +207,7 @@ export const useMenuStore = defineStore("menu", function () {
 		setPerms,
 		setMenu,
 		setRoutes,
-		setGroup
+		setGroup,
+		getPath
 	};
 });

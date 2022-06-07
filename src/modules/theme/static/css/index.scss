@@ -3,6 +3,12 @@
 		.page-layout {
 			background-color: rgba(47, 52, 71, 0.9);
 
+			.a-menu {
+				.el-menu-item {
+					border-radius: 5px !important;
+				}
+			}
+
 			.app-topbar {
 				background-color: transparent;
 				color: #fff;
