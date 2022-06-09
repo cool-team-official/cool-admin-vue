@@ -1,75 +1,85 @@
 <template>
-	<div
-		class="cl-chat__session"
-		:class="{
-			'is-position': app.browser.isMini,
-			'is-show': chat?.session.visible
-		}"
-	>
-		<div class="head"></div>
+	<div class="chat-session">
+		<div class="head">
+			<el-input v-model="keyWord" placeholder="关键字搜索" clearable></el-input>
+		</div>
 
-		<div class="list scroller1">
-			<div class="item" v-for="(item, index) in 13" :key="index">
+		<div class="list scroller1" v-loading="chat?.session.loading">
+			<div
+				class="item"
+				v-for="(item, index) in list"
+				:key="index"
+				:class="{
+					'is-active': item.id == chat?.session.value?.id
+				}"
+				@click="toDetail(item)"
+			>
 				<div class="avatar">
-					<el-badge value="2">
-						<el-avatar shape="square"></el-avatar>
+					<el-badge :value="item.num" :hidden="item.num == 0">
+						<el-avatar shape="square" :src="item.avatar"></el-avatar>
 					</el-badge>
 				</div>
 
 				<div class="det">
-					<p class="name">神仙都没用</p>
+					<p class="name">{{ item.nickName }}</p>
 					<p class="message">
-						https://g0qwq7gr7l.feishu.cn/docx/doxcnkMF3PFehilJTyHbEivkUod
+						{{ item.text }}
 					</p>
 				</div>
 
 				<div class="status">
-					<p class="date">2022-04-21 12:22</p>
-					<el-tag size="small">厦门</el-tag>
+					<p class="date">{{ item.createTime }}</p>
+					<!-- <el-tag size="small">厦门</el-tag> -->
 				</div>
 			</div>
+
+			<el-empty v-if="list.length == 0" image-size="100" description="暂无会话"></el-empty>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
+import { computed, onMounted, ref } from "vue";
 import { useChat } from "../hooks";
-import { useBase } from "/$/base";
+import { useCool } from "/@/cool";
 
-const { app } = useBase();
+const { service } = useCool();
 const { chat } = useChat();
+
+// 关键字
+const keyWord = ref("");
+
+// 过滤列表
+const list = computed(
+	() => chat?.session.list.filter((e) => e.nickName.includes(keyWord.value)) || []
+);
+
+// 会话详情
+function toDetail(item: any) {
+	chat?.setSession(item);
+}
+
+onMounted(() => {
+	chat?.getSession();
+});
 </script>
 
 <style lang="scss" scoped>
-.cl-chat__session {
+.chat-session {
 	height: 100%;
-	width: 0;
+	width: 100%;
 	background-color: #fff;
-	overflow: hidden;
-	transition: width 0.2s ease-in-out;
 	border-radius: 5px;
-
-	&.is-show {
-		width: 350px;
-		margin-right: 5px;
-	}
-
-	&.is-position {
-		position: absolute;
-		left: 5px;
-		top: 51px;
-		height: calc(100% - 56px);
-		z-index: 3000;
-
-		&.is-show {
-			width: calc(100% - 10px);
-		}
-	}
 
 	.head {
 		display: flex;
-		height: 50px;
 		border-bottom: 1px solid #f7f7f7;
+		padding: 10px;
+
+		.el-input {
+			height: 30px;
+			background-color: #eee !important;
+		}
 	}
 
 	.list {
@@ -101,7 +111,7 @@ const { chat } = useChat();
 
 				.name {
 					font-size: 14px;
-					margin-bottom: 2px;
+					margin-bottom: 4px;
 				}
 
 				.message {
@@ -118,10 +128,15 @@ const { chat } = useChat();
 
 				.date {
 					margin-bottom: 5px;
+					color: #999;
 				}
 			}
 
-			&:hover {
+			&.is-active {
+				background-color: #eee;
+			}
+
+			&:not(.is-active):hover {
 				background-color: #f7f7f7;
 			}
 		}
