@@ -1,20 +1,12 @@
 <template>
-	<div
-		class="chat-message"
-		v-loading="chat?.message.loading"
-		element-loading-text="消息列表加载中"
-	>
+	<div class="chat-message" v-loading="message?.loading" element-loading-text="消息列表加载中">
 		<!-- 头部 -->
 		<div class="head">
-			<template v-if="chat?.session.value">
+			<template v-if="session?.value">
 				<div class="avatar">
-					<el-avatar
-						:size="30"
-						shape="square"
-						:src="chat?.session.value.avatar"
-					></el-avatar>
+					<el-avatar :size="30" shape="square" :src="session?.value.avatar"></el-avatar>
 				</div>
-				<span class="name">与“{{ chat?.session.value.nickName }}”聊天中</span>
+				<span class="name">与“{{ session?.value.nickName }}”聊天中</span>
 
 				<ul class="tools">
 					<li></li>
@@ -61,7 +53,7 @@
 
 			<div class="input">
 				<el-input
-					v-model="chat.inputValue"
+					v-model="value"
 					type="textarea"
 					:rows="4"
 					resize="none"
@@ -71,20 +63,26 @@
 					}"
 					placeholder="输入内容"
 				></el-input>
-				<el-button size="small" type="success" @click="send">发送</el-button>
+				<el-button size="small" type="success" @click="send" :disabled="!value"
+					>发送</el-button
+				>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { computed } from "vue-demi";
+import { computed, ref } from "vue";
 import { useChat } from "../hooks";
+import { useStore } from "../store";
 
 const { chat } = useChat();
+const { message, session } = useStore();
+
+const value = ref("");
 
 // 过滤列表
-const list = computed(() => chat?.message.list);
+const list = computed(() => message.list);
 
 function send() {
 	chat?.scrollToBottom();

@@ -1,8 +1,8 @@
 import { BaseService, Service } from "/@/cool";
 import Mock from "mockjs";
 
-@Service("im/session")
-class ImSession extends BaseService {
+@Service("chat/session")
+class ChatSession extends BaseService {
 	page() {
 		return new Promise((resolve) => {
 			const data = Mock.mock({
@@ -40,4 +40,4 @@ class ImSession extends BaseService {
 	}
 }
 
-export default ImSession;
+export default ChatSession;

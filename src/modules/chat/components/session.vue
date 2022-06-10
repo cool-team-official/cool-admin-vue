@@ -2,15 +2,21 @@
 	<div class="chat-session">
 		<div class="head">
 			<el-input v-model="keyWord" placeholder="关键字搜索" clearable></el-input>
+
+			<ul class="tools">
+				<li @click="session.get()">
+					<el-icon :size="16"><Refresh /></el-icon>
+				</li>
+			</ul>
 		</div>
 
-		<div class="list scroller1" v-loading="chat?.session.loading">
+		<div class="list scroller1" v-loading="session?.loading">
 			<div
 				class="item"
 				v-for="(item, index) in list"
 				:key="index"
 				:class="{
-					'is-active': item.id == chat?.session.value?.id
+					'is-active': item.id == session?.value?.id
 				}"
 				@click="toDetail(item)"
 			>
@@ -39,29 +45,24 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useChat } from "../hooks";
-import { useCool } from "/@/cool";
+import { useStore } from "../store";
+import { Refresh } from "@element-plus/icons-vue";
 
-const { service } = useCool();
 const { chat } = useChat();
+const { session } = useStore();
 
 // 关键字
 const keyWord = ref("");
 
 // 过滤列表
-const list = computed(
-	() => chat?.session.list.filter((e) => e.nickName.includes(keyWord.value)) || []
-);
+const list = computed(() => session?.list.filter((e) => e.nickName.includes(keyWord.value)) || []);
 
 // 会话详情
 function toDetail(item: any) {
 	chat?.setSession(item);
 }
-
-onMounted(() => {
-	chat?.getSession();
-});
 </script>
 
 <style lang="scss" scoped>
@@ -79,6 +80,26 @@ onMounted(() => {
 		.el-input {
 			height: 30px;
 			background-color: #eee !important;
+		}
+
+		.tools {
+			display: inline-flex;
+			align-items: center;
+
+			li {
+				height: 30px;
+				width: 30px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				cursor: pointer;
+				margin-left: 10px;
+				border-radius: 3px;
+
+				&:hover {
+					background-color: #eee;
+				}
+			}
 		}
 	}
 
