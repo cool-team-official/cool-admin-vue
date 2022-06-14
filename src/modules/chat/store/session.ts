@@ -34,8 +34,6 @@ export const useSessionStore = defineStore("chat-session", () => {
 
 	// 设置值
 	function set(data: any) {
-		// 清空消息列表
-		list.value = [];
 		// 设置值
 		value.value = data;
 	}

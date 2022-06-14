@@ -1,6 +1,14 @@
 <template>
 	<div class="cl-upload__wrap">
-		<div class="cl-upload" :class="[`cl-upload--${type}`]">
+		<div
+			class="cl-upload"
+			:class="[
+				`cl-upload--${type}`,
+				{
+					'is-slot': $slots.default
+				}
+			]"
+		>
 			<!-- 列表 -->
 			<draggable
 				v-model="list"
@@ -609,6 +617,16 @@ defineExpose({
 		height: 100%;
 		width: 100%;
 		box-sizing: border-box;
+	}
+
+	&.is-slot {
+		.cl-upload__list {
+			margin: 0;
+		}
+
+		.un-drag {
+			display: flex;
+		}
 	}
 }
 </style>

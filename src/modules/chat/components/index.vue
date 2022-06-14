@@ -1,7 +1,7 @@
 <template>
 	<div class="cl-chat__wrap">
 		<div class="cl-chat__icon" @click="open">
-			<el-badge :value="19">
+			<el-badge :value="unCount">
 				<el-icon><BellFilled /></el-icon>
 			</el-badge>
 		</div>
@@ -15,6 +15,7 @@
 			keep-alive
 			custom-class="cl-chat__dialog"
 			:close-on-click-modal="false"
+			:close-on-press-escape="false"
 			append-to-body
 			:controls="['slot-expand', 'cl-flex1', 'fullscreen', 'close']"
 		>
@@ -50,12 +51,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, reactive } from "vue";
-import { useStore } from "../store";
-
-export default defineComponent({
+export default {
 	name: "cl-chat"
-});
+};
 </script>
 
 <script lang="ts" setup>
@@ -69,6 +67,9 @@ import io from "socket.io-client";
 import { Socket } from "socket.io-client";
 import ChatMessage from "./message.vue";
 import ChatSession from "./session.vue";
+import { Chat } from "../types";
+import { useStore } from "../store";
+import dayjs from "dayjs";
 
 const { mitt } = useCool();
 
@@ -79,13 +80,16 @@ const { session, message } = useStore();
 const { app, user } = useBase();
 
 // 模块配置
-const { options } = module.get("upload");
+const { options } = module.get("chat");
 
 // 是否可见
 const visible = ref(false);
 
 // 是否展开
 const isExpand = ref(true);
+
+// 未读消息
+const unCount = ref(parseInt(Math.random() * 100));
 
 // Socket
 let socket: Socket;
@@ -95,7 +99,7 @@ function connect() {
 	return refresh();
 
 	if (!socket) {
-		socket = io(config.host + `/chat`, {
+		socket = io(config.host + options.path, {
 			auth: {
 				token: user.token
 			}
@@ -130,6 +134,29 @@ function close() {
 	visible.value = false;
 }
 
+// 发送消息
+function send(data: Chat.Message, isAppend?: boolean) {
+	// socket.emit("message", {});
+
+	if (isAppend) {
+		append(data);
+	}
+}
+
+// 追加消息
+function append(data: Chat.Message) {
+	message.list.push({
+		fromId: user.info?.id,
+		toId: session.value?.userId,
+		avatar: user.info?.headImg,
+		nickName: user.info?.nickName,
+		createTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+		...data
+	});
+
+	scrollToBottom();
+}
+
 // 滚动到底部
 const scrollToBottom = debounce(() => {
 	nextTick(() => {
@@ -150,6 +177,7 @@ async function refresh() {
 
 provide("chat", {
 	socket,
+	send,
 	scrollToBottom
 });
 

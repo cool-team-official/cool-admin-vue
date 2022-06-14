@@ -10,32 +10,33 @@
 			</ul>
 		</div>
 
-		<div class="list scroller1" v-loading="session?.loading">
-			<div
-				class="item"
-				v-for="(item, index) in list"
-				:key="index"
-				:class="{
-					'is-active': item.id == session?.value?.id
-				}"
-				@click="toDetail(item)"
-			>
-				<div class="avatar">
-					<el-badge :value="item.num" :hidden="item.num == 0">
-						<el-avatar shape="square" :src="item.avatar"></el-avatar>
-					</el-badge>
-				</div>
+		<div class="list" v-loading="session?.loading">
+			<div class="scroller1">
+				<div
+					class="item"
+					v-for="(item, index) in list"
+					:key="index"
+					:class="{
+						'is-active': item.id == session?.value?.id
+					}"
+					@click="toDetail(item)"
+				>
+					<div class="avatar">
+						<el-badge :value="item.num" :hidden="item.num == 0">
+							<el-avatar shape="square" :src="item.avatar"></el-avatar>
+						</el-badge>
+					</div>
 
-				<div class="det">
-					<p class="name">{{ item.nickName }}</p>
-					<p class="message">
-						{{ item.text }}
-					</p>
-				</div>
+					<div class="det">
+						<p class="name">{{ item.nickName }}</p>
+						<p class="message">
+							{{ item.text }}
+						</p>
+					</div>
 
-				<div class="status">
-					<p class="date">{{ item.createTime }}</p>
-					<!-- <el-tag size="small">厦门</el-tag> -->
+					<div class="status">
+						<p class="date">{{ item.createTime }}</p>
+					</div>
 				</div>
 			</div>
 
@@ -49,19 +50,22 @@ import { computed, ref } from "vue";
 import { useChat } from "../hooks";
 import { useStore } from "../store";
 import { Refresh } from "@element-plus/icons-vue";
+import { Chat } from "../types";
 
 const { chat } = useChat();
-const { session } = useStore();
+const { session, message } = useStore();
 
 // 关键字
 const keyWord = ref("");
 
 // 过滤列表
-const list = computed(() => session?.list.filter((e) => e.nickName.includes(keyWord.value)) || []);
+const list = computed(() => session?.list.filter((e) => e.nickName?.includes(keyWord.value)) || []);
 
 // 会话详情
-function toDetail(item: any) {
-	chat?.setSession(item);
+async function toDetail(item: Chat.Session) {
+	session.set(item);
+	await message.get({ page: 1 });
+	chat?.scrollToBottom();
 }
 </script>
 
@@ -105,6 +109,12 @@ function toDetail(item: any) {
 
 	.list {
 		height: calc(100% - 51px);
+		overflow: hidden;
+
+		.scroller1 {
+			height: 100%;
+		}
+
 		.item {
 			display: flex;
 			padding: 15px 10px;

@@ -1,31 +1,35 @@
 import { Socket } from "socket.io-client";
 
-export declare interface Item {
-	id: string;
-	avatar: string;
-	nickName: string;
-	[key: string]: any;
-}
+export namespace Chat {
+	enum ContentType {
+		"text" = 0,
+		"image" = 1,
+		"video" = 2
+	}
 
-export declare interface Chat {
-	socket?: Socket;
-	inputValue: string;
-	session: {
-		loading: boolean;
-		value?: Item;
-		list: Item[];
-	};
-	message: {
-		loading: boolean;
-		list: Item[];
-		pagination: {
-			page: number;
-			total: number;
-			size: number;
+	interface Message {
+		fromId?: string;
+		toId?: string;
+		content: {
+			text?: string;
+			imageUrl?: string;
+			[key: string]: any;
 		};
-	};
-	scrollToBottom(): void;
-	getSession(params?: any): void;
-	setSession(data: any): void;
-	getMessage(params?: any): void;
+		contentType: ContentType;
+		[key: string]: any;
+	}
+
+	interface Session {
+		id: string;
+		avatar: string;
+		nickName: string;
+		[key: string]: any;
+	}
+
+	interface Provide {
+		socket?: Socket;
+		send(data: Message, isAppend?: boolean): void;
+		append(data: Message): void;
+		scrollToBottom(): void;
+	}
 }

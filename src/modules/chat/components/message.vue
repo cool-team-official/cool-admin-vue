@@ -21,20 +21,38 @@
 					<div
 						class="item"
 						:class="{
-							'is-right': item.type == 1
+							'is-right': item.isMy
 						}"
 					>
 						<div class="avatar">
 							<el-avatar :size="36" shape="square" :src="item.avatar"></el-avatar>
 						</div>
 
-						<div class="det">
+						<div
+							class="det"
+							@contextmenu="
+								(e) => {
+									onContextMenu(e, item);
+								}
+							"
+						>
 							<div class="h">
 								<span class="name">{{ item.nickName }}</span>
 							</div>
 							<div class="content">
-								<div class="is-text">
-									<span>{{ item.text }}</span>
+								<!-- 文本 -->
+								<div class="is-text" v-if="item.contentType == 0">
+									<span>{{ item.content.text }}</span>
+								</div>
+
+								<!-- 图片 -->
+								<div class="is-image" v-else-if="item.contentType == 1">
+									<el-image
+										:src="item.content.imageUrl"
+										:preview-src-list="previewUrls"
+										:initial-index="item._index"
+										scroll-container=".chat-message .list"
+									/>
 								</div>
 							</div>
 						</div>
@@ -47,7 +65,11 @@
 		<div class="footer">
 			<div class="tools">
 				<ul>
-					<li></li>
+					<li>
+						<cl-upload @success="onImageSend" :show-file-list="false">
+							<el-icon><Picture /></el-icon>
+						</cl-upload>
+					</li>
 				</ul>
 			</div>
 
@@ -63,7 +85,7 @@
 					}"
 					placeholder="输入内容"
 				></el-input>
-				<el-button size="small" type="success" @click="send" :disabled="!value"
+				<el-button size="small" type="success" @click="onTextSend" :disabled="!value"
 					>发送</el-button
 				>
 			</div>
@@ -75,17 +97,93 @@
 import { computed, ref } from "vue";
 import { useChat } from "../hooks";
 import { useStore } from "../store";
+import { Picture } from "@element-plus/icons-vue";
+import { useBase } from "/$/base";
+import { ContextMenu } from "@cool-vue/crud";
+import { useClipboard } from "@vueuse/core";
+import { Chat } from "../types";
 
+const { user } = useBase();
 const { chat } = useChat();
 const { message, session } = useStore();
+const { copy } = useClipboard();
 
 const value = ref("");
 
 // 过滤列表
-const list = computed(() => message.list);
+const list = computed(() => {
+	let n = 0;
 
-function send() {
-	chat?.scrollToBottom();
+	return message.list.map((e) => {
+		if (e.contentType == 1) {
+			e._index = n++;
+		}
+
+		// 是否自己发的消息
+		e.isMy = e.fromId == user.info?.id;
+
+		return e;
+	});
+});
+
+// 预览图片地址
+const previewUrls = computed(() =>
+	message.list
+		.filter((e) => e.contentType == 1)
+		.map((e) => e.content?.imageUrl)
+		.filter(Boolean)
+);
+
+// 文本消息
+function onTextSend() {
+	chat?.send(
+		{
+			contentType: 0,
+			content: {
+				text: value.value
+			}
+		},
+		true
+	);
+	value.value = "";
+}
+
+// 图片消息
+function onImageSend(res: any) {
+	chat?.send(
+		{
+			contentType: 1,
+			content: {
+				imageUrl: res.url
+			}
+		},
+		true
+	);
+	value.value = "";
+}
+
+// 右键菜单
+function onContextMenu(e: Event, item: Chat.Message) {
+	ContextMenu.open(e, {
+		hover: {
+			target: "content"
+		},
+		list: [
+			{
+				label: "复制",
+				callback(done) {
+					copy(item.content.text || "");
+					done();
+				}
+			},
+			{
+				label: "转发"
+			},
+			{
+				label: "删除"
+			}
+		]
+	});
 }
 </script>
 
@@ -122,6 +220,8 @@ function send() {
 
 		ul {
 			& > li {
+				list-style: none;
+
 				.date {
 					display: flex;
 					align-items: center;
@@ -161,9 +261,13 @@ function send() {
 								font-size: 14px;
 							}
 
-							.is-img {
+							.is-image {
+								background-color: #fff;
+
 								.el-image {
-									max-width: 300px;
+									display: block;
+									min-height: 100px;
+									max-width: 200px;
 									border-radius: 3px;
 								}
 							}
@@ -204,12 +308,20 @@ function send() {
 
 			ul {
 				li {
-					height: 25px;
-					width: 25px;
+					height: 26px;
+					width: 26px;
 					border-radius: 3px;
-					background-color: #eee;
 					margin-right: 10px;
 					list-style: none;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					cursor: pointer;
+					font-size: 18px;
+
+					&:hover {
+						background-color: #f7f7f7;
+					}
 				}
 			}
 		}

@@ -26,7 +26,7 @@
 					<div class="cl-upload-space__header scroller1">
 						<el-button @click="refresh({ page: 1 })">刷新</el-button>
 
-						<div :style="{ marginLeft: '10px' }">
+						<div :style="{ margin: '0px 10px' }">
 							<cl-upload
 								ref="Upload"
 								type="file"
