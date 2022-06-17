@@ -20,6 +20,10 @@
 		<!-- 工具栏 -->
 		<ul class="app-topbar__tools">
 			<li>
+				<cl-chat />
+			</li>
+
+			<li>
 				<cl-theme />
 			</li>
 		</ul>
@@ -115,6 +119,7 @@ function onCommand(name: string) {
 			width: 45px;
 			border-radius: 3px;
 			cursor: pointer;
+			margin-left: 10px;
 
 			&:hover {
 				background-color: rgba(0, 0, 0, 0.1);

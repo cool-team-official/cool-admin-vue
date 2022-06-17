@@ -17,6 +17,7 @@
 				<li
 					v-for="(item, index) in flist"
 					:key="index"
+					class="item"
 					:class="{
 						'is-active': item.id == space.category.id
 					}"
@@ -141,6 +142,9 @@ function onContextMenu(e: any, { id, name }: any) {
 	}
 
 	ContextMenu.open(e, {
+		hover: {
+			target: "item"
+		},
 		list: [
 			{
 				label: "刷新",
@@ -238,7 +242,7 @@ onMounted(() => {
 		ul {
 			height: 100%;
 
-			li {
+			.item {
 				list-style: none;
 				font-size: 14px;
 				height: 40px;
@@ -251,7 +255,7 @@ onMounted(() => {
 					color: var(--color-primary);
 				}
 
-				&:hover {
+				&:not(.cl-context-menu__target):hover {
 					background-color: #f7f7f7;
 				}
 			}

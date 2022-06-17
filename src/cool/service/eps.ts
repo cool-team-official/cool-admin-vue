@@ -86,6 +86,7 @@ export function useEps(service: Service) {
 				})
 				.catch((err) => {
 					console.error("[Eps] 获取失败！", err.message);
+					createDts([]);
 				});
 		}
 	}
