@@ -176,7 +176,9 @@ async function refresh() {
 }
 
 provide("chat", {
-	socket,
+	get socket() {
+		return socket;
+	},
 	send,
 	scrollToBottom
 });

@@ -16,9 +16,8 @@
 
 <script lang="ts">
 import { useCrud } from "@cool-vue/crud";
-import { defineComponent, inject, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import { currentDate, export_json_to_excel } from "../utils";
-import { service } from "../../../cool/service/index";
 
 export default defineComponent({
 	name: "cl-export-btn",
@@ -40,10 +39,7 @@ export default defineComponent({
 		},
 		data: [Function, Array],
 		maxExportLimit: Number, // 最大导出条数，不传或者小于等于0为不限制
-		size: {
-			type: String,
-			default: "mini"
-		},
+		size: String,
 		disabled: Boolean,
 		type: String,
 		plain: Boolean,
@@ -57,9 +53,7 @@ export default defineComponent({
 		const Crud = useCrud();
 
 		async function getHeader(columns: any[], fields: any[]) {
-			return (
-				props.header || columns.filter((e) => fields.includes(e.prop)).map((e) => e.label)
-			);
+			return columns.filter((e) => !e.hidden && fields.includes(e.prop)).map((e) => e.label);
 		}
 
 		function getData() {
@@ -122,8 +116,12 @@ export default defineComponent({
 			// 表格列
 			const columns = props.columns.filter(
 				(e: any) =>
-					!["selection", "expand", "index"].includes(e.type) &&
-					!(e.filterExport || e["filter-export"])
+					!(
+						e.hidden === true ||
+						["selection", "expand", "index"].includes(e.type) ||
+						e.filterExport ||
+						e["filter-export"]
+					)
 			);
 
 			// 字段

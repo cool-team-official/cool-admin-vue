@@ -491,6 +491,204 @@ declare interface BaseSysUser {
 	};
 }
 
+declare interface ChatChat {
+	/**
+	 * list
+	 * @returns Promise<any>
+	 */
+	list(data?: any): Promise<any>;
+	/**
+	 * page
+	 * @returns Promise<PageResponse>
+	 */
+	page(data?: any): Promise<PageResponse>;
+	/**
+	 * info
+	 * @returns Promise<any>
+	 */
+	info(data?: any): Promise<any>;
+	/**
+	 * update
+	 * @returns Promise<any>
+	 */
+	update(data?: any): Promise<any>;
+	/**
+	 * delete
+	 * @returns Promise<any>
+	 */
+	delete(data?: any): Promise<any>;
+	/**
+	 * add
+	 * @returns Promise<any>
+	 */
+	add(data?: any): Promise<any>;
+	/**
+	 * getChatChannelUser
+	 * @returns Promise<any>
+	 */
+	getChatChannelUser(data?: any): Promise<any>;
+	/**
+	 * checkingSetReply
+	 * @returns Promise<any>
+	 */
+	checkingSetReply(data?: any): Promise<any>;
+	/**
+	 * changePrincipal
+	 * @returns Promise<any>
+	 */
+	changePrincipal(data?: any): Promise<any>;
+	/**
+	 * getChatMsgPage
+	 * @returns Promise<any>
+	 */
+	getChatMsgPage(data?: any): Promise<any>;
+	/**
+	 * leaveHelper
+	 * @returns Promise<any>
+	 */
+	leaveHelper(data?: any): Promise<any>;
+	/**
+	 * addHelper
+	 * @returns Promise<any>
+	 */
+	addHelper(data?: any): Promise<any>;
+	/**
+	 * setBlack
+	 * @returns Promise<any>
+	 */
+	setBlack(data?: any): Promise<any>;
+	/**
+	 * setReply
+	 * @returns Promise<any>
+	 */
+	setReply(data?: any): Promise<any>;
+	/**
+	 * setWork
+	 * @returns Promise<any>
+	 */
+	setWork(data?: any): Promise<any>;
+	/**
+	 * setStar
+	 * @returns Promise<any>
+	 */
+	setStar(data?: any): Promise<any>;
+	/**
+	 * inChat
+	 * @returns Promise<any>
+	 */
+	inChat(data?: any): Promise<any>;
+	/**
+	 * 权限
+	 */
+	permission: {
+		list: string;
+		page: string;
+		info: string;
+		update: string;
+		delete: string;
+		add: string;
+		getChatChannelUser: string;
+		checkingSetReply: string;
+		changePrincipal: string;
+		getChatMsgPage: string;
+		leaveHelper: string;
+		addHelper: string;
+		setBlack: string;
+		setReply: string;
+		setWork: string;
+		setStar: string;
+		inChat: string;
+	};
+}
+
+declare interface ChatMessage {
+	/**
+	 * list
+	 * @returns Promise<any>
+	 */
+	list(data?: any): Promise<any>;
+	/**
+	 * page
+	 * @returns Promise<PageResponse>
+	 */
+	page(data?: any): Promise<PageResponse>;
+	/**
+	 * info
+	 * @returns Promise<any>
+	 */
+	info(data?: any): Promise<any>;
+	/**
+	 * update
+	 * @returns Promise<any>
+	 */
+	update(data?: any): Promise<any>;
+	/**
+	 * delete
+	 * @returns Promise<any>
+	 */
+	delete(data?: any): Promise<any>;
+	/**
+	 * add
+	 * @returns Promise<any>
+	 */
+	add(data?: any): Promise<any>;
+	/**
+	 * 权限
+	 */
+	permission: {
+		list: string;
+		page: string;
+		info: string;
+		update: string;
+		delete: string;
+		add: string;
+	};
+}
+
+declare interface ChatSession {
+	/**
+	 * list
+	 * @returns Promise<any>
+	 */
+	list(data?: any): Promise<any>;
+	/**
+	 * page
+	 * @returns Promise<PageResponse>
+	 */
+	page(data?: any): Promise<PageResponse>;
+	/**
+	 * info
+	 * @returns Promise<any>
+	 */
+	info(data?: any): Promise<any>;
+	/**
+	 * update
+	 * @returns Promise<any>
+	 */
+	update(data?: any): Promise<any>;
+	/**
+	 * delete
+	 * @returns Promise<any>
+	 */
+	delete(data?: any): Promise<any>;
+	/**
+	 * add
+	 * @returns Promise<any>
+	 */
+	add(data?: any): Promise<any>;
+	/**
+	 * 权限
+	 */
+	permission: {
+		list: string;
+		page: string;
+		info: string;
+		update: string;
+		delete: string;
+		add: string;
+	};
+}
+
 declare interface DemoGoods {
 	/**
 	 * list
@@ -2005,94 +2203,6 @@ declare interface TaskInfo {
 	};
 }
 
-declare interface ChatMessage {
-	/**
-	 * list
-	 * @returns Promise<any>
-	 */
-	list(data?: any): Promise<any>;
-	/**
-	 * page
-	 * @returns Promise<PageResponse>
-	 */
-	page(data?: any): Promise<PageResponse>;
-	/**
-	 * info
-	 * @returns Promise<any>
-	 */
-	info(data?: any): Promise<any>;
-	/**
-	 * update
-	 * @returns Promise<any>
-	 */
-	update(data?: any): Promise<any>;
-	/**
-	 * delete
-	 * @returns Promise<any>
-	 */
-	delete(data?: any): Promise<any>;
-	/**
-	 * add
-	 * @returns Promise<any>
-	 */
-	add(data?: any): Promise<any>;
-	/**
-	 * 权限
-	 */
-	permission: {
-		list: string;
-		page: string;
-		info: string;
-		update: string;
-		delete: string;
-		add: string;
-	};
-}
-
-declare interface ChatSession {
-	/**
-	 * list
-	 * @returns Promise<any>
-	 */
-	list(data?: any): Promise<any>;
-	/**
-	 * page
-	 * @returns Promise<PageResponse>
-	 */
-	page(data?: any): Promise<PageResponse>;
-	/**
-	 * info
-	 * @returns Promise<any>
-	 */
-	info(data?: any): Promise<any>;
-	/**
-	 * update
-	 * @returns Promise<any>
-	 */
-	update(data?: any): Promise<any>;
-	/**
-	 * delete
-	 * @returns Promise<any>
-	 */
-	delete(data?: any): Promise<any>;
-	/**
-	 * add
-	 * @returns Promise<any>
-	 */
-	add(data?: any): Promise<any>;
-	/**
-	 * 权限
-	 */
-	permission: {
-		list: string;
-		page: string;
-		info: string;
-		update: string;
-		delete: string;
-		add: string;
-	};
-}
-
 declare interface Test {
 	/**
 	 * list
@@ -2151,6 +2261,7 @@ declare type Service = {
 			user: BaseSysUser;
 		};
 	};
+	chat: { chat: ChatChat; message: ChatMessage; session: ChatSession };
 	demo: { goods: DemoGoods };
 	fbMall: {
 		account: FbMallAccount;
@@ -2187,6 +2298,5 @@ declare type Service = {
 		warehouse: SysWarehouse;
 	};
 	task: { info: TaskInfo };
-	chat: { message: ChatMessage; session: ChatSession };
 	test: Test;
 };

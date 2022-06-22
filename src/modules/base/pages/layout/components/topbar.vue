@@ -59,7 +59,7 @@ import { useCool } from "/@/cool";
 import RouteNav from "./route-nav.vue";
 import AMenu from "./amenu.vue";
 
-const { router } = useCool();
+const { router, service } = useCool();
 const { user, app } = useBase();
 
 // 跳转
@@ -69,6 +69,7 @@ function onCommand(name: string) {
 			router.push("/my/info");
 			break;
 		case "exit":
+			service.base.comm.logout();
 			user.logout();
 			break;
 	}
