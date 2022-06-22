@@ -4,12 +4,10 @@
 			<el-row>
 				<cl-refresh-btn />
 				<cl-add-btn />
-				<el-button @click="openForm">Open Form</el-button>
+				<el-button @click="openForm">自定义表单</el-button>
 
-				<cl-filter label="状态">
-					<el-select></el-select>
-				</cl-filter>
-
+				<cl-flex1></cl-flex1>
+				<cl-column-custom :columns="Table?.columns" />
 				<cl-filter-group :items="filter.items"></cl-filter-group>
 			</el-row>
 
@@ -63,10 +61,7 @@ const Upsert = useUpsert({
 			prop: "name",
 			required: true,
 			component: {
-				name: "el-input",
-				props: {
-					type: "textarea"
-				}
+				name: "el-input"
 			}
 		},
 		{
@@ -85,9 +80,18 @@ const Upsert = useUpsert({
 			}
 		},
 		{
-			label: "crud",
+			label: "内嵌Crud",
+			group: "1",
 			component: {
 				name: "slot-crud"
+			}
+		},
+		{
+			label: "年龄",
+			group: "2",
+			prop: "age",
+			component: {
+				name: "el-input-number"
 			}
 		}
 	],
@@ -135,6 +139,10 @@ const Table = useTable({
 			]
 		},
 		{
+			label: "创建时间",
+			prop: "createTime"
+		},
+		{
 			type: "op",
 			buttons: ["edit", "delete"]
 		}
@@ -150,7 +158,7 @@ const filter = {
 	},
 	items: [
 		{
-			label: "A",
+			label: "关键字",
 			prop: "keyWord",
 			component: {
 				name: "el-input",
@@ -177,7 +185,7 @@ const Crud2 = useCrud(
 const Table2 = useTable({
 	columns: [
 		{
-			label: "姓名2",
+			label: "姓名",
 			prop: "name"
 		},
 		{
@@ -220,10 +228,10 @@ const AdvSearch = useAdvSearch({
 
 function openForm() {
 	Form.value?.open({
-		title: "自定义4",
+		title: "自定义表单",
 		items: [
 			{
-				label: "name",
+				label: "姓名",
 				prop: "name",
 				required: true,
 				component: {
