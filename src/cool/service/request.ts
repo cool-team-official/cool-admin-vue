@@ -119,15 +119,16 @@ axios.interceptors.response.use(
 
 		if (error.response) {
 			const { status, config } = error.response;
+			const { user } = useBase();
+
+			if (status == 401) {
+				user.logout();
+			}
 
 			if (isDev) {
 				ElMessage.error(`${config.url} ${status}`);
 			} else {
 				switch (status) {
-					case 401:
-						router.href("401");
-						break;
-
 					case 403:
 						router.href("403");
 						break;

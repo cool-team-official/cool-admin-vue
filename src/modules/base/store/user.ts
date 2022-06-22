@@ -76,10 +76,6 @@ export const useUserStore = defineStore("user", function () {
 
 	// 退出
 	async function logout() {
-		try {
-			await service.base.comm.logout();
-		} catch {}
-
 		clear();
 		router.href("login");
 	}
