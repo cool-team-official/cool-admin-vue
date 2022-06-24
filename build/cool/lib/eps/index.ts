@@ -222,6 +222,7 @@ export function getEps() {
 	return JSON.stringify(readFile(join(tempPath, "eps.json")));
 }
 
+// 获取类型
 function getType({ entityName, propertyName, type }) {
 	for (const map of config.entity.mapping) {
 		if (map.custom) {
