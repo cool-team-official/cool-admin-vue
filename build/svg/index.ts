@@ -1,5 +1,7 @@
 import { Plugin } from "vite";
-import { readFileSync, readdirSync } from "fs";
+import { readFileSync, readdirSync, accessSync } from "fs";
+import path from "path";
+import { isArray } from "lodash";
 
 let idPerfix = "";
 const svgTitle = /<svg([^>+].*?)>/;
@@ -9,16 +11,19 @@ const hasViewBox = /(viewBox="[^>+].*?")/g;
 
 const clearReturn = /(\r)|(\n)/g;
 
-function findSvgFile(dir: string): string[] {
+function findSvgFile(dir: string, uniqueNames: Record<string, boolean>): string[] {
 	const svgRes = [];
 	const dirents = readdirSync(dir, {
 		withFileTypes: true
 	});
 	for (const dirent of dirents) {
 		if (dirent.isDirectory()) {
-			svgRes.push(...findSvgFile(dir + dirent.name + "/"));
+			svgRes.push(...findSvgFile(path.join(dir, dirent.name), uniqueNames));
+		} else if (uniqueNames[dirent.name]) {
+			continue;
 		} else {
-			const svg = readFileSync(dir + dirent.name)
+			uniqueNames[dirent.name] = true;
+			const svg = readFileSync(path.join(dir, dirent.name))
 				.toString()
 				.replace(clearReturn, "")
 				.replace(svgTitle, (_: any, $2: any) => {
@@ -47,10 +52,16 @@ function findSvgFile(dir: string): string[] {
 	return svgRes;
 }
 
-export const svgBuilder = (path: string, perfix = "icon"): Plugin | null => {
-	if (path !== "") {
+export const svgBuilder = (paths: string | string[], perfix = "icon"): Plugin | null => {
+	if (paths) {
 		idPerfix = perfix;
-		const res = findSvgFile(path);
+		paths = isArray(paths) ? paths : [paths];
+		const uniqueNames: Record<string, boolean> = {};
+		const res = paths.reduce(
+			(previousValue, currentValue) =>
+				previousValue.concat(findSvgFile(currentValue, uniqueNames)),
+			[]
+		);
 		return {
 			name: "svg-transform",
 			transformIndexHtml(html): string {
@@ -68,4 +79,28 @@ export const svgBuilder = (path: string, perfix = "icon"): Plugin | null => {
 	} else {
 		return null;
 	}
+};
+
+export const findSvgFolders = (dir: string): string[] => {
+	const svgFolders = [];
+	const dirents = readdirSync(dir, {
+		withFileTypes: true
+	});
+
+	// 找到结构为icons/svg的文件夹
+	for (const dirent of dirents) {
+		if (dirent.isDirectory()) {
+			const testPath =
+				dirent.name === "icons"
+					? path.join(dir, "icons/svg")
+					: path.join(dir, dirent.name, "icons/svg");
+			try {
+				accessSync(testPath);
+				svgFolders.push(testPath);
+			} catch (e) {
+				continue;
+			}
+		}
+	}
+	return svgFolders;
 };
