@@ -117,13 +117,9 @@ export default defineComponent({
 				await menu.get();
 
 				// 跳转地址
-				const path = menu.getPath();
+				menu.getPath();
 
-				if (path) {
-					router.push(path);
-				} else {
-					ElMessage.error("该账号没有权限！");
-				}
+				router.push("/");
 			} catch (err: any) {
 				refs.value.captcha.refresh();
 				ElMessage.error(err.message);
