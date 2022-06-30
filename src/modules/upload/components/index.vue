@@ -46,15 +46,10 @@
 
 							<!-- 文件 -->
 							<template v-else>
-								<div class="cl-upload__icon">
-									<!-- 图标 -->
-									<el-icon :size="20"><document /></el-icon>
-									<!-- 扩展名 -->
-									<span>{{ extname(item.preload) }}</span>
-								</div>
-
 								<!-- 文件名 -->
-								<span class="cl-upload__name">{{ fileName(item.preload) }}</span>
+								<span class="cl-upload__name"
+									>{{ fileName(item.preload) }}.{{ extname(item.preload) }}</span
+								>
 
 								<!-- 大小 -->
 								<span class="cl-upload__size">
@@ -259,7 +254,7 @@ function beforeUpload(file: any, item?: Item) {
 	}
 
 	const d = {
-		type: file.type.includes("image") ? "image" : "file",
+		type: file.type?.includes("image") ? "image" : "file",
 		preload: "",
 		progress: 0,
 		url: "",
@@ -289,6 +284,11 @@ function remove(index: number) {
 	update();
 }
 
+// 清空
+function clear() {
+	list.value = [];
+}
+
 // 预览
 function preview(item: Item) {
 	if (item.type == "image") {
@@ -312,38 +312,39 @@ async function httpRequest(req: any, item?: any) {
 
 		// 多种上传请求
 		return new Promise((resolve, reject) => {
-			async function next(params: any) {
-				const data = new FormData();
+			// 上传到云端
+			async function next({ host, preview, data }: any) {
+				const fd = new FormData();
 
-				for (const i in params) {
-					if (!["host", "publicDomain", "fileKey", "uploadUrl", "preview"].includes(i)) {
-						data.append(i, params[i]);
-					}
+				// 签名数据
+				for (const i in data) {
+					fd.append(i, data[i]);
 				}
 
-				if (mode == "local") {
-					data.append("key", fileName);
-				} else {
+				// 云端拼接路径
+				if (mode == "cloud") {
 					fileName = [props.prefixPath, dayjs().format("YYYY-MM-DD"), fileName]
 						.filter(Boolean)
 						.join("/");
-					data.append("key", fileName);
 				}
 
-				data.append("file", req.file);
+				// 文件名
+				fd.append("key", fileName);
+				// 文件
+				fd.append("file", req.file);
 
 				// 上传
 				await service
 					.request({
-						url: params.host,
+						url: host,
 						method: "POST",
 						headers: {
 							"Content-Type": "multipart/form-data"
 						},
 						timeout: 600000,
-						data,
-						onUploadProgress(e: any) {
-							item.progress = parseInt((e.loaded / e.total) * 100);
+						data: fd,
+						onUploadProgress(e: { loaded: number; total: number }) {
+							item.progress = parseInt(String((e.loaded / e.total) * 100));
 							emit("progress", item);
 						},
 						proxy: mode == "local" ? true : false
@@ -352,7 +353,7 @@ async function httpRequest(req: any, item?: any) {
 						if (mode === "local") {
 							item.url = res;
 						} else {
-							item.url = `${params.preview}/${fileName}`;
+							item.url = `${preview || host}/${fileName}`;
 						}
 
 						emit("success", item);
@@ -375,11 +376,36 @@ async function httpRequest(req: any, item?: any) {
 				service.base.comm
 					.upload()
 					.then((res) => {
-						next({
-							host: res.uploadUrl,
-							preview: res.host || res.publicDomain,
-							...res
-						});
+						switch (type) {
+							// 腾讯
+							case "cos":
+								next({
+									host: res.url,
+									data: res.credentials
+								});
+								break;
+							// 阿里
+							case "oss":
+								next({
+									host: res.host,
+									data: {
+										OSSAccessKeyId: res.OSSAccessKeyId,
+										policy: res.policy,
+										signature: res.signature
+									}
+								});
+								break;
+							// 七牛
+							case "qiniu":
+								next({
+									host: res.uploadUrl,
+									preview: res.publicDomain,
+									data: {
+										token: res.token
+									}
+								});
+								break;
+						}
 					})
 					.catch(reject);
 			}
@@ -452,8 +478,11 @@ defineExpose({
 	isAdd,
 	list,
 	check,
+	clear,
 	remove,
 	upload(file: File) {
+		clear();
+		Upload.value.clearFiles();
 		Upload.value.handleStart(file);
 		Upload.value.submit();
 	}
@@ -581,14 +610,11 @@ defineExpose({
 				}
 
 				&__name {
-					height: 15px;
+					display: inline-block;
 					width: 100%;
-					margin-top: 5px;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					white-space: nowrap;
 					font-size: 13px;
 					text-align: center;
+					word-break: break-all;
 				}
 
 				&__size {

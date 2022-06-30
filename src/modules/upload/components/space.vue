@@ -8,15 +8,22 @@
 		<cl-dialog
 			v-model="visible"
 			title="文件空间"
-			height="630px"
-			width="1000px"
+			height="650px"
+			width="1080px"
 			keep-alive
 			custom-class="cl-upload-space__dialog"
 			:close-on-click-modal="false"
 			append-to-body
 			:controls="['slot-expand', 'cl-flex1', 'fullscreen', 'close']"
 		>
-			<div class="cl-upload-space">
+			<div
+				class="cl-upload-space"
+				:class="{
+					'is-mini': app.browser.isMini
+				}"
+				@dragover="onDragover"
+				@drop="onDrop"
+			>
 				<!-- 类目 -->
 				<category />
 
@@ -42,7 +49,7 @@
 						</div>
 
 						<el-button type="success" :disabled="!isSelected" @click="confirm()"
-							>使用选中文件 {{ selection.length }} / {{ limit }}</el-button
+							>使用选中文件 {{ selection.length }}/{{ limit }}</el-button
 						>
 
 						<el-button type="danger" :disabled="!isSelected" @click="remove()"
@@ -55,22 +62,17 @@
 						class="cl-upload-space__file scroller1"
 						v-infinite-scroll="loadmore"
 						v-loading="loading"
-						@dragover="onDragover"
-						@drop="onDrop"
 					>
 						<!-- 文件列表 -->
 						<template v-if="list.length > 0">
 							<div class="cl-upload-space__file-list">
-								<el-row :gutter="10">
-									<el-col
-										:xs="12"
-										:sm="6"
-										v-for="item in list"
-										:key="item.preload || item.url"
-									>
-										<file-item :data="item" @select="select" @remove="remove" />
-									</el-col>
-								</el-row>
+								<div
+									class="cl-upload-space__file-item"
+									v-for="item in list"
+									:key="item.preload || item.url"
+								>
+									<file-item :data="item" @select="select" @remove="remove" />
+								</div>
 							</div>
 						</template>
 
@@ -211,7 +213,10 @@ function close() {
 // 上传成功
 function onSuccess(data: any) {
 	service.space.info
-		.add(data)
+		.add({
+			classifyId: category.id,
+			...data
+		})
 		.then((res) => {
 			data.id = res.id;
 		})
@@ -222,7 +227,6 @@ function onSuccess(data: any) {
 
 // 上传时
 function onUpload(data: any) {
-	data.classifyId = category.id;
 	list.value.unshift(data);
 }
 
@@ -316,8 +320,10 @@ function onDragover(e: any) {
 function onDrop(e: any) {
 	e.preventDefault();
 
-	e.dataTransfer.files.forEach((f: File) => {
-		Upload.value.upload(f);
+	e.dataTransfer.files.forEach((f: File, i: number) => {
+		setTimeout(() => {
+			Upload.value.upload(f);
+		}, i * 10);
 	});
 }
 
@@ -359,7 +365,6 @@ defineExpose({
 	&__content {
 		flex: 1;
 		max-width: 100%;
-		padding: 0 10px;
 		box-sizing: border-box;
 		background-color: #fff;
 		border-radius: 5px;
@@ -370,16 +375,24 @@ defineExpose({
 		align-items: center;
 		height: 50px;
 		overflow: auto hidden;
+		padding: 0 10px;
 	}
 
 	&__file {
 		height: calc(100% - 50px);
+		padding: 0 10px;
+		box-sizing: border-box;
 		position: relative;
 
 		&-list {
-			.el-row {
-				width: 100%;
-			}
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		&-item {
+			height: 150px;
+			width: 150px;
+			margin: 0 10px 10px 0;
 		}
 
 		&-empty {
@@ -414,6 +427,12 @@ defineExpose({
 
 	&__footer {
 		padding: 9px 0;
+	}
+
+	&.is-mini {
+		.cl-upload-space__file-list {
+			justify-content: center;
+		}
 	}
 }
 </style>

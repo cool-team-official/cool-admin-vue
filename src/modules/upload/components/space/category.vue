@@ -7,9 +7,8 @@
 		}"
 	>
 		<div class="cl-upload-space-category__search">
-			<el-button type="primary" @click="edit()">添加分类</el-button>
-
-			<el-input v-model="keyword" placeholder="关键字过滤" clearable />
+			<el-button type="primary" @click="edit()">添加</el-button>
+			<el-input v-model="keyword" placeholder="搜索" clearable />
 		</div>
 
 		<div class="cl-upload-space-category__list">
@@ -209,7 +208,7 @@ onMounted(() => {
 	border-radius: 5px;
 
 	&.is-show {
-		width: 250px;
+		width: 220px;
 		margin-right: 5px;
 	}
 
@@ -244,18 +243,20 @@ onMounted(() => {
 
 			.item {
 				list-style: none;
-				font-size: 14px;
-				height: 40px;
-				line-height: 40px;
-				border-bottom: 1px dashed #eee;
+				font-size: 13px;
+				height: 35px;
+				line-height: 35px;
 				padding: 0 10px;
 				cursor: pointer;
+				background-color: #f7f7f7;
+				margin-bottom: 10px;
+				border-radius: 3px;
 
 				&.is-active {
-					color: var(--color-primary);
+					background-color: #eee;
 				}
 
-				&:not(.cl-context-menu__target):hover {
+				&:not(.is-active):hover {
 					background-color: #f7f7f7;
 				}
 			}

@@ -1,54 +1,53 @@
 <template>
-	<div
-		class="cl-upload-space-file"
-		:class="[`is-${info.type}`]"
-		@click="select"
-		@contextmenu.stop.prevent="onContextMenu"
-	>
-		<!-- 错误 -->
-		<template v-if="info.error">
-			<div class="cl-upload-space-file__error">上传失败：{{ info.error }}</div>
-		</template>
-
-		<!-- 成功 -->
-		<template v-else>
-			<!-- 图片 -->
-			<template v-if="info.type === 'image'">
-				<el-image fit="contain" :src="url" lazy>
-					<template #error>
-						<div class="image-error">
-							<span>{{ url }}</span>
-						</div>
-					</template>
-				</el-image>
+	<div class="cl-upload-space-file__wrap">
+		<div
+			class="cl-upload-space-file"
+			:class="[`is-${info.type}`]"
+			@click="select"
+			@contextmenu.stop.prevent="onContextMenu"
+		>
+			<!-- 错误 -->
+			<template v-if="info.error">
+				<div class="cl-upload-space-file__error">上传失败：{{ info.error }}</div>
 			</template>
 
-			<!-- 其他 -->
+			<!-- 成功 -->
 			<template v-else>
-				<div class="cl-upload-space-file__icon">
-					<el-icon :size="20"><document /></el-icon>
-					<span>{{ extname(url) }}</span>
+				<!-- 图片 -->
+				<template v-if="info.type === 'image'">
+					<el-image fit="contain" :src="url" lazy>
+						<template #error>
+							<div class="image-error">
+								<span>{{ url }}</span>
+							</div>
+						</template>
+					</el-image>
+				</template>
+
+				<!-- 其他 -->
+				<template v-else>
+					<!-- 文件名 -->
+					<span class="cl-upload-space-file__name"
+						>{{ fileName(url) }}.{{ extname(url) }}</span
+					>
+
+					<!-- 大小 -->
+					<span class="cl-upload-space-file__size">{{ fileSize(info.size) }}</span>
+				</template>
+
+				<!-- 进度条 -->
+				<div
+					class="cl-upload-space-file__progress"
+					v-if="info.progress > 0 && info.progress < 100"
+				>
+					<el-progress :percentage="info.progress" :show-text="false"></el-progress>
 				</div>
-
-				<!-- 文件名 -->
-				<span class="cl-upload-space-file__name">{{ fileName(url) }}</span>
-
-				<!-- 大小 -->
-				<span class="cl-upload-space-file__size">{{ fileSize(info.size) }}</span>
 			</template>
 
-			<!-- 进度条 -->
-			<div
-				class="cl-upload-space-file__progress"
-				v-if="info.progress > 0 && info.progress < 100"
-			>
-				<el-progress :percentage="info.progress" :show-text="false"></el-progress>
+			<!-- 遮罩层 -->
+			<div v-if="isSelected" class="cl-upload-space-file__mask">
+				<span>{{ index + 1 }}</span>
 			</div>
-		</template>
-
-		<!-- 遮罩层 -->
-		<div v-if="isSelected" class="cl-upload-space-file__mask">
-			<span>{{ index + 1 }}</span>
 		</div>
 	</div>
 </template>
@@ -98,6 +97,9 @@ function remove() {
 // 右键菜单
 function onContextMenu(e: any) {
 	ContextMenu.open(e, {
+		hover: {
+			target: "cl-upload-space-file__wrap"
+		},
 		list: [
 			{
 				label: "预览",
@@ -139,7 +141,7 @@ function onContextMenu(e: any) {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	height: 160px;
+	height: 100%;
 	width: 100%;
 	cursor: pointer;
 	position: relative;
@@ -149,12 +151,17 @@ function onContextMenu(e: any) {
 	background-color: #f7f7f7;
 	margin-bottom: 10px;
 
+	&__wrap {
+		height: 100%;
+		width: 100%;
+	}
+
 	&.is-image {
 		overflow: hidden;
 
 		:deep(.el-image) {
-			height: 100%;
-			width: 100%;
+			max-height: 100%;
+			max-width: 100%;
 		}
 
 		.image-error {
@@ -164,7 +171,8 @@ function onContextMenu(e: any) {
 			justify-content: center;
 			font-size: 14px;
 			color: #f56c6c;
-			height: 100%;
+			height: 150px;
+			width: 150px;
 			background-color: #fef0f0;
 			padding: 10px;
 			box-sizing: border-box;
@@ -188,14 +196,11 @@ function onContextMenu(e: any) {
 			}
 
 			&__name {
-				height: 15px;
+				display: inline-block;
 				width: 100%;
-				margin-top: 10px;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
 				font-size: 13px;
 				text-align: center;
+				word-break: break-all;
 			}
 
 			&__size {
