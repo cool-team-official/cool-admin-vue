@@ -24,7 +24,7 @@
 						ref="Table"
 						:default-sort="{
 							prop: 'orderNum',
-							order: 'descending'
+							order: 'ascending'
 						}"
 					/>
 				</el-row>

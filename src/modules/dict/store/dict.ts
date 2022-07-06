@@ -1,4 +1,3 @@
-import { sortBy } from "lodash";
 import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
 import { isDev, useCool } from "/@/cool";
@@ -28,7 +27,7 @@ export const useDictStore = defineStore("dict", () => {
 				const d: any = {};
 
 				for (const i in res) {
-					d[i] = sortBy(res[i], "orderNum").map((e) => {
+					d[i] = res[i].map((e: any) => {
 						return {
 							label: e.name,
 							value: e.id
