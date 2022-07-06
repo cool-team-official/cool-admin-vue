@@ -8,6 +8,7 @@ import VueECharts from "vue-echarts";
 import ElementPlus from "element-plus";
 import "element-plus/theme-chalk/src/index.scss";
 import "uno.css";
+import { useDict } from "/$/dict";
 
 export async function bootstrap(Vue: App) {
 	// 缓存
@@ -38,6 +39,12 @@ export async function bootstrap(Vue: App) {
 	app.showLoading();
 
 	if (user.token) {
+		// 字典
+		const { dict } = useDict();
+
+		// 获取字典数据
+		dict.refresh();
+
 		// 获取用户信息
 		user.get();
 

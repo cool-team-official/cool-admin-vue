@@ -1,7 +1,7 @@
 <template>
 	<el-select v-model="value" @change="onChange" clearable>
 		<el-option
-			v-for="(item, index) in options"
+			v-for="(item, index) in list"
 			:key="index"
 			:label="item.label"
 			:value="item.value"
@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { useCrud } from "@cool-vue/crud";
-import { defineComponent, PropType, ref, watch } from "vue";
+import { computed, defineComponent, isRef, ref, watch } from "vue";
 
 export default defineComponent({
 	name: "cl-select",
@@ -19,7 +19,7 @@ export default defineComponent({
 	props: {
 		modelValue: [String, Number],
 		options: {
-			type: Array as PropType<Array<{ label: string; value: any }>>,
+			type: Array,
 			default: () => []
 		},
 		prop: String
@@ -31,6 +31,9 @@ export default defineComponent({
 		// cl-crud
 		const Crud = useCrud();
 		const value = ref();
+		const list = computed<any>(() =>
+			isRef(props.options) ? props.options.value : props.options
+		);
 
 		// 值改变
 		function onChange(val: string) {
@@ -53,6 +56,7 @@ export default defineComponent({
 		);
 
 		return {
+			list,
 			value,
 			onChange
 		};

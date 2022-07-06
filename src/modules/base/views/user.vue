@@ -1,100 +1,84 @@
 <template>
-	<div class="view-user">
-		<div class="pane">
-			<!-- 组织架构 -->
-			<div class="dept" :class="[isExpand ? '_expand' : '_collapse']">
-				<dept-tree @row-click="onDeptRowClick" @user-add="onDeptUserAdd" />
-			</div>
+	<cl-view-group :ref="setRefs('viewGroup')" :title="title">
+		<template #left>
+			<dept-tree @row-click="onDeptRowClick" @user-add="onDeptUserAdd" />
+		</template>
 
-			<!-- 成员列表 -->
-			<div class="user">
-				<div class="user__header">
-					<div class="icon" @click="deptExpand">
-						<el-icon v-if="isExpand"><arrow-left /></el-icon>
-						<el-icon v-else><arrow-right /></el-icon>
-					</div>
+		<template #right>
+			<cl-crud ref="Crud">
+				<el-row>
+					<cl-refresh-btn />
+					<cl-add-btn />
+					<cl-multi-delete-btn />
+					<el-button
+						v-permission="service.base.sys.user.move"
+						type="success"
+						:disabled="selects.ids.length == 0"
+						@click="toMove()"
+						>转移</el-button
+					>
+					<cl-flex1 />
+					<cl-search-key />
+				</el-row>
 
-					<span>成员列表（{{ selects.dept?.name }}）</span>
-				</div>
+				<el-row>
+					<cl-table
+						ref="Table"
+						:default-sort="{
+							prop: 'createTime',
+							order: 'descending'
+						}"
+						@selection-change="onSelectionChange"
+					>
+						<!-- 权限 -->
+						<template #column-roleName="{ scope }">
+							<template v-if="scope.row.roleName">
+								<el-tag
+									v-for="(item, index) in scope.row.roleName.split(',')"
+									:key="index"
+									disable-transitions
+									size="small"
+									effect="dark"
+									style="margin: 2px"
+									>{{ item }}</el-tag
+								>
+							</template>
+						</template>
 
-				<div class="user__container">
-					<cl-crud ref="Crud">
-						<el-row>
-							<cl-refresh-btn />
-							<cl-add-btn />
-							<cl-multi-delete-btn />
+						<!-- 单个转移 -->
+						<template #slot-btn="{ scope }">
 							<el-button
-								v-permission="service.base.sys.user.move"
-								type="success"
-								:disabled="selects.ids.length == 0"
-								@click="toMove()"
+								v-permission="service.base.sys.user.permission.move"
+								text
+								bg
+								@click="toMove(scope.row)"
 								>转移</el-button
 							>
-							<cl-flex1 />
-							<cl-search-key />
-						</el-row>
+						</template>
+					</cl-table>
+				</el-row>
 
-						<el-row>
-							<cl-table
-								ref="Table"
-								:default-sort="{
-									prop: 'createTime',
-									order: 'descending'
-								}"
-								@selection-change="onSelectionChange"
-							>
-								<!-- 权限 -->
-								<template #column-roleName="{ scope }">
-									<template v-if="scope.row.roleName">
-										<el-tag
-											v-for="(item, index) in scope.row.roleName.split(',')"
-											:key="index"
-											disable-transitions
-											size="small"
-											effect="dark"
-											style="margin: 2px"
-											>{{ item }}</el-tag
-										>
-									</template>
-								</template>
+				<el-row>
+					<cl-flex1 />
+					<cl-pagination />
+				</el-row>
 
-								<!-- 单个转移 -->
-								<template #slot-btn="{ scope }">
-									<el-button
-										v-permission="service.base.sys.user.permission.move"
-										text
-										bg
-										@click="toMove(scope.row)"
-										>转移</el-button
-									>
-								</template>
-							</cl-table>
-						</el-row>
-
-						<el-row>
-							<cl-flex1 />
-							<cl-pagination />
-						</el-row>
-
-						<cl-upsert ref="Upsert" />
-						<dept-move-form ref="DeptMove" />
-					</cl-crud>
-				</div>
-			</div>
-		</div>
-	</div>
+				<cl-upsert ref="Upsert" />
+				<dept-move-form ref="DeptMove" />
+			</cl-crud>
+		</template>
+	</cl-view-group>
 </template>
 
 <script lang="ts" setup>
 import { useTable, useUpsert, useCrud } from "@cool-vue/crud";
-import { reactive, ref, watch } from "vue";
-import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
+import { computed, reactive, ref } from "vue";
 import { useCool } from "/@/cool";
 import { useBase } from "/$/base";
 import DeptMoveForm from "./components/dept-move";
 import DeptTree from "./components/dept-tree.vue";
 
-const { service } = useCool();
+const { service, refs, setRefs } = useCool();
 const { app } = useBase();
 
 const DeptMove = ref<any>();
@@ -106,6 +90,11 @@ const isExpand = ref<boolean>(true);
 const selects = reactive<any>({
 	dept: {},
 	ids: []
+});
+
+// 标题
+const title = computed(() => {
+	return `成员列表（${selects.dept?.name || ""}）`;
 });
 
 // cl-crud 配置
@@ -361,9 +350,7 @@ function onDeptRowClick({ item, ids }: any) {
 	});
 
 	// 收起
-	if (app.browser.isMini) {
-		isExpand.value = false;
-	}
+	refs.value.viewGroup.checkExpand(false);
 }
 
 // 部门下新增成员
@@ -371,11 +358,6 @@ function onDeptUserAdd(item: any) {
 	Crud.value?.rowAppend({
 		departmentId: item.id
 	});
-}
-
-// 是否显示部门
-function deptExpand() {
-	isExpand.value = !isExpand.value;
 }
 
 // 移动成员
@@ -390,89 +372,4 @@ async function toMove(e?: any) {
 
 	DeptMove.value.toMove(ids);
 }
-
-// 监听屏幕大小变化
-watch(
-	() => app.browser.isMini,
-	(val: boolean) => {
-		isExpand.value = !val;
-	},
-	{
-		immediate: true
-	}
-);
 </script>
-
-<style lang="scss" scoped>
-.view-user {
-	.pane {
-		display: flex;
-		height: 100%;
-		width: 100%;
-		position: relative;
-	}
-
-	.dept {
-		height: 100%;
-		width: 300px;
-		max-width: calc(100% - 50px);
-		background-color: #fff;
-		transition: width 0.3s;
-		margin-right: 10px;
-		flex-shrink: 0;
-
-		&._collapse {
-			margin-right: 0;
-			width: 0;
-		}
-	}
-
-	.user {
-		width: calc(100% - 310px);
-		flex: 1;
-
-		&__header {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 40px;
-			position: relative;
-			background-color: #fff;
-
-			span {
-				font-size: 14px;
-				white-space: nowrap;
-				overflow: hidden;
-			}
-
-			.icon {
-				display: flex;
-				align-items: center;
-				position: absolute;
-				left: 0;
-				top: 0;
-				font-size: 18px;
-				cursor: pointer;
-				background-color: #fff;
-				height: 40px;
-				width: 80px;
-				padding-left: 10px;
-			}
-		}
-	}
-
-	.dept,
-	.user {
-		overflow: hidden;
-		&__container {
-			height: calc(100% - 40px);
-		}
-	}
-
-	@media only screen and (max-width: 768px) {
-		.dept {
-			width: calc(100% - 100px);
-		}
-	}
-}
-</style>

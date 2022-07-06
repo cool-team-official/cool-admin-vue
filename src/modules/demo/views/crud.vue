@@ -6,6 +6,10 @@
 				<cl-add-btn />
 				<el-button @click="openForm">自定义表单</el-button>
 
+				<cl-filter label="字典">
+					<cl-select :options="dict.get('sex')"></cl-select>
+				</cl-filter>
+
 				<cl-flex1></cl-flex1>
 				<cl-column-custom :columns="Table?.columns" />
 				<cl-filter-group :items="filter.items"></cl-filter-group>
@@ -44,6 +48,11 @@
 
 <script lang="tsx" setup>
 import { useCrud, useUpsert, useTable, useForm, useAdvSearch } from "@cool-vue/crud";
+import { useDict } from "/$/dict";
+
+const { dict } = useDict();
+
+dict.refresh(["sex"]);
 
 const Crud = useCrud(
 	{
@@ -62,6 +71,14 @@ const Upsert = useUpsert({
 			required: true,
 			component: {
 				name: "el-input"
+			}
+		},
+		{
+			label: "认证类型",
+			prop: "authType",
+			component: {
+				name: "el-select",
+				options: dict.get("authType")
 			}
 		},
 		{
