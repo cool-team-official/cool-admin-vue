@@ -62,6 +62,12 @@ const title = computed(() => {
 
 // cl-upsert 配置
 const Upsert = useUpsert({
+	dialog: {
+		width: "600px"
+	},
+	props: {
+		labelWidth: "60px"
+	},
 	items: [
 		{ label: "名称", prop: "name", required: true, component: { name: "el-input" } },
 		{

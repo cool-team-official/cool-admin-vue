@@ -91,11 +91,14 @@ function select(item: any) {
 	});
 }
 
-// 标记
+// 编辑
 function edit(item?: any) {
 	Form.value?.open({
 		title: item ? "编辑类型" : "添加类型",
 		width: "500px",
+		props: {
+			labelWidth: "60px"
+		},
 		items: [
 			{
 				label: "名称",
@@ -230,11 +233,12 @@ onMounted(() => {
 			margin-bottom: 10px;
 			border-radius: 3px;
 			color: #666;
+			position: relative;
 			background-color: #f7f7f7;
 
 			.el-icon {
 				position: absolute;
-				right: 20px;
+				right: 10px !important;
 			}
 
 			&:last-child {
