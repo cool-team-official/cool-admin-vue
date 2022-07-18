@@ -17,7 +17,7 @@
 			<cl-pagination />
 		</el-row>
 
-		<cl-upsert ref="Upsert">
+		<cl-upsert ref="Upsert" @opened="onUpsertOpened">
 			<template #slot-content="{ scope }">
 				<div v-for="(item, index) in tab.list" :key="index" class="editor">
 					<template v-if="tab.index == index">
@@ -152,19 +152,7 @@ const Upsert = useUpsert({
 				}
 			}
 		}
-	],
-
-	onOpen(isEdit, data) {
-		tab.index = null;
-
-		nextTick(() => {
-			if (isEdit) {
-				tab.index = /<*>/g.test(data.data) ? 1 : 0;
-			} else {
-				tab.index = 1;
-			}
-		});
-	}
+	]
 });
 
 // 切换编辑器
@@ -177,6 +165,19 @@ function changeTab(i: number) {
 			Upsert.value?.setForm("data", "");
 		})
 		.catch(() => null);
+}
+
+// 打开后
+function onUpsertOpened(isEdit: boolean, data: any) {
+	tab.index = null;
+
+	nextTick(() => {
+		if (isEdit) {
+			tab.index = /<*>/g.test(data.data) ? 1 : 0;
+		} else {
+			tab.index = 1;
+		}
+	});
 }
 </script>
 
