@@ -4,6 +4,9 @@ import { config } from "/@/cool";
 import { deepMerge, getBrowser, storage } from "/@/cool/utils";
 
 export const useAppStore = defineStore("app", function () {
+	// 请求状态
+	const req = ref();
+
 	// 基本信息
 	const info = ref<any>({
 		...config.app
@@ -12,11 +15,8 @@ export const useAppStore = defineStore("app", function () {
 	// 浏览器信息
 	const browser = ref<any>(getBrowser());
 
-	// 加载
-	const loading = ref<boolean>(false);
-
 	// 是否折叠
-	const isFold = ref<boolean>(browser.value.isMini || false);
+	const isFold = ref(browser.value.isMini || false);
 
 	// 折叠
 	function fold(v?: boolean) {
@@ -38,25 +38,13 @@ export const useAppStore = defineStore("app", function () {
 		browser.value = getBrowser();
 	}
 
-	// 加载
-	function showLoading() {
-		loading.value = true;
-	}
-
-	// 关闭
-	function hideLoading() {
-		loading.value = false;
-	}
-
 	return {
+		req,
 		info,
 		browser,
-		loading,
 		isFold,
 		fold,
 		set,
-		setBrowser,
-		showLoading,
-		hideLoading
+		setBrowser
 	};
 });

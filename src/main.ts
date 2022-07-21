@@ -2,9 +2,6 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import { bootstrap } from "./cool";
 
-// mock
-// import "./mock";
-
 const app = createApp(App);
 
 // 启动

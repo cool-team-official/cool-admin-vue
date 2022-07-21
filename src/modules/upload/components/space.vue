@@ -25,7 +25,7 @@
 				@drop="onDrop"
 			>
 				<!-- 类目 -->
-				<category />
+				<Category />
 
 				<!-- 内容 -->
 				<div class="cl-upload-space__content">
@@ -78,8 +78,10 @@
 
 						<!-- 空态 -->
 						<div v-else class="cl-upload-space__file-empty">
-							<el-icon class="el-icon--upload"><upload-filled /></el-icon>
-							<p>将文件拖到此处，或点击上传</p>
+							<el-icon class="el-icon--upload">
+								<upload-filled />
+							</el-icon>
+							<p>将文件拖到此处，或点击按钮上传</p>
 						</div>
 					</div>
 				</div>
@@ -100,22 +102,15 @@
 	</div>
 </template>
 
-<script lang="ts">
-export default {
-	name: "cl-upload-space"
-};
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" setup name="cl-upload-space">
 import { computed, onMounted, provide, reactive, ref, watch } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { module } from "/@/cool/utils";
 import { isEmpty } from "lodash";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { Notebook, ArrowLeft, UploadFilled } from "@element-plus/icons-vue";
+import { module, useCool } from "/@/cool";
+import { useBase } from "/$/base";
 import Category from "./space/category.vue";
 import FileItem from "./space/file-item.vue";
-import { useCool } from "/@/cool";
-import { useBase } from "/$/base";
-import { Notebook, ArrowLeft, UploadFilled } from "@element-plus/icons-vue";
 
 const props = defineProps({
 	// 绑定值
@@ -366,7 +361,7 @@ defineExpose({
 		flex: 1;
 		max-width: 100%;
 		box-sizing: border-box;
-		background-color: #fff;
+		background-color: var(--el-bg-color);
 		border-radius: 5px;
 	}
 
@@ -406,7 +401,7 @@ defineExpose({
 			height: 180px;
 			width: 360px;
 			border-radius: 5px;
-			border: 2px dashed #eee;
+			border: 2px dashed var(--el-border-color);
 			cursor: pointer;
 
 			&:hover {

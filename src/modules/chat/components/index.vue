@@ -2,7 +2,7 @@
 	<div class="cl-chat__wrap">
 		<div class="cl-chat__icon" @click="open">
 			<el-badge :value="unCount">
-				<el-icon><BellFilled /></el-icon>
+				<el-icon :size="15"><BellFilled /></el-icon>
 			</el-badge>
 		</div>
 
@@ -50,26 +50,19 @@
 	</div>
 </template>
 
-<script lang="ts">
-export default {
-	name: "cl-chat"
-};
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" name="cl-chat" setup>
 import { nextTick, provide, ref, watch } from "vue";
-import { module } from "/@/cool/utils";
-import { useCool, config } from "/@/cool";
+import dayjs from "dayjs";
+import { useCool, config, module } from "/@/cool";
 import { useBase } from "/$/base";
 import { Notebook, ArrowLeft, BellFilled } from "@element-plus/icons-vue";
 import { debounce } from "lodash";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 import { Socket } from "socket.io-client";
 import ChatMessage from "./message.vue";
 import ChatSession from "./session.vue";
 import { Chat } from "../types";
 import { useStore } from "../store";
-import dayjs from "dayjs";
 
 const { mitt } = useCool();
 
@@ -96,31 +89,31 @@ let socket: Socket;
 
 // 连接
 function connect() {
-	return refresh();
+	refresh();
 
-	if (!socket) {
-		socket = io(config.host + options.path, {
-			auth: {
-				token: user.token
-			}
-		});
+	// if (!socket) {
+	// 	socket = io(config.host + options.path, {
+	// 		auth: {
+	// 			token: user.token
+	// 		}
+	// 	});
 
-		socket.on("connect", () => {
-			console.log(`connect ${user.info?.nickName}`);
+	// 	socket.on("connect", () => {
+	// 		console.log(`connect ${user.info?.nickName}`);
 
-			// 监听消息
-			socket.on("message", (msg) => {
-				console.log(msg);
-				mitt("chat-message", msg);
-			});
+	// 		// 监听消息
+	// 		socket.on("message", (msg) => {
+	// 			console.log(msg);
+	// 			mitt("chat-message", msg);
+	// 		});
 
-			refresh();
-		});
+	// 		refresh();
+	// 	});
 
-		socket.on("disconnect", (err) => {
-			console.error(err);
-		});
-	}
+	// 	socket.on("disconnect", (err) => {
+	// 		console.error(err);
+	// 	});
+	// }
 }
 
 // 打开
@@ -209,6 +202,7 @@ defineExpose({
 	padding: 5px;
 	box-sizing: border-box;
 	position: relative;
+	color: #000;
 
 	&__icon {
 		padding: 5px;

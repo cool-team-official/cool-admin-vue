@@ -8,13 +8,13 @@
 	</div>
 </template>
 
-<script lang="ts" setup>
-import ContextMenu from "../components/demo/context-menu.vue";
-import Crud from "../components/demo/crud.vue";
-import Upload from "../components/demo/upload.vue";
-import EditorQuill from "../components/demo/editor-quill.vue";
-import Svg from "../components/demo/svg.vue";
-import Copy from "../components/demo/copy.vue";
+<script lang="ts" setup name="demo">
+import ContextMenu from "../components/context-menu.vue";
+import Crud from "../components/crud.vue";
+import Upload from "../components/upload.vue";
+import EditorQuill from "../components/editor-quill.vue";
+import Svg from "../components/svg.vue";
+import Copy from "../components/copy.vue";
 
 const list = [ContextMenu, Crud, Upload, EditorQuill, Svg, Copy];
 </script>
@@ -25,6 +25,7 @@ const list = [ContextMenu, Crud, Upload, EditorQuill, Svg, Copy];
 		background-color: #fff;
 		border-radius: 3px;
 		margin-bottom: 10px;
+		white-space: nowrap;
 
 		.h {
 			height: 30px;
@@ -35,12 +36,12 @@ const list = [ContextMenu, Crud, Upload, EditorQuill, Svg, Copy];
 
 			span {
 				background-color: var(--color-primary);
-				color: #fff;
 				border-radius: 3px;
 				padding: 2px 5px;
 				margin-right: 10px;
 				font-size: 14px;
 				letter-spacing: 1px;
+				color: #fff;
 			}
 		}
 
@@ -50,7 +51,7 @@ const list = [ContextMenu, Crud, Upload, EditorQuill, Svg, Copy];
 			box-sizing: border-box;
 
 			&._svg {
-				.icon-svg {
+				.cl-svg {
 					margin-right: 15px;
 				}
 			}

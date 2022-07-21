@@ -45,10 +45,7 @@ export default defineComponent({
 			type: [Number, Array],
 			default: 100
 		},
-		lazy: {
-			type: Boolean,
-			default: true
-		},
+		lazy: Boolean,
 		fit: {
 			type: String,
 			default: "cover"

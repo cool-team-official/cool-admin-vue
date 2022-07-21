@@ -1,13 +1,13 @@
 import { useEventListener } from "@vueuse/core";
 import { useStore } from "../store";
 
-function resize() {
+function update() {
 	const { app } = useStore();
 	app.setBrowser();
 	app.isFold = app.browser.isMini;
 }
 
-window.onload = function () {
-	useEventListener(window, "resize", resize);
-	resize();
-};
+export function resize() {
+	useEventListener(window, "resize", update);
+	update();
+}

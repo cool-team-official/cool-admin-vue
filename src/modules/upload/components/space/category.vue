@@ -7,8 +7,8 @@
 		}"
 	>
 		<div class="cl-upload-space-category__search">
-			<el-button type="primary" @click="edit()">添加</el-button>
 			<el-input v-model="keyword" placeholder="搜索" clearable />
+			<el-button type="success" @click="edit()">添加</el-button>
 		</div>
 
 		<div class="cl-upload-space-category__list">
@@ -23,8 +23,11 @@
 					@click="select(item.id)"
 					@contextmenu.stop.prevent="onContextMenu($event, item)"
 				>
-					{{ item.name }}
+					<span>{{ item.name }}</span>
+					<el-icon v-show="space.category.id == item.id"><ArrowRightBold /></el-icon>
 				</li>
+
+				<el-empty v-if="flist.length == 0" :image-size="80" />
 			</ul>
 		</div>
 	</div>
@@ -34,6 +37,7 @@
 
 <script lang="ts" setup>
 import { ElMessage, ElMessageBox } from "element-plus";
+import { ArrowRightBold } from "@element-plus/icons-vue";
 import { computed, inject, onMounted, ref } from "vue";
 import { isEmpty } from "lodash";
 import { useCool } from "/@/cool";
@@ -202,7 +206,7 @@ onMounted(() => {
 .cl-upload-space-category {
 	height: 100%;
 	width: 0;
-	background-color: #fff;
+	background-color: var(--el-bg-color);
 	overflow: hidden;
 	transition: width 0.2s ease-in-out;
 	border-radius: 5px;
@@ -230,7 +234,7 @@ onMounted(() => {
 		padding: 10px;
 
 		.el-button {
-			margin-right: 10px;
+			margin-left: 10px;
 		}
 	}
 
@@ -242,18 +246,26 @@ onMounted(() => {
 			height: 100%;
 
 			.item {
+				display: flex;
+				align-items: center;
 				list-style: none;
 				font-size: 13px;
 				height: 35px;
-				line-height: 35px;
 				padding: 0 10px;
 				cursor: pointer;
 				background-color: #f7f7f7;
 				margin-bottom: 10px;
 				border-radius: 3px;
+				color: #666;
+
+				.el-icon {
+					position: absolute;
+					right: 10px;
+				}
 
 				&.is-active {
-					background-color: #eee;
+					background-color: var(--color-primary);
+					color: #fff;
 				}
 
 				&:not(.is-active):hover {

@@ -2,50 +2,26 @@ import { ElMessage } from "element-plus";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { deepTree, revDeepTree, storage } from "/@/cool/utils";
-import { isArray, isEmpty, isObject, orderBy } from "lodash";
-import { viewer, service, config } from "/@/cool";
+import { isEmpty, orderBy } from "lodash";
+import { service, config } from "/@/cool";
 import { revisePath } from "../utils";
-
-declare enum Type {
-	"目录" = 0,
-	"菜单" = 1,
-	"权限" = 2
-}
-
-declare interface Item {
-	id: number;
-	parentId: number;
-	path: string;
-	router?: string;
-	viewPath?: string;
-	type: Type;
-	name: string;
-	icon: string;
-	orderNum: number;
-	isShow: number;
-	keepAlive?: number;
-	meta?: {
-		label: string;
-		keepAlive: number;
-	};
-	children?: Item[];
-}
+import { Menu } from "../types";
 
 // 本地缓存
 const data = storage.info();
 
 export const useMenuStore = defineStore("menu", function () {
 	// 视图路由
-	const routes = ref<Item[]>(data["menu.routes"] || []);
+	const routes = ref<Menu.List>([]);
 
 	// 菜单组
-	const group = ref<Item[]>(data["menu.group"] || []);
+	const group = ref<Menu.List>(data["menu.group"] || []);
 
 	// 顶部菜单序号
 	const index = ref<number>(0);
 
 	// 左侧菜单列表
-	const list = ref<Item[]>([]);
+	const list = ref<Menu.List>([]);
 
 	// 权限列表
 	const perms = ref<any[]>(data["menu.perms"] || []);
@@ -58,19 +34,17 @@ export const useMenuStore = defineStore("menu", function () {
 
 		// 显示分组显示菜单
 		if (config.app.menu.isGroup) {
-			const { children = [] } = group.value[i] || {};
-
+			list.value = group.value[i]?.children || [];
 			index.value = i;
-			list.value = children;
 		} else {
 			list.value = group.value;
 		}
 	}
 
 	// 设置权限
-	function setPerms(list: Item[]) {
+	function setPerms(list: Menu.List) {
 		function deep(d: any) {
-			if (isObject(d)) {
+			if (typeof d == "object") {
 				if (d.permission) {
 					d._permission = {};
 					for (const i in d.permission) {
@@ -96,68 +70,59 @@ export const useMenuStore = defineStore("menu", function () {
 	}
 
 	// 设置视图
-	function setRoutes(list: Item[]) {
-		viewer.add(list);
-
+	function setRoutes(list: Menu.List) {
 		routes.value = list;
-		storage.set("menu.routes", list);
 	}
 
 	// 设置菜单组
-	function setGroup(list: Item[]) {
+	function setGroup(list: Menu.List) {
 		group.value = orderBy(list, "orderNum").filter((e) => e.isShow);
 		storage.set("menu.group", group.value);
 	}
 
 	// 获取菜单，权限信息
-	function get(): Promise<Item[]> {
-		return new Promise((resolve, reject) => {
-			function next(res: any) {
-				if (!isArray(res.menus)) {
-					res.menus = [];
-				}
-
-				if (!isArray(res.perms)) {
-					res.perms = [];
-				}
-
+	function get() {
+		return new Promise(async (resolve, reject) => {
+			function next(res: { menus: Menu.List; perms?: any[] }) {
 				const list = res.menus
-					.filter((e: Item) => e.type != 2)
-					.map((e: Item) => {
+					?.filter((e) => e.type != 2)
+					.map((e) => {
 						return {
-							id: e.id,
-							parentId: e.parentId,
+							...e,
 							path: revisePath(e.router || String(e.id)),
-							viewPath: e.viewPath,
-							type: e.type,
-							name: e.name,
-							icon: e.icon,
-							orderNum: e.orderNum,
 							isShow: e.isShow === undefined ? true : e.isShow,
 							meta: {
 								label: e.name,
-								keepAlive: e.keepAlive
+								keepAlive: e.keepAlive || 0
 							},
 							children: []
 						};
 					});
 
 				// 设置权限
-				setPerms(res.perms);
+				setPerms(res.perms || []);
 
 				// 设置菜单组
 				setGroup(deepTree(list));
 
 				// 设置视图路由
-				setRoutes(list.filter((e: Item) => e.type == 1));
+				setRoutes(list.filter((e) => e.type == 1));
 
 				// 设置菜单
 				setMenu(index.value);
 
-				resolve(group.value);
+				resolve(list);
+
+				return list;
 			}
 
-			if (isEmpty(config.app.menu.list)) {
+			// 自定义菜单
+			if (!isEmpty(config.app.menu.list)) {
+				next({
+					menus: revDeepTree(config.app.menu.list)
+				});
+			} else {
+				// 动态菜单
 				service.base.comm
 					.permmenu()
 					.then(next)
@@ -165,23 +130,18 @@ export const useMenuStore = defineStore("menu", function () {
 						ElMessage.error("菜单加载异常！");
 						reject(err);
 					});
-			} else {
-				// 自定义菜单
-				next({
-					menus: revDeepTree(config.app.menu.list)
-				});
 			}
 		});
 	}
 
 	// 获取菜单路径
-	function getPath(list?: Item[]) {
+	function getPath(list?: Menu.List) {
 		list = list || group.value;
 
 		let path = "";
 
-		function deep(arr: Item[]) {
-			arr.forEach((e: Item) => {
+		function deep(arr: Menu.List) {
+			arr.forEach((e: Menu.Item) => {
 				if (e.type == 1) {
 					if (!path) {
 						path = e.path;

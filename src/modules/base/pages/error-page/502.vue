@@ -2,18 +2,6 @@
 	<error-page :code="502" desc="马上回来" />
 </template>
 
-<script lang="ts">
+<script lang="ts" name="502" setup>
 import ErrorPage from "./components/error-page.vue";
-
-export default {
-	cool: {
-		route: {
-			path: "/502"
-		}
-	},
-
-	components: {
-		ErrorPage
-	}
-};
 </script>

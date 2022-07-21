@@ -13,7 +13,9 @@ if (config.app.iconfont) {
 createLink("//at.alicdn.com/t/font_3254019_60a2xxj8uus.css");
 
 // svg 图标加载
-const svgFiles = import.meta.globEager("/src/icons/svg/**/*.svg");
+const svgFiles = import.meta.glob("/src/modules/*/static/**/*.svg", {
+	eager: true
+});
 
 function iconList() {
 	const list: string[] = [];

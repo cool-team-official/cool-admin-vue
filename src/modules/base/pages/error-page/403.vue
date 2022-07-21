@@ -2,18 +2,6 @@
 	<error-page :code="403" desc="您无权访问此页面" />
 </template>
 
-<script lang="ts">
+<script lang="ts" name="403" setup>
 import ErrorPage from "./components/error-page.vue";
-
-export default {
-	cool: {
-		route: {
-			path: "/403"
-		}
-	},
-
-	components: {
-		ErrorPage
-	}
-};
 </script>

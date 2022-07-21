@@ -127,23 +127,17 @@
 	</cl-dialog>
 </template>
 
-<script lang="ts">
-export default {
-	name: "cl-upload"
-};
-</script>
-
-<script lang="ts" setup>
-import { PictureFilled, ZoomIn, Delete, Document } from "@element-plus/icons-vue";
+<script lang="ts" setup name="cl-upload">
 import { computed, ref, reactive, watch, PropType } from "vue";
-import { useCool } from "/@/cool";
-import { extname, module, uuid } from "/@/cool/utils";
 import { isArray, isNumber } from "lodash";
-import { ElMessage } from "element-plus";
-import { useBase } from "/$/base";
-import Draggable from "vuedraggable";
-import { fileSize, fileName } from "../utils";
 import dayjs from "dayjs";
+import Draggable from "vuedraggable";
+import { ElMessage } from "element-plus";
+import { PictureFilled, ZoomIn, Delete } from "@element-plus/icons-vue";
+import { useCool, module } from "/@/cool";
+import { extname, uuid } from "/@/cool/utils";
+import { useBase } from "/$/base";
+import { fileSize, fileName } from "../utils";
 
 interface Item {
 	url: string;
@@ -422,14 +416,18 @@ function check() {
 
 // 文件类型
 function fileType(path: string) {
-	if (
-		["bmp", "jpg", "jpeg", "png", "tif", "gif", "svg", "webp"].includes(
-			extname(path).toLocaleLowerCase()
-		)
-	) {
+	if (props.type == "image") {
 		return "image";
 	} else {
-		return "file";
+		if (
+			["bmp", "jpg", "jpeg", "png", "tif", "gif", "svg", "webp"].includes(
+				extname(path).toLocaleLowerCase()
+			)
+		) {
+			return "image";
+		} else {
+			return "file";
+		}
 	}
 }
 
@@ -573,13 +571,12 @@ defineExpose({
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		border: 1px dashed #d9d9d9;
+		border: 1px dashed var(--el-border-color);
 		border-radius: 6px;
 		cursor: pointer;
 		position: relative;
 		height: v-bind("size[0]");
 		width: v-bind("size[1]");
-		color: #333;
 		box-sizing: border-box;
 		overflow: hidden;
 		user-select: none;

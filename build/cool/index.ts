@@ -1,12 +1,11 @@
 import { Plugin } from "vite";
 import { parseJson } from "./utils";
-import { getModules } from "./lib/modules";
-import { createEps, getEps } from "./lib/eps";
-import { createMenu } from "./lib/menu";
+import { createEps, createMenu, createSvg, createTag, getEps, getModules } from "./lib";
 
-export const cool = (): Plugin | null => {
+export function cool(): Plugin {
 	return {
 		name: "vite-cool",
+		enforce: "pre",
 		configureServer(server) {
 			server.middlewares.use(async (req, res, next) => {
 				function done(data: any) {
@@ -14,10 +13,9 @@ export const cool = (): Plugin | null => {
 					res.end(JSON.stringify(data));
 				}
 
-				// 自定义
-				if (req.url.includes("__cool")) {
+				if (req.url?.includes("__cool")) {
 					const body = await parseJson(req);
-					let next: any = null;
+					let next: any;
 
 					switch (req.url) {
 						// 快速创建菜单
@@ -54,6 +52,12 @@ export const cool = (): Plugin | null => {
 				}
 			});
 		},
+		transform(code, id) {
+			return createTag(code, id);
+		},
+		transformIndexHtml(html) {
+			return createSvg(html);
+		},
 		config() {
 			return {
 				define: {
@@ -62,4 +66,4 @@ export const cool = (): Plugin | null => {
 			};
 		}
 	};
-};
+}

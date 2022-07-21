@@ -13,7 +13,7 @@ function getNames(v: any) {
 // 标签名
 const names = getNames(new BaseService());
 
-export function useEps(service: Service) {
+export function useEps(service: Eps.Service) {
 	// 创建描述文件
 	function createDts(list: any[]) {
 		function deep(v: any) {

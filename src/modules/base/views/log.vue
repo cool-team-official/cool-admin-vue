@@ -22,7 +22,7 @@
 			</cl-filter>
 
 			<cl-flex1 />
-			<cl-search-key placeholder="请输入请求地址, 参数，ip地址" />
+			<cl-search-key placeholder="请求地址、参数、ip" />
 		</el-row>
 
 		<el-row>
@@ -36,15 +36,13 @@
 	</cl-crud>
 </template>
 
-<script lang="ts" setup>
-import { ref } from "vue";
+<script lang="ts" name="sys-log" setup>
+import { onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useCool } from "/@/cool";
 import { useCrud, useTable } from "@cool-vue/crud";
 
-const { service, named } = useCool();
-
-named("sys-log");
+const { service } = useCool();
 
 // 天数
 const day = ref<number>(1);
@@ -87,7 +85,7 @@ const Table = useTable({
 		{
 			prop: "ip",
 			label: "ip",
-			minWidth: 180
+			minWidth: 150
 		},
 		{
 			prop: "ipAddr",
@@ -129,8 +127,10 @@ function clear() {
 		.catch(() => null);
 }
 
-// 获取天数
-service.base.sys.log.getKeep().then((res: number) => {
-	day.value = Number(res);
+onMounted(() => {
+	// 获取天数
+	service.base.sys.log.getKeep().then((res: number) => {
+		day.value = Number(res);
+	});
 });
 </script>

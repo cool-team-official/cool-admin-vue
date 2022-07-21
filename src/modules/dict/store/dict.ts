@@ -18,8 +18,8 @@ export const useDictStore = defineStore("dict", () => {
 	}
 
 	// 刷新
-	function refresh(types?: string[]) {
-		service.dict.info
+	async function refresh(types?: string[]) {
+		return service.dict.info
 			.data({
 				types
 			})
@@ -40,6 +40,8 @@ export const useDictStore = defineStore("dict", () => {
 				if (isDev) {
 					console.log("字典数据", data);
 				}
+
+				return data;
 			});
 	}
 

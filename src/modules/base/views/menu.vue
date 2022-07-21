@@ -15,6 +15,8 @@
 						v-if="!scope.row.isShow"
 						effect="dark"
 						type="danger"
+						size="small"
+						disable-transitions
 						style="margin-left: 10px"
 						>隐藏</el-tag
 					>
@@ -22,7 +24,7 @@
 
 				<!-- 图标 -->
 				<template #column-icon="{ scope }">
-					<icon-svg :name="scope.row.icon" size="16px" style="margin-top: 5px" />
+					<cl-svg :name="scope.row.icon" size="16px" style="margin-top: 5px" />
 				</template>
 
 				<!-- 权限 -->
@@ -30,7 +32,8 @@
 					<el-tag
 						v-for="(item, index) in scope.row.permList"
 						:key="index"
-						effect="dark"
+						effect="plain"
+						size="small"
 						style="margin: 2px; letter-spacing: 0.5px"
 						>{{ item }}</el-tag
 					>
@@ -38,7 +41,7 @@
 
 				<!-- 路由 -->
 				<template #column-router="{ scope }">
-					<el-link v-if="scope.row.type == 1" type="primary" :href="scope.row.router">{{
+					<el-link v-if="scope.row.type == 1" type="success" :href="scope.row.router">{{
 						scope.row.router
 					}}</el-link>
 					<span v-else>{{ scope.row.router }}</span>
@@ -46,20 +49,21 @@
 
 				<!-- 路由缓存 -->
 				<template #column-keepAlive="{ scope }">
-					<template v-if="scope.row.type == 1">
-						<i v-if="scope.row.keepAlive" class="el-icon-check"></i>
-						<i v-else class="el-icon-close"></i>
-					</template>
+					<el-icon v-if="scope.row.type == 1">
+						<Check v-if="scope.row.keepAlive" />
+						<Close v-else />
+					</el-icon>
+					<span v-else></span>
 				</template>
 
 				<!-- 行新增 -->
 				<template #slot-add="{ scope }">
 					<el-button
 						v-if="scope.row.type != 2"
-						type="primary"
+						type="success"
 						text
 						bg
-						@click="upsertAppend(scope.row)"
+						@click="append(scope.row)"
 						>新增</el-button
 					>
 				</template>
@@ -71,31 +75,30 @@
 			<cl-pagination layout="total" />
 		</el-row>
 
-		<!-- 编辑 -->
+		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" name="sys-menu" setup>
+import { Check, Close } from "@element-plus/icons-vue";
+import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool, isDev } from "/@/cool";
 import { deepTree } from "/@/cool/utils";
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import MenuCreate from "./components/menu-create.vue";
-import MenuCheck from "./components/menu-check.vue";
-import MenuFile from "./components/menu-file.vue";
-import MenuPerms from "./components/menu-perms.vue";
-import IconCheck from "./components/icon-check.vue";
+import MenuCreate from "./components/menu/create.vue";
+import MenuSelect from "./components/menu/select.vue";
+import MenuFile from "./components/menu/file.vue";
+import MenuPerms from "./components/menu/perms.vue";
+import IconSelect from "./components/menu/icon.vue";
 
-const { service, named } = useCool();
-
-named("sys-menu");
+const { service } = useCool();
 
 // cl-crud 配置
 const Crud = useCrud(
 	{
 		service: service.base.sys.menu,
 		onRefresh(_, { render }) {
-			service.base.sys.menu.list().then((list: any[]) => {
+			service.base.sys.menu.list().then((list) => {
 				list.map((e) => {
 					e.permList = e.perms ? e.perms.split(",") : [];
 				});
@@ -117,7 +120,7 @@ const Table = useTable({
 				label: "新增",
 				hidden: row.type == 2,
 				callback(done) {
-					upsertAppend(row);
+					append(row);
 					done();
 				}
 			};
@@ -126,10 +129,10 @@ const Table = useTable({
 		"delete",
 		(row) => {
 			return {
-				label: "权限",
+				label: "添加权限",
 				hidden: row.type != 1,
 				callback(done) {
-					setPermission(row);
+					addPermission(row);
 					done();
 				}
 			};
@@ -158,11 +161,13 @@ const Table = useTable({
 				},
 				{
 					label: "菜单",
-					value: 1
+					value: 1,
+					type: "success"
 				},
 				{
 					label: "权限",
-					value: 2
+					value: 2,
+					type: "danger"
 				}
 			]
 		},
@@ -218,7 +223,7 @@ const Upsert = useUpsert({
 			prop: "type",
 			value: 0,
 			label: "节点类型",
-			span: 24,
+			required: true,
 			component: {
 				name: "el-radio-group",
 				options: [
@@ -240,27 +245,21 @@ const Upsert = useUpsert({
 		{
 			prop: "name",
 			label: "节点名称",
-			span: 24,
 			component: {
-				name: "el-input",
-				props: {
-					placeholder: "请输入节点名称"
-				}
+				name: "el-input"
 			},
 			required: true
 		},
 		{
 			prop: "parentId",
 			label: "上级节点",
-			span: 24,
 			component: {
-				vm: MenuCheck
+				vm: MenuSelect
 			}
 		},
 		{
 			prop: "router",
 			label: "节点路由",
-			span: 24,
 			hidden: ({ scope }) => scope.type != 1,
 			component: {
 				name: "el-input",
@@ -273,7 +272,6 @@ const Upsert = useUpsert({
 			prop: "keepAlive",
 			value: true,
 			label: "路由缓存",
-			span: 24,
 			hidden: ({ scope }) => scope.type != 1,
 			component: {
 				name: "el-radio-group",
@@ -292,7 +290,6 @@ const Upsert = useUpsert({
 		{
 			prop: "isShow",
 			label: "是否显示",
-			span: 24,
 			value: true,
 			hidden: ({ scope }) => scope.type == 2,
 			flex: false,
@@ -303,7 +300,6 @@ const Upsert = useUpsert({
 		{
 			prop: "viewPath",
 			label: "文件路径",
-			span: 24,
 			hidden: ({ scope }) => scope.type != 1,
 			component: {
 				vm: MenuFile
@@ -312,16 +308,14 @@ const Upsert = useUpsert({
 		{
 			prop: "icon",
 			label: "节点图标",
-			span: 24,
 			hidden: ({ scope }) => scope.type == 2,
 			component: {
-				vm: IconCheck
+				vm: IconSelect
 			}
 		},
 		{
 			prop: "orderNum",
 			label: "排序号",
-			span: 24,
 			component: {
 				name: "el-input-number",
 				props: {
@@ -335,7 +329,6 @@ const Upsert = useUpsert({
 		{
 			prop: "perms",
 			label: "权限",
-			span: 24,
 			hidden: ({ scope }) => scope.type != 2,
 			component: {
 				vm: MenuPerms
@@ -352,9 +345,10 @@ function onRowClick(row: any, column: any) {
 }
 
 // 子集新增
-function upsertAppend({ type, id }: any) {
+function append({ type, id }: any) {
 	Crud.value?.rowAppend({
 		parentId: id,
+		parentType: type,
 		type: type + 1,
 		keepAlive: true,
 		isShow: true
@@ -362,7 +356,7 @@ function upsertAppend({ type, id }: any) {
 }
 
 // 设置权限
-function setPermission({ id }: any) {
+function addPermission({ id }: any) {
 	Crud.value?.rowAppend({
 		parentId: id,
 		type: 2

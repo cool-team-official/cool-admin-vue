@@ -3,7 +3,7 @@ import Mock from "mockjs";
 
 @Service("chat/message")
 class ChatMessage extends BaseService {
-	page() {
+	page(): Promise<any> {
 		return new Promise((resolve) => {
 			const data = Mock.mock({
 				"list|20": [

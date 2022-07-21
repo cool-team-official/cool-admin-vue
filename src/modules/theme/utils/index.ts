@@ -68,7 +68,7 @@ export function setTheme({ color, name, isGroup }: Options) {
 
 		if (item) {
 			color = item.color;
-			document.querySelector("#app")?.setAttribute("class", `theme-${name}`);
+			document.body?.setAttribute("class", `theme-${name}`);
 		}
 
 		theme.name = name;

@@ -46,15 +46,7 @@ export class BaseService {
 		}
 	}
 
-	request(
-		options = {} as {
-			params?: any;
-			data?: any;
-			url: string;
-			method?: "GET" | "get" | "POST" | "post" | string;
-			[key: string]: any;
-		}
-	) {
+	request(options: any = {}) {
 		if (!options.params) options.params = {};
 
 		let ns = "";
@@ -91,7 +83,7 @@ export class BaseService {
 		});
 	}
 
-	page(data: { page?: number; size?: number; [key: string]: any }) {
+	page(data: any) {
 		return this.request({
 			url: "/page",
 			method: "POST",
@@ -99,14 +91,14 @@ export class BaseService {
 		});
 	}
 
-	info(params: { id?: number | string; [key: string]: any }) {
+	info(params: any) {
 		return this.request({
 			url: "/info",
 			params
 		});
 	}
 
-	update(data: { id?: number | string; [key: string]: any }) {
+	update(data: any) {
 		return this.request({
 			url: "/update",
 			method: "POST",
@@ -114,7 +106,7 @@ export class BaseService {
 		});
 	}
 
-	delete(data: { ids?: number[] | string[]; [key: string]: any }) {
+	delete(data: any) {
 		return this.request({
 			url: "/delete",
 			method: "POST",

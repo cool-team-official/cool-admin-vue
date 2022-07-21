@@ -10,20 +10,13 @@
 		"experimentalDecorators": true,
 		"esModuleInterop": true,
 		"lib": ["esnext", "dom"],
-		"types": ["vite/client", "vite-svg-loader"],
+		"types": ["vite/client", "element-plus/global"],
 		"paths": {
 			"/$/*": ["./src/modules/*"],
 			"/@/*": ["./src/*"],
 			"/#/*": ["./types/*"]
 		}
 	},
-	"include": [
-		"src/**/*.ts",
-		"src/**/*.d.ts",
-		"src/**/*.tsx",
-		"src/**/*.vue",
-		"build/svg.ts",
-		"env.d.ts"
-	],
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts"],
 	"exclude": ["node_modules", "dist"]
 }

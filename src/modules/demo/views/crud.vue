@@ -1,53 +1,51 @@
 <template>
-	<div class="demo">
-		<cl-crud ref="Crud">
-			<el-row>
-				<cl-refresh-btn />
-				<cl-add-btn />
-				<el-button @click="openForm">自定义表单</el-button>
+	<cl-crud ref="Crud">
+		<el-row>
+			<cl-refresh-btn />
+			<cl-add-btn />
+			<el-button @click="openForm">自定义表单</el-button>
 
-				<cl-filter label="字典">
-					<cl-select :options="dict.get('sex')"></cl-select>
-				</cl-filter>
+			<cl-filter label="字典">
+				<cl-select :options="dict.get('sex')"></cl-select>
+			</cl-filter>
 
-				<cl-flex1></cl-flex1>
-				<cl-column-custom :columns="Table?.columns" />
-				<cl-filter-group :items="filter.items"></cl-filter-group>
-			</el-row>
+			<cl-flex1></cl-flex1>
+			<cl-column-custom :columns="Table?.columns" />
+			<cl-search-key />
+		</el-row>
 
-			<el-row>
-				<cl-table ref="Table">
-					<template #slot-btn>
-						<el-button>btn</el-button>
-					</template>
-				</cl-table>
-			</el-row>
-
-			<el-row>
-				<cl-flex1></cl-flex1>
-				<cl-pagination></cl-pagination>
-			</el-row>
-
-			<cl-upsert ref="Upsert">
-				<template #slot-crud>
-					<cl-crud ref="Crud2" padding="0">
-						<el-row>
-							<cl-refresh-btn></cl-refresh-btn>
-						</el-row>
-						<el-row>
-							<cl-table :auto-height="false" ref="Table2"></cl-table>
-						</el-row>
-					</cl-crud>
+		<el-row>
+			<cl-table ref="Table">
+				<template #slot-btn>
+					<el-button>btn</el-button>
 				</template>
-			</cl-upsert>
-		</cl-crud>
+			</cl-table>
+		</el-row>
 
-		<cl-form ref="Form"></cl-form>
-	</div>
+		<el-row>
+			<cl-flex1></cl-flex1>
+			<cl-pagination></cl-pagination>
+		</el-row>
+
+		<cl-upsert ref="Upsert">
+			<template #slot-crud>
+				<cl-crud ref="Crud2" padding="0">
+					<el-row>
+						<cl-refresh-btn></cl-refresh-btn>
+					</el-row>
+					<el-row>
+						<cl-table :auto-height="false" ref="Table2"></cl-table>
+					</el-row>
+				</cl-crud>
+			</template>
+		</cl-upsert>
+	</cl-crud>
+
+	<cl-form ref="Form"></cl-form>
 </template>
 
-<script lang="tsx" setup>
-import { useCrud, useUpsert, useTable, useForm, useAdvSearch } from "@cool-vue/crud";
+<script lang="tsx" setup name="crud">
+import { useCrud, useUpsert, useTable, useForm } from "@cool-vue/crud";
 import { useDict } from "/$/dict";
 
 const { dict } = useDict();
@@ -112,13 +110,13 @@ const Upsert = useUpsert({
 			}
 		}
 	],
-	onInfo(data, { next, close, done }) {
+	onInfo(data, { next }) {
 		console.log(data);
 		next(data);
 		// done({ name: "🐑" });
 		// close();
 	},
-	onSubmit(isEdit, data, { next, close, done }) {
+	onSubmit(isEdit, data, { next }) {
 		console.log(isEdit, data);
 		next(data);
 		// Upsert.value?.close();
@@ -168,27 +166,6 @@ const Table = useTable({
 
 const Form = useForm();
 
-const filter = {
-	form: {
-		a: "🐏",
-		b: 1
-	},
-	items: [
-		{
-			label: "关键字",
-			prop: "keyWord",
-			component: {
-				name: "el-input",
-				props: {
-					onChange() {
-						Crud.value?.refresh();
-					}
-				}
-			}
-		}
-	]
-};
-
 // 内嵌
 const Crud2 = useCrud(
 	{
@@ -212,37 +189,6 @@ const Table2 = useTable({
 	]
 });
 
-const AdvSearch = useAdvSearch({
-	items: [
-		{
-			label: "name",
-			prop: "name",
-			value: "xxx",
-			component: {
-				name: "el-input"
-			}
-		},
-		{
-			label: "select",
-			prop: "select",
-			value: 2,
-			component: {
-				name: "el-select",
-				options: [
-					{
-						label: "a",
-						value: 1
-					},
-					{
-						label: "b",
-						value: 2
-					}
-				]
-			}
-		}
-	]
-});
-
 function openForm() {
 	Form.value?.open({
 		title: "自定义表单",
@@ -257,7 +203,7 @@ function openForm() {
 			}
 		],
 		on: {
-			submit(data, { close, done }) {
+			submit(data, { close }) {
 				console.log(data);
 				setTimeout(() => {
 					close();

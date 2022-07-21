@@ -152,13 +152,13 @@
 					<!-- 操作按钮 -->
 					<ul class="op-btn">
 						<li @click="refreshLog({ page: 1 })">
-							<i class="el-icon-refresh"></i>
+							<el-icon><refresh /></el-icon>
 							<span>刷新</span>
 						</li>
 
 						<li v-if="logs.current" class="_current-log" @click="allLog">
 							<span>{{ logs.current.name }}</span>
-							<i class="el-icon-close"></i>
+							<el-icon><close /></el-icon>
 						</li>
 					</ul>
 				</div>
@@ -166,8 +166,9 @@
 				<div v-loading="logs.loading" class="container" element-loading-text="拼命加载中">
 					<ul
 						:ref="setRefs('log-scroller')"
-						v-infinite-scroll="moreLog"
 						class="scroller1"
+						:infinite-scroll-disabled="logs.list.length == logs.pagination.total"
+						v-infinite-scroll="moreLog"
 					>
 						<li
 							v-for="(item, index) in logs.list"
@@ -203,7 +204,7 @@
 	</div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" name="task" setup>
 import { computed, onMounted, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Draggable from "vuedraggable/src/vuedraggable";
@@ -217,12 +218,11 @@ import {
 	VideoPause,
 	Plus,
 	Tickets,
-	EditPen
+	EditPen,
+	Close
 } from "@element-plus/icons-vue";
 
-const { refs, setRefs, named, service } = useCool();
-
-named("task");
+const { refs, setRefs, service } = useCool();
 
 // 任务列表
 const list = reactive<any[]>([
@@ -291,7 +291,7 @@ const logs = reactive<any>({
 });
 
 // 拖动选项
-const drag = reactive<any>({
+const drag = reactive({
 	options: {
 		group: "Task",
 		animation: 300,
@@ -351,7 +351,10 @@ function refreshTask(params?: any, options?: any) {
 		moreList(res, item);
 
 		if (!more) {
-			refs.value[`${item.key}-scroller`].scroll(0, 0);
+			refs.value[`${item.key}-scroller`].scroll({
+				top: 0,
+				behavior: "smooth"
+			});
 		}
 
 		item.loading = false;
@@ -636,7 +639,10 @@ async function refreshLog(newParams: any, options?: any) {
 	moreList(res, logs);
 
 	if (!more) {
-		refs.value["log-scroller"].scroll(0, 0);
+		refs.value["log-scroller"].scroll({
+			top: 0,
+			behavior: "smooth"
+		});
 	}
 
 	logs.loading = false;
@@ -666,7 +672,7 @@ function filterLog([v]: any) {
 
 // 右键菜单
 function openCM(e: any, { id, status, type, name }: any) {
-	const menus = [
+	const menus: ClContextMenu.Item[] = [
 		{
 			label: "立即执行",
 			perm: ["once"],
@@ -722,7 +728,7 @@ function openCM(e: any, { id, status, type, name }: any) {
 	}
 
 	ContextMenu.open(e, {
-		list: menus.filter((e: any) => {
+		list: menus.filter((e) => {
 			return checkPerm({
 				and: e.perm.map((a: any) => perm.value[a])
 			});
@@ -795,6 +801,11 @@ onMounted(() => {
 				font-size: 12px;
 			}
 
+			.label,
+			.num {
+				color: #000;
+			}
+
 			.flex1 {
 				flex: 1;
 			}
@@ -807,14 +818,15 @@ onMounted(() => {
 					align-items: center;
 					list-style: none;
 					cursor: pointer;
-					padding: 2px 10px;
-					background-color: #fff;
-					border-radius: 3px;
+					height: 25px;
+					padding: 0 10px;
+					background-color: var(--el-bg-color);
+					border-radius: 5px;
 					margin-left: 5px;
 
 					&:hover {
-						background-color: #dedede;
-						color: #444;
+						background-color: var(--color-primary);
+						color: #fff;
 					}
 
 					i {
@@ -839,7 +851,7 @@ onMounted(() => {
 			ul {
 				li {
 					list-style: none;
-					background-color: #fff;
+					background-color: var(--el-bg-color);
 					border-radius: 5px;
 					margin-bottom: 5px;
 					padding: 10px 15px;
@@ -989,9 +1001,10 @@ onMounted(() => {
 			.empty {
 				text-align: center;
 				font-size: 13px;
-				color: #666;
-				background-color: #fff;
 				padding: 20px;
+				border: 1px solid #f7f7f7;
+				border-radius: 5px;
+				background-color: var(--el-bg-color);
 			}
 
 			.more {
@@ -1051,7 +1064,6 @@ onMounted(() => {
 				li {
 					display: flex;
 					align-items: center;
-					height: 20px;
 
 					&._current-log {
 						span {

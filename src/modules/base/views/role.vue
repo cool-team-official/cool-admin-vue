@@ -23,19 +23,27 @@
 			<cl-pagination />
 		</el-row>
 
-		<cl-upsert ref="Upsert" />
+		<cl-upsert ref="Upsert" @opened="onUpsertOpened">
+			<template #slot-relevance="{ scope }">
+				<el-switch
+					v-model="scope.relevance"
+					:active-value="1"
+					:inactive-value="0"
+					@change="onRelevanceChange"
+				/>
+				<span class="ml-1 text-size-1">是否关联上下级</span>
+			</template>
+		</cl-upsert>
 	</cl-crud>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" name="sys-role" setup>
 import { useTable, useUpsert, useCrud } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
-import RolePerms from "./components/role-perms.vue";
-import DeptCheck from "./components/dept-check.vue";
+import MenuCheck from "./components/menu/check.vue";
+import DeptCheck from "./components/dept/check.vue";
 
-const { service, named } = useCool();
-
-named("sys-role");
+const { service } = useCool();
 
 // cl-crud 配置
 const Crud = useCrud({ service: service.base.sys.role }, (app) => {
@@ -84,7 +92,7 @@ const Upsert = useUpsert({
 			prop: "menuIdList",
 			value: [],
 			component: {
-				vm: RolePerms
+				vm: MenuCheck
 			}
 		},
 		{
@@ -92,16 +100,14 @@ const Upsert = useUpsert({
 			prop: "departmentIdList",
 			value: [],
 			component: {
-				vm: DeptCheck
+				vm: DeptCheck,
+				props: {}
+			},
+			append: {
+				name: "slot-relevance"
 			}
 		}
-	],
-
-	onOpen(isEdit, data) {
-		if (!isEdit) {
-			data.relevance = 1;
-		}
-	}
+	]
 });
 
 // cl-table 配置
@@ -145,4 +151,16 @@ const Table = useTable({
 		}
 	]
 });
+
+// 是否关联上下级
+function onRelevanceChange(val: number) {
+	Upsert.value?.setProps("departmentIdList", {
+		checkStrictly: val == 0
+	});
+}
+
+// 打开后
+function onUpsertOpened(_: boolean, data: Eps.BaseSysRoleEntity) {
+	onRelevanceChange(data.relevance || 0);
+}
 </script>

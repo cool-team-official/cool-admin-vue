@@ -1,4 +1,5 @@
 import fs from "fs";
+import { isAbsolute, join, relative, sep } from "path";
 
 // 首字母大写
 export function firstUpperCase(value: string): string {
@@ -43,4 +44,25 @@ export function parseJson(req: any) {
 			}
 		});
 	});
+}
+
+// 深度创建目录
+export function mkdirs(path: string) {
+	const arr = path.split(sep);
+	let p = "";
+
+	arr.forEach((e) => {
+		try {
+			fs.statSync(join(p, e));
+		} catch (err) {
+			try {
+				fs.mkdirSync(join(p, e));
+			} catch (error) {
+				console.error(error);
+			}
+		}
+		p = join(p, e);
+	});
+
+	return p;
 }

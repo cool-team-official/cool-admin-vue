@@ -1,6 +1,7 @@
 {
 	"cl-crud": {
 		"prefix": "cl-crud",
+		"scope": "vue",
 		"body": [
 			"<template>",
 			"    <cl-crud ref=\"Crud\">",
@@ -32,13 +33,11 @@
 			"    </cl-crud>",
 			"</template>",
 			"",
-			"<script lang=\"ts\" setup>",
+			"<script lang=\"ts\" name=\"菜单名称\" setup>",
 			"import { useCrud, useTable, useUpsert } from \"@cool-vue/crud\";",
 			"import { useCool } from \"/@/cool\";",
 			"",
-			"const { service, named } = useCool();",
-			"",
-			"named(\"菜单名称\");",
+			"const { service } = useCool();",
 			"",
 			"// cl-upsert 配置",
 			"const Upsert = useUpsert({",

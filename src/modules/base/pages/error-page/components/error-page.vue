@@ -12,7 +12,7 @@
 					</el-option>
 				</el-select>
 
-				<el-button round @click="navTo">跳转</el-button>
+				<el-button type="primary" round @click="navTo">跳转</el-button>
 			</div>
 
 			<ul class="link">
@@ -27,63 +27,45 @@
 				<el-button round @click="toLogin">返回登录页</el-button>
 			</div>
 		</template>
-
-		<p class="copyright">Copyright © cool-admin-next 2023</p>
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script lang="ts" setup>
+import { ref } from "vue";
 import { useCool } from "/@/cool";
 import { useBase } from "/$/base";
 
-export default defineComponent({
-	props: {
-		code: Number,
-		desc: String
-	},
-
-	setup() {
-		const { router } = useCool();
-		const { user, menu } = useBase();
-
-		const url = ref<string>("");
-		const isLogout = ref<boolean>(false);
-
-		function navTo() {
-			router.push(url.value);
-		}
-
-		function toLogin() {
-			router.push("/login");
-		}
-
-		async function reLogin() {
-			isLogout.value = true;
-			user.logout();
-		}
-
-		function back() {
-			history.back();
-		}
-
-		function home() {
-			router.push("/");
-		}
-
-		return {
-			user,
-			menu,
-			url,
-			isLogout,
-			navTo,
-			toLogin,
-			reLogin,
-			back,
-			home
-		};
-	}
+defineProps({
+	code: Number,
+	desc: String
 });
+
+const { router } = useCool();
+const { user, menu } = useBase();
+
+const url = ref<string>("");
+const isLogout = ref<boolean>(false);
+
+function navTo() {
+	router.push(url.value);
+}
+
+function toLogin() {
+	router.push("/login");
+}
+
+async function reLogin() {
+	isLogout.value = true;
+	user.logout();
+}
+
+function back() {
+	history.back();
+}
+
+function home() {
+	router.push("/");
+}
 </script>
 
 <style lang="scss" scoped>
@@ -123,13 +105,7 @@ export default defineComponent({
 
 		.el-button {
 			margin-left: 15px;
-			background-color: var(--color-primary);
-			border-color: var(--color-primary);
-			color: #fff;
 			padding: 0 30px;
-			letter-spacing: 1px;
-			height: 36px;
-			line-height: 36px;
 		}
 	}
 

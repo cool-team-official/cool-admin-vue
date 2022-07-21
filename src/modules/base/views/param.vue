@@ -33,15 +33,13 @@
 	</cl-crud>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" name="sys-param" setup>
 import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { ElMessageBox } from "element-plus";
 import { nextTick, reactive } from "vue";
 import { useCool } from "/@/cool";
 
-const { service, named } = useCool();
-
-named("sys-param");
+const { service } = useCool();
 
 // 选项卡
 const tab = reactive<any>({

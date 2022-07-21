@@ -11,7 +11,7 @@
 					<cl-add-btn />
 					<cl-multi-delete-btn />
 					<el-button
-						v-permission="service.base.sys.user.move"
+						v-permission="service.base.sys.user.permission.move"
 						type="success"
 						:disabled="selects.ids.length == 0"
 						@click="toMove()"
@@ -40,8 +40,8 @@
 									size="small"
 									effect="dark"
 									style="margin: 2px"
-									>{{ item }}</el-tag
-								>
+									>{{ item }}
+								</el-tag>
 							</template>
 						</template>
 
@@ -63,28 +63,24 @@
 					<cl-pagination />
 				</el-row>
 
+				<!-- 新增、编辑 -->
 				<cl-upsert ref="Upsert" />
-				<dept-move-form ref="DeptMove" />
+
+				<!-- 移动 -->
+				<dept-move :ref="setRefs('deptMove')" />
 			</cl-crud>
 		</template>
 	</cl-view-group>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" name="sy-user" setup>
 import { useTable, useUpsert, useCrud } from "@cool-vue/crud";
-import { computed, reactive, ref } from "vue";
+import { computed, reactive } from "vue";
 import { useCool } from "/@/cool";
-import { useBase } from "/$/base";
-import DeptMoveForm from "./components/dept-move";
-import DeptTree from "./components/dept-tree.vue";
+import DeptMove from "./components/dept/move.vue";
+import DeptTree from "./components/dept/tree.vue";
 
 const { service, refs, setRefs } = useCool();
-const { app } = useBase();
-
-const DeptMove = ref<any>();
-
-// 是否展开
-const isExpand = ref<boolean>(true);
 
 // 选择项
 const selects = reactive<any>({
@@ -301,7 +297,7 @@ const Upsert = useUpsert({
 	onSubmit(_, data, { next }) {
 		next({
 			...data,
-			departmentId: selects.dept.id
+			departmentId: selects.dept?.id
 		});
 	},
 
@@ -311,9 +307,9 @@ const Upsert = useUpsert({
 		// 设置权限列表
 		Upsert.value?.setOptions(
 			"roleIdList",
-			list.map((e: any) => {
+			list.map((e) => {
 				return {
-					label: e.name,
+					label: e.name || "",
 					value: e.id
 				};
 			})
@@ -370,6 +366,6 @@ async function toMove(e?: any) {
 		ids = [e.id];
 	}
 
-	DeptMove.value.toMove(ids);
+	refs.value.deptMove.open(ids);
 }
 </script>

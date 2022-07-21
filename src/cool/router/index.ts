@@ -1,87 +1,84 @@
-// @ts-nocheck
 import { ElMessage } from "element-plus";
-import {
-	createRouter,
-	createWebHashHistory,
-	createWebHistory,
-	NavigationGuardNext,
-	RouteRecordRaw
-} from "vue-router";
-import { storage, config } from "/@/cool";
+import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from "vue-router";
+import { config, Router, storage, module, hideLoading } from "/@/cool";
+import { isArray } from "lodash";
 import { useBase } from "/$/base";
-import { cloneDeep, isArray } from "lodash";
 
-// 视图文件
-const views = import.meta.globEager("/src/**/views/**/*.vue");
-
-for (const i in views) {
-	views[i.slice(5)] = views[i];
-	delete views[i];
-}
+// 扫描文件
+const files = import.meta.glob(["/src/modules/*/{views,pages}/**/*", "!**/components"]);
 
 // 默认路由
 const routes: RouteRecordRaw[] = [
 	{
 		path: "/",
 		name: "index",
-		component: () => import("/$/base/pages/layout/index.vue"),
+		component: () => import("/$/base/layout/index.vue"),
 		children: [
 			{
-				path: "/",
-				name: "数据统计",
-				component: () => import("/@/views/home/index.vue")
-			},
-			...config.app.router.views
+				path: "",
+				name: "home",
+				component: config.app.router.home
+			}
 		]
-	},
-	...config.app.router.pages,
-	{
-		path: "/:catchAll(.*)",
-		name: "404",
-		redirect: "/404"
 	}
 ];
 
-// 创建
+// 创建路由器
 const router = createRouter({
 	history: config.app.router.mode == "history" ? createWebHistory() : createWebHashHistory(),
 	routes
-}) as CoolRouter;
+}) as Router;
 
-// 路由守卫
-router.beforeEach((to: any, _: any, next: NavigationGuardNext) => {
-	const { user, process } = useBase();
-
-	if (user.token) {
-		if (to.path.includes("/login")) {
-			// 登录成功且 token 未过期，回到首页
-			if (!storage.isExpired("token")) {
-				return next("/");
-			}
-		} else {
-			// 添加路由进程
-			process.add({
-				keepAlive: to.meta?.keepAlive,
-				label: to.meta?.label || to.name,
-				value: to.fullPath
-			});
-		}
-	} else {
-		if (!config.ignore.token.find((e: string) => to.path == e)) {
-			return next("/login");
-		}
-	}
-
-	next();
+// 组件加载后
+router.beforeResolve(() => {
+	hideLoading();
 });
 
-// 自定义
-router.href = function (path: string) {
+// 跳转
+router.href = function (path) {
 	const url = import.meta.env.BASE_URL + path;
 
 	if (url != location.pathname) {
 		location.href = url;
 	}
+};
+
+// 添加试图，页面路由
+router.append = function (data) {
+	const list = isArray(data) ? data : [data];
+
+	list.forEach((e) => {
+		const d = { ...e };
+
+		if (!d.name) {
+			d.name = d.path.substring(1);
+		}
+
+		if (e.isPage) {
+			router.addRoute(d);
+		} else {
+			if (!d.component) {
+				const url = d.viewPath;
+
+				if (url) {
+					if (url.indexOf("http") == 0) {
+						if (d.meta) {
+							d.meta.iframeUrl = url;
+						}
+
+						d.component = () => import(`/$/base/views/iframe/index.vue`);
+					} else {
+						d.component = files["/src/" + url.replace("cool/", "")];
+					}
+				} else {
+					d.redirect = "/404";
+				}
+			}
+
+			// @ts-ignore
+			router.addRoute("index", d);
+		}
+	});
 };
 
 let lock = false;
@@ -100,45 +97,93 @@ router.onError((err: any) => {
 	}
 });
 
-// 视图
-const viewer = {
-	add(data: any[] | any) {
-		// 列表
-		const list = isArray(data) ? data : [data];
+// 注册
+async function register(path: string) {
+	// 当前路由是否存在
+	const d = router.getRoutes().find((e) => e.path == path);
 
-		list.forEach((e: any) => {
-			const d: any = cloneDeep(e);
+	if (!d) {
+		const { app, menu } = useBase();
 
-			// 命名
-			d.name = d.router;
+		// 等待加载
+		await app.req;
 
-			if (!d.component) {
-				const url = d.viewPath;
+		// 待注册列表
+		const list: any[] = [];
 
-				if (url) {
-					if (
-						/^(http[s]?:\/\/)([0-9a-z.]+)(:[0-9]+)?([/0-9a-z.]+)?(\?[0-9a-z&=]+)?(#[0-9-a-z]+)?/i.test(
-							url
-						)
-					) {
-						d.meta.iframeUrl = url;
-						d.component = () => import(`/$/base/pages/iframe/index.vue`);
-					} else {
-						d.component = () => Promise.resolve(views[url.replace("cool/", "")]);
-					}
-				} else {
-					d.redirect = "/404";
-				}
+		// 菜单数据
+		menu.routes.find((e) => {
+			list.push({
+				...e,
+				isPage: e.viewPath?.includes("/pages")
+			});
+		});
+
+		// 模块数据
+		module.list.forEach((e) => {
+			if (e.views) {
+				list.push(...e.views);
 			}
 
-			// 批量添加
-			router.addRoute("index", d);
+			if (e.pages) {
+				list.push(
+					...e.pages.map((d) => {
+						return {
+							...d,
+							isPage: true
+						};
+					})
+				);
+			}
 		});
-	},
 
-	get() {
-		return router.getRoutes().find((e) => e.name == "index")?.children;
+		// 需要注册的路由
+		const r = list.find((e) => e.path == path);
+
+		if (r) {
+			router.append(r);
+		}
+
+		return r?.path || "/404";
+	} else {
+		return null;
 	}
-};
+}
 
-export { router, viewer };
+// 路由守卫
+router.beforeEach(async (to, from, next) => {
+	// 注册路由
+	const path = await register(to.path);
+
+	if (path) {
+		// 重定向
+		next({ ...to, path });
+	} else {
+		// 数据缓存
+		const { user, process } = useBase();
+
+		// 登录成功
+		if (user.token) {
+			// 在登录页
+			if (to.path.includes("/login")) {
+				// Token 未过期
+				if (!storage.isExpired("token")) {
+					// 回到首页
+					return next("/");
+				}
+			} else {
+				// 添加路由进程
+				process.add(to);
+			}
+		} else {
+			// 忽略部分 Token 验证
+			if (!config.ignore.token.find((e) => to.path == e)) {
+				return next("/login");
+			}
+		}
+
+		next();
+	}
+});
+
+export { router };

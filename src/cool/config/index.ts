@@ -22,10 +22,8 @@ export const config = {
 		router: {
 			// 模式
 			mode: "history",
-			// 页面
-			pages: [],
-			// 视图 / 路由下的 children
-			views: []
+			// 首页组件
+			home: import("/$/demo/views/home/index.vue")
 		},
 
 		// 字体图标库

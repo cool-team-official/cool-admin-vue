@@ -1,56 +1,36 @@
 import { createPinia } from "pinia";
 import { App } from "vue";
-import { useModule } from "./module";
-import { router, viewer } from "./router";
+import { modular } from "./module";
+import { router } from "./router";
 import { useBase } from "/$/base";
 import mitt from "mitt";
 import VueECharts from "vue-echarts";
 import ElementPlus from "element-plus";
 import "element-plus/theme-chalk/src/index.scss";
 import "uno.css";
-import { useDict } from "/$/dict";
 
 export async function bootstrap(Vue: App) {
-	// 缓存
+	// pinia
 	Vue.use(createPinia());
 
-	// ui库
+	// element-plus
 	Vue.use(ElementPlus);
 
-	// 事件通讯
+	// mitt
 	Vue.provide("mitt", mitt());
 
-	// 可视图表
+	// charts
 	Vue.component("v-chart", VueECharts);
-
-	// 基础
-	const { app, user, menu } = useBase();
-
-	// 加载模块
-	useModule(Vue);
-
-	// 取缓存视图
-	viewer.add(menu.routes);
 
 	// 路由
 	Vue.use(router);
 
-	// 开启
-	app.showLoading();
+	// 模块
+	Vue.use(modular);
 
-	if (user.token) {
-		// 字典
-		const { dict } = useDict();
+	// 数据
+	const { app } = useBase();
 
-		// 获取字典数据
-		dict.refresh();
-
-		// 获取用户信息
-		user.get();
-
-		// 获取菜单权限
-		await menu.get();
-	}
-
-	app.hideLoading();
+	// 事件加载
+	app.req = modular.emit("onLoad");
 }

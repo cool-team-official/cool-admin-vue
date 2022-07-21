@@ -15,22 +15,22 @@ NProgress.configure({
 });
 
 // 请求队列
-let requests: Array<Function> = [];
+let requests: Array<(token: string) => void> = [];
 
-// Token 是否刷新中
+// 是否刷新中
 let isRefreshing = false;
 
-// @ts-ignore
+// @ts-ignore 避免热更新后多次执行
 axios.interceptors.request.eject(axios._req);
 
-// @ts-ignore
+// @ts-ignore 请求
 axios._req = axios.interceptors.request.use(
-	(req: any) => {
+	(req) => {
 		const { user } = useBase();
 
 		if (req.url) {
 			// 请求进度条
-			if (!config.ignore.NProgress.some((e: string) => req.url.includes(e))) {
+			if (!config.ignore.NProgress.some((e) => req.url?.includes(e))) {
 				NProgress.start();
 			}
 		}
@@ -46,9 +46,11 @@ axios._req = axios.interceptors.request.use(
 		// 验证 token
 		if (user.token) {
 			// 请求标识
-			req.headers["Authorization"] = user.token;
+			if (req.headers) {
+				req.headers["Authorization"] = user.token;
+			}
 
-			if (req.url.includes("refreshToken")) {
+			if (req.url?.includes("refreshToken")) {
 				return req;
 			}
 
@@ -64,7 +66,7 @@ axios._req = axios.interceptors.request.use(
 					isRefreshing = true;
 
 					user.refreshToken()
-						.then((token: string) => {
+						.then((token) => {
 							requests.forEach((cb) => cb(token));
 							requests = [];
 							isRefreshing = false;
@@ -76,9 +78,11 @@ axios._req = axios.interceptors.request.use(
 
 				return new Promise((resolve) => {
 					// 继续请求
-					requests.push((token: string) => {
+					requests.push((token) => {
 						// 重新设置 token
-						req.headers["Authorization"] = token;
+						if (req.headers) {
+							req.headers["Authorization"] = token;
+						}
 						resolve(req);
 					});
 				});

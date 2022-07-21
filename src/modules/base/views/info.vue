@@ -2,7 +2,7 @@
 	<div class="view-my">
 		<div class="title">基本信息</div>
 
-		<el-form label-width="100px" :model="form" :disabled="saving">
+		<el-form label-width="100px" :model="form" :disabled="loading">
 			<el-form-item label="头像">
 				<cl-upload v-model="form.headImg" />
 			</el-form-item>
@@ -16,28 +16,13 @@
 			</el-form-item>
 
 			<el-form-item>
-				<el-button type="primary" :disabled="saving" @click="save">保存修改</el-button>
+				<el-button type="primary" :disabled="loading" @click="save">保存修改</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
 </template>
 
-<script lang="ts">
-export default {
-	name: "my-info",
-
-	cool: {
-		route: {
-			path: "/my/info",
-			meta: {
-				label: "个人中心"
-			}
-		}
-	}
-};
-</script>
-
-<script lang="ts" setup>
+<script lang="ts" name="my-info" setup>
 import { ElMessage } from "element-plus";
 import { reactive, ref } from "vue";
 import { useBase } from "/$/base";
@@ -51,13 +36,13 @@ const { user } = useBase();
 const form = reactive<any>(cloneDeep(user.info));
 
 // 保存状态
-const saving = ref<boolean>(false);
+const loading = ref(false);
 
 // 保存
 async function save() {
 	const { headImg, nickName, password } = form;
 
-	saving.value = true;
+	loading.value = true;
 
 	await service.base.comm
 		.personUpdate({
@@ -74,13 +59,13 @@ async function save() {
 			ElMessage.error(err.message);
 		});
 
-	saving.value = false;
+	loading.value = false;
 }
 </script>
 
 <style lang="scss">
 .view-my {
-	background-color: #fff;
+	background-color: var(--el-bg-color);
 	height: 100%;
 	padding: 20px;
 	box-sizing: border-box;
@@ -91,7 +76,6 @@ async function save() {
 	}
 
 	.title {
-		color: #000;
 		margin-bottom: 30px;
 		font-size: 15px;
 	}

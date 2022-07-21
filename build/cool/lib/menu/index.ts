@@ -1,7 +1,7 @@
 import { createWriteStream } from "fs";
 import prettier from "prettier";
 import { join } from "path";
-import { createDir } from "../../utils";
+import { mkdirs } from "../../utils";
 import rules from "./rules";
 import { isFunction, isRegExp, isString } from "lodash";
 
@@ -108,7 +108,7 @@ const handler = {
 function createComponent(item: any) {
 	const { propertyName: prop, comment: label } = item;
 
-	let d = null;
+	let d: any = null;
 
 	rules.forEach((r: any) => {
 		const s = r.test.find((e: any) => {
@@ -172,7 +172,7 @@ function getPageName(router: string) {
 		router = router.substr(1, router.length);
 	}
 
-	return router ? router.replace("/", "-") : "";
+	return router ? router.replace(/\//g, "-") : "";
 }
 
 // 时间合并
@@ -198,7 +198,7 @@ function datetimeMerge({ columns, item }: any) {
 }
 
 // 创建文件
-export async function createMenu({ router, columns, prefix, api, module, filename }: any): void {
+export async function createMenu({ router, columns, prefix, api, filePath }: any) {
 	const upsert: any = {
 		items: []
 	};
@@ -310,13 +310,11 @@ export async function createMenu({ router, columns, prefix, api, module, filenam
 	</cl-crud>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" name="${getPageName(router)}" setup>
 import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 
-const { service, named } = useCool();
-
-named("${getPageName(router)}");
+const { service } = useCool();
 
 // cl-upsert 配置
 const Upsert = useUpsert(${JSON.stringify(upsert)});
@@ -335,6 +333,7 @@ const Crud = useCrud(
 );
 </script>`;
 
+	// 文件内容
 	const content = prettier.format(temp, {
 		parser: "vue",
 		useTabs: true,
@@ -347,14 +346,17 @@ const Crud = useCrud(
 		trailingComma: "none"
 	});
 
-	// views 目录是否存在
-	const dir = join(__dirname, `../../../../src/modules/${module}/views`);
+	// 目录路径
+	const dir = filePath.split("/");
+
+	// 文件名
+	const fname = dir.pop();
 
 	// 创建目录
-	createDir(dir);
+	const path = mkdirs(`./src/modules/${dir.join("/")}`);
 
 	// 创建文件
-	createWriteStream(join(dir, `${filename}.vue`), {
+	createWriteStream(join(path, fname), {
 		flags: "w"
 	}).write(content);
 }

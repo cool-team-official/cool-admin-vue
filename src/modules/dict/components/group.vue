@@ -6,7 +6,7 @@
 				type="success"
 				bg
 				size="small"
-				v-if="getPerm(service.dict.type, 'add')"
+				v-permission="service.dict.type.permission.add"
 				@click="edit()"
 				>添加</el-button
 			>
@@ -45,7 +45,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { inject, onMounted, ref } from "vue";
 import { useCool } from "/@/cool";
 import { ArrowRightBold } from "@element-plus/icons-vue";
-import { getPerm } from "/$/base";
+import { checkPerm } from "/$/base";
 
 const { service } = useCool();
 const Form = useForm();
@@ -152,7 +152,7 @@ function onContextMenu(e: any, item: any) {
 		list: [
 			{
 				label: "编辑",
-				hidden: !getPerm(service.dict.type, ["update"]),
+				hidden: !checkPerm(service.dict.type.permission.update),
 				callback(done) {
 					done();
 					edit(item);
@@ -160,7 +160,7 @@ function onContextMenu(e: any, item: any) {
 			},
 			{
 				label: "删除",
-				hidden: !getPerm(service.dict.type, ["delete"]),
+				hidden: !checkPerm(service.dict.type.permission.delete),
 				callback(done) {
 					done();
 
@@ -204,6 +204,7 @@ onMounted(() => {
 	height: 100%;
 	width: 100%;
 	box-sizing: border-box;
+	white-space: nowrap;
 
 	.head {
 		display: flex;
@@ -212,7 +213,6 @@ onMounted(() => {
 		height: 40px;
 		font-size: 14px;
 		padding: 0 10px;
-		white-space: nowrap;
 	}
 
 	ul {

@@ -4,50 +4,34 @@
 	</svg>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+<script lang="ts" name="cl-svg" setup>
+import { computed, ref } from "vue";
 import { isNumber } from "lodash";
 
-export default defineComponent({
-	name: "icon-svg",
-
-	cool: {
-		global: true
+const props = defineProps({
+	name: {
+		type: String
 	},
-
-	props: {
-		name: {
-			type: String
-		},
-		className: {
-			type: String
-		},
-		size: {
-			type: [String, Number]
-		}
+	className: {
+		type: String
 	},
-
-	setup(props) {
-		const style = ref<any>({
-			fontSize: isNumber(props.size) ? props.size + "px" : props.size
-		});
-
-		const iconName = computed<string>(() => `#icon-${props.name}`);
-		const svgClass = computed<Array<string>>(() => {
-			return ["icon-svg", `icon-svg__${props.name}`, String(props.className || "")];
-		});
-
-		return {
-			style,
-			iconName,
-			svgClass
-		};
+	size: {
+		type: [String, Number]
 	}
+});
+
+const style = ref({
+	fontSize: isNumber(props.size) ? props.size + "px" : props.size
+});
+
+const iconName = computed(() => `#icon-${props.name}`);
+const svgClass = computed(() => {
+	return ["cl-svg", `cl-svg__${props.name}`, String(props.className || "")];
 });
 </script>
 
-<style scoped>
-.icon-svg {
+<style lang="scss" scoped>
+.cl-svg {
 	width: 1em;
 	height: 1em;
 	vertical-align: -0.15em;

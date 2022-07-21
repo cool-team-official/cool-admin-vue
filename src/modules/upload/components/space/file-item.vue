@@ -55,7 +55,6 @@
 <script lang="ts" setup>
 import { computed, inject } from "vue";
 import { ContextMenu } from "@cool-vue/crud";
-import { Document } from "@element-plus/icons-vue";
 import { extname } from "/@/cool/utils";
 import { fileSize, fileName } from "../../utils";
 import { useClipboard } from "@vueuse/core";
@@ -148,7 +147,7 @@ function onContextMenu(e: any) {
 	border-radius: 5px;
 	overflow: hidden;
 	box-sizing: border-box;
-	background-color: #f7f7f7;
+	background-color: rgba(0, 0, 0, 0.1);
 	margin-bottom: 10px;
 
 	&__wrap {
