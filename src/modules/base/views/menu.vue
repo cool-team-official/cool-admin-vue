@@ -76,7 +76,11 @@
 		</el-row>
 
 		<!-- 新增、编辑 -->
-		<cl-upsert ref="Upsert" />
+		<cl-upsert ref="Upsert">
+			<template #slot-parentId="{ scope }">
+				<menu-select :type="scope.type" />
+			</template>
+		</cl-upsert>
 	</cl-crud>
 </template>
 
@@ -254,7 +258,7 @@ const Upsert = useUpsert({
 			prop: "parentId",
 			label: "上级节点",
 			component: {
-				vm: MenuSelect
+				name: "slot-parentId"
 			}
 		},
 		{

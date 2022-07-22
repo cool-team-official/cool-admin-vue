@@ -12,19 +12,19 @@ export default {
 			},
 			{
 				type: "string",
-				includes: ["varchar", "text"]
+				test: ["varchar", "text"]
 			},
 			{
 				type: "Date",
-				includes: ["datetime", "date"]
+				test: ["datetime", "date"]
 			},
 			{
 				type: "number",
-				includes: ["tinyint", "int", "decimal"]
+				test: ["tinyint", "int", "decimal"]
 			},
 			{
 				type: "BigInt",
-				includes: ["bigint"]
+				test: ["bigint"]
 			}
 		]
 	}

@@ -2,7 +2,7 @@
 	<div class="menu-select">
 		<el-tree-select
 			v-model="value"
-			:data="list"
+			:data="tree"
 			:props="{
 				label: 'name',
 				value: 'id',
@@ -20,12 +20,17 @@
 
 <script lang="ts" name="menu-select" setup>
 import { useForm } from "@cool-vue/crud";
-import { onMounted, ref, watch } from "vue";
+import { cloneDeep } from "lodash";
+import { computed, onMounted, ref, watch } from "vue";
 import { useCool } from "/@/cool";
 import { deepTree } from "/@/cool/utils";
 
 const props = defineProps({
-	modelValue: [Number, String]
+	modelValue: [Number, String],
+	type: {
+		type: Number,
+		default: 1
+	}
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -38,15 +43,20 @@ const Form = useForm();
 // 绑定值
 const value = ref();
 
-// 树形列表
+// 菜单列表
 const list = ref<any[]>([]);
+
+// 树形列表
+const tree = computed(() => {
+	return deepTree(
+		cloneDeep(list.value).filter((e) => (props.type === 0 ? e.type == 0 : props.type > e.type))
+	);
+});
 
 // 刷新列表
 function refresh() {
 	service.base.sys.menu.list().then((res) => {
-		list.value = deepTree(
-			res.filter((e) => e.type != 2 && e.isShow && e.id != Form.value?.form.id)
-		);
+		list.value = res.filter((e) => e.isShow && e.id != Form.value?.form.id);
 	});
 }
 

@@ -113,7 +113,10 @@ async function create() {
 				prop: "parentId",
 				label: "上级节点",
 				component: {
-					vm: MenuSelect
+					vm: MenuSelect,
+					props: {
+						type: 1
+					}
 				}
 			},
 			{

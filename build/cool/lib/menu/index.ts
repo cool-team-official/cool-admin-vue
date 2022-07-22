@@ -106,9 +106,9 @@ const handler = {
 
 // 创建组件
 function createComponent(item: any) {
-	const { propertyName: prop, comment: label } = item;
-
-	let d: any = null;
+	const prop = item.propertyName;
+	let label = item.comment;
+	let d: any;
 
 	rules.forEach((r: any) => {
 		const s = r.test.find((e: any) => {
@@ -145,6 +145,8 @@ function createComponent(item: any) {
 	});
 
 	function parse(v: any) {
+		label = label.split(" ")[0];
+
 		if (v?.name) {
 			return {
 				prop,

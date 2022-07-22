@@ -15,7 +15,9 @@ function getType({ entityName, propertyName, type }) {
 			const resType = map.custom({ entityName, propertyName, type });
 			if (resType) return resType;
 		}
-		if (map.includes?.includes(type)) return map.type;
+		if (map.test) {
+			if (map.test.includes(type)) return map.type;
+		}
 	}
 	return type;
 }
