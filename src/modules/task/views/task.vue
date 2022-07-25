@@ -167,6 +167,7 @@
 					<ul
 						:ref="setRefs('log-scroller')"
 						v-infinite-scroll="moreLog"
+						infinite-scroll-immediate="false"
 						class="scroller1"
 					>
 						<li
@@ -739,6 +740,7 @@ function moreTask(index: number) {
 
 onMounted(() => {
 	refreshTask({ page: 1 });
+	refreshLog(null, { more: true });
 });
 </script>
 
