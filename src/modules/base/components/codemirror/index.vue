@@ -17,8 +17,9 @@
 import { Codemirror } from "vue-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useDark } from "@vueuse/core";
+import { isNumber } from "lodash";
 
 const props = defineProps({
 	modelValue: {
@@ -30,7 +31,7 @@ const props = defineProps({
 		default: "请输入"
 	},
 	height: {
-		type: String,
+		type: [String, Number],
 		default: "400px"
 	},
 	fontSize: {
@@ -44,8 +45,11 @@ const emit = defineEmits(["update:modelValue", "change"]);
 // 是否暗黑模式
 const isDark = ref(useDark());
 
+// 高度
+const height = computed(() => (isNumber(props.height) ? `${props.height}px` : props.height));
+
 // 插件
-const extensions: any[] = [javascript(), isDark.value && oneDark];
+const extensions = ref();
 
 // 内容
 const content = ref("");
@@ -56,6 +60,7 @@ function onChange(value: string) {
 	emit("change", value);
 }
 
+// 监听值
 watch(
 	() => props.modelValue,
 	(val) => {
@@ -65,6 +70,10 @@ watch(
 		immediate: true
 	}
 );
+
+onMounted(() => {
+	extensions.value = [javascript(), isDark.value && oneDark];
+});
 </script>
 
 <style lang="scss" scoped>

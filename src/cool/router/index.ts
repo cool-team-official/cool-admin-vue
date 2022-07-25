@@ -66,7 +66,7 @@ router.append = function (data) {
 							d.meta.iframeUrl = url;
 						}
 
-						d.component = () => import(`/$/base/views/iframe/index.vue`);
+						d.component = () => import(`/$/base/views/frame.vue`);
 					} else {
 						d.component = files["/src/" + url.replace("cool/", "")];
 					}

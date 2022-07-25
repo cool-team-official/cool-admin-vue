@@ -78,7 +78,7 @@
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert">
 			<template #slot-parentId="{ scope }">
-				<menu-select :type="scope.type" />
+				<menu-select v-model="scope.parentId" :type="scope.type" />
 			</template>
 		</cl-upsert>
 	</cl-crud>
