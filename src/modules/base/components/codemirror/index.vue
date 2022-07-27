@@ -8,6 +8,7 @@
 			indent-with-tab
 			:tab-size="4"
 			:extensions="extensions"
+			v-if="extensions.length > 0"
 			@change="onChange"
 		/>
 	</div>
@@ -45,7 +46,11 @@ const emit = defineEmits(["update:modelValue", "change"]);
 const isDark = ref(useDark());
 
 // 插件
-const extensions: any[] = [javascript(), isDark.value && oneDark];
+const extensions: any[] = [javascript()];
+
+if (isDark.value) {
+	extensions.push(oneDark);
+}
 
 // 内容
 const content = ref("");

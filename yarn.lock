@@ -2534,6 +2534,11 @@ csstype@^2.6.8:
   resolved "https://registry.npmjs.org/csstype/-/csstype-2.6.20.tgz#9229c65ea0b260cf4d3d997cb06288e36a8d6dda"
   integrity sha512-/WwNkdXfckNgw6S5R125rrW8ez139lBHWouiBvX8dfMFtcn6V81REDqnH7+CRpRipfYlyU1CmOnOxrmGcFOjeA==
 
+csstype@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.0.tgz#4ddcac3718d787cf9df0d1b7d15033925c8f29f2"
+  integrity sha512-uX1KG+x9h5hIJsaKR9xHUeUraxf8IODOwq9JLNPq6BwB04a/xgpq3rcx47l5BZu5zBPlgD342tdke3Hom/nJRA==
+
 dayjs@^1.11.3:
   version "1.11.4"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.4.tgz#3b3c10ca378140d8917e06ebc13a4922af4f433e"
@@ -5050,16 +5055,16 @@ vite@^3.0.2:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vue-codemirror@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/vue-codemirror/-/vue-codemirror-6.0.0.tgz#11c104603b99876839334ab26e9b1c29869cdbbb"
-  integrity sha512-1zYlS1l6Buxq0/PCw4gn2YQfWbINE0arEjtS/bZV1HcNMsgzotWbKmvRh9F+Ie0POX1F47gQricR731j4B/Ftw==
+vue-codemirror@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.npmjs.org/vue-codemirror/-/vue-codemirror-6.0.1.tgz#0d157a121053aaae89f79c3a95711381a70e3193"
+  integrity sha512-tEoaEFU2xZSADcfX0emHwGWXCZB8FEyoyUuGZmEPfLdTxK1nB+hp5WxFxuK7GWQxUD+2+bsAhJWT2IEaTbOpuQ==
   dependencies:
     "@codemirror/commands" "6.x"
     "@codemirror/language" "6.x"
     "@codemirror/state" "6.x"
     "@codemirror/view" "6.x"
-    csstype "^2.6.8"
+    csstype "^3.1.0"
 
 vue-demi@*, vue-demi@^0.13.2:
   version "0.13.5"

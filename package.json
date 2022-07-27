@@ -1,6 +1,6 @@
 {
 	"name": "front-next",
-	"version": "5.7.1",
+	"version": "5.7.2",
 	"scripts": {
 		"dev": "vite --host",
 		"build": "vite build",
@@ -30,7 +30,7 @@
 		"store": "^2.0.12",
 		"unocss": "^0.44.3",
 		"vue": "^3.2.37",
-		"vue-codemirror": "^6.0.0",
+		"vue-codemirror": "^6.0.1",
 		"vue-echarts": "^6.2.3",
 		"vue-router": "^4.1.2",
 		"vuedraggable": "^4.1.0",
