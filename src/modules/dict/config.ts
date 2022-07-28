@@ -3,11 +3,11 @@ import { useDict } from "./index";
 
 export default (): ModuleConfig => {
 	return {
-		onLoad({ hasToken }) {
+		async onLoad({ hasToken }) {
 			const { dict } = useDict();
 
-			hasToken(() => {
-				dict.refresh();
+			await hasToken(async () => {
+				await dict.refresh();
 			});
 		}
 	};

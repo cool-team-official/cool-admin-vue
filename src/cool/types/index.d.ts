@@ -13,7 +13,7 @@ export declare interface ModuleConfig {
 	onLoad?(events: {
 		hasToken: (cb: () => Promise<any> | void) => Promise<any> | void;
 		[key: string]: any;
-	}): Promise<{ [key: string]: any }> | void;
+	}): Promise<{ [key: string]: any }> | Promise<void> | void;
 }
 
 export declare interface Module extends ModuleConfig {
