@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../node_modules/vue/dist/vue.runtime.esm-bundler.js"],
+  "sourcesContent": ["import { initCustomFormatter, warn } from '@vue/runtime-dom';\nexport * from '@vue/runtime-dom';\n\nfunction initDev() {\r\n    {\r\n        initCustomFormatter();\r\n    }\r\n}\n\n// This entry exports the runtime only, and is built as\r\nif ((process.env.NODE_ENV !== 'production')) {\r\n    initDev();\r\n}\r\nconst compile = () => {\r\n    if ((process.env.NODE_ENV !== 'production')) {\r\n        warn(`Runtime compilation is not supported in this build of Vue.` +\r\n            (` Configure your bundler to alias \"vue\" to \"vue/dist/vue.esm-bundler.js\".`\r\n                ) /* should not happen */);\r\n    }\r\n};\n\nexport { compile };\n"],
+  "mappings": ";;;;;;;AAAA;AACA;AAEA,mBAAmB;AACf;AACI,wBAAoB;AAAA,EACxB;AACJ;AAGA,IAAK,MAAwC;AACzC,UAAQ;AACZ;AACA,IAAM,UAAU,MAAM;AAClB,MAAK,MAAwC;AACzC,SAAK,oIAE4B;AAAA,EACrC;AACJ;",
+  "names": []
+}

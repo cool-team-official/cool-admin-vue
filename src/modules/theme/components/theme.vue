@@ -6,7 +6,9 @@
 
 		<template v-if="theme.name == 'default'">
 			<el-switch
-				class="ml-5"
+				:style="{
+					marginLeft: '15px'
+				}"
 				inline-prompt
 				v-model="isDark"
 				:active-icon="Moon"
@@ -37,7 +39,12 @@
 
 				<el-form-item label="自定义主色">
 					<el-color-picker v-model="form.color" @change="setColor" />
-					<span class="ml-10px">{{ form.color }}</span>
+					<span
+						:style="{
+							marginLeft: '10px'
+						}"
+						>{{ form.color }}</span
+					>
 				</el-form-item>
 
 				<el-form-item label="菜单分组显示">

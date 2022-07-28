@@ -4,9 +4,6 @@ import { config } from "/@/cool";
 import { deepMerge, getBrowser, storage } from "/@/cool/utils";
 
 export const useAppStore = defineStore("app", function () {
-	// 请求状态
-	const req = ref();
-
 	// 基本信息
 	const info = ref<any>({
 		...config.app
@@ -39,7 +36,6 @@ export const useAppStore = defineStore("app", function () {
 	}
 
 	return {
-		req,
 		info,
 		browser,
 		isFold,

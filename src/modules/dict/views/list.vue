@@ -11,8 +11,6 @@
 					<cl-refresh-btn />
 					<!-- 新增按钮 -->
 					<cl-add-btn :disabled="!group" />
-					<!-- 删除按钮 -->
-					<cl-multi-delete-btn />
 					<cl-flex1 />
 					<!-- 关键字搜索 -->
 					<cl-search-key />
@@ -26,13 +24,24 @@
 							prop: 'orderNum',
 							order: 'ascending'
 						}"
-					/>
+						row-key="id"
+						@row-click="onRowClick"
+					>
+						<template #slot-btn="{ scope }">
+							<el-button
+								text
+								bg
+								type="success"
+								v-permission="service.dict.info.permission.add"
+								@click="append(scope.row)"
+								>新增</el-button
+							>
+						</template>
+					</cl-table>
 				</el-row>
 
 				<el-row>
 					<cl-flex1 />
-					<!-- 分页控件 -->
-					<cl-pagination />
 				</el-row>
 
 				<!-- 新增、编辑 -->
@@ -47,6 +56,8 @@ import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import Group from "../components/group.vue";
 import { computed, provide, ref } from "vue";
+import { deepTree } from "/@/cool/utils";
+import { cloneDeep } from "lodash-es";
 
 const { service } = useCool();
 
@@ -64,10 +75,56 @@ const Upsert = useUpsert({
 		width: "600px"
 	},
 	props: {
-		labelWidth: "60px"
+		labelWidth: "100px"
 	},
 	items: [
-		{ label: "名称", prop: "name", required: true, component: { name: "el-input" } },
+		{
+			label: "上级节点",
+			prop: "parentId",
+			component: {
+				name: "el-tree-select",
+				props: {
+					data: computed(() => {
+						const data = cloneDeep(Table.value?.data);
+
+						function deep(d: any, f: boolean) {
+							if (d.id == Upsert.value?.getForm("id")) {
+								f = true;
+							}
+
+							if (f) {
+								d.disabled = true;
+							}
+
+							if (d.children) {
+								d.children.forEach((e: any) => {
+									deep(e, f);
+								});
+							}
+						}
+
+						deep({ children: data }, false);
+
+						return data;
+					}),
+					props: {
+						label: "name",
+						value: "id",
+						children: "children",
+						disabled: "disabled"
+					},
+					filterable: true,
+					"default-expand-all": true,
+					"check-strictly": true
+				}
+			}
+		},
+		{
+			label: "名称",
+			prop: "name",
+			required: true,
+			component: { name: "el-input" }
+		},
 		{
 			label: "排序",
 			prop: "orderNum",
@@ -83,27 +140,57 @@ const Upsert = useUpsert({
 	onSubmit(_, data, { next }) {
 		next({
 			...data,
-			typeId: group.value?.id
+			typeId: group.value.id
 		});
 	}
 });
 
 // cl-table 配置
 const Table = useTable({
+	contextMenu: [
+		"refresh",
+		(row) => {
+			return {
+				label: "新增",
+				hidden: !service.dict.info._permission?.add,
+				callback(done) {
+					append(row);
+					done();
+				}
+			};
+		},
+		"edit",
+		"delete",
+		"order-asc",
+		"order-desc"
+	],
 	columns: [
-		{ type: "selection" },
-		{ label: "名称", prop: "name" },
+		{ label: "名称", prop: "name", align: "left" },
 		{ label: "排序", prop: "orderNum", sortable: "custom", width: 100 },
 		{ label: "备注", prop: "remark", showOverflowTooltip: true },
-		{ label: "创建时间", prop: "createTime", sortable: "custom", width: 180 },
-		{ label: "更新时间", prop: "updateTime", sortable: "custom", width: 180 },
-		{ type: "op", buttons: ["edit", "delete"] }
+		{ label: "创建时间", prop: "createTime", sortable: "custom" },
+		{ label: "更新时间", prop: "updateTime", sortable: "custom" },
+		{
+			type: "op",
+			width: 250,
+			buttons: ["slot-btn", "edit", "delete"]
+		}
 	]
 });
 
 // cl-crud 配置
 const Crud = useCrud({
-	service: service.dict.info
+	service: service.dict.info,
+	onRefresh(params, { render }) {
+		service.dict.info
+			.list({
+				typeId: group.value.id,
+				...params
+			})
+			.then((res) => {
+				render(deepTree(res));
+			});
+	}
 });
 
 // 刷新
@@ -114,6 +201,21 @@ function refresh(params?: any) {
 // 设置组
 function setGroup(data: any) {
 	group.value = data;
+}
+
+// 行点击展开
+function onRowClick(row: any, column: any) {
+	if (column?.property && row.children) {
+		Table.value?.toggleRowExpansion(row);
+	}
+}
+
+// 追加子集
+function append(row: any) {
+	Crud.value?.rowAppend({
+		parentId: row.id,
+		orderNum: 1
+	});
 }
 
 provide("dict", {

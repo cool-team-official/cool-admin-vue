@@ -1,9 +1,12 @@
 import { Emitter } from "mitt";
 import { onBeforeUpdate, ref, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useService } from "../service";
+import { service } from "../service";
+import { Data } from "../utils";
 
-const service = useService();
+export function useService(): Eps.Service {
+	return Data.get("service" || service);
+}
 
 export function useRefs() {
 	const refs: any = ref<any[]>([]);
@@ -21,7 +24,7 @@ export function useRefs() {
 
 export function useCool() {
 	return {
-		service,
+		service: useService(),
 		route: useRoute(),
 		router: useRouter(),
 		mitt: inject("mitt") as Emitter<any>,

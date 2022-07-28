@@ -265,12 +265,31 @@ export function revDeepTree(list: any[]) {
 	return arr;
 }
 
-export function hideLoading() {
-	const el = document.getElementById("Loading");
+// 合并 service
+export function mergeService(list: any[]) {
+	const data: any = {};
 
-	if (el) {
-		el.style.display = "none";
-	}
+	list.forEach(({ path, value }) => {
+		const arr: string[] = path.split("/");
+		const parents = arr.slice(0, arr.length - 1);
+		const name = basename(path).replace(".ts", "");
+
+		let curr = data;
+
+		parents.forEach((k) => {
+			if (!curr[k]) {
+				curr[k] = {};
+			}
+
+			curr = curr[k];
+		});
+
+		curr[name] = value;
+	});
+
+	return data;
 }
 
 export { storage };
+export * from "./data";
+export * from "./loading";

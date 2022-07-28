@@ -140,7 +140,7 @@ const { options } = module.get("upload");
 const Upload = ref<any>();
 
 // 选择图片的数量
-const limit = props.limit || options.limit.select;
+const limit = props.limit || options.limit?.select;
 
 // 是否可见
 const visible = ref<boolean>(false);

@@ -6,7 +6,7 @@
 			<el-button @click="openForm">自定义表单</el-button>
 
 			<cl-filter label="字典">
-				<cl-select :options="dict.get('sex')"></cl-select>
+				<cl-select :options="dict.get('brand')"></cl-select>
 			</cl-filter>
 
 			<cl-flex1></cl-flex1>
@@ -50,7 +50,7 @@ import { useDict } from "/$/dict";
 
 const { dict } = useDict();
 
-dict.refresh(["sex"]);
+console.log(dict.get("brand").value);
 
 const Crud = useCrud(
 	{
@@ -76,7 +76,7 @@ const Upsert = useUpsert({
 			prop: "authType",
 			component: {
 				name: "el-select",
-				options: dict.get("authType")
+				options: dict.get("type")
 			}
 		},
 		{

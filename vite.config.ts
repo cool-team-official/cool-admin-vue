@@ -3,8 +3,6 @@ import { UserConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import viteCompression from "vite-plugin-compression";
-import unocss from "unocss/vite";
-import { presetUno } from "unocss";
 import { proxy } from "./src/cool/config/proxy";
 import { cool } from "./build/cool";
 
@@ -17,15 +15,8 @@ function resolve(dir: string) {
 export default (): UserConfig => {
 	return {
 		base: "/",
-		plugins: [
-			vue(),
-			viteCompression(),
-			vueJsx(),
-			unocss({
-				presets: [presetUno()]
-			}),
-			cool()
-		],
+		cacheDir: "./build/.vite",
+		plugins: [vue(), viteCompression(), vueJsx(), cool()],
 		css: {
 			preprocessorOptions: {
 				scss: {
@@ -48,6 +39,7 @@ export default (): UserConfig => {
 			}
 		},
 		build: {
+			minify: "terser",
 			terserOptions: {
 				compress: {
 					drop_console: true,

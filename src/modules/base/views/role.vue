@@ -31,7 +31,13 @@
 					:inactive-value="0"
 					@change="onRelevanceChange"
 				/>
-				<span class="ml-1 text-size-1">是否关联上下级</span>
+				<span
+					:style="{
+						marginLeft: '10px',
+						fontSize: '12px'
+					}"
+					>是否关联上下级</span
+				>
 			</template>
 		</cl-upsert>
 	</cl-crud>

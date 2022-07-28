@@ -7,24 +7,23 @@ import { storage } from "/@/cool/utils";
 import { useBase } from "/$/base";
 import { router } from "../router";
 
-axios.defaults.timeout = 30000;
-axios.defaults.withCredentials = false;
+const request = axios.create({
+	timeout: 30000,
+	withCredentials: false
+});
 
 NProgress.configure({
 	showSpinner: true
 });
 
 // 请求队列
-let requests: Array<(token: string) => void> = [];
+let queue: Array<(token: string) => void> = [];
 
 // 是否刷新中
 let isRefreshing = false;
 
-// @ts-ignore 避免热更新后多次执行
-axios.interceptors.request.eject(axios._req);
-
-// @ts-ignore 请求
-axios._req = axios.interceptors.request.use(
+// 请求
+request.interceptors.request.use(
 	(req) => {
 		const { user } = useBase();
 
@@ -67,8 +66,8 @@ axios._req = axios.interceptors.request.use(
 
 					user.refreshToken()
 						.then((token) => {
-							requests.forEach((cb) => cb(token));
-							requests = [];
+							queue.forEach((cb) => cb(token));
+							queue = [];
 							isRefreshing = false;
 						})
 						.catch(() => {
@@ -78,7 +77,7 @@ axios._req = axios.interceptors.request.use(
 
 				return new Promise((resolve) => {
 					// 继续请求
-					requests.push((token) => {
+					queue.push((token) => {
 						// 重新设置 token
 						if (req.headers) {
 							req.headers["Authorization"] = token;
@@ -97,7 +96,7 @@ axios._req = axios.interceptors.request.use(
 );
 
 // 响应
-axios.interceptors.response.use(
+request.interceptors.response.use(
 	(res) => {
 		NProgress.done();
 
@@ -152,4 +151,4 @@ axios.interceptors.response.use(
 	}
 );
 
-export default axios;
+export { request };

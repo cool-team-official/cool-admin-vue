@@ -17,7 +17,7 @@
 import { Codemirror } from "vue-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
-import { onMounted, ref, watch, computed } from "vue";
+import { ref, watch, computed } from "vue";
 import { useDark } from "@vueuse/core";
 import { isNumber } from "lodash";
 
@@ -32,7 +32,7 @@ const props = defineProps({
 	},
 	height: {
 		type: [String, Number],
-		default: "400px"
+		default: 400
 	},
 	fontSize: {
 		type: String,
@@ -49,7 +49,11 @@ const isDark = ref(useDark());
 const height = computed(() => (isNumber(props.height) ? `${props.height}px` : props.height));
 
 // 插件
-const extensions = ref();
+const extensions: any[] = [javascript()];
+
+if (isDark.value) {
+	extensions.push(oneDark);
+}
 
 // 内容
 const content = ref("");
@@ -70,10 +74,6 @@ watch(
 		immediate: true
 	}
 );
-
-onMounted(() => {
-	extensions.value = [javascript(), isDark.value && oneDark];
-});
 </script>
 
 <style lang="scss" scoped>

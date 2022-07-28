@@ -15,10 +15,10 @@ const emit = defineEmits(["update:modelValue", "change"]);
 const { service } = useCool();
 
 // base64
-const base64 = ref<string>("");
+const base64 = ref("");
 
 // svg
-const svg = ref<string>("");
+const svg = ref("");
 
 function refresh() {
 	service.base.open

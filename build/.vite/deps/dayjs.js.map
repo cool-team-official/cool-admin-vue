@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["dep:dayjs"],
+  "sourcesContent": ["export default require(\"./node_modules/dayjs/dayjs.min.js\");"],
+  "mappings": ";;;;;;AAAA,IAAO,gBAAQ;",
+  "names": []
+}

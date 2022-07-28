@@ -37,7 +37,7 @@
 <script lang="ts" name="upload" setup>
 import { computed, ref } from "vue";
 
-const urls = ref<string>("");
+const urls = ref("");
 const list = computed(() => urls.value.split(",").filter(Boolean));
 </script>
 

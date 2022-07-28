@@ -1,8 +1,9 @@
 import { ElMessage } from "element-plus";
 import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from "vue-router";
-import { config, Router, storage, module, hideLoading } from "/@/cool";
+import { config, Router, storage, module } from "/@/cool";
 import { isArray } from "lodash";
 import { useBase } from "/$/base";
+import { Loading } from "../utils";
 
 // 扫描文件
 const files = import.meta.glob(["/src/modules/*/{views,pages}/**/*", "!**/components"]);
@@ -31,7 +32,7 @@ const router = createRouter({
 
 // 组件加载后
 router.beforeResolve(() => {
-	hideLoading();
+	Loading.close();
 });
 
 // 跳转
@@ -103,10 +104,10 @@ async function register(path: string) {
 	const d = router.getRoutes().find((e) => e.path == path);
 
 	if (!d) {
-		const { app, menu } = useBase();
+		const { menu } = useBase();
 
 		// 等待加载
-		await app.req;
+		await Loading.wait();
 
 		// 待注册列表
 		const list: any[] = [];
