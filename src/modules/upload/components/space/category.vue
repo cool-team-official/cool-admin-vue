@@ -24,7 +24,7 @@
 					@contextmenu.stop.prevent="onContextMenu($event, item)"
 				>
 					<span>{{ item.name }}</span>
-					<el-icon v-show="space.category.id == item.id"><ArrowRightBold /></el-icon>
+					<el-icon v-show="space.category.id == item.id"><arrow-right-bold /></el-icon>
 				</li>
 
 				<el-empty v-if="flist.length == 0" :image-size="80" />

@@ -7,7 +7,7 @@
 				<li @click="refresh()">
 					<el-tooltip content="刷新">
 						<el-icon>
-							<Refresh />
+							<refresh />
 						</el-icon>
 					</el-tooltip>
 				</li>

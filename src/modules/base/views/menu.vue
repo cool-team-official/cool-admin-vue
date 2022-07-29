@@ -50,8 +50,8 @@
 				<!-- 路由缓存 -->
 				<template #column-keepAlive="{ scope }">
 					<el-icon v-if="scope.row.type == 1">
-						<Check v-if="scope.row.keepAlive" />
-						<Close v-else />
+						<check v-if="scope.row.keepAlive" />
+						<close v-else />
 					</el-icon>
 					<span v-else></span>
 				</template>

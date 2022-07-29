@@ -2,7 +2,7 @@
 	<div class="cl-chat__wrap">
 		<div class="cl-chat__icon" @click="open">
 			<el-badge :value="unCount">
-				<el-icon :size="15"><BellFilled /></el-icon>
+				<el-icon :size="15"><bell-filled /></el-icon>
 			</el-badge>
 		</div>
 

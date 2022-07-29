@@ -5,6 +5,7 @@ export default (): ModuleConfig => {
 		options: {
 			// socket.io 连接地址
 			path: "/chat"
-		}
+		},
+		components: [import("./components/index.vue")]
 	};
 };

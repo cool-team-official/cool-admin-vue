@@ -18,7 +18,7 @@
 			>
 				<span>{{ item.meta?.label || item.name || item.path }}</span>
 				<el-icon @mousedown.stop="onDel(Number(index))">
-					<Close />
+					<close />
 				</el-icon>
 			</div>
 		</div>

@@ -22,7 +22,12 @@
 
 <script lang="ts" name="menu-icon" setup>
 import { ref, watch } from "vue";
-import { iconList } from "/$/base";
+import { basename } from "/@/cool/utils";
+
+// svg 图标加载
+const svgFiles = import.meta.glob("/src/modules/*/static/**/*.svg", {
+	eager: true
+});
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -32,6 +37,16 @@ const props = defineProps({
 		default: ""
 	}
 });
+
+function iconList() {
+	const list: string[] = [];
+
+	for (const i in svgFiles) {
+		list.push(basename(i).replace(".svg", ""));
+	}
+
+	return list;
+}
 
 // 图标列表
 const list = ref(iconList());

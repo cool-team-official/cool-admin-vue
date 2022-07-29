@@ -25,11 +25,11 @@ export async function bootstrap(app: App) {
 	// 路由
 	app.use(router);
 
-	// eps
-	await createEps();
-
 	// 模块
 	const { eventLoop } = createModule(app);
+
+	// eps
+	await createEps();
 
 	// 加载
 	Loading.set([eventLoop()]);

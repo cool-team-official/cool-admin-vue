@@ -143,10 +143,10 @@ const Upload = ref<any>();
 const limit = props.limit || options.limit?.select;
 
 // 是否可见
-const visible = ref<boolean>(false);
+const visible = ref(false);
 
 // 是否加载中
-const loading = ref<boolean>(false);
+const loading = ref(false);
 
 // 已选列表
 const selection = ref<any[]>([]);
@@ -155,13 +155,13 @@ const selection = ref<any[]>([]);
 const list = ref<any[]>([]);
 
 // 类目数据
-const category = reactive<any>({
+const category = reactive({
 	id: null,
 	visible: true
 });
 
 // 分页信息
-const pagination = reactive<any>({
+const pagination = reactive({
 	page: 1,
 	size: 20,
 	total: 0

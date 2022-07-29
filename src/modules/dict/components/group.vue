@@ -28,7 +28,7 @@
 				"
 			>
 				<span>{{ item.name }} - {{ item.key }}</span>
-				<el-icon v-show="active == item.id"><ArrowRightBold /></el-icon>
+				<el-icon v-show="active == item.id"><arrow-right-bold /></el-icon>
 			</li>
 
 			<el-empty v-if="list.length == 0" :image-size="80" />

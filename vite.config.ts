@@ -2,7 +2,7 @@ import path from "path";
 import { UserConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
-import viteCompression from "vite-plugin-compression";
+import compression from "vite-plugin-compression";
 import { proxy } from "./src/cool/config/proxy";
 import { cool } from "./build/cool";
 
@@ -15,8 +15,7 @@ function resolve(dir: string) {
 export default (): UserConfig => {
 	return {
 		base: "/",
-		cacheDir: "./build/.vite",
-		plugins: [vue(), viteCompression(), vueJsx(), cool()],
+		plugins: [vue(), compression(), vueJsx(), cool()],
 		css: {
 			preprocessorOptions: {
 				scss: {

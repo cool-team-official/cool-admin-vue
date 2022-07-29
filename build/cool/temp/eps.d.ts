@@ -291,7 +291,7 @@ declare namespace Eps {
 		 */
 		price?: number;
 		/**
-		 * 分类 0-衣服 1-鞋子 2-裤子
+		 * 分类
 		 */
 		type?: number;
 		/**
@@ -510,6 +510,165 @@ declare namespace Eps {
 		 */
 		[key: string]: any;
 	}
+	interface ChatMessage {
+		/**
+		 * list
+		 */
+		list(data?: any): Promise<any[]>;
+		/**
+		 * page
+		 */
+		page(data?: any): Promise<{
+			pagination: { size: number; page: number; total: number };
+			list: any[];
+			[key: string]: any;
+		}>;
+		/**
+		 * info
+		 */
+		info(data?: any): Promise<any>;
+		/**
+		 * update
+		 */
+		update(data?: any): Promise<any>;
+		/**
+		 * delete
+		 */
+		delete(data?: any): Promise<any>;
+		/**
+		 * add
+		 */
+		add(data?: any): Promise<any>;
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			list: string;
+			page: string;
+			info: string;
+			update: string;
+			delete: string;
+			add: string;
+		};
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			list: boolean;
+			page: boolean;
+			info: boolean;
+			update: boolean;
+			delete: boolean;
+			add: boolean;
+		};
+	}
+
+	interface ChatSession {
+		/**
+		 * list
+		 */
+		list(data?: any): Promise<any[]>;
+		/**
+		 * page
+		 */
+		page(data?: any): Promise<{
+			pagination: { size: number; page: number; total: number };
+			list: any[];
+			[key: string]: any;
+		}>;
+		/**
+		 * info
+		 */
+		info(data?: any): Promise<any>;
+		/**
+		 * update
+		 */
+		update(data?: any): Promise<any>;
+		/**
+		 * delete
+		 */
+		delete(data?: any): Promise<any>;
+		/**
+		 * add
+		 */
+		add(data?: any): Promise<any>;
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			list: string;
+			page: string;
+			info: string;
+			update: string;
+			delete: string;
+			add: string;
+		};
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			list: boolean;
+			page: boolean;
+			info: boolean;
+			update: boolean;
+			delete: boolean;
+			add: boolean;
+		};
+	}
+
+	interface Test {
+		/**
+		 * list
+		 */
+		list(data?: any): Promise<any[]>;
+		/**
+		 * page
+		 */
+		page(data?: any): Promise<{
+			pagination: { size: number; page: number; total: number };
+			list: any[];
+			[key: string]: any;
+		}>;
+		/**
+		 * info
+		 */
+		info(data?: any): Promise<any>;
+		/**
+		 * update
+		 */
+		update(data?: any): Promise<any>;
+		/**
+		 * delete
+		 */
+		delete(data?: any): Promise<any>;
+		/**
+		 * add
+		 */
+		add(data?: any): Promise<any>;
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			list: string;
+			page: string;
+			info: string;
+			update: string;
+			delete: string;
+			add: string;
+		};
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			list: boolean;
+			page: boolean;
+			info: boolean;
+			update: boolean;
+			delete: boolean;
+			add: boolean;
+		};
+	}
+
 	interface BaseComm {
 		/**
 		 * 修改个人信息
@@ -1393,6 +1552,8 @@ declare namespace Eps {
 			proxy?: boolean;
 			[key: string]: any;
 		}): Promise<any>;
+		chat: { message: ChatMessage; session: ChatSession };
+		test: Test;
 		base: {
 			comm: BaseComm;
 			open: BaseOpen;

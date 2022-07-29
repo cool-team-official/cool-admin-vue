@@ -5,7 +5,7 @@
 
 			<ul class="tools">
 				<li @click="session.get()">
-					<el-icon :size="16"><Refresh /></el-icon>
+					<el-icon :size="16"><refresh /></el-icon>
 				</li>
 			</ul>
 		</div>
