@@ -113,6 +113,7 @@ const Upsert = useUpsert({
 						children: "children",
 						disabled: "disabled"
 					},
+					clearable: true,
 					filterable: true,
 					"default-expand-all": true,
 					"check-strictly": true
