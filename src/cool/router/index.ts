@@ -55,28 +55,27 @@ router.append = function (data) {
 			d.name = d.path.substring(1);
 		}
 
+		if (!d.component) {
+			const url = d.viewPath;
+
+			if (url) {
+				if (url.indexOf("http") == 0) {
+					if (d.meta) {
+						d.meta.iframeUrl = url;
+					}
+
+					d.component = () => import(`/$/base/views/frame.vue`);
+				} else {
+					d.component = files["/src/" + url.replace("cool/", "")];
+				}
+			} else {
+				d.redirect = "/404";
+			}
+		}
+
 		if (e.isPage) {
 			router.addRoute(d);
 		} else {
-			if (!d.component) {
-				const url = d.viewPath;
-
-				if (url) {
-					if (url.indexOf("http") == 0) {
-						if (d.meta) {
-							d.meta.iframeUrl = url;
-						}
-
-						d.component = () => import(`/$/base/views/frame.vue`);
-					} else {
-						d.component = files["/src/" + url.replace("cool/", "")];
-					}
-				} else {
-					d.redirect = "/404";
-				}
-			}
-
-			// @ts-ignore
 			router.addRoute("index", d);
 		}
 	});

@@ -7,7 +7,7 @@
 				<li @click="refresh()">
 					<el-tooltip content="刷新">
 						<el-icon>
-							<refresh />
+							<refresh-icon />
 						</el-icon>
 					</el-tooltip>
 				</li>
@@ -77,7 +77,7 @@ import { useCool } from "/@/cool";
 import { deepTree, revDeepTree } from "/@/cool/utils";
 import { isArray } from "lodash";
 import { ContextMenu, useForm } from "@cool-vue/crud";
-import { Refresh, Operation, MoreFilled } from "@element-plus/icons-vue";
+import { Refresh as RefreshIcon, Operation, MoreFilled } from "@element-plus/icons-vue";
 import { useBase, checkPerm } from "/$/base";
 
 const props = defineProps({

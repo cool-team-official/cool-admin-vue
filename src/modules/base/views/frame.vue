@@ -4,7 +4,7 @@
 	</div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" name="frame" setup>
 import { ref, watch, onMounted } from "vue";
 import { useCool } from "/@/cool";
 
