@@ -1,9 +1,9 @@
 <template>
 	<div class="app-views">
 		<router-view v-slot="{ Component }">
-			<!-- <keep-alive :include="caches"> -->
-			<component :is="Component" />
-			<!-- </keep-alive> -->
+			<keep-alive :include="caches">
+				<component :is="Component" />
+			</keep-alive>
 		</router-view>
 	</div>
 </template>
