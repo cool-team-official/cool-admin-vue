@@ -184,7 +184,7 @@ const Crud = useCrud({
 	onRefresh(params, { render }) {
 		service.dict.info
 			.list({
-				typeId: group.value.id,
+				typeId: group.value?.id,
 				...params
 			})
 			.then((res) => {
