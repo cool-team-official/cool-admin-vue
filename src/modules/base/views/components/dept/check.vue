@@ -23,7 +23,7 @@
 	</div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" name="dept-check" setup>
 import { onMounted, ref, watch } from "vue";
 import { deepTree } from "/@/cool/utils";
 import { ElMessage } from "element-plus";

@@ -68,8 +68,8 @@ function filterNode(val: string, data: any) {
 }
 
 // 值改变
-function onCheckChange(_: any, { checkedKeys }: any) {
-	emit("update:modelValue", checkedKeys);
+function onCheckChange(_: any, { checkedKeys, halfCheckedKeys }: any) {
+	emit("update:modelValue", [...checkedKeys, ...halfCheckedKeys]);
 }
 
 // 过滤监听
@@ -81,7 +81,7 @@ watch(keyword, (val: string) => {
 watch(
 	() => props.modelValue,
 	(val) => {
-		checked.value = val || [];
+		checked.value = (val || []).filter((e) => Tree.value.getNode(e)?.isLeaf);
 	}
 );
 

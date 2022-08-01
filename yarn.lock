@@ -1052,14 +1052,14 @@
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
-"@cool-vue/crud@^5.3.1":
-  version "5.3.1"
-  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-5.3.1.tgz#932fe9d382053a8259a5204b0d746d1e7fbb49b6"
-  integrity sha512-GfmBP1xMumz5NKDLOZgVJqkhEhiHTZsXxTTn4gaTe+vq3VesGWhhbfT71WL2U9SSTroTSJOdIHBG+xE4Wo9lFg==
+"@cool-vue/crud@^5.3.2":
+  version "5.3.2"
+  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-5.3.2.tgz#61b01eb012688a0539e5939958cd9fb2bf60513a"
+  integrity sha512-tHmF6OGjGvoOCPTSzgFKv6x3UvFLDKq5NIneHx1jeoJwPE422lWHd/CeBr/tLq7pvFrRMsKWhlvD6moyfZDiQA==
   dependencies:
     array.prototype.flat "^1.2.4"
     core-js "^3.21.1"
-    element-plus "^2.2.6"
+    element-plus "^2.2.11"
     merge "^2.1.1"
     mitt "^3.0.0"
     vue "^3.2.31"
@@ -2446,7 +2446,7 @@ electron-to-chromium@^1.4.202:
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.206.tgz#580ff85b54d7ec0c05f20b1e37ea0becdd7b0ee4"
   integrity sha512-h+Fadt1gIaQ06JaIiyqPsBjJ08fV5Q7md+V8bUvQW/9OvXfL2LRICTz2EcnnCP7QzrFTS6/27MRV6Bl9Yn97zA==
 
-element-plus@^2.2.11, element-plus@^2.2.6:
+element-plus@^2.2.11:
   version "2.2.11"
   resolved "https://registry.npmjs.org/element-plus/-/element-plus-2.2.11.tgz#c242bd5ff10aea02cfc70c0b8c54cbc9b732e7ba"
   integrity sha512-JjOvz5DLBc4Jp9OHKXNcK/Cys4NX5/vxpZ+gYmH2V+pLkwJnyIOrNZ3QxfdyG6yE4+NkpoA6koEgUB7T+0Z5vQ==
