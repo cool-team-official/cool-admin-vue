@@ -93,6 +93,7 @@ defineExpose({
 		&._collapse {
 			margin-right: 0;
 			width: 0;
+			border-right: 0;
 		}
 	}
 

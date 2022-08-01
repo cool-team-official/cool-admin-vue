@@ -1,7 +1,7 @@
 <template>
 	<cl-view-group :title="title">
 		<template #left>
-			<Group />
+			<dict-group />
 		</template>
 
 		<template #right>
@@ -54,7 +54,7 @@
 <script lang="ts" name="dict-list" setup>
 import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
-import Group from "../components/group.vue";
+import DictGroup from "../components/group.vue";
 import { computed, provide, ref } from "vue";
 import { deepTree } from "/@/cool/utils";
 import { cloneDeep } from "lodash-es";
@@ -88,7 +88,7 @@ const Upsert = useUpsert({
 						const data = cloneDeep(Table.value?.data);
 
 						function deep(d: any, f: boolean) {
-							if (d.id == Upsert.value?.getForm("id")) {
+							if (d.id && d.id == Upsert.value?.getForm("id")) {
 								f = true;
 							}
 
