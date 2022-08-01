@@ -14,7 +14,7 @@
 	</el-button>
 </template>
 
-<script lang="ts" name="'cl-export-btn" setup>
+<script lang="ts" name="cl-export-btn" setup>
 import { useCrud } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
 import { ref } from "vue";
