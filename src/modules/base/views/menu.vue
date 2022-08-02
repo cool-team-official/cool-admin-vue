@@ -59,11 +59,12 @@
 				<!-- 行新增 -->
 				<template #slot-add="{ scope }">
 					<el-button
-						v-if="scope.row.type != 2"
 						type="success"
 						text
 						bg
-						v-permission="service.base.sys.user.permission.add"
+						v-permission="{
+							and: [service.base.sys.user.permission.add, scope.row.type != 2]
+						}"
 						@click="append(scope.row)"
 						>新增</el-button
 					>
