@@ -123,7 +123,7 @@ const Table = useTable({
 		(row) => {
 			return {
 				label: "新增",
-				hidden: row.type == 2,
+				hidden: !(row.type != 2 && service.base.sys.user._permission.add),
 				callback(done) {
 					append(row);
 					done();
@@ -135,7 +135,7 @@ const Table = useTable({
 		(row) => {
 			return {
 				label: "添加权限",
-				hidden: row.type != 1,
+				hidden: !(row.type == 1 && service.base.sys.user._permission.add),
 				callback(done) {
 					addPermission(row);
 					done();

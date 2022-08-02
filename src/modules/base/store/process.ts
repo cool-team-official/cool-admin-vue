@@ -40,11 +40,21 @@ export const useProcessStore = defineStore("process", function () {
 		list.value = [];
 	}
 
+	// 设置标题
+	function setTitle(title: string) {
+		const item = list.value.find((e) => e.active);
+
+		if (item) {
+			item.meta.label = title;
+		}
+	}
+
 	return {
 		list,
 		add,
 		remove,
 		set,
-		clear
+		clear,
+		setTitle
 	};
 });
