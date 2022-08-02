@@ -63,6 +63,7 @@
 						type="success"
 						text
 						bg
+						v-permission="service.base.sys.user.permission.add"
 						@click="append(scope.row)"
 						>新增</el-button
 					>
