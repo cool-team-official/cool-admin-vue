@@ -52,7 +52,7 @@ const list = computed(() => {
 });
 
 // 最后一个节点名称
-const lastName = computed(() => _.last(list.value).name);
+const lastName = computed(() => _.last(list.value)?.name);
 </script>
 
 <style lang="scss" scoped>

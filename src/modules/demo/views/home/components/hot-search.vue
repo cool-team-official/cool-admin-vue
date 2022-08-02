@@ -5,7 +5,7 @@
 		</div>
 
 		<div class="hot-search__container">
-			<el-row class="hot-search__chart" :gutter="100">
+			<el-row class="hot-search__chart" :gutter="20">
 				<el-col :md="12" :xs="24">
 					<div class="block">
 						<div class="count">
@@ -24,15 +24,15 @@
 				</el-col>
 
 				<el-col :md="12" :xs="24">
-					<div class="block">
+					<div class="block is-last">
 						<div class="count">
 							<div class="number">
-								<span>搜索用户数</span>
-								<span>1242</span>
+								<span>关注用户数</span>
+								<span>365</span>
 							</div>
 							<div class="rise">
 								<i class="el-icon-top-right"></i>
-								<span>+7%</span>
+								<span>+2%</span>
 							</div>
 						</div>
 
@@ -55,24 +55,24 @@
 							:columns="[
 								{
 									label: '排名',
-									prop: 'index',
+									type: 'index',
 									width: 60
 								},
 								{
 									label: '搜索关键词',
 									prop: 'keyWord',
-									'min-width': 100
+									minWidth: 100
 								},
 								{
 									label: '用户数',
 									prop: 'users',
-									'min-width': 100
+									minWidth: 100
 								},
 								{
 									label: '周涨幅',
 									prop: 'ud',
 									sortable: 'custom',
-									'min-width': 100
+									minWidth: 100
 								}
 							]"
 						/>

@@ -107,6 +107,7 @@ function changeDate(value: string) {
 	&__filter {
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 		height: 40px;
 
 		ul {
@@ -114,6 +115,7 @@ function changeDate(value: string) {
 			align-items: center;
 			margin-right: 20px;
 			flex: 1;
+			max-width: 220px;
 
 			li {
 				list-style: none;
@@ -132,6 +134,10 @@ function changeDate(value: string) {
 					color: #999;
 				}
 			}
+		}
+
+		:deep(.el-date-editor) {
+			width: 150px;
 		}
 	}
 
