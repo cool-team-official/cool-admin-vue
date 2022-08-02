@@ -63,7 +63,7 @@
 						text
 						bg
 						v-permission="{
-							and: [service.base.sys.user.permission.add, scope.row.type != 2]
+							and: [service.base.sys.menu.permission.add, scope.row.type != 2]
 						}"
 						@click="append(scope.row)"
 						>新增</el-button
