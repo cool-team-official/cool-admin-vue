@@ -8,7 +8,7 @@ export default {
 
 	setup() {
 		const { router, route } = useCool();
-		const { menu } = useStore();
+		const { menu, app } = useStore();
 
 		// 是否可见
 		const visible = ref(true);
@@ -17,6 +17,11 @@ export default {
 		function toView(url: string) {
 			if (url != route.path) {
 				router.push(url);
+			}
+
+			// 移动端点击收起左侧菜单
+			if (app.browser.isMini) {
+				app.fold(true);
 			}
 		}
 
