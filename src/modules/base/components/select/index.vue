@@ -19,7 +19,7 @@ export default defineComponent({
 	props: {
 		modelValue: [String, Number],
 		options: {
-			type: Array,
+			type: [Array, Object],
 			default: () => []
 		},
 		prop: String

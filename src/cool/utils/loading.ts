@@ -9,7 +9,7 @@ export const Loading = {
 		this.resolve();
 	},
 
-	wait() {
+	async wait() {
 		return this.next;
 	},
 

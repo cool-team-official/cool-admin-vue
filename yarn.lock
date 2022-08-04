@@ -1052,17 +1052,17 @@
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
-"@cool-vue/crud@^5.3.2":
-  version "5.3.2"
-  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-5.3.2.tgz#61b01eb012688a0539e5939958cd9fb2bf60513a"
-  integrity sha512-tHmF6OGjGvoOCPTSzgFKv6x3UvFLDKq5NIneHx1jeoJwPE422lWHd/CeBr/tLq7pvFrRMsKWhlvD6moyfZDiQA==
+"@cool-vue/crud@^5.3.5":
+  version "5.3.5"
+  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-5.3.5.tgz#350d7b307ce1d0445b78f179ec2d0f16eb91b99c"
+  integrity sha512-xWwxv2zQCYGt4GqHg1vDEsiv2sGhJCKYKjxDW6hTo5O/oNuzm8uVcWGVGKyYn5y8//F8wcmod4Kk1L/OvdvS5w==
   dependencies:
     array.prototype.flat "^1.2.4"
     core-js "^3.21.1"
-    element-plus "^2.2.11"
+    element-plus "^2.2.12"
     merge "^2.1.1"
     mitt "^3.0.0"
-    vue "^3.2.31"
+    vue "^3.2.37"
 
 "@ctrl/tinycolor@^3.4.1":
   version "3.4.1"
@@ -2450,6 +2450,27 @@ element-plus@^2.2.11:
   version "2.2.11"
   resolved "https://registry.npmjs.org/element-plus/-/element-plus-2.2.11.tgz#c242bd5ff10aea02cfc70c0b8c54cbc9b732e7ba"
   integrity sha512-JjOvz5DLBc4Jp9OHKXNcK/Cys4NX5/vxpZ+gYmH2V+pLkwJnyIOrNZ3QxfdyG6yE4+NkpoA6koEgUB7T+0Z5vQ==
+  dependencies:
+    "@ctrl/tinycolor" "^3.4.1"
+    "@element-plus/icons-vue" "^2.0.6"
+    "@floating-ui/dom" "^0.5.4"
+    "@popperjs/core" "npm:@sxzz/popperjs-es@^2.11.7"
+    "@types/lodash" "^4.14.182"
+    "@types/lodash-es" "^4.17.6"
+    "@vueuse/core" "^8.7.5"
+    async-validator "^4.2.5"
+    dayjs "^1.11.3"
+    escape-html "^1.0.3"
+    lodash "^4.17.21"
+    lodash-es "^4.17.21"
+    lodash-unified "^1.0.2"
+    memoize-one "^6.0.0"
+    normalize-wheel-es "^1.2.0"
+
+element-plus@^2.2.12:
+  version "2.2.12"
+  resolved "https://registry.npmjs.org/element-plus/-/element-plus-2.2.12.tgz#b6c4e298e02ba9b904d70daa54def27b2de8c43c"
+  integrity sha512-g/hIHj3b+dND2R3YRvyvCJtJhQvR7lWvXqhJaoxaQmajjNWedoe4rttxG26fOSv9YCC2wN4iFDcJHs70YFNgrA==
   dependencies:
     "@ctrl/tinycolor" "^3.4.1"
     "@element-plus/icons-vue" "^2.0.6"
@@ -4718,7 +4739,7 @@ vue-router@^4.1.2:
   dependencies:
     "@vue/devtools-api" "^6.1.4"
 
-vue@^3.2.31, vue@^3.2.37:
+vue@^3.2.37:
   version "3.2.37"
   resolved "https://registry.npmjs.org/vue/-/vue-3.2.37.tgz#da220ccb618d78579d25b06c7c21498ca4e5452e"
   integrity sha512-bOKEZxrm8Eh+fveCqS1/NkG/n6aMidsI6hahas7pa0w/l7jkbssJVsRhVDs07IdDq7h9KHswZOgItnwJAgtVtQ==

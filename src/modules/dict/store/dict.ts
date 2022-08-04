@@ -1,14 +1,12 @@
 import { defineStore } from "pinia";
 import { computed, reactive } from "vue";
-import { isDev, useCool } from "/@/cool";
+import { isDev, service } from "/@/cool";
 
 declare interface Data {
 	[key: string]: Array<{ label: string; value: any }>;
 }
 
 export const useDictStore = defineStore("dict", () => {
-	const { service } = useCool();
-
 	// 对象数据
 	const data = reactive<Data>({});
 

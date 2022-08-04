@@ -124,6 +124,8 @@ request.interceptors.response.use(
 			const { status, config } = error.response;
 			const { user } = useBase();
 
+			console.log(config);
+
 			if (status == 401) {
 				user.logout();
 			}

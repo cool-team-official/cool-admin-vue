@@ -76,9 +76,7 @@ const chartOption = reactive<any>({
 			type: "bar",
 			data: [],
 			itemStyle: {
-				normal: {
-					color: "#4165d7"
-				}
+				color: "#4165d7"
 			}
 		},
 		{
@@ -88,9 +86,7 @@ const chartOption = reactive<any>({
 			barGap: "-100%",
 			data: [],
 			itemStyle: {
-				normal: {
-					color: "#f1f1f9"
-				}
+				color: "#f1f1f9"
 			},
 			zlevel: -1
 		}

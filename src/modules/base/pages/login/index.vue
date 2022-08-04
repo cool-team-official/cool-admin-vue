@@ -13,7 +13,7 @@
 						v-model="form.username"
 						placeholder="请输入用户名"
 						maxlength="20"
-						auto-complete="off"
+						autocomplete="on"
 					/>
 				</el-form-item>
 
@@ -23,7 +23,7 @@
 						type="password"
 						placeholder="请输入密码"
 						maxlength="20"
-						auto-complete="off"
+						autocomplete="off"
 					/>
 				</el-form-item>
 
@@ -33,7 +33,6 @@
 							v-model="form.verifyCode"
 							placeholder="图片验证码"
 							maxlength="4"
-							auto-complete="off"
 							@keyup.enter="toLogin"
 						/>
 

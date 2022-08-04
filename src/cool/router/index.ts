@@ -48,9 +48,7 @@ router.href = function (path) {
 router.append = function (data) {
 	const list = isArray(data) ? data : [data];
 
-	list.forEach((e) => {
-		const d = { ...e };
-
+	list.forEach((d) => {
 		if (!d.name) {
 			d.name = d.path.substring(1);
 		}
@@ -73,12 +71,17 @@ router.append = function (data) {
 			}
 		}
 
-		if (e.isPage) {
+		if (d.isPage) {
 			router.addRoute(d);
 		} else {
 			router.addRoute("index", d);
 		}
 	});
+};
+
+// 找路由
+router.find = function (path: string) {
+	return router.getRoutes().find((e) => e.path == path);
 };
 
 let lock = false;
@@ -100,9 +103,9 @@ router.onError((err: any) => {
 // 注册
 async function register(path: string) {
 	// 当前路由是否存在
-	const d = router.getRoutes().find((e) => e.path == path);
+	const f = Boolean(router.find(path));
 
-	if (!d) {
+	if (!f) {
 		const { menu } = useBase();
 
 		// 等待加载
@@ -143,46 +146,49 @@ async function register(path: string) {
 		if (r) {
 			router.append(r);
 		}
-
-		return r?.path || "/404";
-	} else {
-		return null;
 	}
+
+	return { route: router.find(path), isReg: !f };
 }
 
 // 路由守卫
 router.beforeEach(async (to, from, next) => {
-	// 注册路由
-	const path = await register(to.path);
+	// 数据缓存
+	const { user, process } = useBase();
 
-	if (path) {
-		// 重定向
-		next({ ...to, path });
+	// 预先注册路由
+	const { isReg, route } = await register(to.path);
+
+	// 组件不存在、路由不存在
+	if (!route?.components) {
+		next(user.token ? "/404" : "/login");
 	} else {
-		// 数据缓存
-		const { user, process } = useBase();
-
-		// 登录成功
-		if (user.token) {
-			// 在登录页
-			if (to.path.includes("/login")) {
-				// Token 未过期
-				if (!storage.isExpired("token")) {
-					// 回到首页
-					return next("/");
+		// 注册后重定向
+		if (isReg) {
+			next({ ...to, path: route.path });
+		} else {
+			// 登录成功
+			if (user.token) {
+				// 在登录页
+				if (to.path.includes("/login")) {
+					// Token 未过期
+					if (!storage.isExpired("token")) {
+						// 回到首页
+						return next("/");
+					}
+				} else {
+					// 添加路由进程
+					process.add(to);
 				}
 			} else {
-				// 添加路由进程
-				process.add(to);
+				// 忽略部分 Token 验证
+				if (!config.ignore.token.find((e) => to.path == e)) {
+					return next("/login");
+				}
 			}
-		} else {
-			// 忽略部分 Token 验证
-			if (!config.ignore.token.find((e) => to.path == e)) {
-				return next("/login");
-			}
-		}
 
-		next();
+			next();
+		}
 	}
 });
 

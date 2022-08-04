@@ -31,7 +31,6 @@ const chartOption = reactive({
 			radius: ["50%", "60%"],
 			center: ["50%", "40%"],
 			avoidLabelOverlap: false,
-			hoverAnimation: false,
 			label: {
 				show: false,
 				position: "center"
@@ -54,10 +53,8 @@ const chartOption = reactive({
 				{ value: 500, name: "手表" }
 			],
 			itemStyle: {
-				normal: {
-					borderColor: "#fff",
-					borderWidth: 4
-				}
+				borderColor: "#fff",
+				borderWidth: 4
 			},
 			roundCap: 1
 		}

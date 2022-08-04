@@ -171,7 +171,11 @@ const props = defineProps({
 		default: true
 	},
 	drag: Boolean,
-	disabled: Boolean
+	disabled: Boolean,
+
+	// 穿透值
+	isEdit: null,
+	scope: null
 });
 
 const emit = defineEmits(["update:modelValue", "upload", "success", "error", "progress"]);

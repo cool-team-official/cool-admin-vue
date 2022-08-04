@@ -166,11 +166,11 @@ const Table = useTable({
 		"order-desc"
 	],
 	columns: [
-		{ label: "名称", prop: "name", align: "left" },
+		{ label: "名称", prop: "name", align: "left", minWidth: 200 },
 		{ label: "排序", prop: "orderNum", sortable: "custom", width: 100 },
-		{ label: "备注", prop: "remark", showOverflowTooltip: true },
-		{ label: "创建时间", prop: "createTime", sortable: "custom" },
-		{ label: "更新时间", prop: "updateTime", sortable: "custom" },
+		{ label: "备注", prop: "remark", showOverflowTooltip: true, minWidth: 150 },
+		{ label: "创建时间", prop: "createTime", sortable: "custom", minWidth: 160 },
+		{ label: "更新时间", prop: "updateTime", sortable: "custom", minWidth: 160 },
 		{
 			type: "op",
 			width: 250,
