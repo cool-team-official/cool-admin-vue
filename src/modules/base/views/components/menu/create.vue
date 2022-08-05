@@ -1,6 +1,16 @@
 <template>
 	<el-button type="success" @click="create">快速创建</el-button>
-	<cl-form ref="Form" />
+	<cl-form ref="Form">
+		<template #slot-entity="{ scope }">
+			<el-cascader
+				v-model="scope.entity"
+				filterable
+				separator="-"
+				:options="tree"
+				@change="onEntityChange"
+			></el-cascader>
+		</template>
+	</cl-form>
 </template>
 
 <script lang="ts" name="menu-create" setup>
@@ -11,9 +21,16 @@ import { useForm } from "@cool-vue/crud";
 import MenuSelect from "./select.vue";
 import IconSelect from "./icon.vue";
 import { deepPaths } from "/@/cool/utils";
+import { ref } from "vue";
 
 const { service } = useCool();
 const Form = useForm();
+
+// 实体列表
+const list: any[] = [];
+
+// 实体树形列表
+const tree = ref();
 
 // 快速创建
 async function create() {
@@ -26,9 +43,6 @@ async function create() {
 	// 数据结构列表
 	const eps: any[][] = await service.base.open.eps();
 
-	// 实体列表
-	const list: any[] = [];
-
 	for (const i in eps) {
 		eps[i].forEach((e) => {
 			if (!isEmpty(e.columns)) {
@@ -39,6 +53,9 @@ async function create() {
 			}
 		});
 	}
+
+	// 实体树形列表
+	tree.value = deepPaths(list.map((e) => e.value));
 
 	// 打开
 	Form.value?.open({
@@ -70,19 +87,7 @@ async function create() {
 				label: "数据结构",
 				span: 14,
 				component: {
-					name: "el-cascader",
-					props: {
-						filterable: true,
-						separator: "-",
-						options: deepPaths(list.map((e) => e.value)),
-						onChange(arr: string[]) {
-							const item = list.find((e) => e.value == arr.join("/"));
-
-							if (item) {
-								Form.value?.setForm("router", `/${item.value}`);
-							}
-						}
-					}
+					name: "slot-entity"
 				},
 				required: true
 			},
@@ -232,5 +237,14 @@ async function create() {
 			}
 		}
 	});
+}
+
+// 实体切换
+function onEntityChange(arr: string[]) {
+	const item = list.find((e) => e.value == arr.join("/"));
+
+	if (item) {
+		Form.value?.setForm("router", `/${item.value}`);
+	}
 }
 </script>

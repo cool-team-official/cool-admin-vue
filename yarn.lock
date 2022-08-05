@@ -2446,27 +2446,6 @@ electron-to-chromium@^1.4.202:
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.206.tgz#580ff85b54d7ec0c05f20b1e37ea0becdd7b0ee4"
   integrity sha512-h+Fadt1gIaQ06JaIiyqPsBjJ08fV5Q7md+V8bUvQW/9OvXfL2LRICTz2EcnnCP7QzrFTS6/27MRV6Bl9Yn97zA==
 
-element-plus@^2.2.11:
-  version "2.2.11"
-  resolved "https://registry.npmjs.org/element-plus/-/element-plus-2.2.11.tgz#c242bd5ff10aea02cfc70c0b8c54cbc9b732e7ba"
-  integrity sha512-JjOvz5DLBc4Jp9OHKXNcK/Cys4NX5/vxpZ+gYmH2V+pLkwJnyIOrNZ3QxfdyG6yE4+NkpoA6koEgUB7T+0Z5vQ==
-  dependencies:
-    "@ctrl/tinycolor" "^3.4.1"
-    "@element-plus/icons-vue" "^2.0.6"
-    "@floating-ui/dom" "^0.5.4"
-    "@popperjs/core" "npm:@sxzz/popperjs-es@^2.11.7"
-    "@types/lodash" "^4.14.182"
-    "@types/lodash-es" "^4.17.6"
-    "@vueuse/core" "^8.7.5"
-    async-validator "^4.2.5"
-    dayjs "^1.11.3"
-    escape-html "^1.0.3"
-    lodash "^4.17.21"
-    lodash-es "^4.17.21"
-    lodash-unified "^1.0.2"
-    memoize-one "^6.0.0"
-    normalize-wheel-es "^1.2.0"
-
 element-plus@^2.2.12:
   version "2.2.12"
   resolved "https://registry.npmjs.org/element-plus/-/element-plus-2.2.12.tgz#b6c4e298e02ba9b904d70daa54def27b2de8c43c"
