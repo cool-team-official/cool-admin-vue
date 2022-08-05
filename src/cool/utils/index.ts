@@ -236,7 +236,7 @@ export function deepTree(list: any[]): any[] {
 
 	fn(newList);
 
-	return orderBy(newList, "orderNum").filter((e) => !e.parentId);
+	return orderBy(newList, "orderNum");
 }
 
 // 树形转列表
