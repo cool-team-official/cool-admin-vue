@@ -41,11 +41,14 @@
 		</cl-upsert>
 	</cl-crud>
 
+	<cl-dialog title="xxx" v-model="dialog.visible"> xxxx </cl-dialog>
+
 	<cl-form ref="Form"></cl-form>
 </template>
 
 <script lang="tsx" setup name="crud">
 import { useCrud, useUpsert, useTable, useForm } from "@cool-vue/crud";
+import { reactive } from "vue";
 import { useDict } from "/$/dict";
 
 const { dict } = useDict();
@@ -164,6 +167,10 @@ const Table = useTable({
 	]
 });
 
+const dialog = reactive({
+	visible: false
+});
+
 const Form = useForm();
 
 // 内嵌
@@ -190,6 +197,8 @@ const Table2 = useTable({
 });
 
 function openForm() {
+	return (dialog.visible = true);
+
 	Form.value?.open({
 		title: "自定义表单",
 		items: [

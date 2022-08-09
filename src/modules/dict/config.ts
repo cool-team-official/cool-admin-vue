@@ -5,7 +5,6 @@ export default (): ModuleConfig => {
 	return {
 		onLoad({ hasToken }) {
 			const { dict } = useDict();
-
 			hasToken(() => {
 				dict.refresh();
 			});

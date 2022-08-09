@@ -291,7 +291,7 @@ declare namespace Eps {
 		 */
 		price?: number;
 		/**
-		 * 分类
+		 * 分类 0-衣服 1-鞋子 2-裤子
 		 */
 		type?: number;
 		/**

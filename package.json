@@ -1,6 +1,6 @@
 {
 	"name": "front-next",
-	"version": "5.7.8",
+	"version": "5.7.9",
 	"scripts": {
 		"dev": "vite --host",
 		"build": "vite build",

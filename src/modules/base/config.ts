@@ -61,21 +61,28 @@ export default (): ModuleConfig => {
 			document.title = config.app.name;
 		},
 		async onLoad() {
-			const { user, menu } = useStore();
+			const { user, menu, app } = useStore();
 
-			if (user.token) {
+			// token 事件
+			async function hasToken(cb: () => Promise<any> | void) {
+				if (cb) {
+					app.addEvent("hasToken", cb);
+
+					if (user.token) {
+						await cb();
+					}
+				}
+			}
+
+			await hasToken(async () => {
 				// 获取用户信息
 				user.get();
 				// 获取菜单权限
 				await menu.get();
-			}
+			});
 
 			return {
-				async hasToken(cb: () => Promise<any> | void) {
-					if (user.token) {
-						if (cb) await cb();
-					}
-				}
+				hasToken
 			};
 		}
 	};
