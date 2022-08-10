@@ -23,7 +23,7 @@
 			<cl-pagination />
 		</el-row>
 
-		<cl-upsert ref="Upsert" @opened="onUpsertOpened">
+		<cl-upsert ref="Upsert">
 			<template #slot-relevance="{ scope }">
 				<el-switch
 					v-model="scope.relevance"
@@ -113,7 +113,11 @@ const Upsert = useUpsert({
 				name: "slot-relevance"
 			}
 		}
-	]
+	],
+
+	onOpened(_, data) {
+		onRelevanceChange(data.relevance || 0);
+	}
 });
 
 // cl-table 配置
@@ -163,10 +167,5 @@ function onRelevanceChange(val: number) {
 	Upsert.value?.setProps("departmentIdList", {
 		checkStrictly: val == 0
 	});
-}
-
-// 打开后
-function onUpsertOpened(_: boolean, data: Eps.BaseSysRoleEntity) {
-	onRelevanceChange(data.relevance || 0);
 }
 </script>

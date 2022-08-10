@@ -17,15 +17,17 @@
 			<cl-pagination />
 		</el-row>
 
-		<cl-upsert ref="Upsert" @opened="onUpsertOpened">
+		<cl-upsert ref="Upsert">
 			<template #slot-content="{ scope }">
-				<div v-for="(item, index) in tab.list" :key="index" class="editor">
-					<template v-if="tab.index == index">
-						<el-button class="change-btn" @click="changeTab(item.to)">{{
-							item.label
-						}}</el-button>
+				<div class="editor">
+					<template v-for="(item, index) in tab.list" :key="index">
+						<template v-if="tab.index == index">
+							<el-button class="change-btn" @click="changeTab(item.to)">{{
+								item.label
+							}}</el-button>
 
-						<component :is="item.component" v-model="scope.data" height="300px" />
+							<component :is="item.component" v-model="scope.data" height="300px" />
+						</template>
 					</template>
 				</div>
 			</template>
@@ -150,7 +152,19 @@ const Upsert = useUpsert({
 				}
 			}
 		}
-	]
+	],
+
+	onOpened(isEdit, data) {
+		tab.index = null;
+
+		nextTick(() => {
+			if (isEdit) {
+				tab.index = /<*>/g.test(data.data) ? 1 : 0;
+			} else {
+				tab.index = 1;
+			}
+		});
+	}
 });
 
 // 切换编辑器
@@ -163,19 +177,6 @@ function changeTab(i: number) {
 			Upsert.value?.setForm("data", "");
 		})
 		.catch(() => null);
-}
-
-// 打开后
-function onUpsertOpened(isEdit: boolean, data: any) {
-	tab.index = null;
-
-	nextTick(() => {
-		if (isEdit) {
-			tab.index = /<*>/g.test(data.data) ? 1 : 0;
-		} else {
-			tab.index = 1;
-		}
-	});
 }
 </script>
 
