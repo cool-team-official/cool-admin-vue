@@ -1,5 +1,5 @@
 import { useStore } from "../store";
-import { isObject } from "lodash";
+import { isObject } from "lodash-es";
 
 function parse(value: any) {
 	const { menu } = useStore();

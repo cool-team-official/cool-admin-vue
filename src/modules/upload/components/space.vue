@@ -104,7 +104,7 @@
 
 <script lang="ts" setup name="cl-upload-space">
 import { computed, onMounted, provide, reactive, ref, watch } from "vue";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { Notebook, ArrowLeft, UploadFilled } from "@element-plus/icons-vue";
 import { module, useCool } from "/@/cool";

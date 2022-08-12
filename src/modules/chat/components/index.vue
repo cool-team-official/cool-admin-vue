@@ -15,7 +15,7 @@
 			keep-alive
 			custom-class="cl-chat__dialog"
 			:close-on-click-modal="false"
-			:close-on-press-escape="false"
+			close-on-press-escape
 			append-to-body
 			:controls="['slot-expand', 'cl-flex1', 'fullscreen', 'close']"
 		>
@@ -56,7 +56,7 @@ import dayjs from "dayjs";
 import { useCool, config, module } from "/@/cool";
 import { useBase } from "/$/base";
 import { Notebook, ArrowLeft, BellFilled } from "@element-plus/icons-vue";
-import { debounce } from "lodash";
+import { debounce } from "lodash-es";
 // import io from "socket.io-client";
 import { Socket } from "socket.io-client";
 import ChatMessage from "./message.vue";

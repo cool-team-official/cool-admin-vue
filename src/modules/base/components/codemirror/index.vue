@@ -19,7 +19,7 @@ import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { ref, watch, computed } from "vue";
 import { useDark } from "@vueuse/core";
-import { isNumber } from "lodash";
+import { isNumber } from "lodash-es";
 
 const props = defineProps({
 	modelValue: {

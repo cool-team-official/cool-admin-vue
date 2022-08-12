@@ -1,7 +1,7 @@
 import { isDev, config } from "../config";
 import { BaseService, service } from "../service";
 import { Data, toCamel } from "../utils";
-import { isArray, isEmpty } from "lodash";
+import { isArray, isEmpty } from "lodash-es";
 
 // 获取标签名
 function getNames(v: any) {

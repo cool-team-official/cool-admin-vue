@@ -1,4 +1,4 @@
-import { isArray, orderBy } from "lodash";
+import { isArray, orderBy } from "lodash-es";
 import storage from "./storage";
 
 // 首字母大写

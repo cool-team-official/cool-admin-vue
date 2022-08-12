@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import { watch } from "vue";
-import { last } from "lodash";
+import { last } from "lodash-es";
 import { useCool } from "/@/cool";
 import { ArrowLeft, Close } from "@element-plus/icons-vue";
 import { ContextMenu } from "@cool-vue/crud";

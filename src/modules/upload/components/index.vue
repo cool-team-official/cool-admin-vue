@@ -5,7 +5,8 @@
 			:class="[
 				`cl-upload--${type}`,
 				{
-					'is-slot': $slots.default
+					'is-slot': $slots.default,
+					'is-disabled': disabled
 				}
 			]"
 		>
@@ -26,7 +27,7 @@
 						:show-file-list="false"
 						:http-request="
 							(req) => {
-								httpRequest(req, item);
+								return httpRequest(req, item);
 							}
 						"
 						:before-upload="
@@ -38,54 +39,58 @@
 						:disabled="disabled"
 						v-if="showFileList"
 					>
-						<div class="cl-upload__item" :class="[`is-${item.type}`]">
-							<!-- 图片 -->
-							<template v-if="item.type == 'image'">
-								<el-image :src="item.preload" fit="cover"></el-image>
-							</template>
+						<slot name="item" :item="item" :index="index">
+							<div class="cl-upload__item" :class="[`is-${item.type}`]">
+								<!-- 图片 -->
+								<template v-if="item.type == 'image'">
+									<el-image :src="item.preload" fit="cover"></el-image>
+								</template>
 
-							<!-- 文件 -->
-							<template v-else>
-								<!-- 文件名 -->
-								<span class="cl-upload__name"
-									>{{ fileName(item.preload) }}.{{ extname(item.preload) }}</span
+								<!-- 文件 -->
+								<template v-else>
+									<!-- 文件名 -->
+									<span class="cl-upload__name"
+										>{{ fileName(item.preload) }}.{{
+											extname(item.preload)
+										}}</span
+									>
+
+									<!-- 大小 -->
+									<span class="cl-upload__size">
+										{{ fileSize(item.size) }}
+									</span>
+								</template>
+
+								<!-- 工具 -->
+								<div class="cl-upload__actions">
+									<!-- 预览 -->
+									<span @click.stop="preview(item)" v-show="item.url">
+										<el-icon><zoom-in /></el-icon>
+									</span>
+
+									<!-- 删除 -->
+									<span @click.stop="remove(index)" v-if="!disabled">
+										<el-icon><delete /></el-icon>
+									</span>
+								</div>
+
+								<!-- 进度条 -->
+								<div
+									class="cl-upload__progress"
+									v-if="item.progress > 0 && item.progress < 100"
 								>
+									<el-progress
+										:percentage="item.progress"
+										:show-text="false"
+									></el-progress>
+								</div>
 
-								<!-- 大小 -->
-								<span class="cl-upload__size">
-									{{ fileSize(item.size) }}
-								</span>
-							</template>
-
-							<!-- 工具 -->
-							<div class="cl-upload__actions">
-								<!-- 预览 -->
-								<span @click.stop="preview(item)" v-show="item.url">
-									<el-icon><zoom-in /></el-icon>
-								</span>
-
-								<!-- 删除 -->
-								<span @click.stop="remove(index)">
-									<el-icon><delete /></el-icon>
-								</span>
+								<!-- 错误 -->
+								<div class="cl-upload__error" v-if="item.error">
+									{{ item.error }}
+								</div>
 							</div>
-
-							<!-- 进度条 -->
-							<div
-								class="cl-upload__progress"
-								v-if="item.progress > 0 && item.progress < 100"
-							>
-								<el-progress
-									:percentage="item.progress"
-									:show-text="false"
-								></el-progress>
-							</div>
-
-							<!-- 错误 -->
-							<div class="cl-upload__error" v-if="item.error">
-								{{ item.error }}
-							</div>
-						</div>
+						</slot>
 					</el-upload>
 				</template>
 
@@ -129,7 +134,7 @@
 
 <script lang="ts" setup name="cl-upload">
 import { computed, ref, reactive, watch, PropType } from "vue";
-import { isArray, isNumber } from "lodash";
+import { isArray, isNumber } from "lodash-es";
 import dayjs from "dayjs";
 import Draggable from "vuedraggable";
 import { ElMessage } from "element-plus";
@@ -491,11 +496,18 @@ defineExpose({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .cl-upload {
 	display: flex;
 	flex-wrap: wrap;
 	line-height: normal;
+
+	&.is-disabled {
+		:deep(.cl-upload__item) {
+			cursor: not-allowed;
+			background-color: var(--el-disabled-bg-color);
+		}
+	}
 
 	.Ghost {
 		opacity: 0.7;

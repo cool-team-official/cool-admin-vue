@@ -1,7 +1,7 @@
 import { ElMessage } from "element-plus";
 import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw } from "vue-router";
 import { config, Router, storage, module } from "/@/cool";
-import { isArray } from "lodash";
+import { isArray } from "lodash-es";
 import { useBase } from "/$/base";
 import { Loading } from "../utils";
 

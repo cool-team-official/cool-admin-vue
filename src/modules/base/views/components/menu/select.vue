@@ -20,7 +20,7 @@
 
 <script lang="ts" name="menu-select" setup>
 import { useForm } from "@cool-vue/crud";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 import { computed, onMounted, ref, watch } from "vue";
 import { useCool } from "/@/cool";
 import { deepTree } from "/@/cool/utils";

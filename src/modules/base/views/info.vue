@@ -27,7 +27,7 @@ import { ElMessage } from "element-plus";
 import { reactive, ref } from "vue";
 import { useBase } from "/$/base";
 import { useCool } from "/@/cool";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 
 const { service } = useCool();
 const { user } = useBase();

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { App } from "vue";
-import { isFunction, orderBy } from "lodash";
+import { isFunction, orderBy } from "lodash-es";
 import { Data, deepMerge, filename, mergeService } from "../utils";
 import { service } from "../service";
 import { module } from "../module";

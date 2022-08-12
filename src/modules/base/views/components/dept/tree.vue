@@ -75,7 +75,7 @@ import { onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useCool } from "/@/cool";
 import { deepTree, revDeepTree } from "/@/cool/utils";
-import { isArray } from "lodash";
+import { isArray } from "lodash-es";
 import { ContextMenu, useForm } from "@cool-vue/crud";
 import { Refresh as RefreshIcon, Operation, MoreFilled } from "@element-plus/icons-vue";
 import { useBase, checkPerm } from "/$/base";

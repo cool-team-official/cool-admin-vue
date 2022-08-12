@@ -39,7 +39,7 @@
 import { ElMessage, ElMessageBox } from "element-plus";
 import { ArrowRightBold } from "@element-plus/icons-vue";
 import { computed, inject, onMounted, ref } from "vue";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { useCool } from "/@/cool";
 import { ContextMenu, useForm } from "@cool-vue/crud";
 import { useBase } from "/$/base";

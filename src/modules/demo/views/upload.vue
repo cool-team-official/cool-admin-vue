@@ -23,7 +23,17 @@
 		</div>
 
 		<div class="item">
-			<p>自定义</p>
+			<p>自定义内容</p>
+			<cl-upload text="选择图片" multiple>
+				<el-button>上传</el-button>
+				<template #item="{ item, index }">
+					<p>{{ item.url }}</p>
+				</template>
+			</cl-upload>
+		</div>
+
+		<div class="item">
+			<p>自定义大小</p>
 			<cl-upload text="选择图片" :size="[120, 200]" />
 		</div>
 

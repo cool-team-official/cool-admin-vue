@@ -17,7 +17,7 @@
 
 <script lang="ts" name="route-nav" setup>
 import { computed } from "vue";
-import _ from "lodash";
+import _ from "lodash-es";
 import { useCool } from "/@/cool";
 import { useBase } from "/$/base";
 

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { isDev, config, proxy } from "../config";
-import { isObject } from "lodash";
+import { isObject } from "lodash-es";
 import { request } from "./request";
 
 export function Service(

@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts" name="menu-create" setup>
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 import { ElMessage } from "element-plus";
 import { useCool } from "/@/cool";
 import { useForm } from "@cool-vue/crud";

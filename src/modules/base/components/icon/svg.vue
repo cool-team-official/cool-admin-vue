@@ -6,7 +6,7 @@
 
 <script lang="ts" name="cl-svg" setup>
 import { computed, ref } from "vue";
-import { isNumber } from "lodash";
+import { isNumber } from "lodash-es";
 
 const props = defineProps({
 	name: {
