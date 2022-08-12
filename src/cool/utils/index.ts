@@ -244,13 +244,15 @@ export function revDeepTree(list: any[]) {
 	const arr: any[] = [];
 	let id = 0;
 
-	function deep(list: any[], parentId: any) {
+	function deep(list: any[], parentId: number) {
 		list.forEach((e) => {
 			if (!e.id) {
 				e.id = id++;
 			}
 
-			e.parentId = parentId;
+			if (!e.parentId) {
+				e.parentId = parentId;
+			}
 
 			arr.push(e);
 
@@ -260,7 +262,7 @@ export function revDeepTree(list: any[]) {
 		});
 	}
 
-	deep(list || [], null);
+	deep(list || [], 0);
 
 	return arr;
 }
