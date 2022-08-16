@@ -64,7 +64,7 @@ import { useBase } from "/$/base";
 import Captcha from "./components/captcha.vue";
 
 const { refs, setRefs, router, service } = useCool();
-const { user, menu, app } = useBase();
+const { user, app } = useBase();
 
 // 状态1
 const saving = ref(false);

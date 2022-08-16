@@ -60,6 +60,7 @@ module.exports = {
 		"vue/singleline-html-element-content-newline": "off",
 		"vue/attribute-hyphenation": "off",
 		"vue/html-self-closing": "off",
-		"vue/require-default-prop": "off"
+		"vue/require-default-prop": "off",
+		"vue/v-on-event-hyphenation": "off"
 	}
 };

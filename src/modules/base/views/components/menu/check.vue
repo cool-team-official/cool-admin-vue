@@ -44,10 +44,10 @@ const list = ref<any[]>([]);
 const checked = ref<any[]>([]);
 
 // 搜索关键字
-const keyword = ref<string>("");
+const keyword = ref("");
 
 // el-tree 组件
-const Tree = ref<any>();
+const Tree = ref();
 
 // 刷新列表
 function refresh() {

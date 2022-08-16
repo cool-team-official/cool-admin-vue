@@ -56,7 +56,7 @@ const tab = reactive<any>({
 		{
 			label: "切换代码编辑器",
 			to: 0,
-			component: "cl-editor-quill"
+			component: "cl-editor-wang"
 		}
 	]
 });
@@ -97,7 +97,8 @@ const Table = useTable({
 		},
 		{
 			label: "操作",
-			type: "op"
+			type: "op",
+			buttons: ["edit", "delete"]
 		}
 	]
 });

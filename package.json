@@ -1,6 +1,6 @@
 {
 	"name": "front-next",
-	"version": "5.8.0",
+	"version": "5.8.1",
 	"scripts": {
 		"dev": "vite --host",
 		"build": "vite build",
@@ -14,6 +14,9 @@
 		"@cool-vue/crud": "^5.4.0",
 		"@element-plus/icons-vue": "^2.0.6",
 		"@vueuse/core": "^9.1.0",
+		"@wangeditor/editor": "^5.1.14",
+		"@wangeditor/editor-for-vue": "^5.1.12",
+		"add": "^2.0.6",
 		"axios": "^0.27.2",
 		"codemirror": "^6.0.1",
 		"core-js": "^3.23.5",
@@ -33,7 +36,8 @@
 		"vue-echarts": "^6.2.3",
 		"vue-router": "^4.1.2",
 		"vuedraggable": "^4.1.0",
-		"xlsx": "^0.18.5"
+		"xlsx": "^0.18.5",
+		"yarn": "^1.22.19"
 	},
 	"devDependencies": {
 		"@types/lodash-es": "^4.17.6",

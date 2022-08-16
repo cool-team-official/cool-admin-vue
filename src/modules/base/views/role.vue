@@ -157,13 +157,14 @@ const Table = useTable({
 		},
 		{
 			label: "操作",
-			type: "op"
+			type: "op",
+			buttons: ["edit", "delete"]
 		}
 	]
 });
 
 // 是否关联上下级
-function onRelevanceChange(val: number) {
+function onRelevanceChange(val: number | string | boolean) {
 	Upsert.value?.setProps("departmentIdList", {
 		checkStrictly: val == 0
 	});

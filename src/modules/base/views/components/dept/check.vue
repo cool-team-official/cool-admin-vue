@@ -42,7 +42,7 @@ const emit = defineEmits(["update:modelValue"]);
 const { service } = useCool();
 
 // el-tree
-const Tree = ref<any>();
+const Tree = ref();
 
 // 树形列表
 const list = ref<any[]>([]);
