@@ -1,7 +1,7 @@
 <template>
 	<div class="cl-editor-quill">
 		<div ref="Editor" class="editor" :style="style"></div>
-		<cl-upload-space ref="Upload" :show-btn="false" @confirm="onUploadConfirm" />
+		<cl-upload-space ref="Upload" :show-btn="false" @confirm="onSpaceConfirm" />
 	</div>
 </template>
 
@@ -26,14 +26,14 @@ export default defineComponent({
 	setup(props, { emit }) {
 		let quill: any = null;
 
-		const Editor = ref<any>();
-		const Upload = ref<any>();
+		const Editor = ref();
+		const Upload = ref();
 
 		// 文本内容
-		const content = ref<string>("");
+		const content = ref("");
 
 		// 光标位置
-		const cursorIndex = ref<number>(0);
+		const cursorIndex = ref(0);
 
 		// 上传处理
 		function uploadFileHandler() {
@@ -47,7 +47,7 @@ export default defineComponent({
 		}
 
 		// 文件确认
-		function onUploadConfirm(files: any[]) {
+		function onSpaceConfirm(files: any[]) {
 			if (files.length > 0) {
 				// 批量插入图片
 				files.forEach((file, i) => {
@@ -146,7 +146,7 @@ export default defineComponent({
 			cursorIndex,
 			style,
 			setContent,
-			onUploadConfirm
+			onSpaceConfirm
 		};
 	}
 });
