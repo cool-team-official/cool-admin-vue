@@ -25,7 +25,7 @@
 				@drop="onDrop"
 			>
 				<!-- 类目 -->
-				<Category />
+				<category />
 
 				<!-- 内容 -->
 				<div class="cl-upload-space__content">
@@ -40,6 +40,7 @@
 								:show-file-list="false"
 								:disabled="disabled"
 								:limit="9999"
+								:accept="accept"
 								multiple
 								@success="onSuccess"
 								@upload="onUpload"
@@ -119,6 +120,8 @@ const props = defineProps({
 	limit: Number,
 	// 是否禁用
 	disabled: Boolean,
+	// 类型
+	accept: String,
 	// 显示按钮
 	showBtn: {
 		type: Boolean,
@@ -137,7 +140,7 @@ const { app } = useBase();
 const { options } = module.get("upload");
 
 // cl-upload
-const Upload = ref<any>();
+const Upload = ref();
 
 // 选择图片的数量
 const limit = props.limit || options.limit?.select;
@@ -181,14 +184,6 @@ watch(
 // 是否选中
 const isSelected = computed(() => !isEmpty(selection.value));
 
-// 共享
-provide("space", {
-	category,
-	selection,
-	refresh,
-	loading
-});
-
 // 打开
 function open() {
 	visible.value = true;
@@ -225,27 +220,33 @@ function onUpload(data: any) {
 	list.value.unshift(data);
 }
 
+const reqParams = {
+	page: 1
+};
+
 // 刷新资源文件
 async function refresh(params: any = {}) {
 	// 清空选择
 	clear();
 
-	const d = {
+	// 合并参数
+	Object.assign(reqParams, {
+		type: props.accept?.split("/")[0],
 		...pagination,
 		...params,
 		classifyId: category.id
-	};
+	});
 
 	// 加载中
-	if (d.page == 1) {
+	if (reqParams.page == 1) {
 		loading.value = true;
 	}
 
-	await service.space.info.page(d).then((res) => {
+	await service.space.info.page(reqParams).then((res) => {
 		// 合并
 		Object.assign(pagination, res.pagination);
 
-		if (d.page == 1) {
+		if (reqParams.page == 1) {
 			list.value = [];
 		}
 
@@ -330,6 +331,14 @@ function loadmore() {
 		});
 	}
 }
+
+// 共享
+provide("space", {
+	category,
+	selection,
+	refresh,
+	loading
+});
 
 onMounted(() => {
 	refresh();

@@ -24,10 +24,12 @@
 
 		<div class="item">
 			<p>自定义内容</p>
-			<cl-upload text="选择图片" multiple>
-				<el-button>上传</el-button>
-				<template #item="{ item, index }">
-					<p>{{ item.url }}</p>
+			<cl-upload text="选择图片" multiple drag>
+				<div style="width: 100%">
+					<el-button>上传</el-button>
+				</div>
+				<template #item="{ item }">
+					<div class="cs-item">{{ item.url }}</div>
 				</template>
 			</cl-upload>
 		</div>
@@ -62,6 +64,11 @@ const list = computed(() => urls.value.split(",").filter(Boolean));
 			margin-bottom: 10px;
 			font-size: 14px;
 		}
+	}
+
+	.cs-item {
+		border: 1px solid var(--el-border-color);
+		padding: 5px 10px;
 	}
 }
 </style>

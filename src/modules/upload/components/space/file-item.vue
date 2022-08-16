@@ -30,10 +30,16 @@
 					<span class="cl-upload-space-file__name"
 						>{{ fileName(url) }}.{{ extname(url) }}</span
 					>
-
-					<!-- 大小 -->
-					<span class="cl-upload-space-file__size">{{ fileSize(info.size) }}</span>
 				</template>
+
+				<!-- 文件类型 -->
+				<span
+					class="cl-upload-space-file__type"
+					:style="{
+						backgroundColor: type.color
+					}"
+					>{{ type.label }}</span
+				>
 
 				<!-- 进度条 -->
 				<div
@@ -56,7 +62,7 @@
 import { computed, inject } from "vue";
 import { ContextMenu } from "@cool-vue/crud";
 import { extname } from "/@/cool/utils";
-import { fileSize, fileName } from "../../utils";
+import { fileName, fileType } from "../../utils";
 import { useClipboard } from "@vueuse/core";
 import { ElMessage } from "element-plus";
 
@@ -82,6 +88,9 @@ const isSelected = computed(() => index.value >= 0);
 
 // 地址
 const url = computed(() => info.value.preload || info.value.url);
+
+// 类型
+const type = computed(() => fileType(info.value.url));
 
 // 选择
 function select() {
@@ -178,7 +187,7 @@ function onContextMenu(e: any) {
 		}
 	}
 
-	&.is-file {
+	&:not(.is-image) {
 		padding: 10px;
 
 		.cl-upload-space-file {
@@ -218,6 +227,17 @@ function onContextMenu(e: any) {
 		bottom: 10px;
 		left: 10px;
 		width: calc(100% - 20px);
+	}
+
+	&__type {
+		position: absolute;
+		top: 5px;
+		left: 5px;
+		color: #fff;
+		background-color: var(--color-primary);
+		font-size: 12px;
+		padding: 2px 5px;
+		border-radius: 3px;
 	}
 
 	&__error {

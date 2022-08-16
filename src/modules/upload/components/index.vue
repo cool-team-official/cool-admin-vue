@@ -6,10 +6,40 @@
 				`cl-upload--${type}`,
 				{
 					'is-slot': $slots.default,
+					'is-custom': $slots.item,
 					'is-disabled': disabled
 				}
 			]"
 		>
+			<div class="cl-upload__header">
+				<el-upload
+					ref="Upload"
+					action=""
+					:accept="accept"
+					:show-file-list="false"
+					:before-upload="beforeUpload"
+					:http-request="httpRequest"
+					:headers="headers"
+					:multiple="multiple"
+					:disabled="disabled"
+				>
+					<slot>
+						<template v-if="type == 'image' && isAdd">
+							<div class="cl-upload__item">
+								<el-icon :size="24"><picture-filled /></el-icon>
+								<span class="cl-upload__text">{{ text }}</span>
+							</div>
+						</template>
+
+						<template v-if="type == 'file'">
+							<div class="cl-upload__btn">
+								<el-button type="success">{{ text }}</el-button>
+							</div>
+						</template>
+					</slot>
+				</el-upload>
+			</div>
+
 			<!-- 列表 -->
 			<draggable
 				v-model="list"
@@ -93,36 +123,6 @@
 						</slot>
 					</el-upload>
 				</template>
-
-				<template #header>
-					<el-upload
-						ref="Upload"
-						action=""
-						class="un-drag"
-						:accept="accept"
-						:show-file-list="false"
-						:before-upload="beforeUpload"
-						:http-request="httpRequest"
-						:headers="headers"
-						:multiple="multiple"
-						:disabled="disabled"
-					>
-						<slot>
-							<template v-if="type == 'image' && isAdd">
-								<div class="cl-upload__item">
-									<el-icon :size="24"><picture-filled /></el-icon>
-									<span class="cl-upload__text">{{ text }}</span>
-								</div>
-							</template>
-
-							<template v-else-if="type == 'file'">
-								<div class="cl-upload__btn">
-									<el-button type="success">{{ text }}</el-button>
-								</div>
-							</template>
-						</slot>
-					</el-upload>
-				</template>
 			</draggable>
 		</div>
 	</div>
@@ -142,7 +142,7 @@ import { PictureFilled, ZoomIn, Delete } from "@element-plus/icons-vue";
 import { useCool, module } from "/@/cool";
 import { extname, uuid } from "/@/cool/utils";
 import { useBase } from "/$/base";
-import { fileSize, fileName } from "../utils";
+import { fileSize, fileName, fileType } from "../utils";
 
 interface Item {
 	url: string;
@@ -257,7 +257,7 @@ function beforeUpload(file: any, item?: Item) {
 	}
 
 	const d = {
-		type: file.type?.includes("image") ? "image" : "file",
+		type: fileType(file.name).value,
 		preload: "",
 		progress: 0,
 		url: "",
@@ -423,23 +423,6 @@ function check() {
 	return list.value.find((e) => e.progress != 100);
 }
 
-// 文件类型
-function fileType(path: string) {
-	if (props.type == "image") {
-		return "image";
-	} else {
-		if (
-			["bmp", "jpg", "jpeg", "png", "tif", "gif", "svg", "webp"].includes(
-				extname(path).toLocaleLowerCase()
-			)
-		) {
-			return "image";
-		} else {
-			return "file";
-		}
-	}
-}
-
 // 更新
 function update() {
 	const check = list.value.find((e) => !e.url);
@@ -463,7 +446,7 @@ watch(
 					return item;
 				} else {
 					return {
-						type: fileType(url),
+						type: fileType(url).value,
 						progress: 0,
 						uid: uuid(),
 						url,
@@ -519,34 +502,26 @@ defineExpose({
 		box-sizing: border-box;
 	}
 
-	.is-drag {
-		margin: 0 5px 5px 0;
-	}
-
-	.un-drag {
-		.cl-upload__item {
-			margin-right: 5px;
-		}
-
-		.cl-upload__btn {
-			margin-bottom: 5px;
-		}
-	}
-
 	&--file {
 		.cl-upload__list {
 			width: 100%;
+			margin-top: 10px;
+		}
+	}
 
-			.un-drag {
-				width: 100%;
-			}
+	&__header {
+		.cl-upload__item {
+			margin-right: 5px;
 		}
 	}
 
 	&__list {
 		display: flex;
 		flex-wrap: wrap;
-		margin: 0 5px 0 0;
+
+		.cl-upload__item {
+			margin-right: 5px;
+		}
 	}
 
 	&__text {
@@ -606,7 +581,7 @@ defineExpose({
 			}
 		}
 
-		&.is-file {
+		&:not(.is-image) {
 			padding: 10px;
 
 			.cl-upload {
