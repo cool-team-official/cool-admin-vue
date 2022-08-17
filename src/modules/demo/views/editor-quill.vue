@@ -2,12 +2,12 @@
 	<div class="editor scroller1">
 		<div class="item">
 			<p class="title">Wang</p>
-			<cl-editor-wang v-model="w" height="400px" />
+			<cl-editor-wang v-model="w" :height="300" />
 		</div>
 
 		<div class="item">
 			<p class="title">Quill</p>
-			<cl-editor-quill v-model="q" height="400px" />
+			<cl-editor-quill v-model="q" :height="300" />
 		</div>
 	</div>
 </template>

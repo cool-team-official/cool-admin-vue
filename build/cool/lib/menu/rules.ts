@@ -177,11 +177,8 @@ export default [
 	},
 	{
 		test: ["rich", "text", "html", "content", "introduce", "description", "desc"],
-		table: {
-			name: "cl-editor-quill"
-		},
 		form: {
-			name: "cl-editor-quill",
+			name: "cl-editor-wang",
 			props: {
 				height: 400
 			}
@@ -189,9 +186,6 @@ export default [
 	},
 	{
 		test: ["code", "codes"],
-		table: {
-			name: "cl-codemirror"
-		},
 		form: {
 			name: "cl-codemirror",
 			props: {

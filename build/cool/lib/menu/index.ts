@@ -232,7 +232,9 @@ export async function createMenu({ router, columns, prefix, api, filePath }: any
 			upsert.items.push(format(item));
 		}
 
-		if (!["cl-codemirror", "cl-editor-quill"].includes(column.component?.name)) {
+		if (
+			!["cl-codemirror", "cl-editor-quill", "cl-editor-wang"].includes(column.component?.name)
+		) {
 			table.columns.push(format(column));
 		}
 	});

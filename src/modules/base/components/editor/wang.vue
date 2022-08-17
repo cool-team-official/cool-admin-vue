@@ -37,9 +37,10 @@
 
 <script lang="ts" name="cl-editor-wang" setup>
 import "@wangeditor/editor/dist/css/style.css";
-import { onBeforeUnmount, ref, shallowRef, watch, PropType, reactive } from "vue";
+import { onBeforeUnmount, ref, shallowRef, watch, PropType, reactive, computed } from "vue";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import { IEditorConfig } from "@wangeditor/editor";
+import { isNumber } from "lodash-es";
 
 const props = defineProps({
 	modelValue: String,
@@ -48,8 +49,8 @@ const props = defineProps({
 		default: "default"
 	},
 	height: {
-		type: String,
-		default: "400px"
+		type: [String, Number],
+		default: 400
 	}
 });
 
@@ -59,7 +60,11 @@ const ImageSpace = ref();
 const VideoSpace = ref();
 const editorRef = shallowRef();
 
+// 内容
 const value = ref();
+
+// 编辑器高度
+const height = computed(() => (isNumber(props.height) ? `${props.height}px` : props.height));
 
 watch(
 	() => props.modelValue,
