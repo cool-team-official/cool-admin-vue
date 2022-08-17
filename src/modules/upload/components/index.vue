@@ -249,6 +249,15 @@ const isAdd = computed(() => {
 	return props.multiple ? limit - list.value.length > 0 : list.value.length == 0;
 });
 
+// 获取类型
+function getType(path: string) {
+	if (props.type == "image") {
+		return "image";
+	} else {
+		return fileType(path).value;
+	}
+}
+
 // 上传前
 function beforeUpload(file: any, item?: Item) {
 	if (file.size / 1024 / 1024 >= limitSize) {
@@ -257,7 +266,7 @@ function beforeUpload(file: any, item?: Item) {
 	}
 
 	const d = {
-		type: fileType(file.name).value,
+		type: getType(file.name),
 		preload: "",
 		progress: 0,
 		url: "",
@@ -446,7 +455,7 @@ watch(
 					return item;
 				} else {
 					return {
-						type: fileType(url).value,
+						type: getType(url),
 						progress: 0,
 						uid: uuid(),
 						url,
