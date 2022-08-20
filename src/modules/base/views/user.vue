@@ -214,24 +214,26 @@ const Upsert = useUpsert({
 				name: "el-input"
 			}
 		},
-		{
-			prop: "password",
-			label: "密码",
-			span: 12,
-			required: true,
-			component: {
-				name: "el-input",
-				props: {
-					type: "password"
-				}
-			},
-			rules: [
-				{
-					min: 6,
-					max: 16,
-					message: "密码长度在 6 到 16 个字符"
-				}
-			]
+		() => {
+			return {
+				prop: "password",
+				label: "密码",
+				span: 12,
+				required: Upsert.value?.mode == "add",
+				component: {
+					name: "el-input",
+					props: {
+						type: "password"
+					}
+				},
+				rules: [
+					{
+						min: 6,
+						max: 16,
+						message: "密码长度在 6 到 16 个字符"
+					}
+				]
+			};
 		},
 		{
 			prop: "roleIdList",
@@ -294,14 +296,14 @@ const Upsert = useUpsert({
 		}
 	],
 
-	onSubmit(_, data, { next }) {
+	onSubmit(data, { next }) {
 		next({
 			...data,
 			departmentId: selects.dept?.id
 		});
 	},
 
-	async onOpen(isEdit) {
+	async onOpen() {
 		const list = await service.base.sys.role.list();
 
 		// 设置权限列表
@@ -314,15 +316,6 @@ const Upsert = useUpsert({
 				};
 			})
 		);
-
-		// 编辑密码不必填
-		if (isEdit) {
-			Upsert.value?.setData("password", {
-				rules: {
-					required: false
-				}
-			});
-		}
 	}
 });
 

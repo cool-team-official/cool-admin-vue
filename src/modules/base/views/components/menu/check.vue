@@ -12,7 +12,6 @@
 					label: 'name',
 					children: 'children'
 				}"
-				:default-checked-keys="checked"
 				:filter-node-method="filterNode"
 				@check="onCheckChange"
 			/>
@@ -21,10 +20,10 @@
 </template>
 
 <script lang="ts" name="menu-check" setup>
-import { onMounted, ref, watch } from "vue";
-import { ElMessage } from "element-plus";
+import { ref, watch } from "vue";
 import { deepTree } from "/@/cool/utils";
 import { useCool } from "/@/cool";
+import { useUpsert } from "@cool-vue/crud";
 
 const props = defineProps({
 	modelValue: {
@@ -37,28 +36,20 @@ const emit = defineEmits(["update:modelValue"]);
 
 const { service } = useCool();
 
-// 树形列表
-const list = ref<any[]>([]);
+// el-tree 组件
+const Tree = ref();
 
-// 已选列表
-const checked = ref<any[]>([]);
+// 树形列表
+const list = ref();
 
 // 搜索关键字
 const keyword = ref("");
 
-// el-tree 组件
-const Tree = ref();
-
 // 刷新列表
-function refresh() {
-	service.base.sys.menu
-		.list()
-		.then((res) => {
-			list.value = deepTree(res);
-		})
-		.catch((err) => {
-			ElMessage.error(err.message);
-		});
+async function refresh() {
+	return service.base.sys.menu.list().then((res) => {
+		list.value = deepTree(res);
+	});
 }
 
 // 过滤节点
@@ -77,16 +68,13 @@ watch(keyword, (val: string) => {
 	Tree.value.filter(val);
 });
 
-// 刷新监听
-watch(
-	() => props.modelValue,
-	(val) => {
-		checked.value = (val || []).filter((e) => Tree.value.getNode(e)?.isLeaf);
+useUpsert({
+	async onOpened() {
+		await refresh();
+		Tree.value.setCheckedKeys(
+			(props.modelValue || []).filter((e) => Tree.value.getNode(e)?.isLeaf)
+		);
 	}
-);
-
-onMounted(() => {
-	refresh();
 });
 </script>
 

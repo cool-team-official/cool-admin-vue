@@ -136,7 +136,9 @@ onBeforeUnmount(() => {
 <style lang="scss" scoped>
 .cl-editor-wang {
 	border: 1px solid var(--el-border-color);
+	border-radius: var(--el-border-radius-base);
 	box-sizing: border-box;
+	overflow: hidden;
 
 	:deep(.w-e-toolbar) {
 		border-bottom: 1px solid var(--el-border-color);

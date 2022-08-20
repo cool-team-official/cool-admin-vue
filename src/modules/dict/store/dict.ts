@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, reactive } from "vue";
+import { computed, reactive, toRaw } from "vue";
 import { isDev, service } from "/@/cool";
 
 declare interface Data {
@@ -36,7 +36,9 @@ export const useDictStore = defineStore("dict", () => {
 				Object.assign(data, d);
 
 				if (isDev) {
-					console.log("字典数据", data);
+					console.group("字典数据");
+					console.log(toRaw(data));
+					console.groupEnd();
 				}
 
 				return data;

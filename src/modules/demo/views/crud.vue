@@ -119,13 +119,13 @@ const Upsert = useUpsert({
 		// done({ name: "🐑" });
 		// close();
 	},
-	onSubmit(isEdit, data, { next }) {
-		console.log(isEdit, data);
+	onSubmit(data, { next }) {
+		console.log(data);
 		next(data);
 		// Upsert.value?.close();
 	},
-	onOpen(isEdit, data) {
-		console.log(isEdit, data);
+	onOpen(data) {
+		console.log(data);
 	},
 	onClose(done) {
 		console.log("onclose");

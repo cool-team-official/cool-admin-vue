@@ -114,24 +114,21 @@ const Upsert = useUpsert({
 			prop: "name",
 			label: "名称",
 			span: 12,
+			required: true,
 			component: {
 				name: "el-input"
-			},
-			required: true
+			}
 		},
 		{
 			prop: "keyName",
 			label: "keyName",
 			span: 12,
+			required: true,
 			component: {
 				name: "el-input",
 				props: {
 					placeholder: "请输入Key"
 				}
-			},
-			rules: {
-				required: true,
-				message: "Key不能为空"
 			}
 		},
 		{
@@ -155,14 +152,14 @@ const Upsert = useUpsert({
 		}
 	],
 
-	onOpened(isEdit, data) {
+	onOpened(data) {
 		tab.index = null;
 
 		nextTick(() => {
-			if (isEdit) {
-				tab.index = /<*>/g.test(data.data) ? 1 : 0;
-			} else {
+			if (Upsert.value?.mode == "add") {
 				tab.index = 1;
+			} else {
+				tab.index = /<*>/g.test(data.data) ? 1 : 0;
 			}
 		});
 	}

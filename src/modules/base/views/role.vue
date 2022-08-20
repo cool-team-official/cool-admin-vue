@@ -103,19 +103,26 @@ const Upsert = useUpsert({
 		},
 		{
 			label: "数据权限",
+			prop: "relevance",
+			flex: false,
+			component: {
+				name: "slot-relevance"
+			}
+		},
+		{
+			label: "",
 			prop: "departmentIdList",
 			value: [],
 			component: {
 				vm: DeptCheck,
-				props: {}
-			},
-			append: {
-				name: "slot-relevance"
+				style: {
+					marginTop: "-10px"
+				}
 			}
 		}
 	],
 
-	onOpened(_, data) {
+	onOpened(data) {
 		onRelevanceChange(data.relevance || 0);
 	}
 });
