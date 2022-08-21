@@ -12,23 +12,27 @@
 		</div>
 
 		<div class="cl-upload-space-category__list">
-			<ul class="scroller1">
-				<li
-					v-for="(item, index) in flist"
-					:key="index"
-					class="item"
-					:class="{
-						'is-active': item.id == space.category.id
-					}"
-					@click="select(item.id)"
-					@contextmenu.stop.prevent="onContextMenu($event, item)"
-				>
-					<span>{{ item.name }}</span>
-					<el-icon v-show="space.category.id == item.id"><arrow-right-bold /></el-icon>
-				</li>
+			<el-scrollbar>
+				<ul>
+					<li
+						v-for="(item, index) in flist"
+						:key="index"
+						class="item"
+						:class="{
+							'is-active': item.id == space.category.id
+						}"
+						@click="select(item.id)"
+						@contextmenu.stop.prevent="onContextMenu($event, item)"
+					>
+						<span>{{ item.name }}</span>
+						<el-icon v-show="space.category.id == item.id"
+							><arrow-right-bold
+						/></el-icon>
+					</li>
 
-				<el-empty v-if="flist.length == 0" :image-size="80" />
-			</ul>
+					<el-empty v-if="flist.length == 0" :image-size="80" />
+				</ul>
+			</el-scrollbar>
 		</div>
 	</div>
 
@@ -257,6 +261,7 @@ onMounted(() => {
 				margin-bottom: 10px;
 				border-radius: 3px;
 				color: #666;
+				position: relative;
 
 				.el-icon {
 					position: absolute;

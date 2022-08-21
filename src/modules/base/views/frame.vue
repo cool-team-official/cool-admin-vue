@@ -34,6 +34,8 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .page-iframe {
+	height: 100%;
+
 	iframe {
 		height: 100%;
 		width: 100%;

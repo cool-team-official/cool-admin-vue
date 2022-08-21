@@ -6,7 +6,6 @@
 
 		<template v-else>
 			<el-breadcrumb>
-				<el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
 				<el-breadcrumb-item v-for="(item, index) in list" :key="index">{{
 					item.meta?.label || item.name
 				}}</el-breadcrumb-item>
@@ -17,7 +16,7 @@
 
 <script lang="ts" name="route-nav" setup>
 import { computed } from "vue";
-import _ from "lodash-es";
+import { flattenDeep, last } from "lodash-es";
 import { useCool } from "/@/cool";
 import { useBase } from "/$/base";
 
@@ -48,11 +47,11 @@ const list = computed(() => {
 		}
 	}
 
-	return _(menu.group).map(deep).filter(Boolean).flattenDeep().value();
+	return flattenDeep(menu.group.map(deep).filter(Boolean));
 });
 
 // 最后一个节点名称
-const lastName = computed(() => _.last(list.value)?.name);
+const lastName = computed(() => last(list.value)?.name);
 </script>
 
 <style lang="scss" scoped>

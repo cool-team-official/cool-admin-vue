@@ -17,7 +17,6 @@
 
 			<ul class="link">
 				<li @click="home">回到首页</li>
-				<li @click="back">返回上一页</li>
 				<li @click="reLogin">重新登录</li>
 			</ul>
 		</template>
@@ -57,10 +56,6 @@ function toLogin() {
 async function reLogin() {
 	isLogout.value = true;
 	user.logout();
-}
-
-function back() {
-	history.back();
 }
 
 function home() {

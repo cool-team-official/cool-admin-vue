@@ -1,11 +1,16 @@
 <template>
 	<div class="app-process">
-		<div class="app-process__back" @click="router.back">
-			<el-icon :size="15"><arrow-left /></el-icon>
+		<div class="app-process__icon" @click="router.push('/')">
+			<el-icon size="15"><home-filled /></el-icon>
+			<span>首页</span>
+		</div>
+
+		<div class="app-process__icon" @click="router.back">
+			<el-icon :size="15"><arrow-left-bold /></el-icon>
 			<span>后退</span>
 		</div>
 
-		<div :ref="setRefs('scroller')" class="app-process__scroller">
+		<el-scrollbar :ref="setRefs('scroller')" class="app-process__scroller">
 			<div
 				v-for="(item, index) in process.list"
 				:key="index"
@@ -21,7 +26,7 @@
 					<close />
 				</el-icon>
 			</div>
-		</div>
+		</el-scrollbar>
 	</div>
 </template>
 
@@ -29,7 +34,7 @@
 import { watch } from "vue";
 import { last } from "lodash-es";
 import { useCool } from "/@/cool";
-import { ArrowLeft, Close } from "@element-plus/icons-vue";
+import { ArrowLeftBold, Close, HomeFilled } from "@element-plus/icons-vue";
 import { ContextMenu } from "@cool-vue/crud";
 import { useBase } from "/$/base";
 import { Process } from "/$/base/types";
@@ -126,7 +131,7 @@ watch(
 	margin-bottom: 10px;
 	padding: 0 10px;
 
-	&__back {
+	&__icon {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -135,9 +140,16 @@ watch(
 		padding: 0 10px;
 		border-radius: 3px;
 		margin-right: 10px;
-		font-size: 12px;
 		cursor: pointer;
 		color: #000;
+
+		span {
+			font-size: 12px;
+		}
+
+		.el-icon {
+			margin-right: 2px;
+		}
 
 		&:hover {
 			background-color: #eee;
@@ -147,13 +159,7 @@ watch(
 	&__scroller {
 		width: 100%;
 		flex: 1;
-		overflow-x: auto;
-		overflow-y: hidden;
 		white-space: nowrap;
-
-		&::-webkit-scrollbar {
-			display: none;
-		}
 	}
 
 	&__item {

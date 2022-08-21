@@ -63,13 +63,13 @@ const { router, service } = useCool();
 const { user, app } = useBase();
 
 // 跳转
-function onCommand(name: string) {
+async function onCommand(name: string) {
 	switch (name) {
 		case "my":
 			router.push("/my/info");
 			break;
 		case "exit":
-			service.base.comm.logout();
+			await service.base.comm.logout();
 			user.logout();
 			break;
 	}

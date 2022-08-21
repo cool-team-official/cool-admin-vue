@@ -2,19 +2,21 @@
 	<div class="menu-check">
 		<el-input v-model="keyword" placeholder="输入关键字进行过滤" />
 
-		<div class="menu-check__scroller scroller1">
-			<el-tree
-				ref="Tree"
-				node-key="id"
-				show-checkbox
-				:data="list"
-				:props="{
-					label: 'name',
-					children: 'children'
-				}"
-				:filter-node-method="filterNode"
-				@check="onCheckChange"
-			/>
+		<div class="menu-check__scroller">
+			<el-scrollbar max-height="200px">
+				<el-tree
+					ref="Tree"
+					node-key="id"
+					show-checkbox
+					:data="list"
+					:props="{
+						label: 'name',
+						children: 'children'
+					}"
+					:filter-node-method="filterNode"
+					@check="onCheckChange"
+				/>
+			</el-scrollbar>
 		</div>
 	</div>
 </template>
@@ -83,8 +85,6 @@ useUpsert({
 	&__scroller {
 		border: 1px solid var(--el-border-color);
 		border-radius: 3px;
-		max-height: 200px;
-		box-sizing: border-box;
 		margin-top: 10px;
 		padding: 5px 0;
 	}

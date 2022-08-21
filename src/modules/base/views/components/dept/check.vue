@@ -5,19 +5,21 @@
 		</div>
 
 		<div class="dept-check__tree">
-			<el-tree
-				ref="Tree"
-				node-key="id"
-				show-checkbox
-				:data="list"
-				:props="{
-					label: 'name',
-					children: 'children'
-				}"
-				:filter-node-method="filterNode"
-				:check-strictly="checkStrictly"
-				@check="onCheckChange"
-			/>
+			<el-scrollbar max-height="200px">
+				<el-tree
+					ref="Tree"
+					node-key="id"
+					show-checkbox
+					:data="list"
+					:props="{
+						label: 'name',
+						children: 'children'
+					}"
+					:filter-node-method="filterNode"
+					:check-strictly="checkStrictly"
+					@check="onCheckChange"
+				/>
+			</el-scrollbar>
 		</div>
 	</div>
 </template>
@@ -95,9 +97,7 @@ useUpsert({
 		border: 1px solid var(--el-border-color);
 		margin-top: 5px;
 		border-radius: 3px;
-		max-height: 200px;
 		box-sizing: border-box;
-		overflow-x: hidden;
 		padding: 5px 0;
 	}
 }

@@ -1,5 +1,5 @@
 <template>
-	<div class="demo scroller1">
+	<div class="demo">
 		<el-row :gutter="10">
 			<el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="8" :lg="6">
 				<component :is="item" />

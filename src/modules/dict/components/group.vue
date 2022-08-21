@@ -12,27 +12,31 @@
 			>
 		</div>
 
-		<ul class="scroller1">
-			<li
-				v-for="(item, index) in list"
-				:key="index"
-				class="item"
-				:class="{
-					'is-active': active == item.id
-				}"
-				@click="select(item)"
-				@contextmenu="
-					(e) => {
-						onContextMenu(e, item);
-					}
-				"
-			>
-				<span>{{ item.name }} - {{ item.key }}</span>
-				<el-icon v-show="active == item.id"><arrow-right-bold /></el-icon>
-			</li>
+		<div class="list">
+			<el-scrollbar>
+				<ul>
+					<li
+						v-for="(item, index) in list"
+						:key="index"
+						class="item"
+						:class="{
+							'is-active': active == item.id
+						}"
+						@click="select(item)"
+						@contextmenu="
+							(e) => {
+								onContextMenu(e, item);
+							}
+						"
+					>
+						<span>{{ item.name }} - {{ item.key }}</span>
+						<el-icon v-show="active == item.id"><arrow-right-bold /></el-icon>
+					</li>
 
-			<el-empty v-if="list.length == 0" :image-size="80" />
-		</ul>
+					<el-empty v-if="list.length == 0" :image-size="80" />
+				</ul>
+			</el-scrollbar>
+		</div>
 
 		<!-- 表单 -->
 		<cl-form ref="Form"></cl-form>
@@ -215,12 +219,13 @@ onMounted(() => {
 		padding: 0 10px;
 	}
 
-	ul {
-		max-height: calc(100% - 40px);
+	.list {
+		height: calc(100% - 40px);
 		padding: 10px;
 		box-sizing: border-box;
-		overflow: hidden auto;
+	}
 
+	ul {
 		li {
 			display: flex;
 			align-items: center;

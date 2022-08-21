@@ -11,7 +11,7 @@
 		</div>
 
 		<div class="list" v-loading="session?.loading">
-			<div class="scroller1">
+			<el-scrollbar class="scroller">
 				<div
 					class="item"
 					v-for="(item, index) in list"
@@ -38,9 +38,13 @@
 						<p class="date">{{ item.createTime }}</p>
 					</div>
 				</div>
-			</div>
 
-			<el-empty v-if="list.length == 0" image-size="100" description="暂无会话"></el-empty>
+				<el-empty
+					v-if="list.length == 0"
+					:image-size="100"
+					description="暂无会话"
+				></el-empty>
+			</el-scrollbar>
 		</div>
 	</div>
 </template>
@@ -111,7 +115,7 @@ async function toDetail(item: Chat.Session) {
 		height: calc(100% - 51px);
 		overflow: hidden;
 
-		.scroller1 {
+		.scroller {
 			height: 100%;
 		}
 

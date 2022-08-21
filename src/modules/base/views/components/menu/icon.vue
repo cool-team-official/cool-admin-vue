@@ -6,7 +6,7 @@
 		popper-class="menu-icon"
 		trigger="click"
 	>
-		<el-row :gutter="10" class="list scroller1">
+		<el-row :gutter="10" class="list">
 			<el-col v-for="(item, index) in list" :key="index" :span="2" :xs="4">
 				<el-button :class="{ 'is-active': item === name }" @click="onChange(item)">
 					<cl-svg :name="item" />

@@ -27,7 +27,6 @@ export declare interface Module extends ModuleConfig {
 }
 
 export declare interface Router extends VueRouter {
-	href(path: string): void;
 	find(path: string): RouteRecordRaw | undefined;
 	append(data: any[] | any): void;
 	[key: string]: any;

@@ -1,5 +1,5 @@
 <template>
-	<div class="demo scroller1">
+	<div class="demo">
 		<el-image
 			v-for="(item, index) in list"
 			:key="index"

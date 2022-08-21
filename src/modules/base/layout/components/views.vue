@@ -1,9 +1,11 @@
 <template>
 	<div class="app-views">
 		<router-view v-slot="{ Component }">
-			<keep-alive :include="caches">
-				<component :is="Component" />
-			</keep-alive>
+			<el-scrollbar>
+				<keep-alive :include="caches">
+					<component :is="Component" />
+				</keep-alive>
+			</el-scrollbar>
 		</router-view>
 	</div>
 </template>
@@ -35,7 +37,7 @@ const caches = computed(() => {
 	box-sizing: border-box;
 	border-radius: 3px;
 
-	& > div {
+	:deep(.el-scrollbar__view) {
 		height: 100%;
 	}
 }

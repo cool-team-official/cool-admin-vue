@@ -70,7 +70,6 @@ watch(
 	() => props.modelValue,
 	(val) => {
 		value.value = val;
-		console.log(val);
 	},
 	{
 		immediate: true

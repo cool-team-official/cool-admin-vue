@@ -126,23 +126,23 @@ request.interceptors.response.use(
 
 			if (status == 401) {
 				user.logout();
-			}
-
-			if (isDev) {
-				ElMessage.error(`${config.url} ${status}`);
 			} else {
-				switch (status) {
-					case 403:
-						router.href("403");
-						break;
+				if (isDev) {
+					ElMessage.error(`${config.url} ${status}`);
+				} else {
+					switch (status) {
+						case 403:
+							router.push("/403");
+							break;
 
-					case 500:
-						router.href("500");
-						break;
+						case 500:
+							router.push("/500");
+							break;
 
-					case 502:
-						router.href("502");
-						break;
+						case 502:
+							router.push("/502");
+							break;
+					}
 				}
 			}
 		}

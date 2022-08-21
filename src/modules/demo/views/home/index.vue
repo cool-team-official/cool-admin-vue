@@ -1,5 +1,5 @@
 <template>
-	<div class="view-home scroller1">
+	<div class="view-home">
 		<el-row :gutter="15">
 			<el-col :lg="6" :md="12" :xs="24">
 				<div class="card">
@@ -64,7 +64,6 @@ import HotSearch from "./components/hot-search.vue";
 
 <style lang="scss">
 .view-home {
-	padding-right: 10px;
 	.card {
 		background-color: #fff;
 		border-radius: 5px;

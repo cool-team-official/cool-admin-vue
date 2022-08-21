@@ -28,42 +28,44 @@
 		</div>
 
 		<div class="dept-tree__container" @contextmenu.stop.prevent="onContextMenu">
-			<el-tree
-				v-loading="loading"
-				node-key="id"
-				default-expand-all
-				:data="list"
-				:props="{
-					label: 'name'
-				}"
-				:draggable="isDrag"
-				:allow-drag="allowDrag"
-				:allow-drop="allowDrop"
-				:expand-on-click-node="false"
-				@node-contextmenu="onContextMenu"
-			>
-				<template #default="{ node, data }">
-					<div class="dept-tree__node">
-						<span
-							class="dept-tree__node-label"
-							:class="{
-								'is-active': data.id == info?.id
-							}"
-							@click="rowClick(data)"
-							>{{ node.label }}</span
-						>
-						<span
-							v-if="app.browser.isMini"
-							class="dept-tree__node-icon"
-							@click="onContextMenu($event, data, node)"
-						>
-							<el-icon>
-								<more-filled />
-							</el-icon>
-						</span>
-					</div>
-				</template>
-			</el-tree>
+			<el-scrollbar>
+				<el-tree
+					v-loading="loading"
+					node-key="id"
+					default-expand-all
+					:data="list"
+					:props="{
+						label: 'name'
+					}"
+					:draggable="isDrag"
+					:allow-drag="allowDrag"
+					:allow-drop="allowDrop"
+					:expand-on-click-node="false"
+					@node-contextmenu="onContextMenu"
+				>
+					<template #default="{ node, data }">
+						<div class="dept-tree__node">
+							<span
+								class="dept-tree__node-label"
+								:class="{
+									'is-active': data.id == info?.id
+								}"
+								@click="rowClick(data)"
+								>{{ node.label }}</span
+							>
+							<span
+								v-if="app.browser.isMini"
+								class="dept-tree__node-icon"
+								@click="onContextMenu($event, data, node)"
+							>
+								<el-icon>
+									<more-filled />
+								</el-icon>
+							</span>
+						</div>
+					</template>
+				</el-tree>
+			</el-scrollbar>
 		</div>
 
 		<cl-form ref="Form" />
@@ -407,8 +409,6 @@ onMounted(function () {
 
 	&__container {
 		height: calc(100% - 40px);
-		overflow-y: auto;
-		overflow-x: hidden;
 
 		:deep(.el-tree-node__content) {
 			height: 36px;

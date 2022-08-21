@@ -77,7 +77,7 @@ export const useUserStore = defineStore("user", function () {
 	// 退出
 	async function logout() {
 		clear();
-		router.href("login");
+		router.push("/login");
 	}
 
 	// 获取用户信息

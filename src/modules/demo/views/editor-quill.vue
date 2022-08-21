@@ -1,14 +1,14 @@
 <template>
-	<div class="editor scroller1">
-		<div class="item">
-			<p class="title">Wang</p>
-			<cl-editor-wang v-model="w" :height="300" />
-		</div>
+	<div class="editor">
+		<el-tabs>
+			<el-tab-pane label="WangEditor">
+				<cl-editor-wang v-model="w" :height="400" />
+			</el-tab-pane>
 
-		<div class="item">
-			<p class="title">Quill</p>
-			<cl-editor-quill v-model="q" :height="300" />
-		</div>
+			<el-tab-pane label="Quill">
+				<cl-editor-quill v-model="q" :height="400" />
+			</el-tab-pane>
+		</el-tabs>
 	</div>
 </template>
 
@@ -20,13 +20,8 @@ const w = ref("Wang");
 
 <style lang="scss" scoped>
 .editor {
-	.title {
-		font-size: 15px;
-		margin-bottom: 10px;
-	}
-
-	.item {
-		margin-bottom: 20px;
-	}
+	height: 100%;
+	background-color: #fff;
+	padding: 0 10px;
 }
 </style>

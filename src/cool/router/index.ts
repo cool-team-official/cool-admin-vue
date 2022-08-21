@@ -35,15 +35,6 @@ router.beforeResolve(() => {
 	Loading.close();
 });
 
-// 跳转
-router.href = function (path) {
-	const url = import.meta.env.BASE_URL + path;
-
-	if (url != location.pathname) {
-		location.href = url;
-	}
-};
-
 // 添加试图，页面路由
 router.append = function (data) {
 	const list = isArray(data) ? data : [data];
