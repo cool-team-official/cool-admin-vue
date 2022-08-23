@@ -138,7 +138,7 @@ const Upsert = useUpsert({
 			component: { name: "el-input", props: { type: "textarea", rows: 4 } }
 		}
 	],
-	onSubmit(_, data, { next }) {
+	onSubmit(data, { next }) {
 		next({
 			...data,
 			typeId: group.value.id
