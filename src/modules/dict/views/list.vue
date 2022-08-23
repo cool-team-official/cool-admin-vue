@@ -138,7 +138,7 @@ const Upsert = useUpsert({
 			component: { name: "el-input", props: { type: "textarea", rows: 4 } }
 		}
 	],
-	onSubmit(_, data, { next }) {
+	onSubmit(data, { next }) {
 		next({
 			...data,
 			typeId: group.value.id
@@ -186,7 +186,9 @@ const Crud = useCrud({
 		service.dict.info
 			.list({
 				typeId: group.value?.id,
-				...params
+				...params,
+				page: undefined,
+				size: undefined
 			})
 			.then((res) => {
 				render(deepTree(res));
