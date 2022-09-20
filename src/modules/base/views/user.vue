@@ -66,8 +66,10 @@
 				<!-- 新增、编辑 -->
 				<cl-upsert ref="Upsert" />
 
-				<!-- 移动 -->
-				<dept-move :ref="setRefs('deptMove')" />
+				<el-row>
+					<!-- 移动 -->
+					<dept-move :ref="setRefs('deptMove')" />
+				</el-row>
 			</cl-crud>
 		</template>
 	</cl-view-group>

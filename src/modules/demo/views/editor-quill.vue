@@ -20,8 +20,7 @@ const w = ref("Wang");
 
 <style lang="scss" scoped>
 .editor {
-	height: 100%;
 	background-color: #fff;
-	padding: 0 10px;
+	padding: 0 10px 10px 10px;
 }
 </style>
