@@ -561,6 +561,10 @@ declare namespace Eps {
 			delete: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface ChatSession {
@@ -614,6 +618,10 @@ declare namespace Eps {
 			delete: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface Test {
@@ -667,6 +675,10 @@ declare namespace Eps {
 			delete: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface BaseComm {
@@ -756,6 +768,10 @@ declare namespace Eps {
 			delete: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface BaseOpen {
@@ -839,6 +855,10 @@ declare namespace Eps {
 			delete: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface BaseSysDepartment {
@@ -898,6 +918,10 @@ declare namespace Eps {
 			page: boolean;
 			info: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface BaseSysLog {
@@ -969,6 +993,10 @@ declare namespace Eps {
 			delete: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface BaseSysMenu {
@@ -1022,6 +1050,10 @@ declare namespace Eps {
 			page: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface BaseSysParam {
@@ -1081,6 +1113,10 @@ declare namespace Eps {
 			add: boolean;
 			list: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface BaseSysRole {
@@ -1134,6 +1170,10 @@ declare namespace Eps {
 			page: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface BaseSysUser {
@@ -1193,6 +1233,10 @@ declare namespace Eps {
 			page: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface DemoGoods {
@@ -1246,6 +1290,10 @@ declare namespace Eps {
 			list: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface DictInfo {
@@ -1305,6 +1353,10 @@ declare namespace Eps {
 			page: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface DictType {
@@ -1358,6 +1410,10 @@ declare namespace Eps {
 			page: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface SpaceInfo {
@@ -1411,6 +1467,10 @@ declare namespace Eps {
 			page: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface SpaceType {
@@ -1464,6 +1524,10 @@ declare namespace Eps {
 			page: boolean;
 			add: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	interface TaskInfo {
@@ -1541,6 +1605,10 @@ declare namespace Eps {
 			add: boolean;
 			list: boolean;
 		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
 	}
 
 	type Service = {

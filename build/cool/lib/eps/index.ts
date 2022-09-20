@@ -194,6 +194,13 @@ function createService({ list, service }: any) {
 								.map((e) => `${e}: boolean;`)
 								.join("\n")} };`
 						);
+
+						// 请求
+						t.push("\n");
+						t.push("/**\n");
+						t.push(" * 请求\n");
+						t.push(" */\n");
+						t.push(`request: Service['request']`);
 					}
 
 					t.push("}");

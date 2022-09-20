@@ -17,6 +17,10 @@ const names = getNames(new BaseService());
 export async function createEps() {
 	// 创建描述文件
 	function createDts(list: any[]) {
+		if (!isDev) {
+			return false;
+		}
+
 		function deep(v: any) {
 			for (const i in v) {
 				if (v[i].namespace) {
@@ -67,7 +71,7 @@ export async function createEps() {
 
 	// 获取
 	async function getEps() {
-		if (isDev && config.test.eps) {
+		if (config.test.eps) {
 			await service
 				.request({
 					url: "/admin/base/open/eps"
@@ -80,16 +84,14 @@ export async function createEps() {
 				.catch((err) => {
 					console.error("[Eps] 获取失败！", err.message);
 				});
+		} else {
+			set();
 		}
 	}
 
 	// 设置、创建
-	async function set(d: any) {
+	async function set(d?: any) {
 		const list: any[] = [];
-
-		if (!d) {
-			return false;
-		}
 
 		if (isArray(d)) {
 			d = { d };
@@ -178,9 +180,7 @@ export async function createEps() {
 		// 缓存数据
 		Data.set("service", service);
 
-		if (isDev) {
-			createDts(list);
-		}
+		createDts(list);
 	}
 
 	// 开发环境下使用接口 /eps 的数据，生产环境使用 eps.json
