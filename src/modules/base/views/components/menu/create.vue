@@ -5,7 +5,7 @@
 			<el-cascader
 				v-model="scope.entity"
 				filterable
-				separator="-"
+				separator="."
 				:options="tree"
 				@change="onEntityChange"
 			></el-cascader>
