@@ -2,9 +2,11 @@
 	<div class="app-views">
 		<router-view v-slot="{ Component }">
 			<el-scrollbar>
-				<keep-alive :include="caches">
-					<component :is="Component" />
-				</keep-alive>
+				<transition name="slide">
+					<keep-alive :include="caches">
+						<component :is="Component" />
+					</keep-alive>
+				</transition>
 			</el-scrollbar>
 		</router-view>
 	</div>
@@ -39,6 +41,40 @@ const caches = computed(() => {
 
 	:deep(.el-scrollbar__view) {
 		height: 100%;
+	}
+
+	.slide-enter-active {
+		position: absolute;
+		top: 0;
+		width: 100%;
+		transition: all 0.4s ease-in-out 0.2s;
+	}
+
+	.slide-leave-active {
+		position: absolute;
+		top: 0;
+		width: 100%;
+		transition: all 0.4s ease-in-out;
+	}
+
+	.slide-enter-to {
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+	}
+
+	.slide-enter-from {
+		transform: translate3d(-5%, 0, 0);
+		opacity: 0;
+	}
+
+	.slide-leave-to {
+		transform: translate3d(5%, 0, 0);
+		opacity: 0;
+	}
+
+	.slide-leave-from {
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
 	}
 }
 </style>

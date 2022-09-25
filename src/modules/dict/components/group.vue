@@ -66,6 +66,8 @@ const list = ref<any[]>([]);
 // 加载状态
 const loading = ref(false);
 
+const viewGroup = inject<any>("viewGroup");
+
 // 刷新
 async function refresh() {
 	loading.value = true;
@@ -93,6 +95,8 @@ function select(item: any) {
 		typeId: active.value,
 		page: 1
 	});
+
+	viewGroup.checkExpand(false);
 }
 
 // 编辑

@@ -1,5 +1,5 @@
 <template>
-	<cl-view-group :ref="setRefs('viewGroup')" :title="title">
+	<cl-view-group :title="title">
 		<template #left>
 			<dept-tree @row-click="onDeptRowClick" @user-add="onDeptUserAdd" />
 		</template>
@@ -66,10 +66,8 @@
 				<!-- 新增、编辑 -->
 				<cl-upsert ref="Upsert" />
 
-				<el-row>
-					<!-- 移动 -->
-					<dept-move :ref="setRefs('deptMove')" />
-				</el-row>
+				<!-- 移动 -->
+				<dept-move :ref="setRefs('deptMove')" />
 			</cl-crud>
 		</template>
 	</cl-view-group>
@@ -339,9 +337,6 @@ function onDeptRowClick({ item, ids }: any) {
 		page: 1,
 		departmentIds: ids
 	});
-
-	// 收起
-	refs.value.viewGroup.checkExpand(false);
 }
 
 // 部门下新增成员

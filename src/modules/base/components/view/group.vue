@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" name="cl-view-group" setup>
-import { ref, watch } from "vue";
+import { provide, ref, watch } from "vue";
 import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
 import { useBase } from "/$/base";
 
@@ -62,6 +62,10 @@ watch(
 	}
 );
 
+provide("viewGroup", {
+	checkExpand
+});
+
 defineExpose({
 	checkExpand
 });
@@ -83,7 +87,6 @@ defineExpose({
 	&__left {
 		height: 100%;
 		width: 300px;
-		max-width: calc(100% - 50px);
 		transition: width 0.3s;
 		flex-shrink: 0;
 		overflow: hidden;
@@ -92,7 +95,7 @@ defineExpose({
 
 		&._collapse {
 			margin-right: 0;
-			width: 0;
+			width: 0 !important;
 			border-right: 0;
 		}
 	}
@@ -135,6 +138,10 @@ defineExpose({
 	}
 
 	@media only screen and (max-width: 768px) {
+		.cl-view-group__left {
+			width: 100%;
+		}
+
 		.cl-view-group__right {
 			width: calc(100% - 100px);
 		}

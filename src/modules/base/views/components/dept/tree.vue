@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts" name="dept-tree" setup>
-import { onMounted, ref } from "vue";
+import { inject, onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useCool } from "/@/cool";
 import { deepTree, revDeepTree } from "/@/cool/utils";
@@ -114,6 +114,8 @@ const isDrag = ref<boolean>(false);
 // cl-form
 const Form = useForm();
 
+const viewGroup = inject<any>("viewGroup");
+
 // 允许托的规则
 function allowDrag({ data }: any) {
 	return data.parentId;
@@ -149,6 +151,7 @@ function rowClick(e: any) {
 		const ids = e.children ? revDeepTree(e.children).map((e) => e.id) : [];
 		ids.unshift(e.id);
 		info.value = e;
+		viewGroup.checkExpand(false);
 		emit("row-click", { item: e, ids });
 	}
 }
@@ -368,6 +371,12 @@ onMounted(function () {
 .dept-tree {
 	height: 100%;
 	width: 100%;
+
+	:deep(.el-tree-node__label) {
+		display: block;
+		height: 100%;
+		width: 100%;
+	}
 
 	&__header {
 		display: flex;
