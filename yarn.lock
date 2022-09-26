@@ -1052,10 +1052,10 @@
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
-"@cool-vue/crud@^5.6.0":
-  version "5.6.0"
-  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-5.6.0.tgz#357802bad66cdba131a85352f44c0a28ba1795a8"
-  integrity sha512-AtA8Gr2QsOzMTEh+FErOSb0xO6j3zDsCh+pVbKie9QJw7N1deFwIy+1GIPaocqPo4YiSqj0z/f8pUMXYkckI+w==
+"@cool-vue/crud@^5.6.1":
+  version "5.6.1"
+  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-5.6.1.tgz#1857bc63a78ac7a7f7226ebca073b40298ade820"
+  integrity sha512-KyMaEGkxf6U14W+MU7BWf4WYjqXuHyKwDoVSxAGKUfHl1idh+TcVjiY0Q5lBhowYtUMB3NvNQxKPrpaUYOP9ww==
   dependencies:
     array.prototype.flat "^1.2.4"
     core-js "^3.21.1"
