@@ -22,6 +22,8 @@ export const config = {
 		router: {
 			// 模式
 			mode: "history",
+			// 转场动画
+			transition: "slide",
 			// 首页组件
 			home: () => import("/$/demo/views/home/index.vue")
 		},

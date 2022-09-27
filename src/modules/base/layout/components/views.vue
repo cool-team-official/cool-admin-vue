@@ -2,7 +2,7 @@
 	<div class="app-views">
 		<router-view v-slot="{ Component }">
 			<el-scrollbar>
-				<transition name="slide">
+				<transition :name="app.info.router.transition">
 					<keep-alive :include="caches">
 						<component :is="Component" />
 					</keep-alive>
@@ -16,7 +16,7 @@
 import { computed } from "vue";
 import { useBase } from "/$/base";
 
-const { process } = useBase();
+const { process, app } = useBase();
 
 // 缓存列表
 const caches = computed(() => {

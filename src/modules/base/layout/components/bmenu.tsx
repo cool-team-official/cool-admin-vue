@@ -1,4 +1,4 @@
-import { h, ref, watch } from "vue";
+import { h } from "vue";
 import { useStore } from "../../store";
 import { Menu } from "../../types";
 import { useCool } from "/@/cool";
@@ -9,9 +9,6 @@ export default {
 	setup() {
 		const { router, route } = useCool();
 		const { menu, app } = useStore();
-
-		// 是否可见
-		const visible = ref(true);
 
 		// 页面跳转
 		function toView(url: string) {
@@ -25,23 +22,9 @@ export default {
 			}
 		}
 
-		// 刷新菜单
-		function refresh() {
-			visible.value = false;
-
-			setTimeout(() => {
-				visible.value = true;
-			}, 0);
-		}
-
-		// 监听菜单变化
-		watch(menu.list, refresh);
-
 		return {
 			route,
-			visible,
 			toView,
-			refresh,
 			menu
 		};
 	},
@@ -105,19 +88,17 @@ export default {
 		const children = deep(ctx.menu.list, 1);
 
 		return (
-			ctx.visible && (
-				<div class="app-slider__menu">
-					<el-menu
-						default-active={ctx.route.path}
-						background-color="transparent"
-						collapse-transition={false}
-						collapse={app.browser.isMini ? false : app.isFold}
-						onSelect={ctx.toView}
-					>
-						{children}
-					</el-menu>
-				</div>
-			)
+			<div class="app-slider__menu">
+				<el-menu
+					default-active={ctx.route.path}
+					background-color="transparent"
+					collapse-transition={true}
+					collapse={app.browser.isMini ? false : app.isFold}
+					onSelect={ctx.toView}
+				>
+					{children}
+				</el-menu>
+			</div>
 		);
 	}
 };

@@ -44,6 +44,10 @@ router.append = function (data) {
 			d.name = d.path.substring(1);
 		}
 
+		if (!d.meta) {
+			d.meta = {};
+		}
+
 		if (!d.component) {
 			const url = d.viewPath;
 
@@ -62,10 +66,23 @@ router.append = function (data) {
 			}
 		}
 
+		d.meta.dynamic = true;
+
 		if (d.isPage) {
 			router.addRoute(d);
 		} else {
 			router.addRoute("index", d);
+		}
+	});
+};
+
+// 清空路由
+router.clear = function () {
+	const rs = router.getRoutes();
+
+	rs.forEach((e) => {
+		if (e.name) {
+			router.removeRoute(e.name);
 		}
 	});
 };
