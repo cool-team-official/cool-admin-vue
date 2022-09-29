@@ -1,7 +1,7 @@
 <template>
 	<div class="app-views">
 		<router-view v-slot="{ Component }">
-			<el-scrollbar :key="route.path">
+			<el-scrollbar>
 				<transition :name="app.info.router.transition">
 					<keep-alive :include="caches">
 						<component :is="Component" />
@@ -40,6 +40,7 @@ const caches = computed(() => {
 	width: calc(100% - 20px);
 	box-sizing: border-box;
 	border-radius: 3px;
+	position: relative;
 
 	:deep(.el-scrollbar__view) {
 		height: 100%;
