@@ -50,7 +50,6 @@
 
 				<div class="op">
 					<el-button round :loading="saving" @click="toLogin">登录</el-button>
-					<el-button round @click="toTest">Test</el-button>
 				</div>
 			</el-form>
 		</div>
@@ -77,10 +76,6 @@ const form = reactive({
 	captchaId: "",
 	verifyCode: ""
 });
-
-function toTest() {
-	router.push("/my/info");
-}
 
 // 登录
 async function toLogin() {
