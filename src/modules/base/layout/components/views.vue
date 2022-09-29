@@ -15,9 +15,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { useBase } from "/$/base";
-import { useCool } from "/@/cool";
 
-const { route } = useCool();
 const { process, app } = useBase();
 
 // 缓存列表
