@@ -992,7 +992,7 @@
     "@codemirror/view" "^6.0.0"
     "@lezer/common" "^1.0.0"
 
-"@codemirror/lang-javascript@^6.0.1":
+"@codemirror/lang-javascript@^6.0.1", "@codemirror/lang-javascript@^6.1.0":
   version "6.1.0"
   resolved "https://registry.npmjs.org/@codemirror/lang-javascript/-/lang-javascript-6.1.0.tgz#3b3ddfed59c5fb39b210c13f1e0e8e5a65f009f3"
   integrity sha512-wAWEY1Wdis2cKDy9A5q/rUmzLHFbZgoupJBcGaeMMsDPi68Rm90NsmzAEODE5kW8mYdRKFhQ157WJghOZ3yYdg==
@@ -1040,7 +1040,7 @@
   resolved "https://registry.npmjs.org/@codemirror/state/-/state-6.1.2.tgz#182d46eabcc17c95508984d6add5a5a641dcd517"
   integrity sha512-Mxff85Hp5va+zuj+H748KbubXjrinX/k28lj43H14T2D0+4kuvEFIEIO7hCEcvBT8ubZyIelt9yGOjj2MWOEQA==
 
-"@codemirror/theme-one-dark@^6.0.0":
+"@codemirror/theme-one-dark@^6.0.0", "@codemirror/theme-one-dark@^6.1.0":
   version "6.1.0"
   resolved "https://registry.npmjs.org/@codemirror/theme-one-dark/-/theme-one-dark-6.1.0.tgz#6f8b3c7fc22e9fec59edd573f4ba9546db42e007"
   integrity sha512-AiTHtFRu8+vWT9wWUWDM+cog6ZwgivJogB1Tm/g40NIpLwph7AnmxrSzWfvJN5fBVufsuwBxecQCNmdcR5D7Aw==
@@ -1059,10 +1059,30 @@
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
-"@cool-vue/crud@^5.6.1":
-  version "5.6.1"
-  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-5.6.1.tgz#1857bc63a78ac7a7f7226ebca073b40298ade820"
-  integrity sha512-KyMaEGkxf6U14W+MU7BWf4WYjqXuHyKwDoVSxAGKUfHl1idh+TcVjiY0Q5lBhowYtUMB3NvNQxKPrpaUYOP9ww==
+"@cool-vue/admin@^5.0.1":
+  version "5.0.1"
+  resolved "https://registry.npmjs.org/@cool-vue/admin/-/admin-5.0.1.tgz#2ef3803b9dcee699a57fa84e9987aad10282dd11"
+  integrity sha512-laegNS96vy5dHwniaaSVe/LY9W2KWDduIj3F5wF60FbHfhuuTGHPU8QDPGb6NahMdWJZjzvk62avyjkSMvJorA==
+  dependencies:
+    "@codemirror/lang-javascript" "^6.1.0"
+    "@codemirror/theme-one-dark" "^6.1.0"
+    "@cool-vue/crud" "^5.6.3"
+    "@vueuse/core" "^9.3.0"
+    "@wangeditor/editor" "^5.1.20"
+    "@wangeditor/editor-for-vue" "^5.1.12"
+    codemirror "^6.0.1"
+    dayjs "^1.11.5"
+    element-plus "^2.2.17"
+    lodash-es "^4.17.21"
+    quill "^1.3.7"
+    store "^2.0.12"
+    vue "^3.2.39"
+    vue-codemirror "^6.1.1"
+
+"@cool-vue/crud@^5.6.3", "@cool-vue/crud@^5.6.4":
+  version "5.6.4"
+  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-5.6.4.tgz#52f2afd16c26be8348d262ffa20a345186d6768a"
+  integrity sha512-oJ8yWqoNB7eYGDpwE/+GPRFj6G2sYOLT92PxPEY/JzGq7c4PhxOh65rypFDNV/JVdvHFGqFjcxkxsJRfaMOFpg==
   dependencies:
     array.prototype.flat "^1.2.4"
     core-js "^3.21.1"
@@ -1795,7 +1815,7 @@
   resolved "https://registry.npmjs.org/@vue/shared/-/shared-3.2.39.tgz#302df167559a1a5156da162d8cc6760cef67f8e3"
   integrity sha512-D3dl2ZB9qE6mTuWPk9RlhDeP1dgNRUKC3NJxji74A4yL8M2MwlhLKUC/49WHjrNzSPug58fWx/yFbaTzGAQSBw==
 
-"@vueuse/core@^9.1.0":
+"@vueuse/core@^9.1.0", "@vueuse/core@^9.3.0":
   version "9.3.0"
   resolved "https://registry.npmjs.org/@vueuse/core/-/core-9.3.0.tgz#74d855bd19cb5eadd2edb30c871918fac881e8b8"
   integrity sha512-64Rna8IQDWpdrJxgitDg7yv1yTp41ZmvV8zlLEylK4QQLWAhz1OFGZDPZ8bU4lwcGgbEJ2sGi2jrdNh4LttUSQ==
@@ -1843,6 +1863,18 @@
     scroll-into-view-if-needed "^2.2.28"
     slate-history "^0.66.0"
 
+"@wangeditor/core@^1.1.16":
+  version "1.1.16"
+  resolved "https://registry.npmjs.org/@wangeditor/core/-/core-1.1.16.tgz#c44df699fb98ca2e726517dcbacf809df160420d"
+  integrity sha512-EhPO0DhDSDUqeRQ3yuMATCfLP9DJhWVc91pd3wG5Z9r1H3HLQG3aNLODAJA58D3J8RRIlpnE5q23d58wum7TFw==
+  dependencies:
+    "@types/event-emitter" "^0.3.3"
+    event-emitter "^0.3.5"
+    html-void-elements "^2.0.0"
+    i18next "^20.4.0"
+    scroll-into-view-if-needed "^2.2.28"
+    slate-history "^0.66.0"
+
 "@wangeditor/editor-for-vue@^5.1.12":
   version "5.1.12"
   resolved "https://registry.npmjs.org/@wangeditor/editor-for-vue/-/editor-for-vue-5.1.12.tgz#f7d5f239b39cdfc01d31151488de8443fe6edc64"
@@ -1875,10 +1907,42 @@
     slate "^0.72.0"
     snabbdom "^3.1.0"
 
+"@wangeditor/editor@^5.1.20":
+  version "5.1.20"
+  resolved "https://registry.npmjs.org/@wangeditor/editor/-/editor-5.1.20.tgz#ee8bca92b61b313bdf4496e457a72b035c6dfb6a"
+  integrity sha512-qMUyKUNZaZN/JcWg8HFKaTlu04srSNIabiUCdNtK99sk7oIMptkdbEJ/lnxOHbsQZQyz1bmf3DsfQySruxy6Ow==
+  dependencies:
+    "@uppy/core" "^2.1.1"
+    "@uppy/xhr-upload" "^2.0.3"
+    "@wangeditor/basic-modules" "^1.1.6"
+    "@wangeditor/code-highlight" "^1.0.3"
+    "@wangeditor/core" "^1.1.16"
+    "@wangeditor/list-module" "^1.0.5"
+    "@wangeditor/table-module" "^1.1.4"
+    "@wangeditor/upload-image-module" "^1.0.2"
+    "@wangeditor/video-module" "^1.1.4"
+    dom7 "^3.0.0"
+    is-hotkey "^0.2.0"
+    lodash.camelcase "^4.3.0"
+    lodash.clonedeep "^4.5.0"
+    lodash.debounce "^4.0.8"
+    lodash.foreach "^4.5.0"
+    lodash.isequal "^4.5.0"
+    lodash.throttle "^4.1.1"
+    lodash.toarray "^4.4.0"
+    nanoid "^3.2.0"
+    slate "^0.72.0"
+    snabbdom "^3.1.0"
+
 "@wangeditor/list-module@^1.0.4":
   version "1.0.4"
   resolved "https://registry.npmjs.org/@wangeditor/list-module/-/list-module-1.0.4.tgz#7cdc5f4816066893265c07bd3dd95e033a648f60"
   integrity sha512-TiZREga19+GHzNNiRWUvOqLcVOdHZSuYW8VmXddgAHOQma+uBcfodZJK7xBLOhaGO0jiFuOGAVIXUroRvYGIDw==
+
+"@wangeditor/list-module@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/@wangeditor/list-module/-/list-module-1.0.5.tgz#3fc0b167acddf885536b45fa0c127f9c6adaea33"
+  integrity sha512-uDuYTP6DVhcYf7mF1pTlmNn5jOb4QtcVhYwSSAkyg09zqxI1qBqsfUnveeDeDqIuptSJhkh81cyxi+MF8sEPOQ==
 
 "@wangeditor/table-module@^1.1.4":
   version "1.1.4"
@@ -2491,7 +2555,7 @@ d@1, d@^1.0.1:
     es5-ext "^0.10.50"
     type "^1.0.1"
 
-dayjs@^1.11.3:
+dayjs@^1.11.3, dayjs@^1.11.5:
   version "1.11.5"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.5.tgz#00e8cc627f231f9499c19b38af49f56dc0ac5e93"
   integrity sha512-CAdX5Q3YW3Gclyo5Vpqkgpj8fSdLQcRuzfX6mC6Phy0nfJ0eGYOeS7m4mt2plDWLAtA4TqTakvbboHvUxfe4iA==
@@ -5025,7 +5089,7 @@ vite@^3.0.6:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vue-codemirror@^6.0.1:
+vue-codemirror@^6.0.1, vue-codemirror@^6.1.1:
   version "6.1.1"
   resolved "https://registry.npmjs.org/vue-codemirror/-/vue-codemirror-6.1.1.tgz#246697ef4cfa6b2448dd592ade214bb7ff86611f"
   integrity sha512-rTAYo44owd282yVxKtJtnOi7ERAcXTeviwoPXjIc6K/IQYUsoDkzPvw/JDFtSP6T7Cz/2g3EHaEyeyaQCKoDMg==

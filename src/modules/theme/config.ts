@@ -1,6 +1,5 @@
-import store from "store";
 import { setTheme } from "./utils";
-import { ModuleConfig, config } from "/@/cool";
+import { config, ModuleConfig, storage } from "/@/cool";
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "./static/css/index.scss";
 
@@ -16,15 +15,17 @@ export default (): ModuleConfig => {
 		},
 
 		install(_, options) {
-			const theme = store.get("theme") || options;
+			const data =
+				storage.get("theme") ||
+				Object.assign(
+					{
+						isGroup: config.app.menu.isGroup,
+						transition: config.app.router.transition
+					},
+					options
+				);
 
-			if (theme) {
-				if (theme.isGroup !== undefined) {
-					config.app.menu.isGroup = theme.isGroup;
-				}
-
-				setTheme(theme);
-			}
+			setTheme(data);
 		}
 	};
 };

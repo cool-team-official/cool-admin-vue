@@ -183,27 +183,28 @@ export async function createEps() {
 		createDts(list);
 	}
 
-	// 开发环境下使用接口 /eps 的数据，生产环境使用 eps.json
+	// 使用 eps.json
+	try {
+		const eps = JSON.parse(__EPS__ || "[]").map(([prefix, api]: any[]) => {
+			return {
+				prefix,
+				api: api.map(([method, path, name]: string[]) => {
+					return {
+						method,
+						path,
+						name
+					};
+				})
+			};
+		});
+
+		set(eps);
+	} catch (err) {
+		console.error("[Eps] 解析失败！", err);
+	}
+
+	// 开发环境下使用接口 /eps 刷新数据
 	if (isDev) {
 		await getEps();
-	} else {
-		try {
-			const eps = JSON.parse(__EPS__ || "[]").map(([prefix, api]: any[]) => {
-				return {
-					prefix,
-					api: api.map(([method, path, name]: string[]) => {
-						return {
-							method,
-							path,
-							name
-						};
-					})
-				};
-			});
-
-			set(eps);
-		} catch (err) {
-			console.error("[Eps] 解析失败！", err);
-		}
 	}
 }

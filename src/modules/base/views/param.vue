@@ -26,7 +26,7 @@
 								item.label
 							}}</el-button>
 
-							<component :is="item.component" v-model="scope.data" height="300px" />
+							<component :is="item.component" v-model="scope.data" />
 						</template>
 					</template>
 				</div>

@@ -1,7 +1,7 @@
 <template>
 	<div class="app-views">
 		<router-view v-slot="{ Component }">
-			<el-scrollbar>
+			<el-scrollbar :key="route.path">
 				<transition :name="app.info.router.transition">
 					<keep-alive :include="caches">
 						<component :is="Component" />
@@ -15,7 +15,9 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import { useBase } from "/$/base";
+import { useCool } from "/@/cool";
 
+const { route } = useCool();
 const { process, app } = useBase();
 
 // 缓存列表

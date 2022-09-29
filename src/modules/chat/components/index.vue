@@ -13,6 +13,7 @@
 			height="630px"
 			width="1200px"
 			keep-alive
+			:draggable="false"
 			custom-class="cl-chat__dialog"
 			:close-on-click-modal="false"
 			close-on-press-escape

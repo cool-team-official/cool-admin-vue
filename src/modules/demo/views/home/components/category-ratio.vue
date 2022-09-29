@@ -74,7 +74,7 @@ const chartOption = reactive({
 	}
 
 	&__container {
-		height: 415px;
+		height: 395px;
 		padding: 0 20px;
 		box-sizing: border-box;
 

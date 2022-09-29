@@ -5,7 +5,7 @@ import { deepMerge, getBrowser, storage } from "/@/cool/utils";
 
 export const useAppStore = defineStore("app", function () {
 	// 基本信息
-	const info = ref<any>({
+	const info = reactive({
 		...config.app
 	});
 
@@ -31,8 +31,8 @@ export const useAppStore = defineStore("app", function () {
 
 	// 设置基本信息
 	function set(data: any) {
-		deepMerge(info.value, data);
-		storage.set("__app__", info.value);
+		deepMerge(info, data);
+		storage.set("__app__", info);
 	}
 
 	// 设置浏览器信息

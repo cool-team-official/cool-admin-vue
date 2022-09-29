@@ -1,11 +1,13 @@
 import { ModuleConfig, config } from "/@/cool";
 import { useStore } from "./store";
+import { App } from "vue";
+import Admin from "@cool-vue/admin";
+import "@cool-vue/admin/dist/index.css";
 import "./static/css/index.scss";
 
 export default (): ModuleConfig => {
 	return {
 		order: 99,
-		components: Object.values(import.meta.glob("./components/**/*")),
 		views: [
 			{
 				path: "/my/info",
@@ -56,7 +58,10 @@ export default (): ModuleConfig => {
 				component: () => import("./pages/error-page/502.vue")
 			}
 		],
-		install() {
+		install(app: App) {
+			// 基础库
+			app.use(Admin);
+
 			// 设置标题
 			document.title = config.app.name;
 		},

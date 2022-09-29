@@ -23,10 +23,10 @@ const { router, route } = useCool();
 const { menu } = useBase();
 
 // 选中标识
-const active = ref<string>("0");
+const active = ref("");
 
 // 选择导航
-function select(index: number) {
+function select(index: any) {
 	menu.setMenu(index);
 
 	// 获取第一个菜单地址

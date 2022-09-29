@@ -1,4 +1,6 @@
-import store from "store";
+import { Theme } from "../types";
+import { useBase } from "/$/base";
+import { storage } from "/@/cool";
 
 function mix(color1: string, color2: string, weight: number) {
 	weight = Math.max(Math.min(Number(weight), 1), 0);
@@ -40,15 +42,11 @@ export const themes = [
 	}
 ];
 
-declare interface Options {
-	color?: string;
-	name?: string;
-	isGroup?: boolean;
-}
+export function setTheme({ color, name, isGroup, transition }: Theme) {
+	const { app } = useBase();
 
-export function setTheme({ color, name, isGroup }: Options) {
 	// 主题配置
-	const theme = store.get("theme") || {};
+	const theme = storage.get("theme") || {};
 
 	// 变量前缀
 	const pre = "--el-color-primary";
@@ -91,7 +89,22 @@ export function setTheme({ color, name, isGroup }: Options) {
 	// 菜单分组显示
 	if (isGroup !== undefined) {
 		theme.isGroup = isGroup;
+		app.set({
+			menu: {
+				isGroup
+			}
+		});
 	}
 
-	store.set("theme", theme);
+	// 转场动画
+	if (transition !== undefined) {
+		theme.transition = transition;
+		app.set({
+			router: {
+				transition
+			}
+		});
+	}
+
+	storage.set("theme", theme);
 }

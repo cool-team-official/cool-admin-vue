@@ -50,6 +50,15 @@
 				<el-form-item label="菜单分组显示">
 					<el-switch v-model="form.theme.isGroup" @change="setGroup"></el-switch>
 				</el-form-item>
+
+				<el-form-item label="转场动画">
+					<el-switch
+						v-model="form.theme.transition"
+						active-value="slide"
+						inactive-value="none"
+						@change="setTransition"
+					></el-switch>
+				</el-form-item>
 			</el-form>
 		</div>
 	</el-drawer>
@@ -57,35 +66,30 @@
 
 <script lang="ts" setup name="cl-theme">
 import { reactive, ref } from "vue";
-import { setTheme, themes } from "../utils";
-import { module } from "/@/cool";
-import store from "store";
 import { Check, Moon, Sunny } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { useBase } from "/$/base";
 import { useDark } from "@vueuse/core";
+import { storage } from "/@/cool";
+import { Theme } from "../types";
+import { setTheme, themes } from "../utils";
 
-const { app, menu } = useBase();
+const { menu } = useBase();
 
 // 是否暗黑模式
 const isDark = ref(useDark());
 
 // 当前主题
-const theme = reactive<any>(store.get("theme") || module.get("theme"));
-
-// 菜单分组显示默认值
-if (theme.isGroup === undefined) {
-	theme.isGroup = app.info.menu.isGroup;
-}
+const theme = reactive<Theme>(storage.get("theme"));
 
 // 表单
-const form = reactive<any>({
+const form = reactive<{ color: string; theme: Theme }>({
 	color: theme.color || "",
 	theme
 });
 
 // 抽屉
-const visible = ref<boolean>(false);
+const visible = ref(false);
 
 // 打开
 function open() {
@@ -113,14 +117,14 @@ function setComd(item: any) {
 }
 
 // 设置分组
-function setGroup(val: boolean) {
+function setGroup(val: any) {
 	setTheme({ isGroup: val });
-	app.set({
-		menu: {
-			isGroup: val
-		}
-	});
 	menu.setMenu();
+}
+
+// 设置转场动画
+function setTransition(val: any) {
+	setTheme({ transition: val });
 }
 </script>
 

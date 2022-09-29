@@ -3,61 +3,43 @@
 		<el-row>
 			<cl-refresh-btn />
 			<cl-add-btn />
-			<el-button @click="openForm">自定义表单</el-button>
+			<form-crud />
 
-			<cl-filter label="字典">
-				<cl-select :options="dict.get('brand')"></cl-select>
+			<cl-filter label="字典筛选">
+				<cl-select :options="dict.get('brand')" prop="brand" />
 			</cl-filter>
 
-			<cl-flex1></cl-flex1>
+			<cl-flex1 />
 			<cl-column-custom :columns="Table?.columns" />
 			<cl-search-key />
 		</el-row>
 
 		<el-row>
-			<cl-table ref="Table">
-				<template #slot-btn>
-					<el-button>btn</el-button>
-				</template>
-			</cl-table>
+			<cl-table ref="Table" />
 		</el-row>
 
 		<el-row>
-			<cl-flex1></cl-flex1>
-			<cl-pagination></cl-pagination>
+			<cl-flex1 />
+			<cl-pagination />
 		</el-row>
 
-		<cl-upsert ref="Upsert">
-			<template #slot-crud>
-				<cl-crud ref="Crud2" padding="0">
-					<el-row>
-						<cl-refresh-btn></cl-refresh-btn>
-					</el-row>
-					<el-row>
-						<cl-table :auto-height="false" ref="Table2"></cl-table>
-					</el-row>
-				</cl-crud>
-			</template>
-		</cl-upsert>
+		<cl-upsert ref="Upsert" />
 	</cl-crud>
-
-	<cl-dialog title="xxx" v-model="dialog.visible"> xxxx </cl-dialog>
-
-	<cl-form ref="Form"></cl-form>
 </template>
 
 <script lang="tsx" setup name="crud">
-import { useCrud, useUpsert, useTable, useForm } from "@cool-vue/crud";
-import { reactive } from "vue";
+import { useCrud, useUpsert, useTable } from "@cool-vue/crud";
 import { useDict } from "/$/dict";
+import FormCrud from "../components/form-crud.vue";
 
 const { dict } = useDict();
 
-console.log(dict.get("brand").value);
-
 const Crud = useCrud(
 	{
-		service: "test"
+		service: "test",
+		async onRefresh(params, { next }) {
+			console.log(await next(params));
+		}
 	},
 	(app) => {
 		app.refresh();
@@ -75,38 +57,32 @@ const Upsert = useUpsert({
 			}
 		},
 		{
+			type: "tabs",
+			props: {
+				labels: [
+					{
+						label: "基础",
+						value: "base"
+					},
+					{
+						label: "其他",
+						value: "other"
+					}
+				]
+			}
+		},
+		{
 			label: "认证类型",
 			prop: "authType",
+			group: "base",
 			component: {
 				name: "el-select",
 				options: dict.get("type")
 			}
 		},
 		{
-			type: "tabs",
-			props: {
-				labels: [
-					{
-						label: "A",
-						value: "1"
-					},
-					{
-						label: "B",
-						value: "2"
-					}
-				]
-			}
-		},
-		{
-			label: "内嵌Crud",
-			group: "1",
-			component: {
-				name: "slot-crud"
-			}
-		},
-		{
 			label: "年龄",
-			group: "2",
+			group: "other",
 			prop: "age",
 			component: {
 				name: "el-input-number"
@@ -143,6 +119,13 @@ const Table = useTable({
 			prop: "name"
 		},
 		{
+			label: "存款",
+			prop: "price",
+			formatter(row) {
+				return `¥${row.price}`;
+			}
+		},
+		{
 			label: "状态",
 			prop: "status",
 			dict: [
@@ -152,13 +135,15 @@ const Table = useTable({
 				},
 				{
 					label: "关闭",
+					type: "danger",
 					value: 0
 				}
 			]
 		},
 		{
 			label: "创建时间",
-			prop: "createTime"
+			prop: "createTime",
+			sortable: "desc"
 		},
 		{
 			type: "op",
@@ -167,67 +152,4 @@ const Table = useTable({
 		}
 	]
 });
-
-const dialog = reactive({
-	visible: false
-});
-
-const Form = useForm();
-
-// 内嵌
-const Crud2 = useCrud(
-	{
-		service: "test"
-	},
-	(app) => {
-		app.refresh();
-	}
-);
-
-const Table2 = useTable({
-	columns: [
-		{
-			label: "姓名",
-			prop: "name"
-		},
-		{
-			label: "创建时间",
-			prop: "createTime"
-		}
-	]
-});
-
-function openForm() {
-	return (dialog.visible = true);
-
-	Form.value?.open({
-		title: "自定义表单",
-		items: [
-			{
-				label: "姓名",
-				prop: "name",
-				required: true,
-				component: {
-					name: "el-input"
-				}
-			}
-		],
-		on: {
-			submit(data, { close }) {
-				console.log(data);
-				setTimeout(() => {
-					close();
-				}, 1500);
-			},
-			open(data) {
-				console.log("form open", data);
-				Crud2.value?.refresh();
-			},
-			close(done) {
-				console.log("form close");
-				done();
-			}
-		}
-	});
-}
 </script>

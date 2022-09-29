@@ -63,7 +63,7 @@
 				<ul>
 					<cl-upload @success="onImageSend" :show-file-list="false">
 						<li>
-							<el-icon><Picture /></el-icon>
+							<el-icon><picture /></el-icon>
 						</li>
 					</cl-upload>
 

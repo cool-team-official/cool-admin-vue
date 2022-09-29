@@ -42,40 +42,9 @@
 			</el-row>
 
 			<div class="hot-search__table">
-				<cl-crud ref="Crud">
+				<cl-crud ref="Crud" padding="0">
 					<el-row>
-						<cl-table
-							:border="false"
-							:auto-height="false"
-							:default-sort="{
-								prop: 'ud',
-								order: 'descending'
-							}"
-							:context-menu="false"
-							:columns="[
-								{
-									label: '排名',
-									type: 'index',
-									width: 60
-								},
-								{
-									label: '搜索关键词',
-									prop: 'keyWord',
-									minWidth: 100
-								},
-								{
-									label: '用户数',
-									prop: 'users',
-									minWidth: 100
-								},
-								{
-									label: '周涨幅',
-									prop: 'ud',
-									sortable: 'custom',
-									minWidth: 100
-								}
-							]"
-						/>
+						<cl-table ref="Table" :border="false" />
 					</el-row>
 				</cl-crud>
 			</div>
@@ -86,7 +55,7 @@
 <script lang="ts" setup>
 import { reactive } from "vue";
 import * as echarts from "echarts";
-import { useCrud } from "@cool-vue/crud";
+import { useCrud, useTable } from "@cool-vue/crud";
 
 const chartOption = reactive({
 	grid: {
@@ -224,6 +193,34 @@ const Crud = useCrud(
 		app.refresh();
 	}
 );
+
+const Table = useTable({
+	autoHeight: false,
+	contextMenu: false,
+	columns: [
+		{
+			label: "排名",
+			type: "index",
+			width: 60
+		},
+		{
+			label: "搜索关键词",
+			prop: "keyWord",
+			minWidth: 100
+		},
+		{
+			label: "用户数",
+			prop: "users",
+			minWidth: 100
+		},
+		{
+			label: "周涨幅",
+			prop: "ud",
+			sortable: "desc",
+			minWidth: 100
+		}
+	]
+});
 </script>
 
 <style lang="scss" scoped>
