@@ -54,11 +54,13 @@ export default (): UserConfig => {
 					manualChunks(id) {
 						if (id.includes("node_modules")) {
 							if (!["@cool-vue/crud"].find((e) => id.includes(e))) {
-								return id
-									.toString()
-									.split("node_modules/")[1]
-									.split("/")[0]
-									.toString();
+								let str = id.toString().split("node_modules/")[1];
+
+								if (str[0] == "@") {
+									str = str.replace("/", ".");
+								}
+
+								return str.split("/")[0].toString();
 							}
 						}
 					}
