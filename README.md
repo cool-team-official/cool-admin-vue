@@ -38,14 +38,6 @@
 
 <img width="260" src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/wechat.jpeg" alt="Admin Wechat"></a>
 
-## 微信公众号
-
-<img width="260" src="https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/mp.jpg" alt="Admin Wechat"></a>
-
-## 在线社区
-
-[https://bbs.cool-js.com/](https://bbs.cool-js.com/)
-
 ## 安装项目依赖
 
 推荐使用 `yarn`：
