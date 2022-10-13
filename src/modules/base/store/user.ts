@@ -77,7 +77,7 @@ export const useUserStore = defineStore("user", function () {
 	// 退出
 	async function logout() {
 		clear();
-		router.clear();
+		// router.clear();
 		router.push("/login");
 	}
 
