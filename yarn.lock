@@ -1059,10 +1059,10 @@
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
-"@cool-vue/admin@^5.0.2":
-  version "5.0.2"
-  resolved "https://registry.npmjs.org/@cool-vue/admin/-/admin-5.0.2.tgz#fc860b5821018d4ce909620c51ed51a1eac762c4"
-  integrity sha512-CVdfRlDhHPHlpsDCoa0nFGeEmBbolUYkgqZef0jUf0ae9CU7CPd+CIQ+VzW9SXuIQQ68l2BtN3eJFzmkt6+TPA==
+"@cool-vue/admin@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.npmjs.org/@cool-vue/admin/-/admin-5.0.3.tgz#d066eda856b4a82ea6d4badd03b87ddb61409ac3"
+  integrity sha512-w6/IhlrWFmd2vUjZV/1nl9GcSYTYitbuXjIeuQ/+3ryPOgOnBI7BKS4KID6fgLdaQ9m5Q8Be2W59U3YxcFq8Cg==
   dependencies:
     "@codemirror/lang-javascript" "^6.1.0"
     "@codemirror/theme-one-dark" "^6.1.0"
