@@ -1091,6 +1091,18 @@
     mitt "^3.0.0"
     vue "^3.2.39"
 
+"@cool-vue/crud@^5.7.1":
+  version "5.7.1"
+  resolved "https://registry.npmjs.org/@cool-vue/crud/-/crud-5.7.1.tgz#b8f935c6aeb5bcc2830fdb38f79f2b14d1acc4e6"
+  integrity sha512-rSb9lobCG9NlFlb+8WRiZfEwjTFrIo5/93Qx+cRHQgzVE8tXxsnNCwlMZNC0Tr3kkmuROQGP9ClkuJV8YwhyYA==
+  dependencies:
+    array.prototype.flat "^1.2.4"
+    core-js "^3.21.1"
+    element-plus "^2.2.17"
+    merge "^2.1.1"
+    mitt "^3.0.0"
+    vue "^3.2.39"
+
 "@ctrl/tinycolor@^3.4.1":
   version "3.4.1"
   resolved "https://registry.npmjs.org/@ctrl/tinycolor/-/tinycolor-3.4.1.tgz#75b4c27948c81e88ccd3a8902047bcd797f38d32"

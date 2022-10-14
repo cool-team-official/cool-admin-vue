@@ -143,6 +143,7 @@ import { useCool, module } from "/@/cool";
 import { extname, uuid } from "/@/cool/utils";
 import { useBase } from "/$/base";
 import { fileSize, fileName, fileType } from "../utils";
+import { useForm } from "@cool-vue/crud";
 
 interface Item {
 	url: string;
@@ -190,6 +191,9 @@ const { service } = useCool();
 // 缓存
 const { user } = useBase();
 
+// 表单
+const Form = useForm();
+
 // 模块配置
 const { options } = module.get("upload");
 
@@ -200,6 +204,11 @@ const Upload = ref<any>();
 const size = computed(() => {
 	const d = props.size || options.size;
 	return (isArray(d) ? d : [d, d]).map((e: string | number) => (isNumber(e) ? e + "px" : e));
+});
+
+// 是否禁用
+const disabled = computed(() => {
+	return Form.value?.disabled || props.disabled;
 });
 
 // 最大上传数量
