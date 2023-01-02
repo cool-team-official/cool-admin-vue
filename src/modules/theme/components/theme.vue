@@ -102,7 +102,7 @@ function clearDark() {
 }
 
 // 设置颜色
-function setColor(color: string) {
+function setColor(color: any) {
 	setTheme({ color });
 	clearDark();
 }

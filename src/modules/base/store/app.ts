@@ -10,7 +10,7 @@ export const useAppStore = defineStore("app", function () {
 	});
 
 	// 浏览器信息
-	const browser = ref<any>(getBrowser());
+	const browser = ref(getBrowser());
 
 	// 是否折叠
 	const isFold = ref(browser.value.isMini || false);

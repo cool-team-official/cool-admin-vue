@@ -53,9 +53,7 @@ export default (): UserConfig => {
 					assetFileNames: "static/[ext]/[name]-[hash].[ext]",
 					manualChunks(id) {
 						if (id.includes("node_modules")) {
-							if (
-								!["@cool-vue/crud", "@cool-vue/admin"].find((e) => id.includes(e))
-							) {
+							if (!["@cool-vue/crud"].find((e) => id.includes(e))) {
 								let str = id.toString().split("node_modules/")[1];
 
 								if (str[0] == "@") {

@@ -1,5 +1,5 @@
 import fs from "fs";
-import { isAbsolute, join, relative, sep } from "path";
+import { join, sep } from "path";
 
 // 首字母大写
 export function firstUpperCase(value: string): string {
@@ -30,7 +30,7 @@ export function readFile(name: string) {
 }
 
 // 解析body
-export function parseJson(req: any) {
+export function parseJson(req: any): Promise<any> {
 	return new Promise((resolve) => {
 		let d = "";
 		req.on("data", function (chunk: Buffer) {

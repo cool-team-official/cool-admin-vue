@@ -69,27 +69,7 @@ export async function createEps() {
 		});
 	}
 
-	// 获取
-	async function getEps() {
-		if (config.test.eps) {
-			await service
-				.request({
-					url: "/admin/base/open/eps"
-				})
-				.then((res) => {
-					if (!isEmpty(res)) {
-						set(res);
-					}
-				})
-				.catch((err) => {
-					console.error("[Eps] 获取失败！", err.message);
-				});
-		} else {
-			set();
-		}
-	}
-
-	// 设置、创建
+	// 设置
 	async function set(d?: any) {
 		const list: any[] = [];
 
@@ -131,12 +111,11 @@ export async function createEps() {
 								// 创建方法
 								e.api.forEach((a: any) => {
 									// 方法名
-									const n = (a.name || a.path).replace("/", "");
+									const n = a.path.replace("/", "");
 
 									// 过滤
 									if (!names.includes(n)) {
 										// 本地不存在则创建
-
 										if (!d[k][n]) {
 											if (n && !/[-:]/g.test(n)) {
 												d[k][n] = function (data: any) {
@@ -183,28 +162,43 @@ export async function createEps() {
 		createDts(list);
 	}
 
-	// 使用 eps.json
-	try {
-		const eps = JSON.parse(__EPS__ || "[]").map(([prefix, api]: any[]) => {
-			return {
-				prefix,
-				api: api.map(([method, path, name]: string[]) => {
-					return {
-						method,
-						path,
-						name
-					};
-				})
-			};
-		});
+	// 获取
+	async function getEps() {
+		try {
+			// 本地数据
+			let list = JSON.parse(__EPS__ || "[]").map(([prefix, name, api]: any[]) => {
+				return {
+					prefix,
+					name,
+					api: api.map(([path, method]: string[]) => {
+						return {
+							method,
+							path
+						};
+					})
+				};
+			});
 
-		set(eps);
-	} catch (err) {
-		console.error("[Eps] 解析失败！", err);
+			// 接口数据
+			if (isDev && config.test.eps) {
+				await service
+					.request({
+						url: "/admin/base/open/eps"
+					})
+					.then((res) => {
+						if (!isEmpty(res)) {
+							list = res;
+						}
+					});
+			}
+
+			if (list) {
+				set(list);
+			}
+		} catch (err) {
+			console.error("[Eps] 获取失败！", err);
+		}
 	}
 
-	// 开发环境下使用接口 /eps 刷新数据
-	if (isDev) {
-		await getEps();
-	}
+	await getEps();
 }

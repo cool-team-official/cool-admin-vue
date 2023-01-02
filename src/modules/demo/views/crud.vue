@@ -36,10 +36,7 @@ const { dict } = useDict();
 
 const Crud = useCrud(
 	{
-		service: "test",
-		async onRefresh(params, { next }) {
-			console.log(await next(params));
-		}
+		service: "test"
 	},
 	(app) => {
 		app.refresh();

@@ -127,9 +127,18 @@
 		</div>
 	</div>
 
-	<cl-dialog v-model="pv.visible" title="图片预览" width="500px">
-		<img style="width: 100%" :src="pv.url" />
-	</cl-dialog>
+	<el-image-viewer
+		v-if="pv.visible"
+		:url-list="pv.urls"
+		:initial-index="pv.index"
+		infinite
+		teleported
+		@close="
+			() => {
+				pv.visible = false;
+			}
+		"
+	></el-image-viewer>
 </template>
 
 <script lang="ts" setup name="cl-upload">
@@ -230,7 +239,8 @@ const headers = computed(() => {
 // 预览
 const pv = reactive<any>({
 	visible: false,
-	url: ""
+	urls: [],
+	index: 0
 });
 
 // 列表
@@ -314,7 +324,8 @@ function clear() {
 function preview(item: Item) {
 	if (item.type == "image") {
 		pv.visible = true;
-		pv.url = item.url;
+		pv.urls = list.value.map((e) => e.preload);
+		pv.index = pv.urls.indexOf(item.preload);
 	} else {
 		window.open(item.url);
 	}
@@ -446,18 +457,21 @@ function update() {
 	const check = list.value.find((e) => !e.url);
 
 	if (!check) {
-		emit("update:modelValue", list.value.map((e: Item) => e.url).join(","));
+		emit(
+			"update:modelValue",
+			list.value.map((e) => e.url.replace(/,/g, encodeURIComponent(","))).join(",")
+		);
 	}
 }
 
 // 获取
 watch(
 	() => props.modelValue,
-	(val: any) => {
+	(val: any[] | string) => {
 		const arr = (isArray(val) ? val : (val || "").split(",")).filter(Boolean);
 
 		list.value = arr
-			.map((url: string) => {
+			.map((url) => {
 				const item = list.value.find((e) => url == e.url);
 
 				if (item) {
@@ -472,7 +486,7 @@ watch(
 					};
 				}
 			})
-			.filter((_: any, i: number) => {
+			.filter((_, i) => {
 				return props.multiple ? true : i == 0;
 			});
 	},

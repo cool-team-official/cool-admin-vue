@@ -1,5 +1,7 @@
-import { App, Component, Directive } from "vue";
+import { Component, Directive } from "vue";
 import { Router as VueRouter, RouteRecordRaw } from "vue-router";
+
+export declare type Merge<A, B> = Omit<A, keyof B> & B;
 
 export declare interface ModuleConfig {
 	order?: number;
@@ -9,7 +11,7 @@ export declare interface ModuleConfig {
 	components?: Component[];
 	views?: RouteRecordRaw[];
 	pages?: RouteRecordRaw[];
-	install?(app: App, options?: { [key: string]: any }): void;
+	install?(app: any, options?: any): any;
 	onLoad?(events: {
 		hasToken: (cb: () => Promise<any> | void) => Promise<any> | void;
 		[key: string]: any;

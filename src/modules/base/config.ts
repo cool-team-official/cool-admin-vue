@@ -1,13 +1,11 @@
 import { ModuleConfig, config } from "/@/cool";
 import { useStore } from "./store";
-import { App } from "vue";
-import Admin from "@cool-vue/admin";
-import "@cool-vue/admin/dist/index.css";
 import "./static/css/index.scss";
 
 export default (): ModuleConfig => {
 	return {
 		order: 99,
+		components: Object.values(import.meta.glob("./components/**/*")),
 		views: [
 			{
 				path: "/my/info",
@@ -27,41 +25,38 @@ export default (): ModuleConfig => {
 				meta: {
 					process: false
 				},
-				component: () => import("./pages/error-page/401.vue")
+				component: () => import("./pages/error/401.vue")
 			},
 			{
 				path: "/403",
 				meta: {
 					process: false
 				},
-				component: () => import("./pages/error-page/403.vue")
+				component: () => import("./pages/error/403.vue")
 			},
 			{
 				path: "/404",
 				meta: {
 					process: false
 				},
-				component: () => import("./pages/error-page/404.vue")
+				component: () => import("./pages/error/404.vue")
 			},
 			{
 				path: "/500",
 				meta: {
 					process: false
 				},
-				component: () => import("./pages/error-page/500.vue")
+				component: () => import("./pages/error/500.vue")
 			},
 			{
 				path: "/502",
 				meta: {
 					process: false
 				},
-				component: () => import("./pages/error-page/502.vue")
+				component: () => import("./pages/error/502.vue")
 			}
 		],
-		install(app: App) {
-			// 基础库
-			app.use(Admin);
-
+		install() {
 			// 设置标题
 			document.title = config.app.name;
 		},

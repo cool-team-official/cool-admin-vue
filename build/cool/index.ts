@@ -40,10 +40,10 @@ export function cool(): Plugin {
 								code: 1000,
 								data
 							});
-						}).catch((message: string) => {
+						}).catch((err: Error) => {
 							done({
 								code: 1001,
-								message
+								message: err.message
 							});
 						});
 					}

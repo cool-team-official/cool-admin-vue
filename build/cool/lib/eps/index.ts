@@ -5,6 +5,33 @@ import { createWriteStream } from "fs";
 import { join } from "path";
 import config from "./config";
 
+interface Options {
+	list: {
+		prefix: string;
+		name: string;
+		columns: any[];
+		api: {
+			name: string;
+			method: string;
+			path: string;
+			summary: string;
+			dts: {
+				parameters: {
+					description: string;
+					schema: {
+						type: string;
+					};
+					name: string;
+					required: boolean;
+				}[];
+			};
+		}[];
+	}[];
+	service: {
+		[key: string]: any;
+	};
+}
+
 // 临时目录路径
 const tempPath = join(__dirname, "../../temp");
 
@@ -23,13 +50,13 @@ function getType({ entityName, propertyName, type }) {
 }
 
 // 创建 Entity
-function createEntity({ list }: any) {
+function createEntity({ list }: Options) {
 	const t0: any[] = [];
 
 	for (const item of list) {
 		if (!item.name) continue;
 		const t = [`interface ${item.name} {`];
-		for (const col of item.columns) {
+		for (const col of item.columns || []) {
 			// 描述
 			t.push("\n");
 			t.push("/**\n");
@@ -56,7 +83,7 @@ function createEntity({ list }: any) {
 }
 
 // 创建 Service
-function createService({ list, service }: any) {
+function createService({ list, service }: Options) {
 	const t0: any[] = [];
 
 	const t1 = [
@@ -81,7 +108,7 @@ function createService({ list, service }: any) {
 
 			if (d[i].namespace) {
 				// 查找配置
-				const item = list.find((e: any) => (e.prefix || "").includes(d[i].namespace));
+				const item = list.find((e) => (e.prefix || "").includes(d[i].namespace));
 
 				if (item) {
 					const t = [`interface ${name} {`];
@@ -93,9 +120,9 @@ function createService({ list, service }: any) {
 						// 权限列表
 						const permission: string[] = [];
 
-						item.api.forEach((a: any) => {
+						item.api.forEach((a) => {
 							// 方法名
-							const n = toCamel(a.name || last(a.path.split("/"))).replace(
+							const n = toCamel(a.name || last(a.path.split("/")) || "").replace(
 								/[:\/-]/g,
 								""
 							);
@@ -107,7 +134,7 @@ function createService({ list, service }: any) {
 								// 参数列表
 								const { parameters = [] } = a.dts || {};
 
-								parameters.forEach((p: any) => {
+								parameters.forEach((p) => {
 									if (p.description) {
 										q.push(`\n/** ${p.description}  */\n`);
 									}
@@ -227,12 +254,12 @@ function createService({ list, service }: any) {
 }
 
 // 创建描述文件
-export async function createEps({ list, service }: any) {
+export async function createEps(options: Options) {
 	// 文件内容
 	const text = `
 		declare namespace Eps {
-			${createEntity({ list })}
-			${createService({ list, service })}
+			${createEntity(options)}
+			${createService(options)}
 		}
 	`;
 
@@ -261,8 +288,18 @@ export async function createEps({ list, service }: any) {
 		flags: "w"
 	}).write(
 		JSON.stringify(
-			list.map((e: any) => {
-				return [e.prefix, e.api.map((a: any) => [a.method || "", a.path, a.name || ""])];
+			(options.list || []).map((e) => {
+				const req = e.api.map((a) => {
+					const arr = [a.name ? `/${a.name}` : a.path];
+
+					if (a.method) {
+						arr.push(a.method);
+					}
+
+					return arr;
+				});
+
+				return [e.prefix, e.name || "", req];
 			})
 		)
 	);

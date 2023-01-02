@@ -5,7 +5,7 @@
 				<cl-editor-wang v-model="w" :height="400" />
 			</el-tab-pane>
 
-			<el-tab-pane label="Quill">
+			<el-tab-pane label="Quill" lazy>
 				<cl-editor-quill v-model="q" :height="400" />
 			</el-tab-pane>
 		</el-tabs>

@@ -1,5 +1,6 @@
 import { Emitter } from "mitt";
 import { onBeforeUpdate, ref, inject } from "vue";
+import { isNumber } from "lodash-es";
 import { useRoute, useRouter } from "vue-router";
 import { service } from "../service";
 import { Data } from "../utils";
@@ -20,6 +21,16 @@ export function useRefs() {
 	};
 
 	return { refs, setRefs };
+}
+
+export function useComm() {
+	function px(val: string | number) {
+		return isNumber(val) ? `${val}px` : val;
+	}
+
+	return {
+		px
+	};
 }
 
 export function useCool() {
