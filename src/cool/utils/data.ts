@@ -1,4 +1,3 @@
-// @ts-nocheck
 const d: any = window;
 
 // window 数据临时存储，解决热更新后失效问题

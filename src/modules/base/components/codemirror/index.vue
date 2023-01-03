@@ -4,7 +4,7 @@
 			ref="Editor"
 			v-model="content"
 			:placeholder="placeholder"
-			:style="{ height, fontSize }"
+			:style="style"
 			autofocus
 			:disabled="disabled"
 			indent-with-tab
@@ -21,16 +21,17 @@ import { javascript } from "@codemirror/lang-javascript";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { ref, watch, computed, defineComponent } from "vue";
 import { useDark } from "@vueuse/core";
-import { isNumber } from "lodash-es";
+import { useComm } from "/@/cool";
 
 export default defineComponent({
 	name: "cl-codemirror",
 
+	components: {
+		Codemirror
+	},
+
 	props: {
-		modelValue: {
-			type: String,
-			required: true
-		},
+		modelValue: String,
 		placeholder: {
 			type: String,
 			default: "请输入"
@@ -40,28 +41,21 @@ export default defineComponent({
 			default: 400
 		},
 		fontSize: {
-			type: String,
-			default: "14px"
+			type: [String, Number],
+			default: 14
 		},
 		disabled: Boolean
 	},
 
 	emits: ["update:modelValue", "change"],
 
-	components: {
-		Codemirror
-	},
-
 	setup(props, { emit }) {
+		const { px } = useComm();
+
 		const Editor = ref();
 
 		// 是否暗黑模式
 		const isDark = ref(useDark());
-
-		// 高度
-		const height = computed(() =>
-			isNumber(props.height) ? `${props.height}px` : props.height
-		);
 
 		// 插件
 		const extensions: any[] = [javascript()];
@@ -73,6 +67,11 @@ export default defineComponent({
 		// 内容
 		const content = ref("");
 
+		// 样式
+		const style = computed(() => {
+			return { height: px(props.height), fontSize: px(props.fontSize) };
+		});
+
 		// 值改变
 		function onChange(value: string) {
 			emit("update:modelValue", value);
@@ -83,7 +82,7 @@ export default defineComponent({
 		watch(
 			() => props.modelValue,
 			(val) => {
-				content.value = val;
+				content.value = val || "";
 			},
 			{
 				immediate: true
@@ -93,7 +92,7 @@ export default defineComponent({
 		return {
 			Editor,
 			isDark,
-			height,
+			style,
 			content,
 			extensions,
 			onChange

@@ -1,10 +1,11 @@
 <template>
-	<el-select v-model="value" @change="onChange" clearable>
+	<el-select v-model="value" :clearable="clearable" @change="onChange">
 		<el-option
 			v-for="(item, index) in list"
 			:key="index"
 			:label="item.label"
 			:value="item.value"
+			:disabled="item.disabled"
 		></el-option>
 	</el-select>
 </template>
@@ -22,6 +23,10 @@ export default defineComponent({
 			type: [Array, Object],
 			default: () => []
 		},
+		clearable: {
+			type: Boolean,
+			default: true
+		},
 		prop: String
 	},
 
@@ -30,7 +35,11 @@ export default defineComponent({
 	setup(props, { emit }) {
 		// cl-crud
 		const Crud = useCrud();
+
+		// 选中值
 		const value = ref();
+
+		// 列表
 		const list = computed<any>(() =>
 			isRef(props.options) ? props.options.value : props.options
 		);

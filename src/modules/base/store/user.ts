@@ -3,20 +3,6 @@ import { ref } from "vue";
 import { storage } from "/@/cool/utils";
 import { service, config, router } from "/@/cool";
 
-interface User {
-	id: number;
-	name: string;
-	username: string;
-	nickName: string;
-	phone: string;
-	headImg: string;
-	email: string;
-	status: 0 | 1;
-	departmentId: string;
-	createTime: Date;
-	[key: string]: any;
-}
-
 // 本地缓存
 const data = storage.info();
 
@@ -27,9 +13,9 @@ export const useUserStore = defineStore("user", function () {
 	// 设置标识
 	function setToken(data: {
 		token: string;
-		expire: string;
+		expire: number;
 		refreshToken: string;
-		refreshExpire: string;
+		refreshExpire: number;
 	}) {
 		// 请求的唯一标识
 		token.value = data.token;
@@ -58,7 +44,7 @@ export const useUserStore = defineStore("user", function () {
 	}
 
 	// 用户信息
-	const info = ref<User | null>(data.userInfo);
+	const info = ref<Eps.BaseSysUserEntity | null>(data.userInfo);
 
 	// 设置用户信息
 	function set(value: any) {

@@ -63,7 +63,7 @@
 				<ul>
 					<cl-upload @success="onImageSend" :show-file-list="false">
 						<li>
-							<el-icon><picture /></el-icon>
+							<el-icon><picture-filled /></el-icon>
 						</li>
 					</cl-upload>
 
@@ -101,7 +101,7 @@
 import { computed, ref } from "vue";
 import { useChat } from "../hooks";
 import { useStore } from "../store";
-import { Picture, VideoCamera, Microphone } from "@element-plus/icons-vue";
+import { PictureFilled, VideoCamera, Microphone } from "@element-plus/icons-vue";
 import { useBase } from "/$/base";
 import { ContextMenu } from "@cool-vue/crud";
 import { useClipboard } from "@vueuse/core";

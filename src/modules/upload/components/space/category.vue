@@ -7,7 +7,7 @@
 		}"
 	>
 		<div class="cl-upload-space-category__search">
-			<el-input v-model="keyword" placeholder="搜索" clearable />
+			<el-input v-model="keyword" placeholder="搜索分类" clearable />
 			<el-button type="success" @click="edit()">添加</el-button>
 		</div>
 
@@ -39,32 +39,29 @@
 	<cl-form ref="Form" />
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" setup name="space-category">
 import { ElMessage, ElMessageBox } from "element-plus";
 import { ArrowRightBold } from "@element-plus/icons-vue";
-import { computed, inject, onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { isEmpty } from "lodash-es";
 import { useCool } from "/@/cool";
 import { ContextMenu, useForm } from "@cool-vue/crud";
 import { useBase } from "/$/base";
+import { useSpace } from "../../hooks";
 
 const { service } = useCool();
-
-// 缓存
 const { app } = useBase();
-
-// 接收
-const space = inject<any>("space");
+const { space } = useSpace();
 
 // 数据列表
-const list = ref<any[]>([]);
+const list = ref<Eps.SpaceTypeEntity[]>([]);
 
 // 搜索关键字
-const keyword = ref<string>("");
+const keyword = ref("");
 
 // 过滤列表
 const flist = computed(() => {
-	return list.value.filter((e: any) => e.name.includes(keyword.value));
+	return list.value.filter((e) => (e.name || "").includes(keyword.value));
 });
 
 // 刷新分类
@@ -72,13 +69,13 @@ async function refresh() {
 	return service.space.type.list().then((res) => {
 		res.unshift({
 			name: "全部文件",
-			id: null
+			id: undefined
 		});
 
 		list.value = res;
 
 		if (!isEmpty(res)) {
-			if (!space.category.id) {
+			if (!space.category.id && res[0].id) {
 				space.category.id = res[0].id;
 			}
 		}
@@ -88,7 +85,7 @@ async function refresh() {
 const Form = useForm();
 
 // 编辑分类
-function edit(item: any = {}) {
+function edit(item: Eps.SpaceTypeEntity = {}) {
 	Form.value?.open({
 		title: "添加分类",
 		width: "400px",
@@ -132,7 +129,7 @@ function edit(item: any = {}) {
 }
 
 // 选择类目
-function select(id: number) {
+function select(id?: number) {
 	// 小屏幕下收起左侧类目
 	if (app.browser.isMini) {
 		space.category.visible = false;
@@ -183,7 +180,7 @@ function onContextMenu(e: any, { id, name }: any) {
 
 									// 是否删除当前
 									if (id == space.category.id) {
-										space.category.id = null;
+										space.category.id = undefined;
 									}
 
 									refresh();

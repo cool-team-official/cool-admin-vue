@@ -1,6 +1,6 @@
 <template>
 	<div class="editor">
-		<el-tabs>
+		<el-tabs type="card">
 			<el-tab-pane label="WangEditor">
 				<cl-editor-wang v-model="w" :height="400" />
 			</el-tab-pane>
@@ -20,7 +20,9 @@ const w = ref("Wang");
 
 <style lang="scss" scoped>
 .editor {
-	background-color: #fff;
-	padding: 0 10px 10px 10px;
+	background-color: var(--el-bg-color);
+	padding: 10px;
+	height: 100%;
+	box-sizing: border-box;
 }
 </style>

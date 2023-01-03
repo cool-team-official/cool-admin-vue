@@ -1,12 +1,11 @@
 <template>
-	<div class="cl-upload__wrap">
+	<div class="cl-upload__wrap" :class="[customClass]">
 		<div
 			class="cl-upload"
 			:class="[
 				`cl-upload--${type}`,
 				{
 					'is-slot': $slots.default,
-					'is-custom': $slots.item,
 					'is-disabled': disabled
 				}
 			]"
@@ -42,11 +41,11 @@
 
 			<!-- 列表 -->
 			<draggable
+				class="cl-upload__list"
+				tag="div"
 				v-model="list"
 				v-bind="drag.options"
 				item-key="uid"
-				tag="div"
-				class="cl-upload__list"
 				@end="update"
 			>
 				<template #item="{ element: item, index }">
@@ -153,14 +152,7 @@ import { extname, uuid } from "/@/cool/utils";
 import { useBase } from "/$/base";
 import { fileSize, fileName, fileType } from "../utils";
 import { useForm } from "@cool-vue/crud";
-
-interface Item {
-	url: string;
-	preload: string;
-	uid: number | string;
-	progress: number;
-	type?: string;
-}
+import { Upload } from "../types";
 
 const props = defineProps({
 	modelValue: {
@@ -187,6 +179,7 @@ const props = defineProps({
 	},
 	drag: Boolean,
 	disabled: Boolean,
+	customClass: String,
 
 	// 穿透值
 	isEdit: null,
@@ -237,14 +230,14 @@ const headers = computed(() => {
 });
 
 // 预览
-const pv = reactive<any>({
+const pv = reactive<{ visible: boolean; urls: string[]; index: number }>({
 	visible: false,
 	urls: [],
 	index: 0
 });
 
 // 列表
-const list = ref<Item[]>([]);
+const list = ref<Upload.Item[]>([]);
 
 // 拖拽
 const drag = reactive<any>({
@@ -273,12 +266,12 @@ function getType(path: string) {
 	if (props.type == "image") {
 		return "image";
 	} else {
-		return fileType(path).value;
+		return fileType(path)?.value;
 	}
 }
 
 // 上传前
-function beforeUpload(file: any, item?: Item) {
+function beforeUpload(file: any, item?: Upload.Item) {
 	if (file.size / 1024 / 1024 >= limitSize) {
 		ElMessage.error(`上传文件大小不能超过 ${limitSize}MB!`);
 		return false;
@@ -321,7 +314,7 @@ function clear() {
 }
 
 // 预览
-function preview(item: Item) {
+function preview(item: Upload.Item) {
 	if (item.type == "image") {
 		pv.visible = true;
 		pv.urls = list.value.map((e) => e.preload);

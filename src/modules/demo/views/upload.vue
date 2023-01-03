@@ -1,74 +1,67 @@
 <template>
 	<div class="demo">
-		<el-image
-			v-for="(item, index) in list"
-			:key="index"
-			:src="item"
-			:style="{ width: '100px', marginRight: '10px' }"
-		/>
+		<el-tabs type="card">
+			<el-tab-pane label="普通上传">
+				<cl-upload v-model="urls" />
+			</el-tab-pane>
 
-		<div class="item">
-			<p>普通上传</p>
-			<cl-upload v-model="urls" />
-		</div>
+			<el-tab-pane label="多图上传" lazy>
+				<cl-upload text="选择图片" v-model="urls" multiple drag />
+			</el-tab-pane>
 
-		<div class="item">
-			<p>多图上传 multiple</p>
-			<cl-upload v-model="urls" multiple drag />
-		</div>
+			<el-tab-pane label="文件上传" lazy>
+				<cl-upload v-model="urls" multiple text="文件上传" type="file" />
+			</el-tab-pane>
 
-		<div class="item">
-			<p>文件上传 file</p>
-			<cl-upload v-model="urls" multiple text="文件上传" type="file" />
-		</div>
+			<el-tab-pane label="自定义内容">
+				<cl-upload text="选择图片" multiple drag custom-class="custom-upload">
+					<el-button :icon="Upload">上传</el-button>
 
-		<div class="item">
-			<p>自定义内容</p>
-			<cl-upload text="选择图片" multiple drag>
-				<div style="width: 100%">
-					<el-button>上传</el-button>
-				</div>
-				<template #item="{ item }">
-					<div class="cs-item">{{ item.url }}</div>
-				</template>
-			</cl-upload>
-		</div>
+					<template #item="{ item }">
+						<div class="item" v-show="item.url">{{ item.url }}</div>
+					</template>
+				</cl-upload>
+			</el-tab-pane>
 
-		<div class="item">
-			<p>自定义大小</p>
-			<cl-upload text="选择图片" :size="[120, 200]" />
-		</div>
+			<el-tab-pane label="自定义大小">
+				<cl-upload text="选择图片" :size="[120, 200]" />
+			</el-tab-pane>
 
-		<div class="item">
-			<p>文件空间</p>
-			<cl-upload-space />
-		</div>
+			<el-tab-pane label="文件空间">
+				<cl-upload-space />
+			</el-tab-pane>
+		</el-tabs>
 	</div>
 </template>
 
 <script lang="ts" name="upload" setup>
-import { computed, ref } from "vue";
+import { ref } from "vue";
+import { Upload } from "@element-plus/icons-vue";
 
 const urls = ref("");
-const list = computed(() => urls.value.split(",").filter(Boolean));
 </script>
 
 <style lang="scss" scoped>
 .demo {
 	background-color: var(--el-bg-color);
-	.item {
-		margin-bottom: 10px;
-		padding: 10px;
+	padding: 10px;
+	height: 100%;
+	box-sizing: border-box;
 
-		& > p {
-			margin-bottom: 10px;
-			font-size: 14px;
+	:deep(.custom-upload) {
+		.item {
+			border: 1px solid var(--el-border-color);
+			border-radius: 3px;
+			padding: 5px 10px;
+			margin-top: 10px;
+			font-size: 12px;
+			width: 100%;
+			box-sizing: border-box;
 		}
-	}
 
-	.cs-item {
-		border: 1px solid var(--el-border-color);
-		padding: 5px 10px;
+		.cl-upload__list {
+			width: 100%;
+		}
 	}
 }
 </style>

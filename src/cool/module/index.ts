@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Module } from "../types";
 import { Data } from "../utils";
 
@@ -10,6 +9,7 @@ const module = {
 	list,
 	req: Promise.resolve(),
 	get(name: string): Module {
+		// @ts-ignore
 		return this.list.find((e) => e.name == name);
 	},
 	add(data: Module) {

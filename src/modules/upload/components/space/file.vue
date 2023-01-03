@@ -24,6 +24,11 @@
 					</el-image>
 				</template>
 
+				<!-- 视频 -->
+				<template v-else-if="info.type === 'video'">
+					<item-video :data="info" :list="list" />
+				</template>
+
 				<!-- 其他 -->
 				<template v-else>
 					<!-- 文件名 -->
@@ -36,18 +41,21 @@
 				<span
 					class="cl-upload-space-file__type"
 					:style="{
-						backgroundColor: type.color
+						backgroundColor: type?.color
 					}"
-					>{{ type.label }}</span
+					>{{ type?.label }}</span
 				>
 
-				<!-- 进度条 -->
-				<div
-					class="cl-upload-space-file__progress"
-					v-if="info.progress > 0 && info.progress < 100"
-				>
-					<el-progress :percentage="info.progress" :show-text="false"></el-progress>
-				</div>
+				<!-- 上传中 -->
+				<template v-if="info.progress > 0 && info.progress < 100">
+					<!-- 进度条 -->
+					<div class="cl-upload-space-file__progress-bar">
+						<el-progress :percentage="info.progress" :show-text="false"></el-progress>
+					</div>
+
+					<!-- 进度值 -->
+					<span class="cl-upload-space-file__progress-value">{{ info.progress }}</span>
+				</template>
 			</template>
 
 			<!-- 遮罩层 -->
@@ -58,30 +66,32 @@
 	</div>
 </template>
 
-<script lang="ts" setup>
-import { computed, inject } from "vue";
+<script lang="ts" setup name="space-file">
+import { computed } from "vue";
 import { ContextMenu } from "@cool-vue/crud";
 import { extname } from "/@/cool/utils";
-import { fileName, fileType } from "../../utils";
+import { fileName, fileRule } from "../../utils";
 import { useClipboard } from "@vueuse/core";
 import { ElMessage } from "element-plus";
+import { useSpace } from "../../hooks";
+import ItemVideo from "./item-video.vue";
 
 const { copy } = useClipboard();
 
 const props = defineProps({
-	data: Object
+	data: Object,
+	list: Array
 });
 
 const emit = defineEmits(["select", "remove"]);
 
-// 接收
-const space = inject<any>("space");
+const { space } = useSpace();
 
 // 文件信息
-const info = computed(() => props.data || {});
+const info = computed<Eps.SpaceInfoEntity>(() => props.data || {});
 
 // 已选的序号
-const index = computed(() => space.selection.value.findIndex((e: any) => e.id === info.value.id));
+const index = computed(() => space.selection.value.findIndex((e) => e.id === info.value.id));
 
 // 是否已选择
 const isSelected = computed(() => index.value >= 0);
@@ -90,7 +100,7 @@ const isSelected = computed(() => index.value >= 0);
 const url = computed(() => info.value.preload || info.value.url);
 
 // 类型
-const type = computed(() => fileType(info.value.url));
+const type = computed(() => fileRule(info.value.type));
 
 // 选择
 function select() {
@@ -119,8 +129,11 @@ function onContextMenu(e: any) {
 			{
 				label: "复制地址",
 				callback(done) {
-					copy(info.value.url);
-					ElMessage.success("复制成功");
+					if (info.value.url) {
+						copy(info.value.url);
+						ElMessage.success("复制成功");
+					}
+
 					done();
 				}
 			},
@@ -187,7 +200,11 @@ function onContextMenu(e: any) {
 		}
 	}
 
-	&:not(.is-image) {
+	&.is-video {
+		padding: 0;
+	}
+
+	&:not(.is-image):not(.is-video) {
 		padding: 10px;
 
 		.cl-upload-space-file {
@@ -223,10 +240,22 @@ function onContextMenu(e: any) {
 	}
 
 	&__progress {
-		position: absolute;
-		bottom: 10px;
-		left: 10px;
-		width: calc(100% - 20px);
+		&-bar {
+			position: absolute;
+			bottom: 10px;
+			left: 10px;
+			width: calc(100% - 20px);
+		}
+
+		&-value {
+			position: absolute;
+			font-size: 26px;
+
+			&::after {
+				content: "%";
+				margin-left: 2px;
+			}
+		}
 	}
 
 	&__type {

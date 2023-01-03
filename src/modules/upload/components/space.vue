@@ -7,7 +7,7 @@
 		<!-- 弹框 -->
 		<cl-dialog
 			v-model="visible"
-			title="文件空间"
+			:title="title"
 			height="650px"
 			width="1080px"
 			keep-alive
@@ -25,7 +25,7 @@
 				@drop="onDrop"
 			>
 				<!-- 类目 -->
-				<category />
+				<space-category />
 
 				<!-- 内容 -->
 				<div class="cl-upload-space__content">
@@ -48,6 +48,8 @@
 								<el-button type="primary">点击上传</el-button>
 							</cl-upload>
 						</div>
+
+						<cl-flex1 />
 
 						<el-button type="success" :disabled="!isSelected" @click="confirm()"
 							>使用选中文件 {{ selection.length }}/{{ limit }}</el-button
@@ -72,7 +74,12 @@
 									v-for="item in list"
 									:key="item.preload || item.url"
 								>
-									<file-item :data="item" @select="select" @remove="remove" />
+									<space-file
+										:data="item"
+										:list="list"
+										@select="select"
+										@remove="remove"
+									/>
 								</div>
 							</div>
 						</template>
@@ -104,19 +111,19 @@
 </template>
 
 <script lang="ts" setup name="cl-upload-space">
-import { computed, onMounted, provide, reactive, ref, watch } from "vue";
+import { computed, provide, reactive, ref, watch } from "vue";
 import { isEmpty } from "lodash-es";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { Notebook, ArrowLeft, UploadFilled } from "@element-plus/icons-vue";
 import { module, useCool } from "/@/cool";
 import { useBase } from "/$/base";
-import Category from "./space/category.vue";
-import FileItem from "./space/file-item.vue";
+import SpaceCategory from "./space/category.vue";
+import SpaceFile from "./space/file.vue";
 
 const props = defineProps({
 	// 绑定值
 	modelValue: String,
-	// 选择图片的数量
+	// 可选数量
 	limit: Number,
 	// 是否禁用
 	disabled: Boolean,
@@ -126,6 +133,11 @@ const props = defineProps({
 	showBtn: {
 		type: Boolean,
 		default: true
+	},
+	// 标题
+	title: {
+		type: String,
+		default: "文件空间"
 	}
 });
 
@@ -152,10 +164,10 @@ const visible = ref(false);
 const loading = ref(false);
 
 // 已选列表
-const selection = ref<any[]>([]);
+const selection = ref<Eps.SpaceInfoEntity[]>([]);
 
 // 文件列表
-const list = ref<any[]>([]);
+const list = ref<Eps.SpaceInfoEntity[]>([]);
 
 // 类目数据
 const category = reactive({
@@ -185,8 +197,15 @@ watch(
 const isSelected = computed(() => !isEmpty(selection.value));
 
 // 打开
+let lock = false;
+
 function open() {
 	visible.value = true;
+
+	if (!lock) {
+		lock = true;
+		refresh();
+	}
 }
 
 // 清空选择
@@ -259,15 +278,15 @@ async function refresh(params: any = {}) {
 
 // 确认选中
 function confirm() {
-	emit("update:modelValue", selection.value.map((e: any) => e.url).join(","));
+	emit("update:modelValue", selection.value.map((e) => e.url).join(","));
 	emit("confirm", selection.value);
 
 	close();
 }
 
 // 选择
-function select(item: any) {
-	const index = selection.value.findIndex((e: any) => e.id === item.id);
+function select(item: Eps.SpaceInfoEntity) {
+	const index = selection.value.findIndex((e) => e.id === item.id);
 
 	if (index >= 0) {
 		selection.value.splice(index, 1);
@@ -279,9 +298,9 @@ function select(item: any) {
 }
 
 // 删除选中
-function remove(item?: any) {
+function remove(item?: Eps.SpaceInfoEntity) {
 	// 已选文件 id
-	const ids: number[] = item ? [item.id] : selection.value.map((e: any) => e.id);
+	const ids = item ? [item.id] : selection.value.map((e) => e.id);
 
 	ElMessageBox.confirm("此操作将删除文件, 是否继续?", "提示", {
 		type: "warning"
@@ -292,7 +311,7 @@ function remove(item?: any) {
 			// 删除文件及选择
 			ids.forEach((id) => {
 				[list.value, selection.value].forEach((list) => {
-					const index = list.findIndex((e: any) => e.id === id);
+					const index = list.findIndex((e) => e.id === id);
 					list.splice(index, 1);
 				});
 			});
@@ -337,11 +356,8 @@ provide("space", {
 	category,
 	selection,
 	refresh,
-	loading
-});
-
-onMounted(() => {
-	refresh();
+	loading,
+	list
 });
 
 defineExpose({
@@ -359,6 +375,7 @@ defineExpose({
 	box-sizing: border-box;
 	background-color: #f7f7f7;
 	padding: 5px;
+	user-select: none;
 
 	&__dialog {
 		.el-dialog__body {
