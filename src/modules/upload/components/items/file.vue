@@ -1,14 +1,14 @@
 <template>
-	<div class="cl-upload-space-file__wrap">
+	<div class="item-file__wrap">
 		<div
-			class="cl-upload-space-file"
+			class="item-file"
 			:class="[`is-${info.type}`]"
 			@click="select"
 			@contextmenu.stop.prevent="onContextMenu"
 		>
 			<!-- 错误 -->
 			<template v-if="info.error">
-				<div class="cl-upload-space-file__error">上传失败：{{ info.error }}</div>
+				<div class="item-file__error">上传失败：{{ info.error }}</div>
 			</template>
 
 			<!-- 成功 -->
@@ -32,14 +32,12 @@
 				<!-- 其他 -->
 				<template v-else>
 					<!-- 文件名 -->
-					<span class="cl-upload-space-file__name"
-						>{{ fileName(url) }}.{{ extname(url) }}</span
-					>
+					<span class="item-file__name">{{ fileName(url) }}.{{ extname(url) }}</span>
 				</template>
 
 				<!-- 文件类型 -->
 				<span
-					class="cl-upload-space-file__type"
+					class="item-file__type"
 					:style="{
 						backgroundColor: type?.color
 					}"
@@ -49,43 +47,47 @@
 				<!-- 上传中 -->
 				<template v-if="info.progress > 0 && info.progress < 100">
 					<!-- 进度条 -->
-					<div class="cl-upload-space-file__progress-bar">
+					<div class="item-file__progress-bar">
 						<el-progress :percentage="info.progress" :show-text="false"></el-progress>
 					</div>
 
 					<!-- 进度值 -->
-					<span class="cl-upload-space-file__progress-value">{{ info.progress }}</span>
+					<span class="item-file__progress-value">{{ info.progress }}</span>
 				</template>
 			</template>
 
 			<!-- 遮罩层 -->
-			<div v-if="isSelected" class="cl-upload-space-file__mask">
+			<div v-if="isSelected" class="item-file__mask">
 				<span>{{ index + 1 }}</span>
 			</div>
 		</div>
 	</div>
+
+	<item-viewer ref="Viewer" />
 </template>
 
-<script lang="ts" setup name="space-file">
-import { computed } from "vue";
+<script lang="ts" setup name="item-file">
+import { computed, PropType, ref } from "vue";
 import { ContextMenu } from "@cool-vue/crud";
 import { extname } from "/@/cool/utils";
 import { fileName, fileRule } from "../../utils";
 import { useClipboard } from "@vueuse/core";
 import { ElMessage } from "element-plus";
 import { useSpace } from "../../hooks";
-import ItemVideo from "./item-video.vue";
-
-const { copy } = useClipboard();
+import ItemVideo from "./video.vue";
+import ItemViewer from "./viewer.vue";
 
 const props = defineProps({
 	data: Object,
-	list: Array
+	list: Array as PropType<Eps.SpaceInfoEntity[]>
 });
 
 const emit = defineEmits(["select", "remove"]);
 
+const { copy } = useClipboard();
 const { space } = useSpace();
+
+const Viewer = ref();
 
 // 文件信息
 const info = computed<Eps.SpaceInfoEntity>(() => props.data || {});
@@ -100,7 +102,7 @@ const isSelected = computed(() => index.value >= 0);
 const url = computed(() => info.value.preload || info.value.url);
 
 // 类型
-const type = computed(() => fileRule(info.value.type));
+const type = computed(() => fileRule(info.value.type || ""));
 
 // 选择
 function select() {
@@ -116,13 +118,21 @@ function remove() {
 function onContextMenu(e: any) {
 	ContextMenu.open(e, {
 		hover: {
-			target: "cl-upload-space-file__wrap"
+			target: "item-file__wrap"
 		},
 		list: [
 			{
 				label: "预览",
 				callback(done) {
-					window.open(info.value.url);
+					if (info.value.type == "image") {
+						Viewer.value?.open(
+							info.value.url,
+							props.list?.filter((e) => e.type == "image").map((e) => e.url)
+						);
+					} else {
+						window.open(info.value.url);
+					}
+
 					done();
 				}
 			},
@@ -157,7 +167,7 @@ function onContextMenu(e: any) {
 </script>
 
 <style lang="scss" scoped>
-.cl-upload-space-file {
+.item-file {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -165,7 +175,6 @@ function onContextMenu(e: any) {
 	height: 100%;
 	width: 100%;
 	cursor: pointer;
-	position: relative;
 	border-radius: 5px;
 	overflow: hidden;
 	box-sizing: border-box;
@@ -173,6 +182,9 @@ function onContextMenu(e: any) {
 	margin-bottom: 10px;
 
 	&__wrap {
+		position: absolute;
+		left: 0;
+		top: 0;
 		height: 100%;
 		width: 100%;
 	}
@@ -207,7 +219,7 @@ function onContextMenu(e: any) {
 	&:not(.is-image):not(.is-video) {
 		padding: 10px;
 
-		.cl-upload-space-file {
+		.item-file {
 			&__icon {
 				display: flex;
 				align-items: center;
@@ -294,6 +306,7 @@ function onContextMenu(e: any) {
 			text-align: center;
 			line-height: 20px;
 			border-radius: 20px;
+			font-size: 14px;
 		}
 	}
 }

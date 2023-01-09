@@ -54,7 +54,7 @@ function toPath() {
 
 // 移动到
 function scrollTo(left: number) {
-	refs.value.scroller.scrollTo({
+	refs.scroller.scrollTo({
 		left,
 		behavior: "smooth"
 	});
@@ -62,10 +62,10 @@ function scrollTo(left: number) {
 
 // 调整滚动位置
 function adScroll(index: number) {
-	const el = refs.value[`item-${index}`];
+	const el = refs[`item-${index}`];
 
 	if (el) {
-		scrollTo(el.offsetLeft + el.clientWidth - refs.value.scroller.clientWidth);
+		scrollTo(el.offsetLeft + el.clientWidth - refs.scroller.clientWidth);
 	}
 }
 

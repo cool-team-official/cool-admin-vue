@@ -21,6 +21,10 @@ const routes: RouteRecordRaw[] = [
 				component: config.app.router.home
 			}
 		]
+	},
+	{
+		path: "/:pathMatch(.*)*",
+		component: () => import("/$/base/pages/error/404.vue")
 	}
 ];
 
@@ -81,7 +85,7 @@ router.clear = function () {
 	const rs = router.getRoutes();
 
 	rs.forEach((e) => {
-		if (e.name) {
+		if (e.name && e.meta?.dynamic) {
 			router.removeRoute(e.name);
 		}
 	});

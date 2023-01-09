@@ -5,12 +5,11 @@
 			:class="[
 				`cl-upload--${type}`,
 				{
-					'is-slot': $slots.default,
 					'is-disabled': disabled
 				}
 			]"
 		>
-			<div class="cl-upload__header">
+			<div class="cl-upload__file-btn" v-if="type == 'file'">
 				<el-upload
 					ref="Upload"
 					action=""
@@ -23,18 +22,7 @@
 					:disabled="disabled"
 				>
 					<slot>
-						<template v-if="type == 'image' && isAdd">
-							<div class="cl-upload__item">
-								<el-icon :size="24"><picture-filled /></el-icon>
-								<span class="cl-upload__text">{{ text }}</span>
-							</div>
-						</template>
-
-						<template v-if="type == 'file'">
-							<div class="cl-upload__btn">
-								<el-button type="success">{{ text }}</el-button>
-							</div>
-						</template>
+						<el-button type="success">{{ text }}</el-button>
 					</slot>
 				</el-upload>
 			</div>
@@ -47,7 +35,31 @@
 				v-bind="drag.options"
 				item-key="uid"
 				@end="update"
+				v-if="showFileList"
 			>
+				<template #footer>
+					<div class="cl-upload__footer" v-if="type == 'image' && isAdd">
+						<el-upload
+							ref="Upload"
+							action=""
+							:accept="accept"
+							:show-file-list="false"
+							:before-upload="beforeUpload"
+							:http-request="httpRequest"
+							:headers="headers"
+							:multiple="multiple"
+							:disabled="disabled"
+						>
+							<slot>
+								<div class="cl-upload__item">
+									<el-icon :size="24"><picture-filled /></el-icon>
+									<span class="cl-upload__text">{{ text }}</span>
+								</div>
+							</slot>
+						</el-upload>
+					</div>
+				</template>
+
 				<template #item="{ element: item, index }">
 					<el-upload
 						action=""
@@ -126,18 +138,7 @@
 		</div>
 	</div>
 
-	<el-image-viewer
-		v-if="pv.visible"
-		:url-list="pv.urls"
-		:initial-index="pv.index"
-		infinite
-		teleported
-		@close="
-			() => {
-				pv.visible = false;
-			}
-		"
-	></el-image-viewer>
+	<item-viewer ref="Viewer" />
 </template>
 
 <script lang="ts" setup name="cl-upload">
@@ -148,11 +149,11 @@ import Draggable from "vuedraggable";
 import { ElMessage } from "element-plus";
 import { PictureFilled, ZoomIn, Delete } from "@element-plus/icons-vue";
 import { useCool, module } from "/@/cool";
-import { extname, uuid } from "/@/cool/utils";
+import { extname, uuid, isPromise } from "/@/cool/utils";
 import { useBase } from "/$/base";
-import { fileSize, fileName, fileType } from "../utils";
-import { useForm } from "@cool-vue/crud";
+import { fileSize, fileName, fileType, getUrls } from "../utils";
 import { Upload } from "../types";
+import ItemViewer from "./items/viewer.vue";
 
 const props = defineProps({
 	modelValue: {
@@ -167,6 +168,10 @@ const props = defineProps({
 	multiple: Boolean,
 	limit: Number,
 	limitSize: Number,
+	limitUpload: {
+		type: Boolean,
+		default: true
+	},
 	size: [String, Number, Array],
 	text: String,
 	prefixPath: {
@@ -177,30 +182,30 @@ const props = defineProps({
 		type: Boolean,
 		default: true
 	},
-	drag: Boolean,
+	draggable: Boolean,
 	disabled: Boolean,
 	customClass: String,
+	beforeUpload: Function,
 
 	// 穿透值
 	isEdit: null,
-	scope: null
+	scope: null,
+	isDisabled: Boolean
 });
 
 const emit = defineEmits(["update:modelValue", "upload", "success", "error", "progress"]);
 
 const { service } = useCool();
-
-// 缓存
 const { user } = useBase();
-
-// 表单
-const Form = useForm();
 
 // 模块配置
 const { options } = module.get("upload");
 
 // el-upload
-const Upload = ref<any>();
+const Upload = ref();
+
+// item-viewer
+const Viewer = ref();
 
 // 元素尺寸
 const size = computed(() => {
@@ -210,7 +215,7 @@ const size = computed(() => {
 
 // 是否禁用
 const disabled = computed(() => {
-	return Form.value?.disabled || props.disabled;
+	return props.isDisabled || props.disabled;
 });
 
 // 最大上传数量
@@ -229,25 +234,18 @@ const headers = computed(() => {
 	};
 });
 
-// 预览
-const pv = reactive<{ visible: boolean; urls: string[]; index: number }>({
-	visible: false,
-	urls: [],
-	index: 0
-});
-
 // 列表
 const list = ref<Upload.Item[]>([]);
 
 // 拖拽
-const drag = reactive<any>({
+const drag = reactive({
 	options: {
 		group: "Upload",
 		animation: 300,
 		ghostClass: "Ghost",
 		dragClass: "Drag",
 		draggable: ".is-drag",
-		disabled: !props.drag
+		disabled: !props.draggable
 	}
 });
 
@@ -271,35 +269,56 @@ function getType(path: string) {
 }
 
 // 上传前
-function beforeUpload(file: any, item?: Upload.Item) {
-	if (file.size / 1024 / 1024 >= limitSize) {
-		ElMessage.error(`上传文件大小不能超过 ${limitSize}MB!`);
-		return false;
-	}
+async function beforeUpload(file: any, item?: Upload.Item) {
+	function next() {
+		const d = {
+			type: getType(file.name),
+			preload: "",
+			progress: 0,
+			url: "",
+			uid: file.uid,
+			size: file.size
+		};
 
-	const d = {
-		type: getType(file.name),
-		preload: "",
-		progress: 0,
-		url: "",
-		uid: file.uid,
-		size: file.size
-	};
+		d.preload = d.type == "image" ? window.webkitURL.createObjectURL(file) : file.name;
 
-	d.preload = d.type == "image" ? window.webkitURL.createObjectURL(file) : file.name;
-
-	if (!item) {
-		if (isAdd.value) {
-			list.value.push(d);
+		if (!item) {
+			if (props.multiple) {
+				if (isAdd.value || !props.limitUpload) {
+					list.value.push(d);
+				}
+			} else {
+				list.value = [d];
+			}
 		} else {
-			list.value = [d];
+			Object.assign(item, d);
 		}
-	} else {
-		Object.assign(item, d);
+
+		emit("upload", d);
+
+		return true;
 	}
 
-	emit("upload", d);
-	return true;
+	if (props.beforeUpload) {
+		const r = props.beforeUpload(file, item);
+
+		if (isPromise(r)) {
+			r.then(next).catch(() => null);
+		} else {
+			if (r) {
+				next();
+			}
+		}
+
+		return r;
+	} else {
+		if (file.size / 1024 / 1024 >= limitSize) {
+			ElMessage.error(`上传文件大小不能超过 ${limitSize}MB!`);
+			return false;
+		}
+
+		return next();
+	}
 }
 
 // 移除
@@ -316,9 +335,10 @@ function clear() {
 // 预览
 function preview(item: Upload.Item) {
 	if (item.type == "image") {
-		pv.visible = true;
-		pv.urls = list.value.map((e) => e.preload);
-		pv.index = pv.urls.indexOf(item.preload);
+		Viewer.value?.open(
+			item.preload,
+			list.value.map((e) => e.preload)
+		);
 	} else {
 		window.open(item.url);
 	}
@@ -328,6 +348,10 @@ function preview(item: Upload.Item) {
 async function httpRequest(req: any, item?: any) {
 	if (!item) {
 		item = list.value.find((e) => e.uid == req.file.uid);
+	}
+
+	if (!item) {
+		return false;
 	}
 
 	try {
@@ -450,10 +474,7 @@ function update() {
 	const check = list.value.find((e) => !e.url);
 
 	if (!check) {
-		emit(
-			"update:modelValue",
-			list.value.map((e) => e.url.replace(/,/g, encodeURIComponent(","))).join(",")
-		);
+		emit("update:modelValue", getUrls(list.value));
 	}
 }
 
@@ -506,16 +527,7 @@ defineExpose({
 
 <style lang="scss" scoped>
 .cl-upload {
-	display: flex;
-	flex-wrap: wrap;
 	line-height: normal;
-
-	&.is-disabled {
-		:deep(.cl-upload__item) {
-			cursor: not-allowed;
-			background-color: var(--el-disabled-bg-color);
-		}
-	}
 
 	.Ghost {
 		opacity: 0.7;
@@ -527,26 +539,13 @@ defineExpose({
 		box-sizing: border-box;
 	}
 
-	&--file {
-		.cl-upload__list {
-			width: 100%;
-			margin-top: 10px;
-		}
-	}
-
-	&__header {
-		.cl-upload__item {
-			margin-right: 5px;
-		}
+	&__file {
+		width: 100%;
 	}
 
 	&__list {
 		display: flex;
 		flex-wrap: wrap;
-
-		.cl-upload__item {
-			margin-right: 5px;
-		}
 	}
 
 	&__text {
@@ -596,6 +595,7 @@ defineExpose({
 		box-sizing: border-box;
 		overflow: hidden;
 		user-select: none;
+		margin: 0 5px 5px 0;
 
 		&:hover {
 			border-color: currentColor;
@@ -658,13 +658,16 @@ defineExpose({
 		box-sizing: border-box;
 	}
 
-	&.is-slot {
+	&--file {
 		.cl-upload__list {
-			margin: 0;
+			margin-top: 10px;
 		}
+	}
 
-		.un-drag {
-			display: flex;
+	&.is-disabled {
+		:deep(.cl-upload__item) {
+			cursor: not-allowed;
+			background-color: var(--el-disabled-bg-color);
 		}
 	}
 }

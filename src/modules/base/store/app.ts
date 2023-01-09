@@ -1,19 +1,18 @@
 import { defineStore } from "pinia";
 import { reactive, ref } from "vue";
-import { config } from "/@/cool";
-import { deepMerge, getBrowser, storage } from "/@/cool/utils";
+import { config, useBrowser } from "/@/cool";
+import { deepMerge, storage } from "/@/cool/utils";
 
 export const useAppStore = defineStore("app", function () {
+	const { browser, onScreenChange } = useBrowser();
+
 	// 基本信息
 	const info = reactive({
 		...config.app
 	});
 
-	// 浏览器信息
-	const browser = ref(getBrowser());
-
 	// 是否折叠
-	const isFold = ref(browser.value.isMini || false);
+	const isFold = ref(false);
 
 	// 事件
 	const events = reactive<{ [key: string]: any[] }>({
@@ -35,11 +34,6 @@ export const useAppStore = defineStore("app", function () {
 		storage.set("__app__", info);
 	}
 
-	// 设置浏览器信息
-	function setBrowser() {
-		browser.value = getBrowser();
-	}
-
 	// 添加事件
 	function addEvent(name: string, func: any) {
 		if (func) {
@@ -47,14 +41,17 @@ export const useAppStore = defineStore("app", function () {
 		}
 	}
 
+	// 监听屏幕变化
+	onScreenChange(() => {
+		isFold.value = browser.isMini;
+	});
+
 	return {
 		info,
-		browser,
 		isFold,
 		fold,
 		events,
 		set,
-		setBrowser,
 		addEvent
 	};
 });

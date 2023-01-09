@@ -1,6 +1,6 @@
 <template>
 	<div class="route-nav">
-		<p v-if="app.browser.isMini" class="title">
+		<p v-if="browser.isMini" class="title">
 			{{ lastName }}
 		</p>
 
@@ -20,8 +20,8 @@ import { flattenDeep, last } from "lodash-es";
 import { useCool } from "/@/cool";
 import { useBase } from "/$/base";
 
-const { route } = useCool();
-const { app, menu } = useBase();
+const { route, browser } = useCool();
+const { menu } = useBase();
 
 // 数据列表
 const list = computed(() => {
@@ -58,21 +58,18 @@ const lastName = computed(() => last(list.value)?.name);
 .route-nav {
 	white-space: nowrap;
 
-	.el-breadcrumb {
+	:deep(.el-breadcrumb) {
 		margin: 0 10px;
 
-		&__inner {
+		.el-breadcrumb__inner {
 			font-size: 13px;
-			padding: 0 10px;
-			font-weight: normal;
-			letter-spacing: 1px;
 		}
 	}
 
 	.title {
 		font-size: 15px;
 		font-weight: 500;
-		margin-left: 5px;
+		margin-left: 8px;
 	}
 }
 </style>

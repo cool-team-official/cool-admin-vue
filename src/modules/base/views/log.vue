@@ -1,6 +1,6 @@
 <template>
 	<cl-crud ref="Crud">
-		<el-row>
+		<cl-row>
 			<cl-refresh-btn />
 
 			<el-button
@@ -22,17 +22,17 @@
 			</cl-filter>
 
 			<cl-flex1 />
-			<cl-search-key placeholder="请求地址、参数、ip" />
-		</el-row>
+			<cl-search-key placeholder="搜索请求地址、参数、ip" />
+		</cl-row>
 
-		<el-row>
-			<cl-table ref="Table" :default-sort="{ prop: 'createTime', order: 'descending' }" />
-		</el-row>
+		<cl-row>
+			<cl-table ref="Table" />
+		</cl-row>
 
-		<el-row>
+		<cl-row>
 			<cl-flex1 />
 			<cl-pagination />
-		</el-row>
+		</cl-row>
 	</cl-crud>
 </template>
 
@@ -45,7 +45,7 @@ import { useCrud, useTable } from "@cool-vue/crud";
 const { service } = useCool();
 
 // 天数
-const day = ref<number>(1);
+const day = ref(1);
 
 // cl-crud 配置
 const Crud = useCrud({ service: service.base.sys.log }, (app) => {
@@ -96,21 +96,26 @@ const Table = useTable({
 			prop: "createTime",
 			label: "创建时间",
 			minWidth: 160,
-			sortable: true
+			sortable: "desc"
 		}
 	]
 });
 
 // 保存天数
 function saveDay() {
-	service.base.sys.log.setKeep({ value: day.value }).then(() => {
-		ElMessage.success("保存成功");
-	});
+	service.base.sys.log
+		.setKeep({ value: day.value })
+		.then(() => {
+			ElMessage.success("保存成功");
+		})
+		.catch((err) => {
+			ElMessage.error(err.message);
+		});
 }
 
 // 清空日志
 function clear() {
-	ElMessageBox.confirm("是否要清空日志", "提示", {
+	ElMessageBox.confirm("是否要清空日志？", "提示", {
 		type: "warning"
 	})
 		.then(() => {
@@ -129,7 +134,7 @@ function clear() {
 
 onMounted(() => {
 	// 获取天数
-	service.base.sys.log.getKeep().then((res: number) => {
+	service.base.sys.log.getKeep().then((res) => {
 		day.value = Number(res);
 	});
 });

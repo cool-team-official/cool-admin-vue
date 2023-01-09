@@ -62,7 +62,6 @@ import AMenu from "./amenu.vue";
 const { router, service } = useCool();
 const { user, app } = useBase();
 
-// 跳转
 async function onCommand(name: string) {
 	switch (name) {
 		case "my":

@@ -140,7 +140,7 @@ const previewUrls = computed(() =>
 
 // 文本消息
 function onTextSend() {
-	chat?.send(
+	chat.send(
 		{
 			contentType: 0,
 			content: {
@@ -154,7 +154,7 @@ function onTextSend() {
 
 // 图片消息
 function onImageSend(res: any) {
-	chat?.send(
+	chat.send(
 		{
 			contentType: 1,
 			content: {

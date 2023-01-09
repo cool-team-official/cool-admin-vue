@@ -26,9 +26,9 @@ const props = defineProps({
 
 const { space } = useSpace();
 
-const info = computed<Eps.SpaceInfoEntity>(() => props.data || {});
-
 const Video = ref<HTMLVideoElement>();
+
+const info = computed<Eps.SpaceInfoEntity>(() => props.data || {});
 
 const loaded = computed(() => {
 	return info.value.progress === undefined || info.value.progress === 100;

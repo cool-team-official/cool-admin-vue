@@ -1,18 +1,5 @@
-<template>
-	<el-select v-model="value" :clearable="clearable" @change="onChange">
-		<el-option
-			v-for="(item, index) in list"
-			:key="index"
-			:label="item.label"
-			:value="item.value"
-			:disabled="item.disabled"
-		></el-option>
-	</el-select>
-</template>
-
-<script lang="ts">
 import { useCrud } from "@cool-vue/crud";
-import { computed, defineComponent, isRef, ref, watch } from "vue";
+import { computed, defineComponent, isRef, Ref, ref, watch } from "vue";
 
 export default defineComponent({
 	name: "cl-select",
@@ -22,10 +9,6 @@ export default defineComponent({
 		options: {
 			type: [Array, Object],
 			default: () => []
-		},
-		clearable: {
-			type: Boolean,
-			default: true
 		},
 		prop: String
 	},
@@ -40,9 +23,9 @@ export default defineComponent({
 		const value = ref();
 
 		// 列表
-		const list = computed<any>(() =>
+		const list = computed(() =>
 			isRef(props.options) ? props.options.value : props.options
-		);
+		) as Ref<any[]>;
 
 		// 值改变
 		function onChange(val: string) {
@@ -64,11 +47,14 @@ export default defineComponent({
 			}
 		);
 
-		return {
-			list,
-			value,
-			onChange
+		return () => {
+			return (
+				<el-select v-model={value.value} clearable filterable onChange={onChange}>
+					{list.value.map((e) => {
+						return <el-option {...e} />;
+					})}
+				</el-select>
+			);
 		};
 	}
 });
-</script>

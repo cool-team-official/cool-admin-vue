@@ -1,32 +1,24 @@
 <template>
-	<cl-view-group :title="title">
+	<cl-view-group ref="ViewGroup">
 		<template #left>
-			<dict-group />
+			<dict-group @refresh="refresh" />
 		</template>
 
 		<template #right>
 			<cl-crud ref="Crud">
-				<el-row>
+				<cl-row>
 					<!-- 刷新按钮 -->
 					<cl-refresh-btn />
 					<!-- 新增按钮 -->
-					<cl-add-btn :disabled="!group" />
+					<cl-add-btn :disabled="!ViewGroup?.selected" />
 					<cl-flex1 />
 					<!-- 关键字搜索 -->
 					<cl-search-key />
-				</el-row>
+				</cl-row>
 
-				<el-row>
+				<cl-row>
 					<!-- 数据表格 -->
-					<cl-table
-						ref="Table"
-						:default-sort="{
-							prop: 'orderNum',
-							order: 'ascending'
-						}"
-						row-key="id"
-						@row-click="onRowClick"
-					>
+					<cl-table ref="Table" row-key="id" @row-click="onRowClick">
 						<template #slot-btn="{ scope }">
 							<el-button
 								text
@@ -38,11 +30,11 @@
 							>
 						</template>
 					</cl-table>
-				</el-row>
+				</cl-row>
 
-				<el-row>
+				<cl-row>
 					<cl-flex1 />
-				</el-row>
+				</cl-row>
 
 				<!-- 新增、编辑 -->
 				<cl-upsert ref="Upsert" />
@@ -55,19 +47,13 @@
 import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import DictGroup from "../components/group.vue";
-import { computed, provide, ref } from "vue";
+import { computed } from "vue";
 import { deepTree } from "/@/cool/utils";
 import { cloneDeep } from "lodash-es";
+import { useViewGroup } from "/$/base";
 
 const { service } = useCool();
-
-// 组
-const group = ref();
-
-// 标题
-const title = computed(() => {
-	return group.value ? `字典列表（${group.value.name}）` : "字典列表";
-});
+const { ViewGroup } = useViewGroup();
 
 // cl-upsert 配置
 const Upsert = useUpsert({
@@ -141,7 +127,7 @@ const Upsert = useUpsert({
 	onSubmit(data, { next }) {
 		next({
 			...data,
-			typeId: group.value.id
+			typeId: ViewGroup.value?.selected?.id
 		});
 	}
 });
@@ -167,7 +153,7 @@ const Table = useTable({
 	],
 	columns: [
 		{ label: "名称", prop: "name", align: "left", minWidth: 200 },
-		{ label: "排序", prop: "orderNum", sortable: "custom", width: 100 },
+		{ label: "排序", prop: "orderNum", sortable: "desc", width: 100 },
 		{ label: "备注", prop: "remark", showOverflowTooltip: true, minWidth: 150 },
 		{ label: "创建时间", prop: "createTime", sortable: "custom", minWidth: 160 },
 		{ label: "更新时间", prop: "updateTime", sortable: "custom", minWidth: 160 },
@@ -185,7 +171,6 @@ const Crud = useCrud({
 	onRefresh(params, { render }) {
 		service.dict.info
 			.list({
-				typeId: group.value?.id,
 				...params,
 				page: undefined,
 				size: undefined
@@ -199,11 +184,6 @@ const Crud = useCrud({
 // 刷新
 function refresh(params?: any) {
 	Crud.value?.refresh(params);
-}
-
-// 设置组
-function setGroup(data: any) {
-	group.value = data;
 }
 
 // 行点击展开
@@ -220,10 +200,4 @@ function append(row: any) {
 		orderNum: 1
 	});
 }
-
-provide("dict", {
-	group,
-	refresh,
-	setGroup
-});
 </script>

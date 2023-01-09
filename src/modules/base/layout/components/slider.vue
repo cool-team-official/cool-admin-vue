@@ -2,7 +2,7 @@
 	<div class="app-slider">
 		<div class="app-slider__logo" @click="toHome">
 			<img src="/logo.png" />
-			<span v-if="!app.isFold || app.browser.isMini">{{ app.info.name }}</span>
+			<span v-if="!app.isFold || browser.isMini">{{ app.info.name }}</span>
 		</div>
 
 		<div class="app-slider__container">
@@ -13,8 +13,10 @@
 
 <script lang="ts" setup>
 import { useBase } from "/$/base";
+import { useBrowser } from "/@/cool";
 import BMenu from "./bmenu";
 
+const { browser } = useBrowser();
 const { app } = useBase();
 
 function toHome() {

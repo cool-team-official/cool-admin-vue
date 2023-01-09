@@ -364,7 +364,7 @@ function refreshTask(params?: any, options?: any) {
 		moreList(res, item);
 
 		if (!more) {
-			refs.value[`${item.key}-scroller`].scroll({
+			refs[`${item.key}-scroller`].scroll({
 				top: 0,
 				behavior: "smooth"
 			});
@@ -652,7 +652,7 @@ async function refreshLog(newParams: any, options?: any) {
 	moreList(res, logs);
 
 	if (!more) {
-		refs.value["log-scroller"].scroll({
+		refs["log-scroller"].scroll({
 			top: 0,
 			behavior: "smooth"
 		});

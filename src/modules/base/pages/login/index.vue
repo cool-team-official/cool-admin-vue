@@ -7,7 +7,7 @@
 			</div>
 			<p class="desc">一款快速开发后台权限管理系统</p>
 
-			<el-form label-position="top" class="form" :disabled="saving" size="large">
+			<el-form label-position="top" class="form" :disabled="saving">
 				<el-form-item label="用户名">
 					<input
 						v-model="form.username"
@@ -105,7 +105,7 @@ async function toLogin() {
 		// 跳转
 		router.push("/");
 	} catch (err: any) {
-		refs.value.captcha.refresh();
+		refs.captcha.refresh();
 		ElMessage.error(err.message);
 	}
 
@@ -178,6 +178,7 @@ async function toLogin() {
 				-webkit-text-fill-color: #fff;
 				font-size: 15px;
 				border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+				border-radius: 0;
 
 				&:-webkit-autofill {
 					box-shadow: 0 0 0px 1000px transparent inset !important;
@@ -213,7 +214,9 @@ async function toLogin() {
 			margin-top: 50px;
 
 			:deep(.el-button) {
+				height: 40px;
 				width: 140px;
+				font-size: 16px;
 			}
 		}
 	}

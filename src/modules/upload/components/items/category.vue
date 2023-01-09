@@ -1,33 +1,27 @@
 <template>
-	<div
-		class="cl-upload-space-category"
-		:class="{
-			'is-position': app.browser.isMini,
-			'is-show': space.category.visible
-		}"
-	>
-		<div class="cl-upload-space-category__search">
-			<el-input v-model="keyword" placeholder="搜索分类" clearable />
-			<el-button type="success" @click="edit()">添加</el-button>
+	<div class="item-category">
+		<div class="item-category__head">
+			<span>类型</span>
+			<el-button type="success" bg size="small" @click="edit()">添加</el-button>
 		</div>
 
-		<div class="cl-upload-space-category__list">
+		<div class="item-category__list">
 			<el-scrollbar>
 				<ul>
 					<li
 						v-for="(item, index) in flist"
 						:key="index"
-						class="item"
 						:class="{
-							'is-active': item.id == space.category.id
+							'is-active': item.id == ViewGroup?.selected?.id
 						}"
-						@click="select(item.id)"
+						@click="select(item)"
 						@contextmenu.stop.prevent="onContextMenu($event, item)"
 					>
+						<el-icon class="icon">
+							<folder-opened v-if="ViewGroup?.selected?.id == item.id" />
+							<folder v-else />
+						</el-icon>
 						<span>{{ item.name }}</span>
-						<el-icon v-show="space.category.id == item.id"
-							><arrow-right-bold
-						/></el-icon>
 					</li>
 
 					<el-empty v-if="flist.length == 0" :image-size="80" />
@@ -39,19 +33,19 @@
 	<cl-form ref="Form" />
 </template>
 
-<script lang="ts" setup name="space-category">
+<script lang="ts" setup name="item-category">
 import { ElMessage, ElMessageBox } from "element-plus";
-import { ArrowRightBold } from "@element-plus/icons-vue";
+import { Folder, FolderOpened } from "@element-plus/icons-vue";
 import { computed, onMounted, ref } from "vue";
-import { isEmpty } from "lodash-es";
 import { useCool } from "/@/cool";
 import { ContextMenu, useForm } from "@cool-vue/crud";
-import { useBase } from "/$/base";
+import { useViewGroup } from "/$/base";
 import { useSpace } from "../../hooks";
 
 const { service } = useCool();
-const { app } = useBase();
 const { space } = useSpace();
+const { ViewGroup } = useViewGroup();
+const Form = useForm();
 
 // 数据列表
 const list = ref<Eps.SpaceTypeEntity[]>([]);
@@ -66,29 +60,36 @@ const flist = computed(() => {
 
 // 刷新分类
 async function refresh() {
-	return service.space.type.list().then((res) => {
-		res.unshift({
-			name: "全部文件",
-			id: undefined
-		});
+	return service.space.type
+		.list({
+			order: "createTime",
+			sort: "asc"
+		})
+		.then((res) => {
+			res.unshift({
+				name: "全部文件",
+				id: undefined
+			});
 
-		list.value = res;
+			list.value = res;
 
-		if (!isEmpty(res)) {
-			if (!space.category.id && res[0].id) {
-				space.category.id = res[0].id;
+			if (!ViewGroup.value?.selected) {
+				select();
 			}
-		}
-	});
+		});
 }
-
-const Form = useForm();
 
 // 编辑分类
 function edit(item: Eps.SpaceTypeEntity = {}) {
 	Form.value?.open({
 		title: "添加分类",
 		width: "400px",
+		props: {
+			labelPosition: "top"
+		},
+		dialog: {
+			controls: ["close"]
+		},
 		items: [
 			{
 				label: "分类名称",
@@ -96,7 +97,11 @@ function edit(item: Eps.SpaceTypeEntity = {}) {
 				value: "",
 				required: true,
 				component: {
-					name: "el-input"
+					name: "el-input",
+					props: {
+						maxlength: 20,
+						clearable: true
+					}
 				}
 			}
 		],
@@ -129,18 +134,21 @@ function edit(item: Eps.SpaceTypeEntity = {}) {
 }
 
 // 选择类目
-function select(id?: number) {
-	// 小屏幕下收起左侧类目
-	if (app.browser.isMini) {
-		space.category.visible = false;
+function select(item?: Eps.SpaceTypeEntity) {
+	if (!item) {
+		item = list.value[0];
 	}
 
-	space.category.id = id;
-	space.refresh({ page: 1 });
+	if (item) {
+		space.refresh({ page: 1, classifyId: item.id });
+
+		ViewGroup.value?.select(item);
+		ViewGroup.value?.setTitle(item.name);
+	}
 }
 
 // 打开类目列表右键菜单
-function onContextMenu(e: any, { id, name }: any) {
+function onContextMenu(e: any, { id, name }: Eps.SpaceTypeEntity) {
 	if (!id) {
 		return false;
 	}
@@ -179,8 +187,8 @@ function onContextMenu(e: any, { id, name }: any) {
 									ElMessage.success("删除成功");
 
 									// 是否删除当前
-									if (id == space.category.id) {
-										space.category.id = undefined;
+									if (id == ViewGroup.value?.selected?.id) {
+										select();
 									}
 
 									refresh();
@@ -204,49 +212,29 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.cl-upload-space-category {
+.item-category {
 	height: 100%;
-	width: 0;
-	background-color: var(--el-bg-color);
-	overflow: hidden;
-	transition: width 0.2s ease-in-out;
-	border-radius: 5px;
+	width: 100%;
 
-	&.is-show {
-		width: 220px;
-		margin-right: 5px;
-	}
-
-	&.is-position {
-		position: absolute;
-		left: 5px;
-		top: 51px;
-		height: calc(100% - 56px);
-		z-index: 3000;
-
-		&.is-show {
-			width: calc(100% - 10px);
-		}
-	}
-
-	&__search {
+	&__head {
 		display: flex;
 		align-items: center;
-		padding: 10px;
-
-		.el-button {
-			margin-left: 10px;
-		}
+		justify-content: space-between;
+		height: 40px;
+		font-size: 14px;
+		padding: 0 10px;
+		white-space: nowrap;
 	}
 
 	&__list {
-		height: calc(100% - 48px);
+		height: calc(100% - 40px);
 		padding: 0 10px;
+		box-sizing: border-box;
 
 		ul {
 			height: 100%;
 
-			.item {
+			li {
 				display: flex;
 				align-items: center;
 				list-style: none;
@@ -260,7 +248,12 @@ onMounted(() => {
 				color: #666;
 				position: relative;
 
-				.el-icon {
+				.icon {
+					margin-right: 10px;
+					font-size: 16px;
+				}
+
+				.arrow {
 					position: absolute;
 					right: 10px;
 				}
@@ -273,6 +266,12 @@ onMounted(() => {
 				&:not(.is-active):hover {
 					background-color: #f7f7f7;
 				}
+			}
+
+			&::after {
+				display: block;
+				content: "";
+				height: 1px;
 			}
 		}
 	}

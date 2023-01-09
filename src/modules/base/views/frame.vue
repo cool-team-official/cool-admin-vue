@@ -26,7 +26,7 @@ watch(
 onMounted(() => {
 	loading.value = true;
 
-	refs.value.iframe.onload = () => {
+	refs.iframe.onload = () => {
 		loading.value = false;
 	};
 });

@@ -1,14 +1,14 @@
 <template>
 	<cl-crud ref="Crud">
-		<el-row>
+		<cl-row>
 			<cl-refresh-btn />
 			<cl-add-btn />
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<cl-search-key />
-		</el-row>
+		</cl-row>
 
-		<el-row>
+		<cl-row>
 			<cl-table
 				ref="Table"
 				:default-sort="{
@@ -16,12 +16,12 @@
 					order: 'descending'
 				}"
 			/>
-		</el-row>
+		</cl-row>
 
-		<el-row>
+		<cl-row>
 			<cl-flex1 />
 			<cl-pagination />
-		</el-row>
+		</cl-row>
 
 		<cl-upsert ref="Upsert">
 			<template #slot-relevance="{ scope }">

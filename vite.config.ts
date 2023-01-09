@@ -3,6 +3,7 @@ import { UserConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import compression from "vite-plugin-compression";
+import { visualizer } from "rollup-plugin-visualizer";
 import { proxy } from "./src/cool/config/proxy";
 import { cool } from "./build/cool";
 
@@ -15,7 +16,17 @@ function resolve(dir: string) {
 export default (): UserConfig => {
 	return {
 		base: "/",
-		plugins: [vue(), compression(), vueJsx(), cool()],
+		plugins: [
+			vue(),
+			compression(),
+			vueJsx(),
+			cool(),
+			visualizer({
+				open: false,
+				gzipSize: true,
+				brotliSize: true
+			})
+		],
 		css: {
 			preprocessorOptions: {
 				scss: {

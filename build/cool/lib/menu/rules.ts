@@ -178,19 +178,13 @@ export default [
 	{
 		test: ["rich", "text", "html", "content", "introduce", "description", "desc"],
 		form: {
-			name: "cl-editor-wang",
-			props: {
-				height: 400
-			}
+			name: "cl-editor-wang"
 		}
 	},
 	{
 		test: ["code", "codes"],
 		form: {
-			name: "cl-codemirror",
-			props: {
-				height: 400
-			}
+			name: "cl-editor-monaco"
 		}
 	},
 	{

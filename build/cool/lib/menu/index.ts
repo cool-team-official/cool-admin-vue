@@ -232,9 +232,7 @@ export async function createMenu({ router, columns, prefix, api, filePath }: any
 			upsert.items.push(format(item));
 		}
 
-		if (
-			!["cl-codemirror", "cl-editor-quill", "cl-editor-wang"].includes(column.component?.name)
-		) {
+		if (!column.component?.name.includes("cl-editor-")) {
 			table.columns.push(format(column));
 		}
 	});
@@ -288,7 +286,7 @@ export async function createMenu({ router, columns, prefix, api, filePath }: any
 	// 代码模板
 	const temp = `<template>
 	<cl-crud ref="Crud">
-		<el-row>
+		<cl-row>
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn />
 			${permission.add ? "<!-- 新增按钮 -->\n<cl-add-btn />" : ""}
@@ -296,18 +294,18 @@ export async function createMenu({ router, columns, prefix, api, filePath }: any
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
 			<cl-search-key />
-		</el-row>
+		</cl-row>
 
-		<el-row>
+		<cl-row>
 			<!-- 数据表格 -->
 			<cl-table ref="Table" />
-		</el-row>
+		</cl-row>
 
-		<el-row>
+		<cl-row>
 			<cl-flex1 />
 			<!-- 分页控件 -->
 			<cl-pagination />
-		</el-row>
+		</cl-row>
 
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert" />

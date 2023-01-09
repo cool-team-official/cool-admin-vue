@@ -12,7 +12,7 @@
 					</el-tooltip>
 				</li>
 
-				<li v-if="drag && !app.browser.isMini" @click="isDrag = true">
+				<li v-if="drag && !browser.isMini" @click="isDrag = true">
 					<el-tooltip content="拖动排序">
 						<el-icon>
 							<operation />
@@ -48,13 +48,13 @@
 							<span
 								class="dept-tree__node-label"
 								:class="{
-									'is-active': data.id == info?.id
+									'is-active': data.id == ViewGroup?.selected?.id
 								}"
 								@click="rowClick(data)"
 								>{{ node.label }}</span
 							>
 							<span
-								v-if="app.browser.isMini"
+								v-if="browser.isMini"
 								class="dept-tree__node-icon"
 								@click="onContextMenu($event, data, node)"
 							>
@@ -73,14 +73,14 @@
 </template>
 
 <script lang="ts" name="dept-tree" setup>
-import { inject, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { useCool } from "/@/cool";
+import { useBrowser, useCool } from "/@/cool";
 import { deepTree, revDeepTree } from "/@/cool/utils";
 import { isArray } from "lodash-es";
 import { ContextMenu, useForm } from "@cool-vue/crud";
 import { Refresh as RefreshIcon, Operation, MoreFilled } from "@element-plus/icons-vue";
-import { useBase, checkPerm } from "/$/base";
+import { checkPerm, useViewGroup } from "/$/base";
 
 const props = defineProps({
 	drag: {
@@ -93,28 +93,20 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(["list-change", "row-click", "user-add"]);
+const emit = defineEmits(["list-change", "refresh", "user-add"]);
 
-const { service } = useCool();
-
-const { app } = useBase();
-
-// 树形列表
-const list = ref<any[]>([]);
-
-// 选中
-const info = ref();
-
-// 加载中
-const loading = ref<boolean>(false);
-
-// 是否能拖动
-const isDrag = ref<boolean>(false);
-
-// cl-form
+const { service, browser } = useCool();
+const { ViewGroup } = useViewGroup();
 const Form = useForm();
 
-const viewGroup = inject<any>("viewGroup");
+// 树形列表
+const list = ref<Eps.BaseSysDepartmentEntity[]>([]);
+
+// 加载中
+const loading = ref(false);
+
+// 是否能拖动
+const isDrag = ref(false);
 
 // 允许托的规则
 function allowDrag({ data }: any) {
@@ -131,34 +123,39 @@ async function refresh() {
 	loading.value = true;
 	isDrag.value = false;
 
-	await service.base.sys.department.list().then((res: any[]) => {
+	await service.base.sys.department.list().then((res) => {
 		list.value = deepTree(res);
 
-		if (!info.value) {
-			info.value = list.value[0];
+		if (!ViewGroup.value?.selected) {
+			rowClick();
 		}
-
-		// 模拟点击
-		rowClick(info.value);
 	});
 
 	loading.value = false;
 }
 
 // 获取 ids
-function rowClick(e: any) {
-	if (e) {
-		const ids = e.children ? revDeepTree(e.children).map((e) => e.id) : [];
-		ids.unshift(e.id);
-		info.value = e;
-		viewGroup.checkExpand(false);
-		emit("row-click", { item: e, ids });
+function rowClick(item?: Eps.BaseSysDepartmentEntity) {
+	if (!item) {
+		item = list.value[0];
+	}
+
+	if (item) {
+		const ids = item.children ? revDeepTree(item.children).map((e) => e.id) : [];
+		ids.unshift(item.id);
+
+		// 刷新列表
+		emit("refresh", { page: 1, departmentIds: ids });
+
+		// 选择
+		ViewGroup.value?.select(item);
+		ViewGroup.value?.setTitle(`成员列表（${item.name}）`);
 	}
 }
 
 // 编辑部门
-function rowEdit(e: any) {
-	const method = e.id ? "update" : "add";
+function rowEdit(item: Eps.BaseSysDepartmentEntity) {
+	const method = item.id ? "update" : "add";
 
 	Form.value?.open({
 		title: "编辑部门",
@@ -198,12 +195,14 @@ function rowEdit(e: any) {
 				}
 			}
 		],
-		form: e,
+		form: {
+			...item
+		},
 		on: {
 			submit(data, { done, close }) {
 				service.base.sys.department[method]({
-					id: e.id,
-					parentId: e.parentId,
+					id: item.id,
+					parentId: item.parentId,
 					name: data.name,
 					orderNum: data.orderNum
 				})
@@ -222,23 +221,24 @@ function rowEdit(e: any) {
 }
 
 // 删除部门
-function rowDel(e: any) {
+function rowDel(item: Eps.BaseSysDepartmentEntity) {
 	async function del(f: boolean) {
 		await service.base.sys.department
 			.delete({
-				ids: [e.id],
+				ids: [item.id],
 				deleteUser: f
 			})
 			.then(() => {
-				if (e.id == info.value.id) {
-					info.value = null;
+				// 删除当前
+				if (ViewGroup.value?.selected?.id == item.id) {
+					rowClick();
 				}
 
 				if (f) {
 					ElMessage.success("删除成功");
 				} else {
 					ElMessageBox.confirm(
-						`“${e.name}” 部门的用户已成功转移到 “${e.parentName}” 部门。`,
+						`“${item.name}” 部门的用户已成功转移到 “${item.parentName}” 部门。`,
 						"删除成功"
 					);
 				}
@@ -247,7 +247,7 @@ function rowDel(e: any) {
 		refresh();
 	}
 
-	ElMessageBox.confirm(`该操作会删除 “${e.name}” 部门的所有用户，是否确认？`, "提示", {
+	ElMessageBox.confirm(`该操作会删除 “${item.name}” 部门的所有用户，是否确认？`, "提示", {
 		type: "warning",
 		confirmButtonText: "直接删除",
 		cancelButtonText: "保留用户",
@@ -256,7 +256,7 @@ function rowDel(e: any) {
 		.then(() => {
 			del(true);
 		})
-		.catch((action: string) => {
+		.catch((action) => {
 			if (action == "cancel") {
 				del(false);
 			}
@@ -449,11 +449,15 @@ onMounted(function () {
 		}
 
 		&-icon {
-			height: 28px;
-			width: 28px;
-			line-height: 28px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: #eee;
+			height: 26px;
+			width: 26px;
 			text-align: center;
 			margin-right: 5px;
+			border-radius: 5px;
 		}
 	}
 }

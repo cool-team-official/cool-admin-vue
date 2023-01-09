@@ -11,18 +11,13 @@ import { useCrud, useForm } from "@cool-vue/crud";
 import DeptSelect from "./select.vue";
 
 const { service } = useCool();
-
-// cl-form
 const Form = useForm();
-
-// cl-crud
 const Crud = useCrud();
 
-// 打开
 async function open(ids: any[]) {
 	Form.value?.open({
 		title: "部门转移",
-		width: "600px",
+		width: "500px",
 		props: {
 			labelWidth: "80px"
 		},
@@ -42,7 +37,7 @@ async function open(ids: any[]) {
 					return done();
 				}
 
-				ElMessageBox.confirm("是否转移部门？", "提示", {
+				ElMessageBox.confirm("转移到新部门，是否继续？", "提示", {
 					type: "warning"
 				})
 					.then(() => {

@@ -12,11 +12,12 @@
 import ContextMenu from "../components/context-menu.vue";
 import Crud from "../components/crud.vue";
 import Upload from "../components/upload.vue";
-import EditorQuill from "../components/editor-quill.vue";
+import Editor from "../components/editor.vue";
 import Svg from "../components/svg.vue";
 import Copy from "../components/copy.vue";
+import File from "../components/file.vue";
 
-const list = [ContextMenu, Crud, Upload, EditorQuill, Svg, Copy];
+const list = [ContextMenu, Crud, Upload, Editor, Svg, Copy, File];
 </script>
 
 <style lang="scss">

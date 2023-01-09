@@ -5,7 +5,7 @@ import "./static/css/index.scss";
 export default (): ModuleConfig => {
 	return {
 		order: 99,
-		components: Object.values(import.meta.glob("./components/**/*")),
+		components: Object.values(import.meta.glob("./components/**/*.{vue,tsx}")),
 		views: [
 			{
 				path: "/my/info",

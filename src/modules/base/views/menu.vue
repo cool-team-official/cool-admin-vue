@@ -1,12 +1,12 @@
 <template>
 	<cl-crud ref="Crud">
-		<el-row>
+		<cl-row>
 			<cl-refresh-btn />
 			<cl-add-btn />
 			<menu-create v-if="isDev" />
-		</el-row>
+		</cl-row>
 
-		<el-row>
+		<cl-row>
 			<cl-table ref="Table" row-key="id" @row-click="onRowClick">
 				<!-- 名称 -->
 				<template #column-name="{ scope }">
@@ -70,12 +70,7 @@
 					>
 				</template>
 			</cl-table>
-		</el-row>
-
-		<el-row>
-			<cl-flex1 />
-			<cl-pagination layout="total" />
-		</el-row>
+		</cl-row>
 
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert">

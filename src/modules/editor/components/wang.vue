@@ -1,7 +1,7 @@
 <template>
 	<div class="cl-editor-wang" :class="{ disabled }">
 		<!-- 工具栏 -->
-		<toolbar :editor="editorRef" :mode="mode" />
+		<toolbar :editor="Editor" :mode="mode" />
 
 		<!-- 编辑框 -->
 		<editor
@@ -17,37 +17,29 @@
 
 		<!-- 图片 -->
 		<cl-upload-space
-			ref="ImageSpace"
+			:ref="setRefs('image')"
 			accept="image/*"
 			:show-btn="false"
-			@confirm="onSpaceConfirm"
+			@confirm="onFileConfirm"
 		/>
 
 		<!-- 视频 -->
 		<cl-upload-space
-			ref="VideoSpace"
+			:ref="setRefs('video')"
 			accept="video/*"
 			:show-btn="false"
-			@confirm="onSpaceConfirm"
+			@confirm="onFileConfirm"
 		/>
 	</div>
 </template>
 
 <script lang="ts">
 import "@wangeditor/editor/dist/css/style.css";
-import {
-	onBeforeUnmount,
-	ref,
-	shallowRef,
-	watch,
-	PropType,
-	reactive,
-	computed,
-	defineComponent
-} from "vue";
+import { onBeforeUnmount, ref, shallowRef, watch, PropType, computed, defineComponent } from "vue";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import { IEditorConfig } from "@wangeditor/editor";
-import { useComm } from "/@/cool";
+import { useCool } from "/@/cool";
+import { parsePx } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "cl-editor-wang",
@@ -73,16 +65,10 @@ export default defineComponent({
 	emits: ["update:modelValue", "change", "focus", "blur"],
 
 	setup(props, { emit }) {
-		const { px } = useComm();
-
-		// 图片上传
-		const ImageSpace = ref();
-
-		// 视频上传
-		const VideoSpace = ref();
+		const { refs, setRefs } = useCool();
 
 		// 编辑器
-		const editorRef = shallowRef();
+		const Editor = shallowRef();
 
 		// 内容
 		const value = ref();
@@ -90,7 +76,7 @@ export default defineComponent({
 		// 编辑器样式
 		const style = computed(() => {
 			return {
-				height: px(props.height)
+				height: parsePx(props.height)
 			};
 		});
 
@@ -104,13 +90,39 @@ export default defineComponent({
 			}
 		);
 
-		function onCreated(editor: any) {
-			editorRef.value = editor;
+		const temp: { insertFn: ((url: string) => void) | null } = {
+			insertFn: null
+		};
 
+		// 配置
+		const editorConfig: Partial<IEditorConfig> = {
+			placeholder: "请输入",
+			MENU_CONF: {
+				uploadImage: {
+					customBrowseAndUpload(fn: any) {
+						temp.insertFn = fn;
+						refs.image.open();
+					}
+				},
+				uploadVideo: {
+					customBrowseAndUpload(fn: any) {
+						temp.insertFn = fn;
+						refs.video.open();
+					}
+				}
+			}
+		};
+
+		function onCreated(editor: any) {
+			Editor.value = editor;
+			onDisabled();
+		}
+
+		function onDisabled() {
 			if (props.disabled) {
-				editor.disable();
+				Editor.value?.disable();
 			} else {
-				editor.enable();
+				Editor.value?.enable();
 			}
 		}
 
@@ -127,48 +139,28 @@ export default defineComponent({
 			emit("change", value.value);
 		}
 
-		const temp = reactive<any>({
-			insertFn: null
-		});
-
-		// 配置
-		const editorConfig: Partial<IEditorConfig> = {
-			placeholder: "请输入",
-			MENU_CONF: {
-				uploadImage: {
-					customBrowseAndUpload(insertFn: any) {
-						temp.insertFn = insertFn;
-						ImageSpace.value.open();
-					}
-				},
-				uploadVideo: {
-					customBrowseAndUpload(insertFn: any) {
-						temp.insertFn = insertFn;
-						VideoSpace.value.open();
-					}
-				}
-			}
-		};
-
-		// 文件确认
-		function onSpaceConfirm(files: any[]) {
+		function onFileConfirm(files: any[]) {
 			if (files.length > 0) {
 				files.forEach((file) => {
-					temp.insertFn(file.url);
+					if (temp.insertFn) {
+						temp.insertFn(file.url);
+					}
 				});
 			}
 		}
 
 		onBeforeUnmount(() => {
-			const editor = editorRef.value;
+			const editor = Editor.value;
 			if (editor == null) return;
 			editor.destroy();
 		});
 
+		watch(() => props.disabled, onDisabled);
+
 		return {
-			ImageSpace,
-			VideoSpace,
-			editorRef,
+			refs,
+			setRefs,
+			Editor,
 			value,
 			style,
 			onCreated,
@@ -176,7 +168,7 @@ export default defineComponent({
 			onBlur,
 			onChange,
 			editorConfig,
-			onSpaceConfirm
+			onFileConfirm
 		};
 	}
 });
@@ -197,6 +189,10 @@ export default defineComponent({
 		:deep(.w-e-text-container) {
 			background-color: var(--el-disabled-bg-color);
 		}
+	}
+
+	&.w-e-full-screen-container {
+		z-index: 999;
 	}
 }
 </style>

@@ -1,4 +1,4 @@
-// customize style
+// customize
 .scroller1 {
 	overflow: auto;
 	position: relative;
@@ -19,7 +19,7 @@
 	}
 }
 
-// Element-plus theme
+// Element-plus
 .el-input-number {
 	.el-input-number__decrease,
 	.el-input-number__increase {
@@ -29,5 +29,7 @@
 }
 
 .el-dialog {
-	--el-dialog-border-radius: 10px !important;
+	&:not(.is-fullscreen) {
+		--el-dialog-border-radius: 10px !important;
+	}
 }

@@ -7,7 +7,7 @@
 			ref="ImageSpace"
 			accept="image/*"
 			:show-btn="false"
-			@confirm="onSpaceConfirm"
+			@confirm="onFileConfirm"
 		/>
 
 		<!-- 视频 -->
@@ -15,7 +15,7 @@
 			ref="VideoSpace"
 			accept="video/*"
 			:show-btn="false"
-			@confirm="onSpaceConfirm"
+			@confirm="onFileConfirm"
 		/>
 	</div>
 </template>
@@ -24,7 +24,7 @@
 import { defineComponent, onMounted, ref, watch } from "vue";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
-import { useComm } from "/@/cool";
+import { parsePx } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "cl-editor-quill",
@@ -42,8 +42,6 @@ export default defineComponent({
 	emits: ["update:modelValue", "load"],
 
 	setup(props, { emit }) {
-		const { px } = useComm();
-
 		let quill: any = null;
 
 		// 编辑器
@@ -81,7 +79,7 @@ export default defineComponent({
 		}
 
 		// 文件确认
-		function onSpaceConfirm(files: any[]) {
+		function onFileConfirm(files: any[]) {
 			if (files.length > 0) {
 				// 批量插入图片
 				files.forEach((file, i) => {
@@ -107,7 +105,7 @@ export default defineComponent({
 
 		// 设置高度
 		function setHeight() {
-			quill.container.style.height = px(props.height);
+			quill.container.style.height = parsePx(props.height);
 		}
 
 		// 监听绑定值
@@ -187,7 +185,7 @@ export default defineComponent({
 			quill,
 			cursorIndex,
 			setContent,
-			onSpaceConfirm
+			onFileConfirm
 		};
 	}
 });

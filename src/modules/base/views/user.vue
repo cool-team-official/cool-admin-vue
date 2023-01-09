@@ -1,35 +1,28 @@
 <template>
-	<cl-view-group :title="title">
+	<cl-view-group ref="ViewGroup">
 		<template #left>
-			<dept-tree @row-click="onDeptRowClick" @user-add="onDeptUserAdd" />
+			<dept-tree @refresh="refresh" @user-add="onUserAdd" />
 		</template>
 
 		<template #right>
 			<cl-crud ref="Crud">
-				<el-row>
+				<cl-row>
 					<cl-refresh-btn />
 					<cl-add-btn />
 					<cl-multi-delete-btn />
 					<el-button
 						v-permission="service.base.sys.user.permission.move"
 						type="success"
-						:disabled="selects.ids.length == 0"
+						:disabled="Table?.selection.length == 0"
 						@click="toMove()"
 						>转移</el-button
 					>
 					<cl-flex1 />
-					<cl-search-key />
-				</el-row>
+					<cl-search-key placeholder="搜索用户名、姓名" />
+				</cl-row>
 
-				<el-row>
-					<cl-table
-						ref="Table"
-						:default-sort="{
-							prop: 'createTime',
-							order: 'descending'
-						}"
-						@selection-change="onSelectionChange"
-					>
+				<cl-row>
+					<cl-table ref="Table">
 						<!-- 权限 -->
 						<template #column-roleName="{ scope }">
 							<template v-if="scope.row.roleName">
@@ -56,12 +49,12 @@
 							>
 						</template>
 					</cl-table>
-				</el-row>
+				</cl-row>
 
-				<el-row>
+				<cl-row>
 					<cl-flex1 />
 					<cl-pagination />
-				</el-row>
+				</cl-row>
 
 				<!-- 新增、编辑 -->
 				<cl-upsert ref="Upsert" />
@@ -75,23 +68,13 @@
 
 <script lang="ts" name="sys-user" setup>
 import { useTable, useUpsert, useCrud } from "@cool-vue/crud";
-import { computed, reactive } from "vue";
 import { useCool } from "/@/cool";
+import { useViewGroup } from "../hooks";
 import DeptMove from "./components/dept/move.vue";
 import DeptTree from "./components/dept/tree.vue";
 
 const { service, refs, setRefs } = useCool();
-
-// 选择项
-const selects = reactive<any>({
-	dept: {},
-	ids: []
-});
-
-// 标题
-const title = computed(() => {
-	return `成员列表（${selects.dept?.name || ""}）`;
-});
+const { ViewGroup } = useViewGroup();
 
 // cl-crud 配置
 const Crud = useCrud({
@@ -113,13 +96,13 @@ const Table = useTable({
 			}
 		},
 		{
-			prop: "name",
-			label: "姓名",
+			prop: "username",
+			label: "用户名",
 			minWidth: 150
 		},
 		{
-			prop: "username",
-			label: "用户名",
+			prop: "name",
+			label: "姓名",
 			minWidth: 150
 		},
 		{
@@ -159,7 +142,7 @@ const Table = useTable({
 		{
 			prop: "createTime",
 			label: "创建时间",
-			sortable: "custom",
+			sortable: "desc",
 			minWidth: 160
 		},
 		{
@@ -299,63 +282,48 @@ const Upsert = useUpsert({
 	onSubmit(data, { next }) {
 		next({
 			...data,
-			departmentId: selects.dept?.id
+			departmentId: ViewGroup.value?.selected?.id
 		});
 	},
 
 	async onOpen() {
-		const list = await service.base.sys.role.list();
-
 		// 设置权限列表
-		Upsert.value?.setOptions(
-			"roleIdList",
-			list.map((e) => {
-				return {
-					label: e.name || "",
-					value: e.id
-				};
-			})
-		);
+		service.base.sys.role.list().then((res) => {
+			Upsert.value?.setOptions(
+				"roleIdList",
+				res.map((e) => {
+					return {
+						label: e.name || "",
+						value: e.id
+					};
+				})
+			);
+		});
 	}
 });
 
 // 刷新列表
-function refresh(params: any) {
+function refresh(params?: any) {
 	Crud.value?.refresh(params);
 }
 
-// 多选监听
-function onSelectionChange(selection: any[]) {
-	selects.ids = selection.map((e) => e.id);
-}
-
-// 部门选择监听
-function onDeptRowClick({ item, ids }: any) {
-	selects.dept = item;
-
-	refresh({
-		page: 1,
-		departmentIds: ids
-	});
-}
-
-// 部门下新增成员
-function onDeptUserAdd(item: any) {
+// 新增成员
+function onUserAdd({ id }: Eps.BaseSysDepartmentEntity) {
 	Crud.value?.rowAppend({
-		departmentId: item.id
+		departmentId: id
 	});
 }
 
 // 移动成员
-async function toMove(e?: any) {
+async function toMove(item?: Eps.BaseSysDepartmentEntity) {
 	let ids = [];
 
-	if (!e) {
-		ids = selects.ids;
+	if (item) {
+		ids = [item.id];
 	} else {
-		ids = [e.id];
+		ids = Table.value?.selection.map((e) => e.id) || [];
 	}
 
-	refs.value.deptMove.open(ids);
+	refs.deptMove.open(ids);
 }
 </script>

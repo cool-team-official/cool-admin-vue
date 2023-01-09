@@ -71,20 +71,15 @@ export default defineComponent({
 			}
 		}
 
-		return {
-			status,
-			onChange
+		return () => {
+			return (
+				<el-switch
+					v-model={status.value}
+					active-value={props.activeValue}
+					inactive-value={props.inactiveValue}
+					onChange={onChange}
+				/>
+			);
 		};
-	},
-
-	render(ctx: any) {
-		return (
-			<el-switch
-				v-model={ctx.status}
-				active-value={ctx.activeValue}
-				inactive-value={ctx.inactiveValue}
-				onChange={ctx.onChange}
-			/>
-		);
 	}
 });

@@ -60,3 +60,8 @@ export function fileType(path: string) {
 export function fileRule(value: string) {
 	return fileRules.find((e) => e.value == value);
 }
+
+// 拼接数组下的url
+export function getUrls(list: any[]) {
+	return list.map((e) => e.url.replace(/,/g, encodeURIComponent(","))).join(",");
+}

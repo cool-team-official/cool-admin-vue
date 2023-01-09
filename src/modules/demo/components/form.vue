@@ -3,8 +3,8 @@
 
 	<cl-form ref="Form">
 		<template #slot-crud>
-			<cl-crud ref="Crud">
-				<el-row>
+			<cl-crud ref="Crud" padding="0">
+				<cl-row>
 					<!-- 刷新按钮 -->
 					<cl-refresh-btn />
 					<!-- 新增按钮 -->
@@ -14,18 +14,18 @@
 					<cl-flex1 />
 					<!-- 关键字搜索 -->
 					<cl-search-key />
-				</el-row>
+				</cl-row>
 
-				<el-row>
+				<cl-row>
 					<!-- 数据表格 -->
 					<cl-table ref="Table" />
-				</el-row>
+				</cl-row>
 
-				<el-row>
+				<cl-row>
 					<cl-flex1 />
 					<!-- 分页控件 -->
 					<cl-pagination />
-				</el-row>
+				</cl-row>
 
 				<!-- 新增、编辑 -->
 				<cl-upsert ref="Upsert" />
@@ -36,6 +36,9 @@
 
 <script lang="ts" name="菜单名称" setup>
 import { useCrud, useForm, useTable, useUpsert } from "@cool-vue/crud";
+import { useCool } from "/@/cool";
+
+const { refs, setRefs } = useCool();
 
 // cl-upsert 配置
 const Upsert = useUpsert({
@@ -92,18 +95,34 @@ const Form = useForm();
 
 function open() {
 	Form.value?.open({
-		title: "内嵌crud",
+		title: "自定义表单",
+		props: {
+			labelPosition: "top"
+		},
 		items: [
 			{
-				label: "",
-				props: {
-					labelWidth: "0"
-				},
+				label: "获取 ref，打开后聚焦",
+				prop: "name",
+				component: {
+					name: "el-input",
+					ref: setRefs("name"),
+					props: {
+						placeholder: "请填写昵称"
+					}
+				}
+			},
+			{
+				label: "内嵌 cl-crud",
 				component: {
 					name: "slot-crud"
 				}
 			}
-		]
+		],
+		on: {
+			open() {
+				refs.name.focus();
+			}
+		}
 	});
 }
 </script>

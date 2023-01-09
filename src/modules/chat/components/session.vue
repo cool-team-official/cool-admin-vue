@@ -67,9 +67,10 @@ const list = computed(() => session?.list.filter((e) => e.nickName?.includes(key
 
 // 会话详情
 async function toDetail(item: Chat.Session) {
+	chat.expand(false);
 	session.set(item);
 	await message.get({ page: 1 });
-	chat?.scrollToBottom();
+	chat.scrollToBottom();
 }
 </script>
 

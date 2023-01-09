@@ -1,34 +1,42 @@
 <template>
 	<cl-crud ref="Crud">
-		<el-row>
+		<cl-row>
 			<cl-refresh-btn />
 			<cl-add-btn />
 			<cl-multi-delete-btn />
 			<cl-flex1 />
 			<cl-search-key />
-		</el-row>
+		</cl-row>
 
-		<el-row>
+		<cl-row>
 			<cl-table ref="Table" />
-		</el-row>
+		</cl-row>
 
-		<el-row>
+		<cl-row>
 			<cl-flex1 />
 			<cl-pagination />
-		</el-row>
+		</cl-row>
 
 		<cl-upsert ref="Upsert">
 			<template #slot-content="{ scope }">
-				<div class="editor">
-					<template v-for="(item, index) in tab.list" :key="index">
-						<template v-if="tab.index == index">
-							<el-button class="change-btn" @click="changeTab(item.to)">{{
-								item.label
-							}}</el-button>
+				<div>
+					<el-radio-group :model-value="tab.value" @change="onTabChange">
+						<el-radio
+							v-for="(item, index) in tab.list"
+							:key="index"
+							:label="item.value"
+							>{{ item.label }}</el-radio
+						>
+					</el-radio-group>
 
-							<component :is="item.component" v-model="scope.data" />
-						</template>
-					</template>
+					<el-input
+						placeholder="请输入"
+						v-model="scope.data"
+						type="textarea"
+						:rows="4"
+						v-if="componentName == 'el-input'"
+					/>
+					<component :is="componentName" v-model="scope.data" v-else />
 				</div>
 			</template>
 		</cl-upsert>
@@ -38,27 +46,28 @@
 <script lang="ts" name="sys-param" setup>
 import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { ElMessageBox } from "element-plus";
-import { nextTick, reactive } from "vue";
+import { computed, reactive } from "vue";
 import { useCool } from "/@/cool";
+import { isComponent } from "/@/cool/utils";
 
 const { service } = useCool();
 
-// 选项卡
-const tab = reactive<any>({
-	index: null,
-
+const tab = reactive({
+	value: "el-input",
 	list: [
 		{
-			label: "切换富文本编辑器",
-			to: 1,
-			component: "cl-codemirror"
+			label: "代码编辑器",
+			value: "cl-editor-monaco"
 		},
 		{
-			label: "切换代码编辑器",
-			to: 0,
-			component: "cl-editor-wang"
+			label: "富文本编辑器",
+			value: "cl-editor-wang"
 		}
 	]
+});
+
+const componentName = computed(() => {
+	return isComponent(tab.value) ? tab.value : "el-input";
 });
 
 // cl-crud 配置
@@ -153,41 +162,19 @@ const Upsert = useUpsert({
 	],
 
 	onOpened(data) {
-		tab.index = null;
-
-		nextTick(() => {
-			if (Upsert.value?.mode == "add") {
-				tab.index = 1;
-			} else {
-				tab.index = /<*>/g.test(data.data) ? 1 : 0;
-			}
-		});
+		tab.value = /<*>/g.test(data.data) ? tab.list[1].value : tab.list[0].value;
 	}
 });
 
 // 切换编辑器
-function changeTab(i: number) {
+function onTabChange(name: any) {
 	ElMessageBox.confirm("切换编辑器会清空输入内容，是否继续？", "提示", {
 		type: "warning"
 	})
 		.then(() => {
-			tab.index = i;
+			tab.value = name;
 			Upsert.value?.setForm("data", "");
 		})
 		.catch(() => null);
 }
 </script>
-
-<style lang="scss" scoped>
-.change-btn {
-	display: flex;
-	position: absolute;
-	right: 10px;
-	bottom: 10px;
-	z-index: 9;
-}
-
-.editor {
-	transition: all 0.3s;
-}
-</style>

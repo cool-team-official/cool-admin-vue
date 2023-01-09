@@ -30,7 +30,7 @@
 import { computed, defineComponent } from "vue";
 import { isArray, isNumber, isString } from "lodash-es";
 import { PictureFilled } from "@element-plus/icons-vue";
-import { useComm } from "/@/cool";
+import { parsePx } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "cl-image",
@@ -58,8 +58,6 @@ export default defineComponent({
 	},
 
 	setup(props) {
-		const { px } = useComm();
-
 		const urls = computed(() => {
 			const urls: any = props.modelValue || props.src;
 
@@ -78,8 +76,8 @@ export default defineComponent({
 			const [h, w]: any = isNumber(props.size) ? [props.size, props.size] : props.size;
 
 			return {
-				h: px(h),
-				w: px(w)
+				h: parsePx(h),
+				w: parsePx(w)
 			};
 		});
 

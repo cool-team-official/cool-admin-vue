@@ -43,9 +43,9 @@
 
 			<div class="hot-search__table">
 				<cl-crud ref="Crud" padding="0">
-					<el-row>
+					<cl-row>
 						<cl-table ref="Table" :border="false" />
-					</el-row>
+					</cl-row>
 				</cl-crud>
 			</div>
 		</div>

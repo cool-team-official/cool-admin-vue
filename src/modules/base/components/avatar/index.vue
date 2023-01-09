@@ -12,8 +12,8 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
-import { isNumber } from "lodash-es";
 import { User } from "@element-plus/icons-vue";
+import { parsePx } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "cl-avatar",
@@ -44,7 +44,7 @@ export default defineComponent({
 	},
 
 	setup(props) {
-		const size = isNumber(props.size) ? props.size + "px" : props.size;
+		const size = parsePx(props.size);
 
 		const style = computed(() => {
 			return {

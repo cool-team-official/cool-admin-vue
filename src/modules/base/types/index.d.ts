@@ -39,3 +39,16 @@ export declare namespace Process {
 
 	type List = Item[];
 }
+
+export declare interface ClViewGroup {
+	selected:
+		| {
+				id?: number;
+				[key: string]: any;
+		  }
+		| undefined;
+	isExpand: boolean;
+	setTitle(value?: string): void;
+	select(data?: any): void;
+	expand(value?: boolean): void;
+}

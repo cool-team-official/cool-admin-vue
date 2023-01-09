@@ -13,8 +13,6 @@
 			height="630px"
 			width="1200px"
 			keep-alive
-			:draggable="false"
-			custom-class="cl-chat__dialog"
 			:close-on-click-modal="false"
 			close-on-press-escape
 			append-to-body
@@ -23,7 +21,7 @@
 			<div
 				class="cl-chat"
 				:class="{
-					'is-mini': app.browser.isMini,
+					'is-mini': browser.isMini,
 					'is-expand': isExpand
 				}"
 			>
@@ -52,9 +50,9 @@
 </template>
 
 <script lang="ts" name="cl-chat" setup>
-import { nextTick, provide, ref, watch } from "vue";
+import { nextTick, provide, ref } from "vue";
 import dayjs from "dayjs";
-import { useCool, config, module } from "/@/cool";
+import { useCool, config, module, useBrowser } from "/@/cool";
 import { useBase } from "/$/base";
 import { Notebook, ArrowLeft, BellFilled } from "@element-plus/icons-vue";
 import { debounce } from "lodash-es";
@@ -66,12 +64,13 @@ import { Chat } from "../types";
 import { useStore } from "../store";
 
 const { mitt } = useCool();
+const { browser, onScreenChange } = useBrowser();
 
 // 缓存
 const { session, message } = useStore();
 
 // 缓存
-const { app, user } = useBase();
+const { user } = useBase();
 
 // 模块配置
 const { options } = module.get("chat");
@@ -83,7 +82,7 @@ const visible = ref(false);
 const isExpand = ref(true);
 
 // 未读消息
-const unCount = ref(parseInt(Math.random() * 100));
+const unCount = ref(parseInt(String(Math.random() * 100)));
 
 // Socket
 let socket: Socket;
@@ -126,6 +125,11 @@ function open() {
 // 关闭
 function close() {
 	visible.value = false;
+}
+
+// 收起、展开
+function expand(value?: boolean) {
+	isExpand.value = value === undefined ? !isExpand.value : value;
 }
 
 // 发送消息
@@ -174,19 +178,15 @@ provide("chat", {
 		return socket;
 	},
 	send,
+	append,
+	expand,
 	scrollToBottom
 });
 
-// 监听屏幕大小变化
-watch(
-	() => app.browser.isMini,
-	(val) => {
-		isExpand.value = val ? false : true;
-	},
-	{
-		immediate: true
-	}
-);
+// 监听屏幕变化
+onScreenChange(() => {
+	isExpand.value = browser.isMini ? false : true;
+});
 
 defineExpose({
 	open,
@@ -209,12 +209,6 @@ defineExpose({
 		padding: 5px;
 		.el-badge__content {
 			transform: translateY(-50%) translateX(100%) scale(0.8) !important;
-		}
-	}
-
-	&__dialog {
-		.el-dialog__body {
-			padding: 0;
 		}
 	}
 

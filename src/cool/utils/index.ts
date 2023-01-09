@@ -1,4 +1,5 @@
-import { isArray, orderBy } from "lodash-es";
+import { isArray, isNumber, isString, orderBy } from "lodash-es";
+import { resolveComponent } from "vue";
 import storage from "./storage";
 
 // 首字母大写
@@ -290,6 +291,21 @@ export function mergeService(list: any[]) {
 	});
 
 	return data;
+}
+
+// 是否是组件
+export function isComponent(name: string) {
+	return !isString(resolveComponent(name));
+}
+
+// 是否Promise
+export function isPromise(val: any) {
+	return val && Object.prototype.toString.call(val) === "[object Promise]";
+}
+
+// 单位转换
+export function parsePx(val: string | number) {
+	return isNumber(val) ? `${val}px` : val;
 }
 
 export { storage };
