@@ -105,12 +105,20 @@
 								<!-- 工具 -->
 								<div class="cl-upload__actions">
 									<!-- 预览 -->
-									<span @click.stop="preview(item)" v-show="item.url">
+									<span
+										class="icon-preview"
+										@click.stop="preview(item)"
+										v-show="item.url"
+									>
 										<el-icon><zoom-in /></el-icon>
 									</span>
 
 									<!-- 删除 -->
-									<span @click.stop="remove(index)" v-if="!disabled">
+									<span
+										class="icon-delete"
+										@click.stop="remove(index)"
+										v-if="!disabled"
+									>
 										<el-icon><delete /></el-icon>
 									</span>
 								</div>
@@ -639,6 +647,10 @@ defineExpose({
 					color: #999;
 				}
 			}
+		}
+
+		.icon-preview {
+			cursor: pointer;
 		}
 	}
 

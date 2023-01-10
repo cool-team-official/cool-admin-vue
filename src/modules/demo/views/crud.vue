@@ -85,6 +85,14 @@ const Upsert = useUpsert({
 			}
 		},
 		{
+			label: "头像",
+			prop: "avatar",
+			group: "base",
+			component: {
+				name: "cl-upload"
+			}
+		},
+		{
 			label: "姓名",
 			prop: "name",
 			required: true,
@@ -122,7 +130,7 @@ const Upsert = useUpsert({
 		next(data);
 		// Upsert.value?.close();
 	},
-	onOpen(data) {
+	onOpened(data) {
 		console.log(data);
 	},
 	onClose(done) {
