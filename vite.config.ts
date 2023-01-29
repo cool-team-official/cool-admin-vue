@@ -2,33 +2,30 @@ import path from "path";
 import { UserConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
-import viteCompression from "vite-plugin-compression";
-import Components from "unplugin-vue-components/vite";
-import Unocss from "unocss/vite";
-import { presetUno } from "unocss";
+import compression from "vite-plugin-compression";
+import { visualizer } from "rollup-plugin-visualizer";
 import { proxy } from "./src/cool/config/proxy";
 import { cool } from "./build/cool";
-import { svgBuilder, findSvgFolders } from "./build/svg";
 
 function resolve(dir: string) {
 	return path.resolve(__dirname, ".", dir);
 }
 
-// https://vitejs.dev/config/
+// https://vitejs.dev/config
 
 export default (): UserConfig => {
 	return {
 		base: "/",
 		plugins: [
 			vue(),
-			viteCompression(),
-			Components(),
+			compression(),
 			vueJsx(),
-			Unocss({
-				presets: [presetUno()]
-			}),
-			svgBuilder(["./src/icons/svg/",...findSvgFolders("./src/modules/")]),
-			cool()
+			cool(),
+			visualizer({
+				open: false,
+				gzipSize: true,
+				brotliSize: true
+			})
 		],
 		css: {
 			preprocessorOptions: {
@@ -52,15 +49,32 @@ export default (): UserConfig => {
 			}
 		},
 		build: {
+			minify: "terser",
+			terserOptions: {
+				compress: {
+					drop_console: true,
+					drop_debugger: true
+				}
+			},
 			sourcemap: false,
-			polyfillDynamicImport: false, // 必须为false
 			rollupOptions: {
 				output: {
-					// manualChunks(id) {
-					// 	if (id.includes("node_modules")) {
-					// 		return id.toString().split("node_modules/")[1].split("/")[0].toString();
-					// 	}
-					// }
+					chunkFileNames: "static/js/[name]-[hash].js",
+					entryFileNames: "static/js/[name]-[hash].js",
+					assetFileNames: "static/[ext]/[name]-[hash].[ext]",
+					manualChunks(id) {
+						if (id.includes("node_modules")) {
+							if (!["@cool-vue/crud"].find((e) => id.includes(e))) {
+								let str = id.toString().split("node_modules/")[1];
+
+								if (str[0] == "@") {
+									str = str.replace("/", ".");
+								}
+
+								return str.split("/")[0].toString();
+							}
+						}
+					}
 				}
 			}
 		}

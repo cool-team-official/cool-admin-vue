@@ -5,13 +5,13 @@
 
 			<ul class="tools">
 				<li @click="session.get()">
-					<el-icon :size="16"><Refresh /></el-icon>
+					<el-icon :size="16"><refresh /></el-icon>
 				</li>
 			</ul>
 		</div>
 
 		<div class="list" v-loading="session?.loading">
-			<div class="scroller1">
+			<el-scrollbar class="scroller">
 				<div
 					class="item"
 					v-for="(item, index) in list"
@@ -38,9 +38,13 @@
 						<p class="date">{{ item.createTime }}</p>
 					</div>
 				</div>
-			</div>
 
-			<el-empty v-if="list.length == 0" image-size="100" description="暂无会话"></el-empty>
+				<el-empty
+					v-if="list.length == 0"
+					:image-size="100"
+					description="暂无会话"
+				></el-empty>
+			</el-scrollbar>
 		</div>
 	</div>
 </template>
@@ -63,9 +67,10 @@ const list = computed(() => session?.list.filter((e) => e.nickName?.includes(key
 
 // 会话详情
 async function toDetail(item: Chat.Session) {
+	chat.expand(false);
 	session.set(item);
 	await message.get({ page: 1 });
-	chat?.scrollToBottom();
+	chat.scrollToBottom();
 }
 </script>
 
@@ -111,7 +116,7 @@ async function toDetail(item: Chat.Session) {
 		height: calc(100% - 51px);
 		overflow: hidden;
 
-		.scroller1 {
+		.scroller {
 			height: 100%;
 		}
 

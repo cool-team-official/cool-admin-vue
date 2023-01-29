@@ -1,7 +1,7 @@
 import { useCrud } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
 import { defineComponent, ref, watch } from "vue";
-import { isBoolean } from "lodash";
+import { isBoolean, isFunction } from "lodash-es";
 
 export default defineComponent({
 	name: "cl-switch",
@@ -10,6 +10,7 @@ export default defineComponent({
 		scope: null,
 		column: null,
 		modelValue: [Number, String, Boolean],
+		api: Function,
 		activeValue: {
 			type: [Number, String, Boolean],
 			default: true
@@ -46,20 +47,23 @@ export default defineComponent({
 		// 监听改变
 		function onChange(val: boolean | string | number) {
 			if (props.column && props.scope) {
-				if (Crud.value?.service.update) {
-					Crud.value?.service
-						?.update({
-							...props.scope,
-							[props.column.property]: val
-						})
-						.then(() => {
-							ElMessage.success("更新成功");
-							emit("update:modelValue", val);
-							emit("change", val);
-						})
-						.catch((err) => {
-							ElMessage.error(err.message);
-						});
+				const params = {
+					...props.scope,
+					[props.column.property]: val
+				};
+
+				const req = isFunction(props.api)
+					? props.api(params)
+					: Crud.value?.service.update(params);
+
+				if (req) {
+					req.then(() => {
+						ElMessage.success("更新成功");
+						emit("update:modelValue", val);
+						emit("change", val);
+					}).catch((err: any) => {
+						ElMessage.error(err.message);
+					});
 				}
 			} else {
 				emit("update:modelValue", val);
@@ -67,20 +71,15 @@ export default defineComponent({
 			}
 		}
 
-		return {
-			status,
-			onChange
+		return () => {
+			return (
+				<el-switch
+					v-model={status.value}
+					active-value={props.activeValue}
+					inactive-value={props.inactiveValue}
+					onChange={onChange}
+				/>
+			);
 		};
-	},
-
-	render(ctx: any) {
-		return (
-			<el-switch
-				v-model={ctx.status}
-				active-value={ctx.activeValue}
-				inactive-value={ctx.inactiveValue}
-				onChange={ctx.onChange}
-			/>
-		);
 	}
 });

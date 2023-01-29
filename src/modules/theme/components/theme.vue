@@ -1,8 +1,20 @@
 <template>
-	<div class="cl-theme" @click="open">
-		<el-badge type="primary" is-dot>
-			<icon-svg name="icon-discover" :size="15"></icon-svg>
+	<div class="cl-theme">
+		<el-badge type="primary" is-dot @click="open">
+			<cl-svg name="icon-discover" :size="15" />
 		</el-badge>
+
+		<template v-if="theme.name == 'default'">
+			<el-switch
+				:style="{
+					marginLeft: '15px'
+				}"
+				inline-prompt
+				v-model="isDark"
+				:active-icon="Moon"
+				:inactive-icon="Sunny"
+			/>
+		</template>
 	</div>
 
 	<el-drawer v-model="visible" title="设置主题" size="350px" append-to-body>
@@ -27,96 +39,93 @@
 
 				<el-form-item label="自定义主色">
 					<el-color-picker v-model="form.color" @change="setColor" />
-					<span class="ml-10px">{{ form.color }}</span>
+					<span
+						:style="{
+							marginLeft: '10px'
+						}"
+						>{{ form.color }}</span
+					>
 				</el-form-item>
 
 				<el-form-item label="菜单分组显示">
 					<el-switch v-model="form.theme.isGroup" @change="setGroup"></el-switch>
+				</el-form-item>
+
+				<el-form-item label="转场动画">
+					<el-switch
+						v-model="form.theme.transition"
+						active-value="slide"
+						inactive-value="none"
+						@change="setTransition"
+					></el-switch>
 				</el-form-item>
 			</el-form>
 		</div>
 	</el-drawer>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
-import { setTheme, themes } from "../utils";
-import { module } from "/@/cool/utils";
-import store from "store";
-import { Check } from "@element-plus/icons-vue";
+<script lang="ts" setup name="cl-theme">
+import { reactive, ref } from "vue";
+import { Check, Moon, Sunny } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { useBase } from "/$/base";
+import { useDark } from "@vueuse/core";
+import { storage } from "/@/cool";
+import { Theme } from "../types";
+import { setTheme, themes } from "../utils";
 
-export default defineComponent({
-	name: "cl-theme",
+const { menu } = useBase();
 
-	components: {
-		Check
-	},
+// 是否暗黑模式
+const isDark = ref(useDark());
 
-	setup() {
-		const { app, menu } = useBase();
+// 当前主题
+const theme = reactive<Theme>(storage.get("theme"));
 
-		// 当前主题
-		const theme = reactive<any>(store.get("theme") || module.get("theme"));
-
-		// 菜单分组显示默认值
-		if (theme.isGroup === undefined) {
-			theme.isGroup = app.info.menu.isGroup;
-		}
-
-		// 表单
-		const form = reactive<any>({
-			color: theme.color || "",
-			theme
-		});
-
-		// 抽屉
-		const visible = ref<boolean>(false);
-
-		// 打开
-		function open() {
-			visible.value = true;
-		}
-
-		// 设置颜色
-		function setColor(color: string) {
-			setTheme({ color });
-		}
-
-		// 设置推荐
-		function setComd(item: any) {
-			Object.assign(form.theme, item);
-			form.color = item.color;
-			setTheme(item);
-			ElMessage.success(`切换主题：${item.label}`);
-		}
-
-		// 设置分组
-		function setGroup(val: boolean) {
-			setTheme({ isGroup: val });
-			app.set({
-				menu: {
-					isGroup: val
-				}
-			});
-			menu.setMenu();
-		}
-
-		return {
-			app,
-			form,
-			themes,
-			theme,
-			visible,
-			open,
-			setColor,
-			setComd,
-			setTheme,
-			setGroup
-		};
-	}
+// 表单
+const form = reactive<{ color: string; theme: Theme }>({
+	color: theme.color || "",
+	theme
 });
+
+// 抽屉
+const visible = ref(false);
+
+// 打开
+function open() {
+	visible.value = true;
+}
+
+// 清除暗黑模式
+function clearDark() {
+	isDark.value = false;
+}
+
+// 设置颜色
+function setColor(color: any) {
+	setTheme({ color });
+	clearDark();
+}
+
+// 设置推荐
+function setComd(item: any) {
+	Object.assign(form.theme, item);
+	form.color = item.color;
+	setTheme(item);
+	clearDark();
+	ElMessage.success(`切换主题：${item.label}`);
+}
+
+// 设置分组
+function setGroup(val: any) {
+	setTheme({ isGroup: val });
+	menu.setMenu();
+}
+
+// 设置转场动画
+function setTransition(val: any) {
+	setTheme({ transition: val });
+}
 </script>
 
 <style lang="scss" scoped>
@@ -126,6 +135,7 @@ export default defineComponent({
 	justify-content: center;
 	height: 100%;
 	width: 100%;
+	padding: 0 10px;
 
 	&__comd {
 		display: flex;
@@ -137,6 +147,7 @@ export default defineComponent({
 			list-style: none;
 			margin-right: 15px;
 			cursor: pointer;
+			color: #000;
 
 			.w {
 				height: 20px;
@@ -166,7 +177,11 @@ export default defineComponent({
 			background-color: #f7f7f7;
 			padding: 10px;
 			border-radius: 5px;
-			border: 1px solid #eee;
+			border: 1px solid var(--el-border-color);
+
+			.el-form-item__label {
+				color: #000;
+			}
 		}
 	}
 }

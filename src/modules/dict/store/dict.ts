@@ -1,14 +1,12 @@
 import { defineStore } from "pinia";
-import { computed, reactive } from "vue";
-import { isDev, useCool } from "/@/cool";
+import { computed, reactive, toRaw } from "vue";
+import { isDev, service } from "/@/cool";
 
 declare interface Data {
 	[key: string]: Array<{ label: string; value: any }>;
 }
 
 export const useDictStore = defineStore("dict", () => {
-	const { service } = useCool();
-
 	// 对象数据
 	const data = reactive<Data>({});
 
@@ -18,8 +16,8 @@ export const useDictStore = defineStore("dict", () => {
 	}
 
 	// 刷新
-	function refresh(types?: string[]) {
-		service.dict.info
+	async function refresh(types?: string[]) {
+		return service.dict.info
 			.data({
 				types
 			})
@@ -38,8 +36,12 @@ export const useDictStore = defineStore("dict", () => {
 				Object.assign(data, d);
 
 				if (isDev) {
-					console.log("字典数据", data);
+					console.group("字典数据");
+					console.log(toRaw(data));
+					console.groupEnd();
 				}
+
+				return data;
 			});
 	}
 

@@ -5,7 +5,7 @@ function change(el: any, binding: any) {
 }
 
 export default {
-	beforeMount(el: any, binding: any) {
+	created(el: any, binding: any) {
 		el.setAttribute("_display", el.style.display || "");
 		change(el, binding);
 	},

@@ -1,0 +1,15 @@
+{
+	"module-config": {
+		"prefix": "module-config",
+		"scope": "typescript",
+		"body": [
+			"import { ModuleConfig } from \"/@/cool\";",
+			"",
+			"export default (): ModuleConfig => {",
+			"    return {};",
+			"};",
+			""
+		],
+		"description": "module config snippets"
+	}
+}

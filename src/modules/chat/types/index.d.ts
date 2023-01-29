@@ -30,6 +30,7 @@ export namespace Chat {
 		socket?: Socket;
 		send(data: Message, isAppend?: boolean): void;
 		append(data: Message): void;
+		expand(boolean?: boolean): void;
 		scrollToBottom(): void;
 	}
 }

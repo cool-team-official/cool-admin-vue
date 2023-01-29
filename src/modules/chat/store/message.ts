@@ -1,10 +1,8 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { useCool } from "/@/cool";
+import { service } from "/@/cool";
 
 export const useMessageStore = defineStore("chat-message", () => {
-	const { service } = useCool();
-
 	// 加载状态
 	const loading = ref(false);
 

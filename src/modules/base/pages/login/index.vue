@@ -1,16 +1,19 @@
 <template>
 	<div class="page-login">
 		<div class="box">
-			<img class="logo" :src="Logo" alt="Logo" />
+			<div class="logo">
+				<img src="/logo.png" alt="Logo" />
+				<span>{{ app.info.name }}</span>
+			</div>
 			<p class="desc">一款快速开发后台权限管理系统</p>
 
-			<el-form label-position="top" class="form" :disabled="saving" size="large">
+			<el-form label-position="top" class="form" :disabled="saving">
 				<el-form-item label="用户名">
 					<input
 						v-model="form.username"
 						placeholder="请输入用户名"
 						maxlength="20"
-						auto-complete="off"
+						autocomplete="on"
 					/>
 				</el-form-item>
 
@@ -20,7 +23,7 @@
 						type="password"
 						placeholder="请输入密码"
 						maxlength="20"
-						auto-complete="off"
+						autocomplete="off"
 					/>
 				</el-form-item>
 
@@ -30,7 +33,6 @@
 							v-model="form.verifyCode"
 							placeholder="图片验证码"
 							maxlength="4"
-							auto-complete="off"
 							@keyup.enter="toLogin"
 						/>
 
@@ -54,96 +56,70 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+<script lang="ts" name="login" setup>
+import { reactive, ref } from "vue";
 import { ElMessage } from "element-plus";
 import { useCool } from "/@/cool";
 import { useBase } from "/$/base";
 import Captcha from "./components/captcha.vue";
-import Logo from "/@/assets/logo-text.png";
 
-export default defineComponent({
-	cool: {
-		route: {
-			path: "/login"
-		}
-	},
+const { refs, setRefs, router, service } = useCool();
+const { user, app } = useBase();
 
-	components: {
-		Captcha
-	},
+// 状态1
+const saving = ref(false);
 
-	setup() {
-		const { refs, setRefs, router, service } = useCool();
-		const { user, menu } = useBase();
+// 表单数据
+const form = reactive({
+	username: "",
+	password: "",
+	captchaId: "",
+	verifyCode: ""
+});
 
-		// 状态1
-		const saving = ref(false);
+// 登录
+async function toLogin() {
+	if (!form.username) {
+		return ElMessage.error("用户名不能为空");
+	}
 
-		// 表单数据
-		const form = reactive({
-			username: "",
-			password: "",
-			captchaId: "",
-			verifyCode: ""
+	if (!form.password) {
+		return ElMessage.error("密码不能为空");
+	}
+
+	if (!form.verifyCode) {
+		return ElMessage.error("图片验证码不能为空");
+	}
+
+	saving.value = true;
+
+	try {
+		// 登录
+		await service.base.open.login(form).then((res) => {
+			user.setToken(res);
 		});
 
-		// 登录
-		async function toLogin() {
-			if (!form.username) {
-				return ElMessage.error("用户名不能为空");
-			}
+		// token 事件
+		await Promise.all(app.events.hasToken.map((e) => e()));
 
-			if (!form.password) {
-				return ElMessage.error("密码不能为空");
-			}
-
-			if (!form.verifyCode) {
-				return ElMessage.error("图片验证码不能为空");
-			}
-
-			saving.value = true;
-
-			try {
-				// 登录
-				await service.base.open.login(form).then((res) => {
-					user.setToken(res);
-				});
-
-				// 用户信息
-				await user.get();
-
-				// 权限菜单
-				await menu.get();
-
-				// 跳转地址
-				menu.getPath();
-
-				router.push("/");
-			} catch (err: any) {
-				refs.value.captcha.refresh();
-				ElMessage.error(err.message);
-			}
-
-			saving.value = false;
-		}
-
-		return {
-			refs,
-			setRefs,
-			form,
-			saving,
-			toLogin,
-			Logo
-		};
+		// 跳转
+		router.push("/");
+	} catch (err: any) {
+		refs.captcha.refresh();
+		ElMessage.error(err.message);
 	}
-});
+
+	saving.value = false;
+}
 </script>
 
 <style lang="scss" scoped>
 .page-login {
-	height: 100vh;
-	width: 100vw;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
 	position: relative;
 	background-color: #2f3447;
 
@@ -152,15 +128,24 @@ export default defineComponent({
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		height: 500px;
-		width: 500px;
-		position: absolute;
-		left: calc(50% - 250px);
-		top: calc(50% - 250px);
 
 		.logo {
 			height: 50px;
 			margin-bottom: 30px;
+			display: flex;
+			align-items: center;
+			color: #fff;
+
+			img {
+				height: 50px;
+			}
+
+			span {
+				font-size: 38px;
+				margin-left: 10px;
+				letter-spacing: 5px;
+				font-weight: bold;
+			}
 		}
 
 		.desc {
@@ -193,6 +178,7 @@ export default defineComponent({
 				-webkit-text-fill-color: #fff;
 				font-size: 15px;
 				border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+				border-radius: 0;
 
 				&:-webkit-autofill {
 					box-shadow: 0 0 0px 1000px transparent inset !important;
@@ -228,7 +214,9 @@ export default defineComponent({
 			margin-top: 50px;
 
 			:deep(.el-button) {
+				height: 40px;
 				width: 140px;
+				font-size: 16px;
 			}
 		}
 	}

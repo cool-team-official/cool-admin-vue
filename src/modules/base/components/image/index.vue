@@ -3,7 +3,7 @@
 		class="cl-image"
 		:style="{
 			justifyContent: justify,
-			height: sty.h
+			height: style.h
 		}"
 	>
 		<el-image
@@ -12,8 +12,8 @@
 			:lazy="lazy"
 			:preview-src-list="urls"
 			:style="{
-				height: sty.h,
-				width: sty.w
+				height: style.h,
+				width: style.w
 			}"
 			preview-teleported
 		>
@@ -28,8 +28,9 @@
 
 <script lang="ts">
 import { computed, defineComponent } from "vue";
-import { isArray, isNumber, isString } from "lodash";
+import { isArray, isNumber, isString } from "lodash-es";
 import { PictureFilled } from "@element-plus/icons-vue";
+import { parsePx } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "cl-image",
@@ -45,10 +46,7 @@ export default defineComponent({
 			type: [Number, Array],
 			default: 100
 		},
-		lazy: {
-			type: Boolean,
-			default: true
-		},
+		lazy: Boolean,
 		fit: {
 			type: String,
 			default: "cover"
@@ -74,18 +72,18 @@ export default defineComponent({
 			return [];
 		});
 
-		const sty = computed(() => {
+		const style = computed(() => {
 			const [h, w]: any = isNumber(props.size) ? [props.size, props.size] : props.size;
 
 			return {
-				h: isNumber(h) ? h + "px" : h,
-				w: isNumber(w) ? w + "px" : w
+				h: parsePx(h),
+				w: parsePx(w)
 			};
 		});
 
 		return {
 			urls,
-			sty
+			style
 		};
 	}
 });

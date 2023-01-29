@@ -6,14 +6,10 @@
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import { isNumber } from "lodash";
+import { isNumber } from "lodash-es";
 
 export default defineComponent({
-	name: "icon-svg",
-
-	cool: {
-		global: true
-	},
+	name: "cl-svg",
 
 	props: {
 		name: {
@@ -28,13 +24,13 @@ export default defineComponent({
 	},
 
 	setup(props) {
-		const style = ref<any>({
+		const style = ref({
 			fontSize: isNumber(props.size) ? props.size + "px" : props.size
 		});
 
-		const iconName = computed<string>(() => `#icon-${props.name}`);
-		const svgClass = computed<Array<string>>(() => {
-			return ["icon-svg", `icon-svg__${props.name}`, String(props.className || "")];
+		const iconName = computed(() => `#icon-${props.name}`);
+		const svgClass = computed(() => {
+			return ["cl-svg", `cl-svg__${props.name}`, String(props.className || "")];
 		});
 
 		return {
@@ -46,8 +42,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-.icon-svg {
+<style lang="scss" scoped>
+.cl-svg {
 	width: 1em;
 	height: 1em;
 	vertical-align: -0.15em;

@@ -1,5 +1,5 @@
 <template>
-	<div class="demo scroller1">
+	<div class="demo">
 		<el-row :gutter="10">
 			<el-col v-for="(item, index) in list" :key="index" :xs="24" :sm="12" :md="8" :lg="6">
 				<component :is="item" />
@@ -8,15 +8,16 @@
 	</div>
 </template>
 
-<script lang="ts" setup>
-import ContextMenu from "../components/demo/context-menu.vue";
-import Crud from "../components/demo/crud.vue";
-import Upload from "../components/demo/upload.vue";
-import EditorQuill from "../components/demo/editor-quill.vue";
-import Svg from "../components/demo/svg.vue";
-import Copy from "../components/demo/copy.vue";
+<script lang="ts" setup name="demo">
+import ContextMenu from "../components/context-menu.vue";
+import Crud from "../components/crud.vue";
+import Upload from "../components/upload.vue";
+import Editor from "../components/editor.vue";
+import Svg from "../components/svg.vue";
+import Copy from "../components/copy.vue";
+import File from "../components/file.vue";
 
-const list = [ContextMenu, Crud, Upload, EditorQuill, Svg, Copy];
+const list = [ContextMenu, Crud, Upload, Editor, Svg, Copy, File];
 </script>
 
 <style lang="scss">
@@ -25,6 +26,7 @@ const list = [ContextMenu, Crud, Upload, EditorQuill, Svg, Copy];
 		background-color: #fff;
 		border-radius: 3px;
 		margin-bottom: 10px;
+		white-space: nowrap;
 
 		.h {
 			height: 30px;
@@ -35,12 +37,12 @@ const list = [ContextMenu, Crud, Upload, EditorQuill, Svg, Copy];
 
 			span {
 				background-color: var(--color-primary);
-				color: #fff;
 				border-radius: 3px;
 				padding: 2px 5px;
 				margin-right: 10px;
 				font-size: 14px;
 				letter-spacing: 1px;
+				color: #fff;
 			}
 		}
 
@@ -50,7 +52,7 @@ const list = [ContextMenu, Crud, Upload, EditorQuill, Svg, Copy];
 			box-sizing: border-box;
 
 			&._svg {
-				.icon-svg {
+				.cl-svg {
 					margin-right: 15px;
 				}
 			}

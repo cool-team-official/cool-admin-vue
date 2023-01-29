@@ -1,65 +1,52 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-
-interface Item {
-	label: string;
-	value: string;
-	active?: boolean;
-	keepAlive?: boolean;
-}
+import { Process } from "../types";
 
 export const useProcessStore = defineStore("process", function () {
-	const menu1: Item = {
-		label: "首页",
-		value: "/",
-		active: true
-	};
-
-	const list = ref<Item[]>([menu1]);
+	const list = ref<Process.List>([]);
 
 	// 添加
-	function add(item: Item) {
-		const index = list.value.findIndex(
-			(e: Item) => e.value.split("?")[0] === item.value.split("?")[0]
-		);
+	function add(data: any) {
+		if (data.path != "/" && data.meta?.process !== false) {
+			const index = list.value.findIndex((e) => e.path === data.path);
 
-		list.value.map((e: Item) => {
-			e.active = e.value == item.value;
-		});
+			list.value.forEach((e: Process.Item) => {
+				e.active = false;
+			});
 
-		if (index < 0) {
-			if (item.value == "/") {
-				item.label = menu1.label;
-			}
-
-			if (item.label) {
+			if (index < 0) {
 				list.value.push({
-					...item,
+					...data,
 					active: true
 				});
+			} else {
+				Object.assign(list.value[index], data, { active: true });
 			}
-		} else {
-			list.value[index].active = true;
-			list.value[index].label = item.label;
-			list.value[index].value = item.value;
 		}
 	}
 
 	// 移除
 	function remove(index: number) {
-		if (index != 0) {
-			list.value.splice(index, 1);
-		}
+		list.value.splice(index, 1);
 	}
 
 	// 设置
-	function set(data: Item[]) {
+	function set(data: Process.Item[]) {
 		list.value = data;
 	}
 
-	// 重置
-	function reset() {
-		list.value = [menu1];
+	// 清空
+	function clear() {
+		list.value = [];
+	}
+
+	// 设置标题
+	function setTitle(title: string) {
+		const item = list.value.find((e) => e.active);
+
+		if (item) {
+			item.meta.label = title;
+		}
 	}
 
 	return {
@@ -67,6 +54,7 @@ export const useProcessStore = defineStore("process", function () {
 		add,
 		remove,
 		set,
-		reset
+		clear,
+		setTitle
 	};
 });

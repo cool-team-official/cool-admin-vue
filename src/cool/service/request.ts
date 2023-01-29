@@ -7,30 +7,29 @@ import { storage } from "/@/cool/utils";
 import { useBase } from "/$/base";
 import { router } from "../router";
 
-axios.defaults.timeout = 30000;
-axios.defaults.withCredentials = false;
+const request = axios.create({
+	timeout: 30000,
+	withCredentials: false
+});
 
 NProgress.configure({
 	showSpinner: true
 });
 
 // 请求队列
-let requests: Array<Function> = [];
+let queue: Array<(token: string) => void> = [];
 
-// Token 是否刷新中
+// 是否刷新中
 let isRefreshing = false;
 
-// @ts-ignore
-axios.interceptors.request.eject(axios._req);
-
-// @ts-ignore
-axios._req = axios.interceptors.request.use(
-	(req: any) => {
+// 请求
+request.interceptors.request.use(
+	(req) => {
 		const { user } = useBase();
 
 		if (req.url) {
 			// 请求进度条
-			if (!config.ignore.NProgress.some((e: string) => req.url.includes(e))) {
+			if (!config.ignore.NProgress.some((e) => req.url?.includes(e))) {
 				NProgress.start();
 			}
 		}
@@ -46,9 +45,11 @@ axios._req = axios.interceptors.request.use(
 		// 验证 token
 		if (user.token) {
 			// 请求标识
-			req.headers["Authorization"] = user.token;
+			if (req.headers) {
+				req.headers["Authorization"] = user.token;
+			}
 
-			if (req.url.includes("refreshToken")) {
+			if (req.url?.includes("refreshToken")) {
 				return req;
 			}
 
@@ -64,9 +65,9 @@ axios._req = axios.interceptors.request.use(
 					isRefreshing = true;
 
 					user.refreshToken()
-						.then((token: string) => {
-							requests.forEach((cb) => cb(token));
-							requests = [];
+						.then((token) => {
+							queue.forEach((cb) => cb(token));
+							queue = [];
 							isRefreshing = false;
 						})
 						.catch(() => {
@@ -76,9 +77,11 @@ axios._req = axios.interceptors.request.use(
 
 				return new Promise((resolve) => {
 					// 继续请求
-					requests.push((token: string) => {
+					queue.push((token) => {
 						// 重新设置 token
-						req.headers["Authorization"] = token;
+						if (req.headers) {
+							req.headers["Authorization"] = token;
+						}
 						resolve(req);
 					});
 				});
@@ -93,7 +96,7 @@ axios._req = axios.interceptors.request.use(
 );
 
 // 响应
-axios.interceptors.response.use(
+request.interceptors.response.use(
 	(res) => {
 		NProgress.done();
 
@@ -123,23 +126,23 @@ axios.interceptors.response.use(
 
 			if (status == 401) {
 				user.logout();
-			}
-
-			if (isDev) {
-				ElMessage.error(`${config.url} ${status}`);
 			} else {
-				switch (status) {
-					case 403:
-						router.href("403");
-						break;
+				if (isDev) {
+					ElMessage.error(`${config.url} ${status}`);
+				} else {
+					switch (status) {
+						case 403:
+							router.push("/403");
+							break;
 
-					case 500:
-						router.href("500");
-						break;
+						case 500:
+							router.push("/500");
+							break;
 
-					case 502:
-						router.href("502");
-						break;
+						case 502:
+							router.push("/502");
+							break;
+					}
 				}
 			}
 		}
@@ -148,4 +151,4 @@ axios.interceptors.response.use(
 	}
 );
 
-export default axios;
+export { request };

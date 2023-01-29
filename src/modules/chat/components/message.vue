@@ -7,10 +7,6 @@
 					<el-avatar :size="30" shape="square" :src="session?.value.avatar"></el-avatar>
 				</div>
 				<span class="name">与“{{ session?.value.nickName }}”聊天中</span>
-
-				<ul class="tools">
-					<li></li>
-				</ul>
 			</template>
 		</div>
 
@@ -65,10 +61,18 @@
 		<div class="footer">
 			<div class="tools">
 				<ul>
+					<cl-upload @success="onImageSend" :show-file-list="false">
+						<li>
+							<el-icon><picture-filled /></el-icon>
+						</li>
+					</cl-upload>
+
 					<li>
-						<cl-upload @success="onImageSend" :show-file-list="false">
-							<el-icon><Picture /></el-icon>
-						</cl-upload>
+						<el-icon><video-camera /></el-icon>
+					</li>
+
+					<li>
+						<el-icon><microphone /></el-icon>
 					</li>
 				</ul>
 			</div>
@@ -97,7 +101,7 @@
 import { computed, ref } from "vue";
 import { useChat } from "../hooks";
 import { useStore } from "../store";
-import { Picture } from "@element-plus/icons-vue";
+import { PictureFilled, VideoCamera, Microphone } from "@element-plus/icons-vue";
 import { useBase } from "/$/base";
 import { ContextMenu } from "@cool-vue/crud";
 import { useClipboard } from "@vueuse/core";
@@ -136,7 +140,7 @@ const previewUrls = computed(() =>
 
 // 文本消息
 function onTextSend() {
-	chat?.send(
+	chat.send(
 		{
 			contentType: 0,
 			content: {
@@ -150,7 +154,7 @@ function onTextSend() {
 
 // 图片消息
 function onImageSend(res: any) {
-	chat?.send(
+	chat.send(
 		{
 			contentType: 1,
 			content: {
@@ -307,6 +311,10 @@ function onContextMenu(e: Event, item: Chat.Message) {
 			margin-bottom: 10px;
 
 			ul {
+				display: flex;
+				align-items: center;
+				flex: 1;
+
 				li {
 					height: 26px;
 					width: 26px;

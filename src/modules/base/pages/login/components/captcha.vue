@@ -5,58 +5,52 @@
 	</div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+<script lang="ts" setup>
+import { onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
 import { useCool } from "/@/cool";
 
-export default defineComponent({
-	emits: ["update:modelValue", "change"],
+const emit = defineEmits(["update:modelValue", "change"]);
 
-	setup(_, { emit }) {
-		const { service } = useCool();
+const { service } = useCool();
 
-		// base64
-		const base64 = ref<string>("");
+// base64
+const base64 = ref("");
 
-		// svg
-		const svg = ref<string>("");
+// svg
+const svg = ref("");
 
-		function refresh() {
-			service.base.open
-				.captcha({
-					height: 40,
-					width: 150
-				})
-				.then(({ captchaId, data }: any) => {
-					if (data.includes(";base64,")) {
-						base64.value = data;
-					} else {
-						svg.value = data;
-					}
+function refresh() {
+	service.base.open
+		.captcha({
+			height: 40,
+			width: 150
+		})
+		.then(({ captchaId, data }: any) => {
+			if (data.includes(";base64,")) {
+				base64.value = data;
+			} else {
+				svg.value = data;
+			}
 
-					emit("update:modelValue", captchaId);
-					emit("change", {
-						base64,
-						svg,
-						captchaId
-					});
-				})
-				.catch((err) => {
-					ElMessage.error(err.message);
-				});
-		}
-
-		onMounted(() => {
-			refresh();
+			emit("update:modelValue", captchaId);
+			emit("change", {
+				base64,
+				svg,
+				captchaId
+			});
+		})
+		.catch((err) => {
+			ElMessage.error(err.message);
 		});
+}
 
-		return {
-			base64,
-			svg,
-			refresh
-		};
-	}
+onMounted(() => {
+	refresh();
+});
+
+defineExpose({
+	refresh
 });
 </script>
 

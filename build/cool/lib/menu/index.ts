@@ -1,7 +1,7 @@
 import { createWriteStream } from "fs";
 import prettier from "prettier";
 import { join } from "path";
-import { createDir } from "../../utils";
+import { mkdirs } from "../../utils";
 import rules from "./rules";
 import { isFunction, isRegExp, isString } from "lodash";
 
@@ -106,9 +106,9 @@ const handler = {
 
 // 创建组件
 function createComponent(item: any) {
-	const { propertyName: prop, comment: label } = item;
-
-	let d = null;
+	const prop = item.propertyName;
+	let label = item.comment;
+	let d: any;
 
 	rules.forEach((r: any) => {
 		const s = r.test.find((e: any) => {
@@ -145,6 +145,8 @@ function createComponent(item: any) {
 	});
 
 	function parse(v: any) {
+		label = label.split(" ")[0];
+
 		if (v?.name) {
 			return {
 				prop,
@@ -172,7 +174,7 @@ function getPageName(router: string) {
 		router = router.substr(1, router.length);
 	}
 
-	return router ? router.replace("/", "-") : "";
+	return router ? router.replace(/\//g, "-") : "";
 }
 
 // 时间合并
@@ -198,7 +200,7 @@ function datetimeMerge({ columns, item }: any) {
 }
 
 // 创建文件
-export async function createMenu({ router, columns, prefix, api, module, filename }: any): void {
+export async function createMenu({ router, columns, prefix, api, filePath }: any) {
 	const upsert: any = {
 		items: []
 	};
@@ -230,7 +232,7 @@ export async function createMenu({ router, columns, prefix, api, module, filenam
 			upsert.items.push(format(item));
 		}
 
-		if (!["cl-codemirror", "cl-editor-quill"].includes(column.component?.name)) {
+		if (!column.component?.name.includes("cl-editor-")) {
 			table.columns.push(format(column));
 		}
 	});
@@ -284,7 +286,7 @@ export async function createMenu({ router, columns, prefix, api, module, filenam
 	// 代码模板
 	const temp = `<template>
 	<cl-crud ref="Crud">
-		<el-row>
+		<cl-row>
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn />
 			${permission.add ? "<!-- 新增按钮 -->\n<cl-add-btn />" : ""}
@@ -292,31 +294,29 @@ export async function createMenu({ router, columns, prefix, api, module, filenam
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
 			<cl-search-key />
-		</el-row>
+		</cl-row>
 
-		<el-row>
+		<cl-row>
 			<!-- 数据表格 -->
 			<cl-table ref="Table" />
-		</el-row>
+		</cl-row>
 
-		<el-row>
+		<cl-row>
 			<cl-flex1 />
 			<!-- 分页控件 -->
 			<cl-pagination />
-		</el-row>
+		</cl-row>
 
 		<!-- 新增、编辑 -->
 		<cl-upsert ref="Upsert" />
 	</cl-crud>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" name="${getPageName(router)}" setup>
 import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 
-const { service, named } = useCool();
-
-named("${getPageName(router)}");
+const { service } = useCool();
 
 // cl-upsert 配置
 const Upsert = useUpsert(${JSON.stringify(upsert)});
@@ -335,6 +335,7 @@ const Crud = useCrud(
 );
 </script>`;
 
+	// 文件内容
 	const content = prettier.format(temp, {
 		parser: "vue",
 		useTabs: true,
@@ -347,14 +348,17 @@ const Crud = useCrud(
 		trailingComma: "none"
 	});
 
-	// views 目录是否存在
-	const dir = join(__dirname, `../../../../src/modules/${module}/views`);
+	// 目录路径
+	const dir = filePath.split("/");
+
+	// 文件名
+	const fname = dir.pop();
 
 	// 创建目录
-	createDir(dir);
+	const path = mkdirs(`./src/modules/${dir.join("/")}`);
 
 	// 创建文件
-	createWriteStream(join(dir, `${filename}.vue`), {
+	createWriteStream(join(path, fname), {
 		flags: "w"
 	}).write(content);
 }

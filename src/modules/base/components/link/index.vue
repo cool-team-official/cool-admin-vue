@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from "vue";
-import { isArray, isString, last } from "lodash";
+import { isArray, isString, last } from "lodash-es";
 import { Link } from "@element-plus/icons-vue";
 
 export default defineComponent({
@@ -61,12 +61,11 @@ export default defineComponent({
 	display: inline-flex;
 	align-items: center;
 	text-align: left;
-	background-color: var(--color-primary);
-	color: #fff;
+	color: var(--el-color-primary);
 	padding: 0 5px;
 	border-radius: 5px;
-	font-size: 12px;
 	margin: 2px;
+	text-decoration: none;
 
 	.el-icon {
 		margin-right: 2px;

@@ -27,8 +27,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from "vue";
-import { useCrud } from "@cool-vue/crud";
+import { computed, defineComponent, onMounted, ref, PropType, nextTick } from "vue";
 import store from "store";
 
 export default defineComponent({
@@ -37,15 +36,13 @@ export default defineComponent({
 	props: {
 		name: String,
 		columns: {
-			type: Array,
+			type: Array as PropType<any[]>,
+			required: true,
 			default: () => []
 		}
 	},
 
 	setup(props) {
-		// cl-crud
-		const Crud = useCrud();
-
 		// 是否可见
 		const visible = ref(false);
 
@@ -58,8 +55,8 @@ export default defineComponent({
 		// 列数据
 		const list = computed(() => {
 			return props.columns
-				.filter((e: any) => !e.type)
-				.map((e: any) => {
+				.filter((e) => !e.type && e.prop)
+				.map((e) => {
 					return {
 						label: e.label,
 						value: e.prop
@@ -75,17 +72,17 @@ export default defineComponent({
 
 		// 改变列
 		function change() {
-			const names = getNames();
+			nextTick(() => {
+				const names = getNames();
 
-			if (store.get(name)) {
-				Crud.value?.Table.reBuild(() => {
-					props.columns.map((e: any) => {
+				if (store.get(name)) {
+					props.columns.map((e) => {
 						if (!e.type) {
 							e.hidden = !names.includes(e.prop);
 						}
 					});
-				});
-			}
+				}
+			});
 		}
 
 		// 保存
@@ -124,6 +121,10 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .cl-column-custom {
+	&__wrap {
+		margin-left: 10px;
+	}
+
 	&__dialog {
 		.left {
 		}

@@ -1,6 +1,6 @@
-import { isArray, orderBy } from "lodash";
+import { isArray, isNumber, isString, orderBy } from "lodash-es";
+import { resolveComponent } from "vue";
 import storage from "./storage";
-import module from "./module";
 
 // 首字母大写
 export function firstUpperCase(value: string): string {
@@ -32,37 +32,35 @@ export function getUrlParam(name: string): string | null {
 	return null;
 }
 
-// 文件路径转对象
-export function deepFiles(list: any[]) {
-	const modules: any = {};
+// 路径转数组
+export function deepPaths(paths: string[], splitor?: string) {
+	const list: any[] = [];
 
-	list.forEach((e) => {
-		const arr = e.path.split("/");
-		const parents = arr.slice(0, arr.length - 1);
-		const name = basename(e.path).replace(".ts", "");
+	paths.forEach((e) => {
+		const arr: string[] = e.split(splitor || "/").filter(Boolean);
 
-		let curr: any = modules;
-		let prev: any = null;
-		let key: any = null;
+		let c = list;
 
-		parents.forEach((k: string) => {
-			if (!curr[k]) {
-				curr[k] = {};
+		arr.forEach((a, i) => {
+			let d = c.find((e) => e.label == a);
+
+			if (!d) {
+				d = {
+					label: a,
+					value: a,
+					children: arr[i + 1] ? [] : null
+				};
+
+				c.push(d);
 			}
 
-			prev = curr;
-			curr = curr[k];
-			key = k;
+			if (d.children) {
+				c = d.children;
+			}
 		});
-
-		if (name == "index") {
-			prev[key] = e.value;
-		} else {
-			curr[name] = e.value;
-		}
 	});
 
-	return modules;
+	return list;
 }
 
 // 文件名
@@ -213,7 +211,7 @@ export function getBrowser() {
 
 // 列表转树形
 export function deepTree(list: any[]): any[] {
-	const newList: Array<any> = [];
+	const newList: any[] = [];
 	const map: any = {};
 
 	list.forEach((e) => (map[e.id] = e));
@@ -230,9 +228,8 @@ export function deepTree(list: any[]): any[] {
 
 	const fn = (list: Array<any>) => {
 		list.map((e) => {
-			if (e.children instanceof Array) {
+			if (isArray(e.children)) {
 				e.children = orderBy(e.children, "orderNum");
-
 				fn(e.children);
 			}
 		});
@@ -244,29 +241,73 @@ export function deepTree(list: any[]): any[] {
 }
 
 // 树形转列表
-export function revDeepTree(list: Array<any> = []) {
-	const d: Array<any> = [];
+export function revDeepTree(list: any[]) {
+	const arr: any[] = [];
 	let id = 0;
 
-	const deep = (list: Array<any>, parentId: any) => {
+	function deep(list: any[], parentId: number) {
 		list.forEach((e) => {
 			if (!e.id) {
 				e.id = id++;
 			}
 
-			e.parentId = parentId;
+			if (!e.parentId) {
+				e.parentId = parentId;
+			}
 
-			d.push(e);
+			arr.push(e);
 
 			if (e.children && isArray(e.children)) {
 				deep(e.children, e.id);
 			}
 		});
-	};
+	}
 
-	deep(list || [], null);
+	deep(list || [], 0);
 
-	return d;
+	return arr;
 }
 
-export { storage, module };
+// 合并 service
+export function mergeService(list: any[]) {
+	const data: any = {};
+
+	list.forEach(({ path, value }) => {
+		const arr: string[] = path.split("/");
+		const parents = arr.slice(0, arr.length - 1);
+		const name = basename(path).replace(".ts", "");
+
+		let curr = data;
+
+		parents.forEach((k) => {
+			if (!curr[k]) {
+				curr[k] = {};
+			}
+
+			curr = curr[k];
+		});
+
+		curr[name] = value;
+	});
+
+	return data;
+}
+
+// 是否是组件
+export function isComponent(name: string) {
+	return !isString(resolveComponent(name));
+}
+
+// 是否Promise
+export function isPromise(val: any) {
+	return val && Object.prototype.toString.call(val) === "[object Promise]";
+}
+
+// 单位转换
+export function parsePx(val: string | number) {
+	return isNumber(val) ? `${val}px` : val;
+}
+
+export { storage };
+export * from "./data";
+export * from "./loading";

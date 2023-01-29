@@ -1,5 +1,5 @@
 import { useStore } from "../store";
-import { isArray, isObject } from "lodash";
+import { isObject } from "lodash-es";
 
 function parse(value: any) {
 	const { menu } = useStore();
@@ -11,7 +11,7 @@ function parse(value: any) {
 	}
 }
 
-export function checkPerm(value: any) {
+export function checkPerm(value: string | { or?: string[]; and?: string[] }) {
 	if (!value) {
 		return false;
 	}
@@ -27,16 +27,4 @@ export function checkPerm(value: any) {
 	}
 
 	return parse(value);
-}
-
-export function getPerm(service: any, names: string[] | string) {
-	if (!service._permission) {
-		return false;
-	}
-
-	if (!isArray(names)) {
-		names = [names];
-	}
-
-	return !names.find((e) => !service._permission[e]);
 }

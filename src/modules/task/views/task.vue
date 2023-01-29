@@ -1,210 +1,223 @@
 <template>
 	<div class="view-task">
-		<div class="box scroller1">
-			<!-- 系统，用户自定义，已停止 -->
-			<div v-for="(item, index) in list" :key="index" class="block" :class="[`_${item.key}`]">
-				<div class="header">
-					<!-- 图标 -->
-					<i class="icon" :class="item.icon"></i>
-					<!-- 标题 -->
-					<span class="label">{{ item.label }}</span>
-					<!-- 数量 -->
-					<span class="num">({{ item.pagination.total }})</span>
-					<span class="flex1"></span>
-					<!-- 操作按钮 -->
-					<ul class="op-btn">
-						<li
-							v-permission="perm.delete"
-							class="refresh-btn"
-							@click="refreshTask({ page: 1 })"
-						>
-							<el-icon><refresh /></el-icon>
-							<span>刷新</span>
-						</li>
+		<el-scrollbar>
+			<div class="box">
+				<!-- 系统，用户自定义，已停止 -->
+				<div
+					v-for="(item, index) in list"
+					:key="index"
+					class="block"
+					:class="[`_${item.key}`]"
+				>
+					<div class="header">
+						<!-- 图标 -->
+						<i class="icon" :class="item.icon"></i>
+						<!-- 标题 -->
+						<span class="label">{{ item.label }}</span>
+						<!-- 数量 -->
+						<span class="num">({{ item.pagination.total }})</span>
+						<span class="flex1"></span>
+						<!-- 操作按钮 -->
+						<ul class="op-btn">
+							<li
+								v-permission="perm.delete"
+								class="refresh-btn"
+								@click="refreshTask({ page: 1 })"
+							>
+								<el-icon><refresh /></el-icon>
+								<span>刷新</span>
+							</li>
 
-						<li v-permission="perm.add" class="add-btn" @click="edit(item.params)">
-							<el-icon><circle-plus /></el-icon>
-							<span>添加</span>
-						</li>
-					</ul>
+							<li v-permission="perm.add" class="add-btn" @click="edit(item.params)">
+								<el-icon><circle-plus /></el-icon>
+								<span>添加</span>
+							</li>
+						</ul>
+					</div>
+
+					<div :ref="setRefs(`${item.key}-scroller`)" class="container scroller1">
+						<draggable
+							v-model="list[index].list"
+							v-bind="drag.options"
+							tag="ul"
+							item-key="id"
+							:data-type="item.params.type"
+							:data-status="item.params.status"
+							@end="onDragEnd"
+						>
+							<template #item="{ element }">
+								<li
+									:key="element.id"
+									:data-id="element.id"
+									class="_drag"
+									@contextmenu.stop.prevent="openCM($event, element)"
+								>
+									<div class="h">
+										<span v-show="element.status === 0" class="type _warning">
+											{{ element.type === 0 ? "系统" : "用户" }}
+										</span>
+										<span class="name">{{ element.name }}</span>
+									</div>
+
+									<div class="remark">{{ element.remark }}</div>
+
+									<div class="f">
+										<template v-if="element.status">
+											<span class="date">{{
+												element.nextRunTime || "..."
+											}}</span>
+											<span class="start">进行中</span>
+										</template>
+
+										<template v-else>
+											<span>...</span>
+											<span class="stop">已停止</span>
+										</template>
+									</div>
+
+									<div class="op">
+										<div
+											v-if="element.status === 0"
+											class="op-item"
+											@click="start(element)"
+										>
+											<el-icon><video-play /></el-icon>
+											<span>开始</span>
+										</div>
+
+										<div
+											v-else
+											v-permission="perm.stop"
+											class="op-item"
+											@click="stop(element)"
+										>
+											<el-icon><video-pause /></el-icon>
+											<span>暂停</span>
+										</div>
+
+										<div
+											v-permission="{
+												and: [perm.update, perm.info]
+											}"
+											class="op-item"
+											@click="edit(element)"
+										>
+											<el-icon><edit-pen /></el-icon>
+											<span>编辑</span>
+										</div>
+
+										<div
+											v-permission="perm.log"
+											class="op-item"
+											@click="findLog(element)"
+										>
+											<el-icon><tickets /></el-icon>
+											<span>查看日志</span>
+										</div>
+									</div>
+								</li>
+							</template>
+
+							<template #header>
+								<div v-if="list[index].list.length == 0" class="empty">
+									暂无数据
+								</div>
+							</template>
+						</draggable>
+
+						<el-button
+							v-if="item.pagination.total >= item.pagination.size"
+							class="more"
+							text
+							@click="moreTask(index)"
+							>查看更多</el-button
+						>
+					</div>
+
+					<div class="footer">
+						<button v-permission="perm.add" class="btn-add" @click="edit(item.params)">
+							<el-icon><plus /></el-icon>
+						</button>
+					</div>
 				</div>
 
-				<div :ref="setRefs(`${item.key}-scroller`)" class="container scroller1">
-					<draggable
-						v-model="list[index].list"
-						v-bind="drag.options"
-						tag="ul"
-						item-key="id"
-						:data-type="item.params.type"
-						:data-status="item.params.status"
-						@end="onDragEnd"
+				<!-- 日志 -->
+				<div v-permission="perm.log" class="block _log">
+					<div class="header">
+						<!-- 标题 -->
+						<span class="label">日志</span>
+						<!-- 数量 -->
+						<span class="num">({{ logs.pagination.total }})</span>
+						<span class="flex1"></span>
+
+						<!-- 是否异常 -->
+						<el-checkbox-group
+							v-model="logs.filters.status"
+							class="status"
+							@change="filterLog"
+						>
+							<el-checkbox :label="0">异常</el-checkbox>
+						</el-checkbox-group>
+
+						<!-- 操作按钮 -->
+						<ul class="op-btn">
+							<li @click="refreshLog({ page: 1 })">
+								<el-icon><refresh /></el-icon>
+								<span>刷新</span>
+							</li>
+
+							<li v-if="logs.current" class="_current-log" @click="allLog">
+								<span>{{ logs.current.name }}</span>
+								<el-icon><close /></el-icon>
+							</li>
+						</ul>
+					</div>
+					<div
+						v-loading="logs.loading"
+						class="container"
+						element-loading-text="拼命加载中"
 					>
-						<template #item="{ element }">
+						<ul
+							:ref="setRefs('log-scroller')"
+							class="scroller1"
+							:infinite-scroll-disabled="logs.list.length == logs.pagination.total"
+							v-infinite-scroll="moreLog"
+              infinite-scroll-immediate="false"
+						>
 							<li
-								:key="element.id"
-								:data-id="element.id"
-								class="_drag"
-								@contextmenu.stop.prevent="openCM($event, element)"
+								v-for="(item, index) in logs.list"
+								:key="index"
+								:class="{ _error: item.status == 0 }"
+								@click="expandLog(item)"
 							>
 								<div class="h">
-									<span v-show="element.status === 0" class="type _warning">
-										{{ element.type === 0 ? "系统" : "用户" }}
-									</span>
-									<span class="name">{{ element.name }}</span>
+									<span class="name"
+										>{{ Number(index) + 1 }} · {{ item.taskName }}</span
+									>
 								</div>
 
-								<div class="remark">{{ element.remark }}</div>
+								<div class="remark" :class="{ _ellipsis: !item._expand }">
+									{{ item.detail || "..." }}
+								</div>
 
 								<div class="f">
-									<template v-if="element.status">
-										<span class="date">{{ element.nextRunTime || "..." }}</span>
-										<span class="start">进行中</span>
-									</template>
-
-									<template v-else>
-										<span>...</span>
-										<span class="stop">已停止</span>
-									</template>
-								</div>
-
-								<div class="op">
-									<div
-										v-if="element.status === 0"
-										class="op-item"
-										@click="start(element)"
-									>
-										<el-icon><video-play /></el-icon>
-										<span>开始</span>
-									</div>
-
-									<div
-										v-else
-										v-permission="perm.stop"
-										class="op-item"
-										@click="stop(element)"
-									>
-										<el-icon><video-pause /></el-icon>
-										<span>暂停</span>
-									</div>
-
-									<div
-										v-permission="{
-											and: [perm.update, perm.info]
-										}"
-										class="op-item"
-										@click="edit(element)"
-									>
-										<el-icon><edit-pen /></el-icon>
-										<span>编辑</span>
-									</div>
-
-									<div
-										v-permission="perm.log"
-										class="op-item"
-										@click="findLog(element)"
-									>
-										<el-icon><tickets /></el-icon>
-										<span>查看日志</span>
-									</div>
+									<span>执行时间：{{ item.createTime }}</span>
 								</div>
 							</li>
-						</template>
 
-						<template #header>
-							<div v-if="list[index].list.length == 0" class="empty">暂无数据</div>
-						</template>
-					</draggable>
-
-					<el-button
-						v-if="item.pagination.total >= item.pagination.size"
-						class="more"
-						text
-						@click="moreTask(index)"
-						>查看更多</el-button
-					>
-				</div>
-
-				<div class="footer">
-					<button v-permission="perm.add" class="btn-add" @click="edit(item.params)">
-						<el-icon><plus /></el-icon>
-					</button>
+							<div class="empty" v-if="logs.list.length == 0">暂无数据</div>
+						</ul>
+					</div>
 				</div>
 			</div>
-
-			<!-- 日志 -->
-			<div v-permission="perm.log" class="block _log">
-				<div class="header">
-					<!-- 标题 -->
-					<span class="label">日志</span>
-					<!-- 数量 -->
-					<span class="num">({{ logs.pagination.total }})</span>
-					<span class="flex1"></span>
-
-					<!-- 是否异常 -->
-					<el-checkbox-group
-						v-model="logs.filters.status"
-						class="status"
-						@change="filterLog"
-					>
-						<el-checkbox :label="0">异常</el-checkbox>
-					</el-checkbox-group>
-
-					<!-- 操作按钮 -->
-					<ul class="op-btn">
-						<li @click="refreshLog({ page: 1 })">
-							<i class="el-icon-refresh"></i>
-							<span>刷新</span>
-						</li>
-
-						<li v-if="logs.current" class="_current-log" @click="allLog">
-							<span>{{ logs.current.name }}</span>
-							<i class="el-icon-close"></i>
-						</li>
-					</ul>
-				</div>
-
-				<div v-loading="logs.loading" class="container" element-loading-text="拼命加载中">
-					<ul
-						:ref="setRefs('log-scroller')"
-						v-infinite-scroll="moreLog"
-						infinite-scroll-immediate="false"
-						class="scroller1"
-					>
-						<li
-							v-for="(item, index) in logs.list"
-							:key="index"
-							:class="{ _error: item.status == 0 }"
-							@click="expandLog(item)"
-						>
-							<div class="h">
-								<span class="name"
-									>{{ Number(index) + 1 }} · {{ item.taskName }}</span
-								>
-							</div>
-
-							<div class="remark" :class="{ _ellipsis: !item._expand }">
-								{{ item.detail || "..." }}
-							</div>
-
-							<div class="f">
-								<span>执行时间：{{ item.createTime }}</span>
-							</div>
-						</li>
-
-						<li v-if="logs.list.length == 0">
-							<div class="empty">暂无数据</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+		</el-scrollbar>
 
 		<!-- 表单 -->
 		<cl-form ref="Form" />
 	</div>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts" name="task" setup>
 import { computed, onMounted, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Draggable from "vuedraggable/src/vuedraggable";
@@ -218,12 +231,11 @@ import {
 	VideoPause,
 	Plus,
 	Tickets,
-	EditPen
+	EditPen,
+	Close
 } from "@element-plus/icons-vue";
 
-const { refs, setRefs, named, service } = useCool();
-
-named("task");
+const { refs, setRefs, service } = useCool();
 
 // 任务列表
 const list = reactive<any[]>([
@@ -292,7 +304,7 @@ const logs = reactive<any>({
 });
 
 // 拖动选项
-const drag = reactive<any>({
+const drag = reactive({
 	options: {
 		group: "Task",
 		animation: 300,
@@ -352,7 +364,10 @@ function refreshTask(params?: any, options?: any) {
 		moreList(res, item);
 
 		if (!more) {
-			refs.value[`${item.key}-scroller`].scroll(0, 0);
+			refs[`${item.key}-scroller`].scroll({
+				top: 0,
+				behavior: "smooth"
+			});
 		}
 
 		item.loading = false;
@@ -637,7 +652,10 @@ async function refreshLog(newParams: any, options?: any) {
 	moreList(res, logs);
 
 	if (!more) {
-		refs.value["log-scroller"].scroll(0, 0);
+		refs["log-scroller"].scroll({
+			top: 0,
+			behavior: "smooth"
+		});
 	}
 
 	logs.loading = false;
@@ -667,7 +685,7 @@ function filterLog([v]: any) {
 
 // 右键菜单
 function openCM(e: any, { id, status, type, name }: any) {
-	const menus = [
+	const menus: ClContextMenu.Item[] = [
 		{
 			label: "立即执行",
 			perm: ["once"],
@@ -723,7 +741,7 @@ function openCM(e: any, { id, status, type, name }: any) {
 	}
 
 	ContextMenu.open(e, {
-		list: menus.filter((e: any) => {
+		list: menus.filter((e) => {
 			return checkPerm({
 				and: e.perm.map((a: any) => perm.value[a])
 			});
@@ -755,14 +773,15 @@ onMounted(() => {
 }
 
 .view-task {
+	height: 100%;
+
 	.box {
 		display: flex;
 		height: 100%;
-		overflow-x: auto;
 	}
 
 	.block {
-		height: 100%;
+		height: calc(100% - 10px);
 		width: 400px;
 		margin-right: 10px;
 		flex-shrink: 0;
@@ -797,6 +816,11 @@ onMounted(() => {
 				font-size: 12px;
 			}
 
+			.label,
+			.num {
+				color: #000;
+			}
+
 			.flex1 {
 				flex: 1;
 			}
@@ -809,14 +833,15 @@ onMounted(() => {
 					align-items: center;
 					list-style: none;
 					cursor: pointer;
-					padding: 2px 10px;
-					background-color: #fff;
-					border-radius: 3px;
+					height: 25px;
+					padding: 0 10px;
+					background-color: var(--el-bg-color);
+					border-radius: 5px;
 					margin-left: 5px;
 
 					&:hover {
-						background-color: #dedede;
-						color: #444;
+						background-color: var(--color-primary);
+						color: #fff;
 					}
 
 					i {
@@ -841,7 +866,7 @@ onMounted(() => {
 			ul {
 				li {
 					list-style: none;
-					background-color: #fff;
+					background-color: var(--el-bg-color);
 					border-radius: 5px;
 					margin-bottom: 5px;
 					padding: 10px 15px;
@@ -907,7 +932,7 @@ onMounted(() => {
 								position: absolute;
 								left: 0;
 								top: 1px;
-								color: #222;
+								color: var(--color-primary);
 							}
 						}
 
@@ -991,9 +1016,10 @@ onMounted(() => {
 			.empty {
 				text-align: center;
 				font-size: 13px;
-				color: #666;
-				background-color: #fff;
 				padding: 20px;
+				border: 1px solid #f7f7f7;
+				border-radius: 5px;
+				background-color: var(--el-bg-color);
 			}
 
 			.more {
@@ -1053,7 +1079,6 @@ onMounted(() => {
 				li {
 					display: flex;
 					align-items: center;
-					height: 20px;
 
 					&._current-log {
 						span {
@@ -1103,7 +1128,7 @@ onMounted(() => {
 
 					&:hover {
 						.remark {
-							color: #444;
+							color: var(--color-primary);
 						}
 					}
 				}

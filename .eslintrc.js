@@ -56,9 +56,11 @@ module.exports = {
 		"vue/html-closing-bracket-newline": "off",
 		"vue/max-attributes-per-line": "off",
 		"vue/multiline-html-element-content-newline": "off",
+		"vue/multi-word-component-names": "off",
 		"vue/singleline-html-element-content-newline": "off",
 		"vue/attribute-hyphenation": "off",
 		"vue/html-self-closing": "off",
-		"vue/require-default-prop": "off"
+		"vue/require-default-prop": "off",
+		"vue/v-on-event-hyphenation": "off"
 	}
 };

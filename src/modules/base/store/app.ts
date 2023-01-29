@@ -1,22 +1,23 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
-import { config } from "/@/cool";
-import { deepMerge, getBrowser, storage } from "/@/cool/utils";
+import { reactive, ref } from "vue";
+import { config, useBrowser } from "/@/cool";
+import { deepMerge, storage } from "/@/cool/utils";
 
 export const useAppStore = defineStore("app", function () {
+	const { browser, onScreenChange } = useBrowser();
+
 	// 基本信息
-	const info = ref<any>({
+	const info = reactive({
 		...config.app
 	});
 
-	// 浏览器信息
-	const browser = ref<any>(getBrowser());
-
-	// 加载
-	const loading = ref<boolean>(false);
-
 	// 是否折叠
-	const isFold = ref<boolean>(browser.value.isMini || false);
+	const isFold = ref(false);
+
+	// 事件
+	const events = reactive<{ [key: string]: any[] }>({
+		hasToken: []
+	});
 
 	// 折叠
 	function fold(v?: boolean) {
@@ -29,34 +30,28 @@ export const useAppStore = defineStore("app", function () {
 
 	// 设置基本信息
 	function set(data: any) {
-		deepMerge(info.value, data);
-		storage.set("__app__", info.value);
+		deepMerge(info, data);
+		storage.set("__app__", info);
 	}
 
-	// 设置浏览器信息
-	function setBrowser() {
-		browser.value = getBrowser();
+	// 添加事件
+	function addEvent(name: string, func: any) {
+		if (func) {
+			events[name].push(func);
+		}
 	}
 
-	// 加载
-	function showLoading() {
-		loading.value = true;
-	}
-
-	// 关闭
-	function hideLoading() {
-		loading.value = false;
-	}
+	// 监听屏幕变化
+	onScreenChange(() => {
+		isFold.value = browser.isMini;
+	});
 
 	return {
 		info,
-		browser,
-		loading,
 		isFold,
 		fold,
+		events,
 		set,
-		setBrowser,
-		showLoading,
-		hideLoading
+		addEvent
 	};
 });

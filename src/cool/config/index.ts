@@ -22,10 +22,10 @@ export const config = {
 		router: {
 			// 模式
 			mode: "history",
-			// 页面
-			pages: [],
-			// 视图 / 路由下的 children
-			views: []
+			// 转场动画
+			transition: "slide",
+			// 首页组件
+			home: () => import("/$/demo/views/home/index.vue")
 		},
 
 		// 字体图标库
@@ -35,7 +35,7 @@ export const config = {
 	// 忽略规则
 	ignore: {
 		// 不显示请求进度条
-		NProgress: ["/sys/info/record"],
+		NProgress: ["/base/comm/upload", "/base/comm/uploadMode"],
 		// 页面不需要登录验证
 		token: ["/login", "/401", "/403", "/404", "/500", "/502"]
 	},

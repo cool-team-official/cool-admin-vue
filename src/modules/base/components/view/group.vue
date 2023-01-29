@@ -1,20 +1,27 @@
 <template>
-	<div class="cl-view-group">
+	<div class="cl-view-group" :class="[isExpand ? 'is-expand' : 'is-collapse']">
 		<div class="cl-view-group__wrap">
 			<!-- 组 -->
-			<div class="cl-view-group__left" :class="[isExpand ? '_expand' : '_collapse']">
+			<div class="cl-view-group__left">
 				<slot name="left"></slot>
+
+				<!-- 收起按钮 -->
+				<div class="collapse-btn" @click="expand(false)" v-if="browser.isMini">
+					<el-icon>
+						<arrow-right />
+					</el-icon>
+				</div>
 			</div>
 
 			<!-- 内容 -->
 			<div class="cl-view-group__right">
 				<div class="cl-view-group__right-head">
-					<div class="icon" @click="toExpand()">
+					<div class="icon" @click="expand()">
 						<el-icon v-if="isExpand"><arrow-left /></el-icon>
 						<el-icon v-else><arrow-right /></el-icon>
 					</div>
 
-					<span>{{ title }}</span>
+					<span>{{ label }}</span>
 				</div>
 
 				<div class="cl-view-group__right-content">
@@ -26,54 +33,80 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, provide, ref, watch } from "vue";
 import { ArrowLeft, ArrowRight } from "@element-plus/icons-vue";
-import { useBase } from "/$/base";
+import { useBrowser } from "/@/cool";
 
 export default defineComponent({
 	name: "cl-view-group",
+
 	components: {
 		ArrowLeft,
 		ArrowRight
 	},
+
 	props: {
-		title: String
+		title: String,
+		leftWidth: {
+			type: String,
+			default: "300px"
+		}
 	},
-	setup() {
-		const { app } = useBase();
+
+	setup(props) {
+		const { browser, onScreenChange } = useBrowser();
 
 		// 是否展开
-		const isExpand = ref<boolean>(true);
+		const isExpand = ref(true);
+
+		// 选中值
+		const selected = ref();
+
+		// 标题
+		const label = ref(props.title);
 
 		// 收起、展开
-		function toExpand(value?: boolean) {
+		function expand(value?: boolean) {
 			isExpand.value = value === undefined ? !isExpand.value : value;
 		}
 
-		// 小屏幕下
-		function checkExpand(value?: boolean) {
-			if (app.browser.isMini) {
-				toExpand(value);
+		// 设置选中值
+		function select(data?: any) {
+			selected.value = data;
+
+			if (browser.isMini) {
+				expand(false);
 			}
 		}
 
-		// 监听屏幕大小变化
-		watch(
-			() => app.browser.isMini,
-			(val: boolean) => {
-				isExpand.value = !val;
-			},
-			{
-				immediate: true
-			}
-		);
+		// 设置标题
+		function setTitle(value?: string) {
+			label.value = value || "";
+		}
 
-		return {
+		// 监听屏幕变化
+		onScreenChange(() => {
+			expand(!browser.isMini);
+		});
+
+		// 监听标题
+		watch(() => props.title, setTitle, {
+			immediate: true
+		});
+
+		const ctx = {
+			label,
+			selected,
 			isExpand,
-			toExpand,
-			checkExpand,
-			app
+			setTitle,
+			expand,
+			select,
+			browser
 		};
+
+		provide("viewGroup", ctx);
+
+		return ctx;
 	}
 });
 </script>
@@ -83,33 +116,50 @@ export default defineComponent({
 	height: 100%;
 	width: 100%;
 
+	$left-width: v-bind("leftWidth");
+
 	&__wrap {
 		display: flex;
 		height: 100%;
 		width: 100%;
 		position: relative;
+		background-color: var(--el-bg-color);
 	}
 
 	&__left {
+		position: relative;
 		height: 100%;
-		width: 300px;
-		max-width: calc(100% - 50px);
+		width: $left-width;
 		background-color: #fff;
-		transition: width 0.3s;
-		margin-right: 10px;
-		flex-shrink: 0;
-		overflow: hidden;
 
-		&._collapse {
-			margin-right: 0;
-			width: 0;
+		.collapse-btn {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			right: 20px;
+			bottom: 30px;
+			height: 40px;
+			width: 40px;
+			border-radius: 100%;
+			background-color: var(--color-primary);
+			box-shadow: 0 0 10px 1px #eee;
+
+			.el-icon {
+				color: #fff;
+				font-size: 24px;
+			}
 		}
 	}
 
 	&__right {
-		width: calc(100% - 310px);
-		flex: 1;
-		overflow: hidden;
+		position: absolute;
+		right: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
+		background-color: #fff;
+		transition: width 0.3s;
 
 		&-head {
 			display: flex;
@@ -117,7 +167,6 @@ export default defineComponent({
 			justify-content: center;
 			height: 40px;
 			position: relative;
-			background-color: #fff;
 
 			span {
 				font-size: 14px;
@@ -133,7 +182,6 @@ export default defineComponent({
 				top: 0;
 				font-size: 18px;
 				cursor: pointer;
-				background-color: #fff;
 				height: 40px;
 				width: 80px;
 				padding-left: 10px;
@@ -145,9 +193,29 @@ export default defineComponent({
 		}
 	}
 
-	@media only screen and (max-width: 768px) {
+	&.is-expand {
 		.cl-view-group__right {
-			width: calc(100% - 100px);
+			width: calc(100% - $left-width);
+			border-left: 1px solid var(--el-border-color);
+		}
+	}
+
+	@media only screen and (max-width: 768px) {
+		.cl-view-group__left {
+			overflow: hidden;
+			transition: width 0.2s;
+			width: 0;
+			z-index: 9;
+		}
+
+		.cl-view-group__right {
+			width: 100% !important;
+		}
+
+		&.is-expand {
+			.cl-view-group__left {
+				width: 100%;
+			}
 		}
 	}
 }

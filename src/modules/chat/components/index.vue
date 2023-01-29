@@ -2,7 +2,7 @@
 	<div class="cl-chat__wrap">
 		<div class="cl-chat__icon" @click="open">
 			<el-badge :value="unCount">
-				<el-icon><BellFilled /></el-icon>
+				<el-icon :size="15"><bell-filled /></el-icon>
 			</el-badge>
 		</div>
 
@@ -13,16 +13,15 @@
 			height="630px"
 			width="1200px"
 			keep-alive
-			custom-class="cl-chat__dialog"
 			:close-on-click-modal="false"
-			:close-on-press-escape="false"
+			close-on-press-escape
 			append-to-body
 			:controls="['slot-expand', 'cl-flex1', 'fullscreen', 'close']"
 		>
 			<div
 				class="cl-chat"
 				:class="{
-					'is-mini': app.browser.isMini,
+					'is-mini': browser.isMini,
 					'is-expand': isExpand
 				}"
 			>
@@ -50,34 +49,28 @@
 	</div>
 </template>
 
-<script lang="ts">
-export default {
-	name: "cl-chat"
-};
-</script>
-
-<script lang="ts" setup>
-import { nextTick, provide, ref, watch } from "vue";
-import { module } from "/@/cool/utils";
-import { useCool, config } from "/@/cool";
+<script lang="ts" name="cl-chat" setup>
+import { nextTick, provide, ref } from "vue";
+import dayjs from "dayjs";
+import { useCool, config, module, useBrowser } from "/@/cool";
 import { useBase } from "/$/base";
 import { Notebook, ArrowLeft, BellFilled } from "@element-plus/icons-vue";
-import { debounce } from "lodash";
-import io from "socket.io-client";
+import { debounce } from "lodash-es";
+// import io from "socket.io-client";
 import { Socket } from "socket.io-client";
 import ChatMessage from "./message.vue";
 import ChatSession from "./session.vue";
 import { Chat } from "../types";
 import { useStore } from "../store";
-import dayjs from "dayjs";
 
 const { mitt } = useCool();
+const { browser, onScreenChange } = useBrowser();
 
 // 缓存
 const { session, message } = useStore();
 
 // 缓存
-const { app, user } = useBase();
+const { user } = useBase();
 
 // 模块配置
 const { options } = module.get("chat");
@@ -89,38 +82,38 @@ const visible = ref(false);
 const isExpand = ref(true);
 
 // 未读消息
-const unCount = ref(parseInt(Math.random() * 100));
+const unCount = ref(parseInt(String(Math.random() * 100)));
 
 // Socket
 let socket: Socket;
 
 // 连接
 function connect() {
-	return refresh();
+	refresh();
 
-	if (!socket) {
-		socket = io(config.host + options.path, {
-			auth: {
-				token: user.token
-			}
-		});
+	// if (!socket) {
+	// 	socket = io(config.host + options.path, {
+	// 		auth: {
+	// 			token: user.token
+	// 		}
+	// 	});
 
-		socket.on("connect", () => {
-			console.log(`connect ${user.info?.nickName}`);
+	// 	socket.on("connect", () => {
+	// 		console.log(`connect ${user.info?.nickName}`);
 
-			// 监听消息
-			socket.on("message", (msg) => {
-				console.log(msg);
-				mitt("chat-message", msg);
-			});
+	// 		// 监听消息
+	// 		socket.on("message", (msg) => {
+	// 			console.log(msg);
+	// 			mitt("chat-message", msg);
+	// 		});
 
-			refresh();
-		});
+	// 		refresh();
+	// 	});
 
-		socket.on("disconnect", (err) => {
-			console.error(err);
-		});
-	}
+	// 	socket.on("disconnect", (err) => {
+	// 		console.error(err);
+	// 	});
+	// }
 }
 
 // 打开
@@ -132,6 +125,11 @@ function open() {
 // 关闭
 function close() {
 	visible.value = false;
+}
+
+// 收起、展开
+function expand(value?: boolean) {
+	isExpand.value = value === undefined ? !isExpand.value : value;
 }
 
 // 发送消息
@@ -180,19 +178,15 @@ provide("chat", {
 		return socket;
 	},
 	send,
+	append,
+	expand,
 	scrollToBottom
 });
 
-// 监听屏幕大小变化
-watch(
-	() => app.browser.isMini,
-	(val) => {
-		isExpand.value = val ? false : true;
-	},
-	{
-		immediate: true
-	}
-);
+// 监听屏幕变化
+onScreenChange(() => {
+	isExpand.value = browser.isMini ? false : true;
+});
 
 defineExpose({
 	open,
@@ -209,17 +203,12 @@ defineExpose({
 	padding: 5px;
 	box-sizing: border-box;
 	position: relative;
+	color: #000;
 
 	&__icon {
 		padding: 5px;
 		.el-badge__content {
 			transform: translateY(-50%) translateX(100%) scale(0.8) !important;
-		}
-	}
-
-	&__dialog {
-		.el-dialog__body {
-			padding: 0;
 		}
 	}
 
