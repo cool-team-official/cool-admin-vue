@@ -12,7 +12,11 @@ export default {
 			},
 			{
 				type: "string",
-				test: ["varchar", "text"]
+				test: ["varchar", "text","simple-json"]
+			},
+			{
+				type: "string[]",
+				test: ["simple-array"]
 			},
 			{
 				type: "Date",
