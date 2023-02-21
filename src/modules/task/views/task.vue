@@ -172,7 +172,6 @@
 							</li>
 						</ul>
 					</div>
-
 					<div
 						v-loading="logs.loading"
 						class="container"
@@ -183,6 +182,7 @@
 							class="scroller1"
 							:infinite-scroll-disabled="logs.list.length == logs.pagination.total"
 							v-infinite-scroll="moreLog"
+              infinite-scroll-immediate="false"
 						>
 							<li
 								v-for="(item, index) in logs.list"
@@ -758,6 +758,7 @@ function moreTask(index: number) {
 
 onMounted(() => {
 	refreshTask({ page: 1 });
+	refreshLog(null, { more: true });
 });
 </script>
 
