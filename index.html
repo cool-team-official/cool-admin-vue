@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="referer" content="never" />
+		<meta name="renderer" content="webkit" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0"
+		/>
+		<title></title>
+		<link rel="icon" href="favicon.ico" />
+		<style>
+			html,
+			body,
+			#app {
+				height: 100%;
+			}
+
+			* {
+				margin: 0;
+				padding: 0;
+				font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB",
+					"Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+			}
+
+			.preload__wrap {
+				display: flex;
+				flex-direction: column;
+				height: 100%;
+				letter-spacing: 1px;
+				background-color: #2f3447;
+				position: fixed;
+				left: 0;
+				top: 0;
+				height: 100%;
+				width: 100%;
+				z-index: 9999;
+			}
+
+			.preload__container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				flex-direction: column;
+				width: 100%;
+				user-select: none;
+				flex-grow: 1;
+			}
+
+			.preload__name {
+				font-size: 30px;
+				color: #fff;
+				letter-spacing: 5px;
+				font-weight: bold;
+				margin-bottom: 30px;
+			}
+
+			.preload__title {
+				color: #fff;
+				font-size: 14px;
+				margin: 30px 0 20px 0;
+			}
+
+			.preload__sub-title {
+				color: #ababab;
+				font-size: 12px;
+			}
+
+			.preload__footer {
+				text-align: center;
+				padding: 10px 0 20px 0;
+			}
+
+			.preload__footer a {
+				font-size: 12px;
+				color: #ababab;
+				text-decoration: none;
+			}
+
+			.preload__loading {
+				height: 30px;
+				width: 30px;
+				border-radius: 30px;
+				border: 7px solid currentColor;
+				border-bottom-color: #2f3447 !important;
+				position: relative;
+				animation: r 1s infinite cubic-bezier(0.17, 0.67, 0.83, 0.67),
+					bc 2s infinite ease-in;
+				transform: rotate(0deg);
+			}
+
+			@keyframes r {
+				from {
+					transform: rotate(0deg);
+				}
+				to {
+					transform: rotate(360deg);
+				}
+			}
+
+			.preload__loading::after,
+			.preload__loading::before {
+				content: "";
+				display: inline-block;
+				position: absolute;
+				bottom: -2px;
+				height: 7px;
+				width: 7px;
+				border-radius: 10px;
+				background-color: currentColor;
+			}
+
+			.preload__loading::after {
+				left: -1px;
+			}
+
+			.preload__loading::before {
+				right: -1px;
+			}
+
+			@keyframes bc {
+				0% {
+					color: #689cc5;
+				}
+
+				25% {
+					color: #b3b7e2;
+				}
+
+				50% {
+					color: #93dbe9;
+				}
+
+				75% {
+					color: #abbd81;
+				}
+
+				100% {
+					color: #689cc5;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="preload__wrap" id="Loading">
+			<div class="preload__container">
+				<p class="preload__name">COOL-ADMIN</p>
+				<div class="preload__loading"></div>
+				<p class="preload__title">正在加载资源...</p>
+				<p class="preload__sub-title">初次加载资源可能需要较多时间 请耐心等待</p>
+			</div>
+
+			<div class="preload__footer">
+				<a href="https://cool-js.com/" target="_blank"> https://cool-js.com </a>
+			</div>
+		</div>
+
+		<div id="app"></div>
+		<script type="module" src="/src/main.ts"></script>
+	</body>
+</html>

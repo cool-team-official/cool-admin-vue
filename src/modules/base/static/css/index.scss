@@ -1,0 +1,46 @@
+* {
+	padding: 0;
+	margin: 0;
+	font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+		"微软雅黑", Arial, sans-serif;
+}
+
+*::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: rgba(144, 147, 153, 0.3);
+}
+
+*::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+#app {
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+}
+
+:root {
+	--view-bg-color: #f7f7f7;
+}
+
+a {
+	text-decoration: none;
+}
+
+input,
+button {
+	outline: none;
+}
+
+input {
+	&:-webkit-autofill {
+		box-shadow: 0 0 0px 1000px white inset;
+	}
+}
+
+@import "./theme.scss";
