@@ -18,6 +18,7 @@
 import { onMounted, ref } from "vue";
 import { useBase } from "/$/base";
 import { useCool } from "/@/cool";
+import { Menu } from "../../types";
 
 const { router, route } = useCool();
 const { menu } = useBase();
@@ -26,20 +27,20 @@ const { menu } = useBase();
 const active = ref("");
 
 // 选择导航
-function select(index: any) {
+function select(index: number) {
 	menu.setMenu(index);
 
 	// 获取第一个菜单地址
-	const url = menu.getPath(menu.group[index].children);
+	const url = menu.getPath(menu.group[index]);
 	router.push(url);
 }
 
 onMounted(function () {
 	// 设置默认
-	function deep(e: any, i: number) {
+	function deep(e: Menu.Item, i: number) {
 		switch (e.type) {
 			case 0:
-				e.children.forEach((e: any) => {
+				(e.children || []).forEach((e) => {
 					deep(e, i);
 				});
 				break;
@@ -55,7 +56,7 @@ onMounted(function () {
 		}
 	}
 
-	menu.group.forEach((e: any, i: number) => {
+	menu.group.forEach((e, i) => {
 		deep(e, i);
 	});
 });

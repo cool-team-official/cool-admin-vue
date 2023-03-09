@@ -136,24 +136,30 @@ export const useMenuStore = defineStore("menu", function () {
 	}
 
 	// 获取菜单路径
-	function getPath(list?: Menu.List) {
-		list = list || group.value;
-
+	function getPath(item?: Menu.Item) {
 		let path = "";
 
-		function deep(arr: Menu.List) {
-			arr.forEach((e: Menu.Item) => {
-				if (e.type == 1) {
-					if (!path) {
-						path = e.path;
-					}
-				} else {
-					deep(e.children || []);
+		switch (item?.type) {
+			case 0:
+				function deep(arr: Menu.List) {
+					arr.forEach((e: Menu.Item) => {
+						if (e.type == 1) {
+							if (!path) {
+								path = e.path;
+							}
+						} else {
+							deep(e.children || []);
+						}
+					});
 				}
-			});
-		}
 
-		deep(list);
+				deep(item.children || group.value || []);
+				break;
+
+			case 1:
+				path = item.path;
+				break;
+		}
 
 		return path || "/";
 	}
