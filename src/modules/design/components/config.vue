@@ -97,7 +97,7 @@ function clear() {
 
 let stop: any = null;
 
-mitt.on("dp-setConfig", (options: any) => {
+mitt.on("dp.setConfig", (options: any) => {
 	visible.value = false;
 
 	if (stop) {
@@ -126,7 +126,7 @@ mitt.on("dp-setConfig", (options: any) => {
 	});
 });
 
-mitt.on("dp-clearConfig", clear);
+mitt.on("dp.clearConfig", clear);
 </script>
 
 <style lang="scss" scoped>

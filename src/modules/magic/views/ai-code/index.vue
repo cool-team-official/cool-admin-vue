@@ -36,7 +36,7 @@
 						/>
 					</div>
 
-					<!-- <div class="label required">Key</div>
+					<div class="label">Key</div>
 
 					<div class="row">
 						<el-input
@@ -58,7 +58,7 @@
 								<Refresh />
 							</el-icon>
 						</el-button>
-					</div> -->
+					</div>
 
 					<div class="label">其他你想做的事？</div>
 
@@ -179,7 +179,7 @@
 <script lang="tsx" name="magic-ai-code" setup>
 import { onMounted, reactive, watch } from "vue";
 import { module, useCool, storage } from "/@/cool";
-import { Promotion, Loading, Close, Check } from "@element-plus/icons-vue";
+import { Promotion, Loading, Close, Check, Refresh } from "@element-plus/icons-vue";
 import { ElLoading, ElMessage, ElMessageBox } from "element-plus";
 import { debounce, isEmpty } from "lodash-es";
 import { useClipboard } from "@vueuse/core";
@@ -187,8 +187,7 @@ import { useMenu, useChatGPT, useScroll } from "../../hooks";
 import { useForm } from "@cool-vue/crud";
 import { isDev } from "/@/cool";
 import Text2 from "./components/text.vue";
-
-type CodeType = "entity" | "controller" | "vue";
+import { CodeType } from "../../types";
 
 const { service, mitt, refs, setRefs } = useCool();
 const { copy } = useClipboard();
@@ -258,8 +257,16 @@ const codes = reactive({
 
 // 下一步，生成代码
 function next() {
-	if (!form.module || !form.name || isEmpty(form.columns)) {
-		return ElMessage.warning("请填写完整");
+	if (!form.module) {
+		return ElMessage.warning("请选择模块");
+	}
+
+	if (!form.name) {
+		return ElMessage.warning("请填写实体名称");
+	}
+
+	if (isEmpty(form.columns)) {
+		return ElMessage.warning("请填写字段");
 	}
 
 	function send() {

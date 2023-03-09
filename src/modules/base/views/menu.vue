@@ -96,26 +96,7 @@ import { useCool } from "/@/cool";
 import { deepTree } from "/@/cool/utils";
 import AutoMenu from "/$/magic/components/auto-menu/index.vue";
 
-const { service } = useCool();
-
-// cl-crud
-const Crud = useCrud(
-	{
-		service: service.base.sys.menu,
-		onRefresh(_, { render }) {
-			service.base.sys.menu.list().then((list) => {
-				list.map((e) => {
-					e.permList = e.perms ? e.perms.split(",") : [];
-				});
-
-				render(deepTree(list));
-			});
-		}
-	},
-	(app) => {
-		app.refresh();
-	}
-);
+const { service, mitt } = useCool();
 
 // cl-table
 const Table = useTable({
@@ -349,6 +330,30 @@ const Upsert = useUpsert({
 	plugins: [setFocus("name")]
 });
 
+// cl-crud
+const Crud = useCrud(
+	{
+		service: service.base.sys.menu,
+		onRefresh(_, { render }) {
+			service.base.sys.menu.list().then((list) => {
+				list.map((e) => {
+					e.permList = e.perms ? e.perms.split(",") : [];
+				});
+
+				render(deepTree(list));
+			});
+		}
+	},
+	(app) => {
+		app.refresh();
+	}
+);
+
+// 刷新
+function refresh(params?: any) {
+	Crud.value?.refresh(params);
+}
+
 // 行点击展开
 function onRowClick(row: any, column: any) {
 	if (column?.property && row.children) {
@@ -374,4 +379,6 @@ function addPermission({ id }: any) {
 		type: 2
 	});
 }
+
+mitt.on("magic.createMenu", refresh);
 </script>

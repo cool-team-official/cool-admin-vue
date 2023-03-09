@@ -7,7 +7,9 @@ import { storage, useCool } from "/@/cool";
 export function useChatGPT() {
 	const { route, router } = useCool();
 
-	const apiKey = ref(storage.get("chatgpt.apiKey") || "");
+	const apiKey = ref(
+		storage.get("chatgpt.apiKey") || "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"
+	);
 
 	// 余额
 	const balance = reactive({
@@ -81,6 +83,8 @@ export function useChatGPT() {
 					socket?.on("balance", (res) => {
 						if (res == "error apiKey") {
 							ElMessage.error(res);
+							balance.total_granted = 0;
+							balance.total_used = 0;
 						} else {
 							balance.total_granted = res.total_granted.toFixed(5);
 							balance.total_used = res.total_used.toFixed(5);
@@ -100,7 +104,10 @@ export function useChatGPT() {
 
 	// 发送
 	function send(data: { name: string; columns: string[]; module: string }) {
-		socket?.emit("data", data);
+		socket?.emit("data", {
+			...data,
+			apiKey: apiKey.value
+		});
 	}
 
 	return {

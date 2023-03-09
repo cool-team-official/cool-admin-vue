@@ -90,7 +90,7 @@ const form = reactive<{ active: string; list: any[] }>({
 function toDet(item: any) {
 	if (item) {
 		form.active = item.id;
-		mitt.emit("dp-setConfig", item);
+		mitt.emit("dp.setConfig", item);
 	}
 }
 
@@ -106,7 +106,7 @@ function add(data: any) {
 // 清空组件配置
 function clearConfig(id?: string) {
 	if (form.active == id || !id) {
-		mitt.emit("dp-clearConfig");
+		mitt.emit("dp.clearConfig");
 	}
 }
 
@@ -147,7 +147,7 @@ function clear() {
 
 // 复制
 function onClone(data: any) {
-	mitt.emit("dp-pull", data);
+	mitt.emit("dp.pull", data);
 	return data;
 }
 
@@ -272,7 +272,7 @@ function scrollToBottom() {
 }
 
 // 监听选中事件
-mitt.on("dp-setActive", setActive);
+mitt.on("dp.setActive", setActive);
 
 const dp = {
 	form,

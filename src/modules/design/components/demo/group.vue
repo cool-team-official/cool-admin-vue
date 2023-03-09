@@ -74,18 +74,18 @@ function remove(index: number) {
 }
 
 function onClone(data: any) {
-	mitt.emit("dp-pull", data);
+	mitt.emit("dp.pull", data);
 	return data;
 }
 
-mitt.on("dp-setActive", (id: string) => {
+mitt.on("dp.setActive", (id: string) => {
 	const d = list.value?.find((e) => e.id == id);
 	if (d) {
 		dp.toDet(d);
 	}
 });
 
-mitt.on("dp-pull", (d) => {
+mitt.on("dp.pull", (d) => {
 	isPut.value = d?.component.name != "demo-group";
 });
 

@@ -21,7 +21,7 @@ import { deepPaths } from "/@/cool/utils";
 import { computed, onMounted } from "vue";
 import { useMenu } from "../../hooks";
 
-const { service } = useCool();
+const { service, mitt } = useCool();
 const menu = useMenu();
 const Form = useForm();
 
@@ -135,6 +135,24 @@ function open() {
 						"controls-position": "right"
 					}
 				}
+			},
+			{
+				prop: "isCreateFile",
+				label: "是否创建文件",
+				value: 1,
+				component: {
+					name: "el-radio-group",
+					options: [
+						{
+							label: "是",
+							value: 1
+						},
+						{
+							label: "否",
+							value: 0
+						}
+					]
+				}
 			}
 		],
 		on: {
@@ -150,7 +168,10 @@ function open() {
 					columns
 				})
 					.then((create) => {
-						create();
+						if (data.isCreateFile) {
+							create();
+						}
+						mitt.emit("magic.createMenu");
 						close();
 					})
 					.catch(() => {

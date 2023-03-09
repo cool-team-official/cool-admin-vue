@@ -14,3 +14,5 @@ export declare interface MenuData {
 	module: string;
 	[key: string]: any;
 }
+
+export declare type CodeType = "entity" | "controller" | "vue";

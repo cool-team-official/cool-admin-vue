@@ -15,6 +15,6 @@ export default {
 			proxy = storage.get("proxy") || "dev";
 		}
 
-		return `/${proxy}/`;
+		return `/${proxy}`;
 	}
 };

@@ -14,11 +14,9 @@
 
 ## 地址
 
--   [⚡️ vue2.x + element-ui](https://github.com/cool-team-official/cool-admin-vue)
+-   [📌 vue6.x + element-plus + ts + vite](https://github.com/cool-team-official/cool-admin-vue/tree/6.x)
 
--   [⚡️ vue3.x + element-plus + ts + webpack](https://github.com/cool-team-official/cool-admin-vue/tree/vue3-ts-webpack)
-
--   [📌 vue3.x + element-plus + ts + vite](https://github.com/cool-team-official/cool-admin-vue/tree/vue3-ts-vite)
+-   [⚡️ vue5.x + element-plus + ts + vite](https://github.com/cool-team-official/cool-admin-vue/tree/5.x)
 
 -   [🌐 码云仓库地址](https://gitee.com/cool-team-official/cool-admin-vue)
 
@@ -44,12 +42,6 @@
 
 ```shell
 yarn
-```
-
-解决 `node-sass` 网络慢的方法：
-
-```shell
-yarn config set sass-binary-site http://npm.taobao.org/mirrors/node-sass
 ```
 
 ## 运行应用程序

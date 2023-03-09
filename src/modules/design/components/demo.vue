@@ -892,7 +892,7 @@ function onClone(item: any) {
 	_d = parse(item);
 
 	// 发送拉取消息
-	mitt.emit("dp-pull", _d);
+	mitt.emit("dp.pull", _d);
 
 	return _d;
 }
@@ -904,7 +904,7 @@ function add(item: any) {
 
 function onEnd() {
 	if (_d) {
-		mitt.emit("dp-setActive", _d.id);
+		mitt.emit("dp.setActive", _d.id);
 	}
 }
 
