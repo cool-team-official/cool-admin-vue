@@ -9,11 +9,5 @@ export const proxy = {
 		target: "https://show.cool-admin.com",
 		changeOrigin: true,
 		rewrite: (path: string) => path.replace(/^\/prod/, "/api")
-	},
-
-	"/ap/": {
-		target: "https://ap.cool-js.cloud",
-		changeOrigin: true,
-		rewrite: (path: string) => path.replace(/^\/ap/, "")
 	}
 };

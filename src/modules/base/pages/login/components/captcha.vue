@@ -26,7 +26,7 @@ function refresh() {
 			height: 40,
 			width: 150
 		})
-		.then(({ captchaId, data }: any) => {
+		.then(({ captchaId, data }) => {
 			if (data.includes(";base64,")) {
 				base64.value = data;
 			} else {

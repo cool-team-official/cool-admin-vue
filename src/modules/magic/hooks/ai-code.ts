@@ -7,9 +7,7 @@ import { storage, useCool } from "/@/cool";
 export function useChatGPT() {
 	const { route, router } = useCool();
 
-	const apiKey = ref(
-		storage.get("chatgpt.apiKey") || "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"
-	);
+	const apiKey = ref(storage.get("chatgpt.apiKey") || "");
 
 	// 余额
 	const balance = reactive({
