@@ -15,7 +15,7 @@
 
 <script lang="ts" name="menu-create" setup>
 import { isEmpty } from "lodash-es";
-import { module, useCool } from "/@/cool";
+import { useCool, module } from "/@/cool";
 import { useForm } from "@cool-vue/crud";
 import { deepPaths } from "/@/cool/utils";
 import { computed, onMounted } from "vue";
@@ -49,9 +49,7 @@ function open() {
 						placeholder: "请选择模块",
 						allowCreate: true,
 						defaultFirstOption: true,
-						labelKey: "name",
-						valueKey: "name",
-						options: module.list
+						options: module.dirs
 					}
 				},
 				required: true

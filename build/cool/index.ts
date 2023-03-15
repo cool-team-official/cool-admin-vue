@@ -1,6 +1,7 @@
 import { Plugin } from "vite";
 import { parseJson } from "./utils";
 import { createEps, createMenu, createSvg, createTag, getEps } from "./lib";
+import { getModules } from "./lib/module";
 
 export function cool(): Plugin {
 	return {
@@ -60,7 +61,8 @@ export function cool(): Plugin {
 		config() {
 			return {
 				define: {
-					__EPS__: getEps()
+					__EPS__: getEps(),
+					__MODULE_DIRS__: getModules()
 				}
 			};
 		}

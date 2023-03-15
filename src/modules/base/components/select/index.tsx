@@ -1,4 +1,5 @@
 import { useCrud } from "@cool-vue/crud";
+import { isObject } from "lodash-es";
 import { computed, defineComponent, isRef, Ref, ref, watch } from "vue";
 
 export default defineComponent({
@@ -59,8 +60,10 @@ export default defineComponent({
 			return (
 				<el-select v-model={value.value} clearable filterable onChange={onChange}>
 					{list.value?.map((e) => {
-						return (
+						return isObject(e) ? (
 							<el-option {...e} label={e[props.labelKey]} value={e[props.valueKey]} />
+						) : (
+							<el-option label={e} value={e} />
 						);
 					})}
 				</el-select>

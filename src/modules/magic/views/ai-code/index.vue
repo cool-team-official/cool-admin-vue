@@ -15,7 +15,7 @@
 							placeholder="请选择模块"
 							size="large"
 							v-model="form.module"
-							:options="module.list"
+							:options="module.dirs"
 							label-key="name"
 							value-key="name"
 							allow-create
@@ -83,6 +83,10 @@
 				>
 					{{ temp.disabled ? "思考中" : temp.message.length ? "重新生成" : "下一步" }}
 				</el-button>
+
+				<!-- <el-button :icon="VideoPlay" type="success" round size="large" @click="toVideo"
+					>视频教程</el-button
+				> -->
 			</div>
 
 			<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
@@ -179,7 +183,7 @@
 <script lang="tsx" name="magic-ai-code" setup>
 import { onMounted, reactive, watch } from "vue";
 import { module, useCool, storage } from "/@/cool";
-import { Promotion, Loading, Close, Check, Refresh } from "@element-plus/icons-vue";
+import { Promotion, Loading, Close, Check, Refresh, VideoPlay } from "@element-plus/icons-vue";
 import { ElLoading, ElMessage, ElMessageBox } from "element-plus";
 import { debounce, isEmpty } from "lodash-es";
 import { useClipboard } from "@vueuse/core";
@@ -494,6 +498,11 @@ const createVue = debounce((auto?: boolean) => {
 			.catch(() => null);
 	}
 }, 300);
+
+// 视频教程
+function toVideo() {
+	location.href = "";
+}
 
 // 监听表单
 watch(

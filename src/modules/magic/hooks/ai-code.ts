@@ -18,16 +18,15 @@ export function useChatGPT() {
 
 	// 获取余额
 	const getBalance = debounce(() => {
-		balance.loading = true;
-		socket?.emit("getBalance", { apiKey: apiKey.value });
+		if (apiKey.value) {
+			balance.loading = true;
+			socket?.emit("getBalance", { apiKey: apiKey.value });
+		}
 	}, 300);
 
 	// 监听apikey改变
 	watch(apiKey, (val) => {
-		if (val) {
-			getBalance();
-		}
-
+		getBalance();
 		storage.set("chatgpt.apiKey", val);
 	});
 
