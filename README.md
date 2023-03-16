@@ -14,9 +14,9 @@
 
 ## 地址
 
--   [📌 vue6.x + element-plus + ts + vite](https://github.com/cool-team-official/cool-admin-vue/tree/6.x)
+-   [📌 v6 vue3 + element-plus + ts + vite](https://github.com/cool-team-official/cool-admin-vue/tree/6.x)
 
--   [⚡️ vue5.x + element-plus + ts + vite](https://github.com/cool-team-official/cool-admin-vue/tree/5.x)
+-   [⚡️ v5 vue3 + element-plus + ts + vite](https://github.com/cool-team-official/cool-admin-vue/tree/5.x)
 
 -   [🌐 码云仓库地址](https://gitee.com/cool-team-official/cool-admin-vue)
 
