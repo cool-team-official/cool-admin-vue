@@ -27,7 +27,6 @@ export const PropRules: {
 	>;
 	form?: ClForm.Item;
 	handler?: string;
-	order?: number;
 }[] = [
 	{
 		group: ["province", "city", "district"],

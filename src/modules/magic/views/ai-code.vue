@@ -187,11 +187,11 @@ import { Promotion, Loading, Close, Check, Refresh, VideoPlay } from "@element-p
 import { ElLoading, ElMessage, ElMessageBox } from "element-plus";
 import { debounce, isEmpty } from "lodash-es";
 import { useClipboard } from "@vueuse/core";
-import { useMenu, useChatGPT, useScroll } from "../../hooks";
+import { useMenu, useChatGPT, useScroll } from "../hooks";
 import { useForm } from "@cool-vue/crud";
 import { isDev } from "/@/cool";
-import Text2 from "./components/text.vue";
-import { CodeType } from "../../types";
+import Text2 from "../components/text.vue";
+import { CodeType } from "../types";
 
 const { service, mitt, refs, setRefs } = useCool();
 const { copy } = useClipboard();

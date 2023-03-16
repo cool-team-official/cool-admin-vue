@@ -6,10 +6,10 @@ export default (): ModuleConfig => {
 			{
 				path: "/magic/ai-code",
 				meta: {
-					label: "Ai编码",
+					label: "Ai 极速编码",
 					keepAlive: true
 				},
-				component: () => import("./views/ai-code/index.vue")
+				component: () => import("./views/ai-code.vue")
 			}
 		]
 	};

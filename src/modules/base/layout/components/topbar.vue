@@ -19,6 +19,8 @@
 
 		<!-- 工具栏 -->
 		<ul class="app-topbar__tools">
+			<auto-menu-btn />
+
 			<li>
 				<cl-chat />
 			</li>
@@ -58,6 +60,7 @@ import { useBase } from "/$/base";
 import { useCool } from "/@/cool";
 import RouteNav from "./route-nav.vue";
 import AMenu from "./amenu.vue";
+import AutoMenuBtn from "/$/magic/components/auto-menu/btn.vue";
 
 const { router, service } = useCool();
 const { user, app } = useBase();
