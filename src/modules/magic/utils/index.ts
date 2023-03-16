@@ -80,32 +80,50 @@ const handler = {
 };
 
 // 创建组件
-export function createComponent(entity: Entity) {
+export function createComponent(entity: Entity, columns: Entity[]) {
 	const prop = entity.propertyName;
 	let label = entity.comment;
 	let d: any;
+	let isHidden = false;
 
 	PropRules.find((r) => {
-		const s = r.test.find((e) => {
-			if (isRegExp(e)) {
-				return e.test(prop);
-			}
+		let s = false;
 
-			if (isFunction(e)) {
-				return e(prop);
-			}
-
-			if (isString(e)) {
-				if (e == prop) {
-					return true;
+		if (r.test) {
+			s = !!r.test.find((e) => {
+				if (isRegExp(e)) {
+					return e.test(prop);
 				}
 
-				const re = new RegExp(`${e}$`);
-				return re.test(prop.toLocaleLowerCase());
-			}
+				if (isFunction(e)) {
+					return e(prop);
+				}
 
-			return false;
-		});
+				if (isString(e)) {
+					if (e == prop) {
+						return true;
+					}
+
+					const re = new RegExp(`${e}$`);
+					return re.test(prop.toLocaleLowerCase());
+				}
+
+				return false;
+			});
+		}
+
+		if (r.group) {
+			if (
+				r.group.includes(prop) &&
+				r.group.some((e) => columns.find((c) => c.propertyName == e))
+			) {
+				if (r.group[0] == prop) {
+					s = true;
+				} else {
+					isHidden = true;
+				}
+			}
+		}
 
 		if (s) {
 			if (r.handler) {
@@ -122,7 +140,7 @@ export function createComponent(entity: Entity) {
 			}
 		}
 
-		return !!s;
+		return s;
 	});
 
 	function parse(v: any) {
@@ -145,6 +163,28 @@ export function createComponent(entity: Entity) {
 
 	return {
 		column: parse(d?.table),
-		item: parse(d?.form)
+		item: parse(d?.form),
+		isHidden
 	};
+}
+
+// 转成代码字符串
+export function toCodeString(data: any) {
+	const arr: string[][] = [];
+
+	let code = JSON.stringify(data, (key, value) => {
+		if (isFunction(value)) {
+			const str = value.toString();
+			arr.push([JSON.stringify({ [key]: str }), str]);
+			return str;
+		} else {
+			return value;
+		}
+	});
+
+	arr.forEach((e) => {
+		code = code.replace(e[0].substring(1, e[0].length - 1), e[1]);
+	});
+
+	return code;
 }

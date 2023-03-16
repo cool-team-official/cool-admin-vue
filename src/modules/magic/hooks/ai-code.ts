@@ -101,10 +101,7 @@ export function useChatGPT() {
 
 	// 发送
 	function send(data: { name: string; columns: string[]; module: string }) {
-		socket?.emit("data", {
-			...data,
-			apiKey: apiKey.value
-		});
+		socket?.emit("data", data);
 	}
 
 	return {

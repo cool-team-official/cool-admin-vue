@@ -1,7 +1,7 @@
 import { ElMessage } from "element-plus";
 import { last } from "lodash-es";
 import { MenuData } from "../types";
-import { createComponent } from "../utils";
+import { createComponent, toCodeString } from "../utils";
 import { service } from "/@/cool";
 
 export function useCode() {
@@ -20,7 +20,12 @@ export function useCode() {
 		// 遍历
 		columns.forEach((e) => {
 			// 组件
-			const { item, column } = createComponent(e);
+			const { item, column, isHidden } = createComponent(e, columns);
+
+			// 过滤隐藏
+			if (isHidden) {
+				return false;
+			}
 
 			// 验证规则
 			if (!e.nullable) {
@@ -165,10 +170,10 @@ export function useCode() {
         const { service } = useCool();
         
         // cl-upsert
-        const Upsert = useUpsert(${JSON.stringify(upsert)});
+        const Upsert = useUpsert(${toCodeString(upsert)});
         
         // cl-table
-        const Table = useTable(${JSON.stringify(table)});
+        const Table = useTable(${toCodeString(table)});
         
         // cl-crud
         const Crud = useCrud(

@@ -1,3 +1,5 @@
+import { Merge } from "/@/cool";
+
 export const Colors = [
 	"#409EFF",
 	"#67C23A",
@@ -11,7 +13,52 @@ export const Colors = [
 	"#FB78F2"
 ];
 
-export const PropRules = [
+export const PropRules: {
+	test?: any[];
+	group?: string[];
+	table?: Merge<
+		DeepPartial<ClTable.Column>,
+		{
+			name?: string;
+			props?: {
+				[key: string]: any;
+			};
+		}
+	>;
+	form?: ClForm.Item;
+	handler?: string;
+	order?: number;
+}[] = [
+	{
+		group: ["province", "city", "district"],
+		table: {
+			label: "省市区",
+			formatter(row) {
+				return row.province + "-" + row.city + "-" + row.district;
+			}
+		},
+		form: {
+			label: "省市区",
+			prop: "pca",
+			hook: "pca",
+			component: {
+				name: "cl-distpicker"
+			}
+		}
+	},
+	{
+		test: ["address", "addr"],
+		table: {
+			showOverflowTooltip: true
+		},
+		form: {
+			name: "el-input",
+			props: {
+				type: "textarea",
+				rows: 3
+			}
+		}
+	},
 	{
 		test: ["createTime"],
 		table: {
@@ -105,12 +152,10 @@ export const PropRules = [
 			}
 		},
 		form: {
-			component: {
-				name: "el-date-picker",
-				props: {
-					type: "daterange",
-					valueFormat: "YYYY-MM-DD"
-				}
+			name: "el-date-picker",
+			props: {
+				type: "daterange",
+				valueFormat: "YYYY-MM-DD"
 			}
 		}
 	},
@@ -118,13 +163,11 @@ export const PropRules = [
 	{
 		test: ["times", "timeRange", "timeScope"],
 		form: {
-			component: {
-				name: "el-date-picker",
-				props: {
-					type: "datetimerange",
-					valueFormat: "YYYY-MM-DD HH:mm:ss",
-					defaultTime: [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]
-				}
+			name: "el-date-picker",
+			props: {
+				type: "datetimerange",
+				valueFormat: "YYYY-MM-DD HH:mm:ss",
+				defaultTime: [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 1, 1, 23, 59, 59)]
 			}
 		}
 	},
@@ -167,12 +210,14 @@ export const PropRules = [
 	{
 		test: ["num", "price", "age", "amount", "stock"],
 		form: {
-			name: "el-input-number",
 			hook: {
 				bind: ["number"]
 			},
-			props: {
-				min: 0
+			component: {
+				name: "el-input-number",
+				props: {
+					min: 0
+				}
 			}
 		}
 	},

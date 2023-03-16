@@ -36,7 +36,7 @@
 						/>
 					</div>
 
-					<div class="label">Key</div>
+					<!-- <div class="label">Key</div>
 
 					<div class="row">
 						<el-input
@@ -58,7 +58,7 @@
 								<Refresh />
 							</el-icon>
 						</el-button>
-					</div>
+					</div> -->
 
 					<div class="label">其他你想做的事？</div>
 
