@@ -95,8 +95,10 @@ import { setFocus, useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import { deepTree } from "/@/cool/utils";
 import AutoMenu from "/$/magic/components/auto-menu/index.vue";
+import { useStore } from "../store";
 
 const { service, mitt } = useCool();
+const { menu } = useStore();
 
 // cl-table
 const Table = useTable({
@@ -341,6 +343,7 @@ const Crud = useCrud(
 				});
 
 				render(deepTree(list));
+				menu.get();
 			});
 		}
 	},

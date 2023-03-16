@@ -5,12 +5,15 @@ export default (): ModuleConfig => {
 		// 根据使用情况选择组件注释，避免资源过大问题
 		components: [
 			// 富文本编辑器 https://www.npmjs.com/package/@wangeditor/editor
-			() => import("./components/wang.vue"),
+			() => import("./editor/wang.vue"),
 			// 富文本编辑器 https://www.npmjs.com/package/quill
-			() => import("./components/quill.vue"),
+			() => import("./editor/quill.vue"),
 			// 代码编辑器 https://www.npmjs.com/package/monaco-editor
-			() => import("./components/monaco/index.vue"),
-			() => import("./components/preview.vue")
+			() => import("./editor/monaco/index.vue"),
+			// 文本预览
+			() => import("./editor/preview.vue"),
+			// 省市区选择 https://github.com/modood/Administrative-divisions-of-China
+			() => import("./distpicker/index")
 		]
 	};
 };

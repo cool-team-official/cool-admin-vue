@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" name="a-menu" setup>
-import { onMounted, ref } from "vue";
+import { ref, watch } from "vue";
 import { useBase } from "/$/base";
 import { useCool } from "/@/cool";
 import { Menu } from "../../types";
@@ -27,7 +27,7 @@ const { menu } = useBase();
 const active = ref("");
 
 // 选择导航
-function select(index: number) {
+function select(index: any) {
 	menu.setMenu(index);
 
 	// 获取第一个菜单地址
@@ -35,8 +35,8 @@ function select(index: number) {
 	router.push(url);
 }
 
-onMounted(function () {
-	// 设置默认
+// 刷新
+function refresh() {
 	function deep(e: Menu.Item, i: number) {
 		switch (e.type) {
 			case 0:
@@ -56,10 +56,27 @@ onMounted(function () {
 		}
 	}
 
-	menu.group.forEach((e, i) => {
-		deep(e, i);
-	});
-});
+	menu.group.forEach(deep);
+}
+
+// 监听分组
+watch(
+	() => menu.group.length,
+	() => {
+		refresh();
+	},
+	{
+		immediate: true
+	}
+);
+
+// 监听路由
+watch(
+	() => route.path,
+	() => {
+		refresh();
+	}
+);
 </script>
 
 <style lang="scss" scoped>

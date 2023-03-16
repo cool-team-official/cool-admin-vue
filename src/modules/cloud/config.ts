@@ -1,5 +1,5 @@
 import { ModuleConfig } from "/@/cool";
-import { addDeclare } from "/$/editor";
+import { addDeclare } from "/$/extend";
 import { CodeDeclare } from "./dict";
 
 export default (): ModuleConfig => {

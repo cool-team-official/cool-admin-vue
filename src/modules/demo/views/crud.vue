@@ -199,19 +199,14 @@ const Upsert = useUpsert({
 		// });
 
 		// 直接取列表的数据返回
-		done({
-			...data,
-			age: 18
-		});
+		done(data);
 	},
 
 	// 提交钩子
 	onSubmit(data, { next, close, done }) {
+		console.log("onSubmit", data);
 		// 继续请求 update/add 接口
-		next({
-			...data,
-			code: "615206459"
-		});
+		next(data);
 	},
 
 	// 打开后
