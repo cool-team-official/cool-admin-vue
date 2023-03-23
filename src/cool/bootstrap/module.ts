@@ -72,24 +72,22 @@ export function createModule(app: App) {
 
 		if (d) {
 			Object.assign(e, d);
-
-			// 注册组件
-			e.components?.forEach(async (c: any) => {
-				const v = await (isFunction(c) ? c() : c);
-				const n = v.default || v;
-				app.component(n.name, n);
-			});
-
-			// 注册指令
-			e.directives?.forEach((v) => {
-				app.directive(v.name, v.value);
-			});
-
-			// 安装事件
-			if (d.install) {
-				d.install(app, d.options);
-			}
 		}
+
+		// 安装事件
+		e.install?.(app, d.options);
+
+		// 注册组件
+		e.components?.forEach(async (c: any) => {
+			const v = await (isFunction(c) ? c() : c);
+			const n = v.default || v;
+			app.component(n.name, n);
+		});
+
+		// 注册指令
+		e.directives?.forEach((v) => {
+			app.directive(v.name, v.value);
+		});
 
 		// 合并
 		deepMerge(service, mergeService(e.services || []));
