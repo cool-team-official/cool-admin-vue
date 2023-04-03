@@ -1,0 +1,23 @@
+export default {
+	op: "Operation",
+	add: "Add",
+	delete: "Delete",
+	multiDelete: "Delete",
+	update: "Edit",
+	refresh: "Refresh",
+	info: "Info",
+	search: "Search",
+	reset: "Reset",
+	clear: "Clear",
+	save: "Save",
+	close: "Close",
+	confirm: "Confirm",
+	advSearch: "Advanced Search",
+	searchKey: "Search keyword",
+	placeholder: "Please enter ",
+	tips: "Warning",
+	saveSuccess: "Save successful",
+	deleteSuccess: "Delete successful",
+	deleteConfirm: "Will permanently delete the data, continue?",
+	empty: "Empty Data"
+};

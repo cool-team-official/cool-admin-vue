@@ -1,7 +1,17 @@
 <template>
 	<div class="task-list" :class="{ 'is-mini': browser.isMini }">
 		<div class="list">
-			<div class="item" v-for="(item, index) in list" :key="index" @click="edit(item)">
+			<div
+				v-for="(item, index) in list"
+				:key="index"
+				class="item"
+				@click="edit(item)"
+				@contextmenu="
+					(e) => {
+						onContextMenu(e, item);
+					}
+				"
+			>
 				<p class="name">{{ item.name }}</p>
 				<p class="row">
 					<span>执行服务</span>
@@ -81,7 +91,7 @@
 import { onActivated, ref } from "vue";
 import { useBrowser, useCool } from "/@/cool";
 import { VideoPlay, VideoPause, Plus, Tickets, Delete } from "@element-plus/icons-vue";
-import { useForm } from "@cool-vue/crud";
+import { ContextMenu, useForm } from "@cool-vue/crud";
 import { ElMessage, ElMessageBox } from "element-plus";
 import TaskLogs from "../components/logs.vue";
 
@@ -294,6 +304,77 @@ async function edit(item?: Eps.TaskInfoEntity) {
 					});
 			}
 		}
+	});
+}
+
+// 执行一次
+function once(item: Eps.TaskInfoEntity) {
+	service.task.info
+		.once({ id: item.id })
+		.then(() => {
+			refresh();
+		})
+		.catch((err) => {
+			ElMessage.error(err.message);
+		});
+}
+
+// 右键菜单
+function onContextMenu(e: any, item: Eps.TaskInfoEntity) {
+	ContextMenu.open(e, {
+		list: [
+			item.status
+				? {
+						label: "暂停",
+						hidden: !service.task.info._permission.stop,
+						callback(done) {
+							stop(item);
+							done();
+						}
+				  }
+				: {
+						label: "开始",
+						hidden: !service.task.info._permission.start,
+						callback(done) {
+							start(item);
+							done();
+						}
+				  },
+			{
+				label: "立即执行",
+				hidden: !service.task.info._permission.once,
+				callback(done) {
+					once(item);
+					done();
+				}
+			},
+			{
+				label: "编辑",
+				hidden: !(
+					service.task.info._permission.update && service.task.info._permission.info
+				),
+				callback(done) {
+					edit(item);
+					done();
+				}
+			},
+			{
+				label: "删除",
+				hidden: !service.task.info._permission.delete,
+				callback(done) {
+					remove(item);
+					done();
+				}
+			},
+			{
+				label: "查看日志",
+				hidden: !service.task.info._permission.log,
+				callback(done) {
+					log(item);
+					done();
+				}
+			}
+		]
 	});
 }
 

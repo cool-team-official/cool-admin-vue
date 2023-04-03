@@ -5,14 +5,13 @@
 		<cl-dialog v-model="visible" title="自定义列">
 			<div class="cl-column-custom__dialog">
 				<div class="left">
-					<el-checkbox-group v-model="selection">
-						<el-checkbox
-							v-for="(item, index) in list"
-							:key="index"
-							:label="item.value"
-							>{{ item.label }}</el-checkbox
-						>
-					</el-checkbox-group>
+					<draggable v-model="list">
+						<template #item="{ element: item }">
+							<el-checkbox border v-model="item.checked">{{
+								item.label
+							}}</el-checkbox>
+						</template>
+					</draggable>
 				</div>
 
 				<div class="right"></div>
@@ -27,8 +26,10 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, PropType, nextTick } from "vue";
+import { defineComponent, ref, PropType, nextTick, watch } from "vue";
 import store from "store";
+import Draggable from "vuedraggable/src/vuedraggable";
+import { orderBy } from "lodash";
 
 export default defineComponent({
 	name: "cl-column-custom",
@@ -42,59 +43,41 @@ export default defineComponent({
 		}
 	},
 
+	components: {
+		Draggable
+	},
+
 	setup(props) {
 		// 是否可见
 		const visible = ref(false);
-
-		// 选中
-		const selection = ref([]);
 
 		// 名称
 		const name = `column-custom__${props.name || location.pathname}`;
 
 		// 列数据
-		const list = computed(() => {
-			return props.columns
-				.filter((e) => !e.type && e.prop)
-				.map((e) => {
-					return {
-						label: e.label,
-						value: e.prop
-					};
-				});
-		});
-
-		// 获取 prop
-		function getNames() {
-			const arr = store.get(name);
-			return arr ? arr : list.value.map((e) => e.value);
-		}
+		const list = ref<{ label: string; prop: any; checked?: boolean; orderNum?: number }[]>([]);
 
 		// 改变列
 		function change() {
 			nextTick(() => {
-				const names = getNames();
-
-				if (store.get(name)) {
-					props.columns.map((e) => {
-						if (!e.type) {
-							e.hidden = !names.includes(e.prop);
-						}
-					});
-				}
+				props.columns.forEach((e) => {
+					if (!e.type && e.prop) {
+						e.hidden = !list.value.find((a) => a.prop == e.prop)?.checked;
+						e.orderNum = list.value.findIndex((a) => a.prop == e.prop);
+					}
+				});
 			});
 		}
 
 		// 保存
 		function save() {
-			store.set(name, selection.value);
+			store.set(name, list.value);
 			change();
 			close();
 		}
 
 		// 打开
 		function open() {
-			selection.value = getNames();
 			visible.value = true;
 		}
 
@@ -103,14 +86,39 @@ export default defineComponent({
 			visible.value = false;
 		}
 
-		onMounted(() => {
-			change();
-		});
+		watch(
+			() => props.columns,
+			(val) => {
+				if (val) {
+					const selection: any[] = store.get(name);
+
+					list.value = orderBy(
+						val
+							.filter((e) => !e.type && e.prop)
+							.map((e) => {
+								return {
+									label: e.label,
+									prop: e.prop,
+									checked: selection
+										? selection.find((a) => a.prop == e.prop)?.checked
+										: true,
+									orderNum: selection
+										? selection.findIndex((a) => a.prop == e.prop)
+										: e.orderNum || 0
+								};
+							}),
+						"orderNum",
+						"asc"
+					);
+
+					change();
+				}
+			}
+		);
 
 		return {
 			visible,
 			list,
-			selection,
 			open,
 			close,
 			save
@@ -127,6 +135,9 @@ export default defineComponent({
 
 	&__dialog {
 		.left {
+			.el-checkbox {
+				margin-right: 10px;
+			}
 		}
 
 		.right {

@@ -252,27 +252,23 @@ const Table = useTable({
 			};
 		},
 		{
-			label: "基础信息",
-			prop: "baseInfo",
-			children: [
-				{
-					label: "姓名",
-					prop: "name"
-				},
-				{
-					label: "存款(元)",
-					prop: "price",
-					sortable: true
-				}
-			]
+			label: "姓名",
+			prop: "name"
+		},
+		{
+			label: "存款(元)",
+			prop: "price",
+			sortable: true
 		},
 		{
 			label: "状态",
+			orderNum: 2,
 			prop: "status",
 			dict: options.status
 		},
 		{
 			label: "创建时间",
+			orderNum: 1,
 			prop: "createTime",
 			sortable: "desc"
 		},

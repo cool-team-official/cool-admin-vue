@@ -780,6 +780,57 @@ declare namespace Eps {
 		 */
 		[key: string]: any;
 	}
+
+	interface UserAddressEntity {
+		/**
+		 * ID
+		 */
+		id?: number;
+		/**
+		 * 用户ID
+		 */
+		userId?: string;
+		/**
+		 * 联系人
+		 */
+		contact?: string;
+		/**
+		 * 手机号
+		 */
+		phone?: string;
+		/**
+		 * 省份
+		 */
+		province?: string;
+		/**
+		 * 城市
+		 */
+		city?: string;
+		/**
+		 * 区县
+		 */
+		district?: string;
+		/**
+		 * 详细地址
+		 */
+		address?: string;
+		/**
+		 * 是否默认 0-否 1-是
+		 */
+		isDefault?: number;
+		/**
+		 * 创建时间
+		 */
+		createTime?: Date;
+		/**
+		 * 更新时间
+		 */
+		updateTime?: Date;
+		/**
+		 * 任意键值
+		 */
+		[key: string]: any;
+	}
 	interface ChatMessage {
 		/**
 		 * list
@@ -2334,6 +2385,63 @@ declare namespace Eps {
 		request: Service["request"];
 	}
 
+	interface UserAddress {
+		/**
+		 * 删除
+		 */
+		delete(data?: any): Promise<any>;
+		/**
+		 * 修改
+		 */
+		update(data?: any): Promise<any>;
+		/**
+		 * 单个信息
+		 */
+		info(data?: any): Promise<UserAddressEntity>;
+		/**
+		 * 列表查询
+		 */
+		list(data?: any): Promise<UserAddressEntity[]>;
+		/**
+		 * 分页查询
+		 */
+		page(data?: any): Promise<{
+			pagination: { size: number; page: number; total: number };
+			list: UserAddressEntity[];
+			[key: string]: any;
+		}>;
+		/**
+		 * 新增
+		 */
+		add(data?: any): Promise<any>;
+		/**
+		 * 权限标识
+		 */
+		permission: {
+			delete: string;
+			update: string;
+			info: string;
+			list: string;
+			page: string;
+			add: string;
+		};
+		/**
+		 * 权限状态
+		 */
+		_permission: {
+			delete: boolean;
+			update: boolean;
+			info: boolean;
+			list: boolean;
+			page: boolean;
+			add: boolean;
+		};
+		/**
+		 * 请求
+		 */
+		request: Service["request"];
+	}
+
 	type Service = {
 		request(options?: {
 			url: string;
@@ -2364,5 +2472,6 @@ declare namespace Eps {
 		recycle: { data: RecycleData };
 		space: { info: SpaceInfo; type: SpaceType };
 		task: { info: TaskInfo };
+		user: { address: UserAddress };
 	};
 }

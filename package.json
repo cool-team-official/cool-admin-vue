@@ -1,6 +1,6 @@
 {
 	"name": "front-next",
-	"version": "6.0.0",
+	"version": "6.1.0",
 	"scripts": {
 		"dev": "vite --host",
 		"build": "vite build",
@@ -9,7 +9,7 @@
 		"lint:eslint": "eslint \"{src}/**/*.{vue,ts,tsx}\" --fix"
 	},
 	"dependencies": {
-		"@cool-vue/crud": "^6.1.11",
+		"@cool-vue/crud": "^6.2.0",
 		"@element-plus/icons-vue": "^2.0.10",
 		"@vueuse/core": "^9.1.0",
 		"@wangeditor/editor": "^5.1.23",
