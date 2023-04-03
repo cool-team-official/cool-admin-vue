@@ -29,7 +29,7 @@
 import { defineComponent, ref, PropType, nextTick, watch } from "vue";
 import store from "store";
 import Draggable from "vuedraggable/src/vuedraggable";
-import { orderBy } from "lodash";
+import { isBoolean, orderBy } from "lodash-es";
 
 export default defineComponent({
 	name: "cl-column-custom",
@@ -96,15 +96,23 @@ export default defineComponent({
 						val
 							.filter((e) => !e.type && e.prop)
 							.map((e) => {
+								let checked = true;
+								let orderNum = e.orderNum || 0;
+
+								if (isBoolean(e.hidden)) {
+									checked = !e.hidden;
+								}
+
+								if (selection) {
+									checked = selection.find((a) => a.prop == e.prop)?.checked;
+									orderNum = selection.findIndex((a) => a.prop == e.prop);
+								}
+
 								return {
 									label: e.label,
 									prop: e.prop,
-									checked: selection
-										? selection.find((a) => a.prop == e.prop)?.checked
-										: true,
-									orderNum: selection
-										? selection.findIndex((a) => a.prop == e.prop)
-										: e.orderNum || 0
+									checked,
+									orderNum
 								};
 							}),
 						"orderNum",
