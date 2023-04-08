@@ -20,6 +20,8 @@
 
 			<cl-flex1 />
 
+			<cl-export-btn :columns="Table?.columns" />
+
 			<!-- 自定义列 -->
 			<cl-column-custom :columns="Table?.columns" />
 
