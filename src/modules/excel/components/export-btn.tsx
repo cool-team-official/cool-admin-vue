@@ -59,7 +59,7 @@ export default defineComponent({
 
 									if (col) {
 										if (col.formatter) {
-											e = col.formatter(e);
+											e[i] = col.formatter(e);
 										}
 
 										if (col.dict) {
