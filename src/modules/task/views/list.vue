@@ -19,7 +19,7 @@
 				</p>
 				<p class="row">
 					<span>定时规则</span>
-					<span>{{ item.taskType == 1 ? `间隔${item.every}秒执行` : item.cron }}</span>
+					<span>{{ item.taskType == 1 ? `间隔${item._every}秒执行` : item.cron }}</span>
 				</p>
 
 				<div class="status">
@@ -106,7 +106,7 @@ function refresh() {
 	service.task.info.page({ size: 100, page: 1 }).then((res) => {
 		list.value = res.list.map((e) => {
 			if (e.every) {
-				e.every /= 1000;
+				e._every = parseInt(String(e.every / 1000));
 			}
 
 			return e;

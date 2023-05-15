@@ -15,7 +15,7 @@
 			</cl-filter>
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
-			<cl-search-key placeholder="请输入昵称、手机号" />
+			<cl-search-key placeholder="搜索昵称、手机号" />
 		</cl-row>
 
 		<cl-row>

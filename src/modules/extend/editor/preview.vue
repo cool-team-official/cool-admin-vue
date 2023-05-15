@@ -1,18 +1,20 @@
 <template>
-	<cl-dialog width="1000px" :title="title" v-model="visible">
-		<cl-editor
-			:name="`cl-editor-${name}`"
-			:ref="setRefs('editor')"
-			:height="600"
-			v-bind="props.props"
-			v-model="text"
-		/>
+	<div>
+		<cl-dialog width="1000px" :title="title" append-to-body v-model="visible">
+			<cl-editor
+				:name="`cl-editor-${name}`"
+				:ref="setRefs('editor')"
+				:height="600"
+				v-bind="props.props"
+				v-model="text"
+			/>
 
-		<template #footer>
-			<el-button @click="close">关闭</el-button>
-			<el-button type="success" @click="toCopy">复制</el-button>
-		</template>
-	</cl-dialog>
+			<template #footer>
+				<el-button @click="close">关闭</el-button>
+				<el-button type="success" @click="toCopy">复制</el-button>
+			</template>
+		</cl-dialog>
+	</div>
 </template>
 
 <script lang="ts" name="cl-editor-preview" setup>
