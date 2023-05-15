@@ -141,6 +141,29 @@ const Upsert = useUpsert({
 				name: "cl-upload"
 			}
 		},
+		{
+			label: "账号",
+			group: "base",
+			prop: "account",
+			component: {
+				name: "el-input"
+			}
+		},
+		// 判断mode
+		() => {
+			return {
+				label: "密码",
+				group: "base",
+				prop: "password",
+				hidden: Upsert.value?.mode == "update",
+				component: {
+					name: "el-input",
+					props: {
+						type: "password"
+					}
+				}
+			};
+		},
 		// 动态值
 		() => {
 			return {
@@ -152,6 +175,14 @@ const Upsert = useUpsert({
 					name: "el-input"
 				}
 			};
+		},
+		{
+			label: "省市区",
+			prop: "pca",
+			group: "base",
+			component: {
+				name: "cl-distpicker"
+			}
 		},
 		{
 			label: "年龄",

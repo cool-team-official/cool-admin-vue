@@ -24,7 +24,10 @@ export default defineComponent({
 	setup(props) {
 		return () => {
 			return (
-				<el-cascader options={data} props={{ label: "name", value: "name", ...props }} />
+				<el-cascader
+					options={data}
+					props={{ label: "name", value: "name", ...props.props }}
+				/>
 			);
 		};
 	}
