@@ -27,7 +27,7 @@ const img = reactive({
 });
 
 function open(item: Eps.SpaceInfoEntity, list: Eps.SpaceInfoEntity[]) {
-	if (item.type) {
+	if (item?.type) {
 		if (item.type == "image") {
 			img.visible = true;
 			img.urls = list.filter((e) => e.type == "image").map((e) => e.url || "");

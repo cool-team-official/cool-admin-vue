@@ -351,14 +351,7 @@ function clear() {
 
 // 预览
 function preview(item: Upload.Item) {
-	if (item.type == "image") {
-		refs.viewer?.open(
-			item.preload,
-			list.value.map((e) => e.preload)
-		);
-	} else {
-		window.open(item.url);
-	}
+	refs.viewer?.open(item, list.value);
 }
 
 // 文件上传请求
