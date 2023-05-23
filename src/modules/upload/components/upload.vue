@@ -269,7 +269,9 @@ const accept = computed(() => {
 
 // 能否添加
 const isAdd = computed(() => {
-	return props.multiple ? limit - list.value.length > 0 : list.value.length == 0;
+	return props.multiple
+		? !disabled.value && limit - list.value.length > 0
+		: list.value.length == 0;
 });
 
 // 获取类型
