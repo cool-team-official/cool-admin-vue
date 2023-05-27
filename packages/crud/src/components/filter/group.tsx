@@ -30,7 +30,7 @@ export default defineComponent({
 		onSearch: Function
 	},
 
-	setup(props, { slots, expose }) {
+	setup(props, { slots, expose, emit }) {
 		const { crud } = useCore();
 		const { style } = useTools();
 
@@ -66,6 +66,7 @@ export default defineComponent({
 		// 重置
 		function reset() {
 			Form.value?.reset();
+			emit("reset");
 		}
 
 		expose({

@@ -26,7 +26,7 @@ export default defineComponent({
 		maxExportLimit: Number // 最大导出条数，不传或者小于等于0为不限制
 	},
 
-	setup(props) {
+	setup(props, { slots }) {
 		// 加载状态
 		const loading = ref(false);
 
@@ -40,18 +40,20 @@ export default defineComponent({
 
 		// 获取表格数据
 		function getData() {
+			const params = {
+				...Crud.value?.paramsReplace(Crud.value.params),
+				maxExportLimit: props.maxExportLimit,
+				isExport: true
+			};
+
 			if (typeof props.data === "function") {
-				return props.data();
+				return props.data(params);
 			} else {
 				if (props.data) {
 					return props.data;
 				} else {
 					return Crud.value?.service
-						.page({
-							...Crud.value?.paramsReplace(Crud.value.params),
-							maxExportLimit: props.maxExportLimit,
-							isExport: true
-						})
+						.page(params)
 						.then((res) => {
 							return res.list.map((e) => {
 								for (const i in e) {
@@ -106,7 +108,7 @@ export default defineComponent({
 
 			// 表格列
 			const columns = props.columns.filter(
-				(e: any) =>
+				(e) =>
 					!(
 						e.hidden === true ||
 						["selection", "expand", "index"].includes(e.type) ||
@@ -116,7 +118,7 @@ export default defineComponent({
 			);
 
 			// 字段
-			const fields = columns.map((e: any) => e.prop).filter(Boolean);
+			const fields = columns.map((e) => e.prop).filter(Boolean);
 
 			// 表头
 			const header = await getHeader(columns, fields);
@@ -150,7 +152,7 @@ export default defineComponent({
 		return () => {
 			return (
 				<el-button loading={loading.value} onClick={toExport}>
-					<slot>导出</slot>
+					{slots.default ? slots.default() : "导出"}
 				</el-button>
 			);
 		};

@@ -50,3 +50,9 @@ defineExpose({
 	open
 });
 </script>
+
+<style lang="scss" scoped>
+.item-viewer {
+	position: absolute;
+}
+</style>
