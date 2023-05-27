@@ -57,7 +57,7 @@
 							<slot>
 								<div class="cl-upload__item">
 									<el-icon :size="24"><picture-filled /></el-icon>
-									<span class="cl-upload__text">{{ text }}</span>
+									<span class="cl-upload__text" v-if="text">{{ text }}</span>
 								</div>
 							</slot>
 						</el-upload>
@@ -238,7 +238,7 @@ const limit = props.limit || options.limit.upload;
 const limitSize = props.limitSize || options.limit.size;
 
 // 文案
-const text = props.text || options.text;
+const text = props.text === undefined ? options.text : props.text;
 
 // 请求头
 const headers = computed(() => {
