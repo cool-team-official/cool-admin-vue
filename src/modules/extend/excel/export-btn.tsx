@@ -2,7 +2,8 @@ import { defineComponent, PropType } from "vue";
 import { useCrud } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
 import { isRef, ref } from "vue";
-import { currentDate, export_json_to_excel } from "../utils";
+import { export_json_to_excel } from "./utils";
+import dayjs from "dayjs";
 
 export default defineComponent({
 	name: "cl-export-btn",
@@ -92,8 +93,7 @@ export default defineComponent({
 			if (typeof props.filename === "function") {
 				return await props?.filename();
 			} else {
-				const { year, month, day, hour, minu, sec } = currentDate();
-				return props.filename || `报表（${year}-${month}-${day} ${hour}_${minu}_${sec}）`;
+				return props.filename || `报表（${dayjs().format("YYYY-MM-DD HH_mm_ss")}）`;
 			}
 		}
 

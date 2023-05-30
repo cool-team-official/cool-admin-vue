@@ -17,43 +17,34 @@
 			<cl-pagination />
 		</cl-row>
 
-		<cl-upsert ref="Upsert">
-			<template #slot-content="{ scope }">
-				<div>
-					<el-radio-group :model-value="tab.value" @change="onTabChange">
-						<el-radio
-							v-for="(item, index) in tab.list"
-							:key="index"
-							:label="item.value"
-							>{{ item.label }}</el-radio
-						>
-					</el-radio-group>
-
-					<cl-editor :name="tab.value" v-model="scope.data" v-if="tab.value" />
-				</div>
-			</template>
-		</cl-upsert>
+		<cl-upsert ref="Upsert" />
 	</cl-crud>
 </template>
 
 <script lang="ts" name="sys-param" setup>
 import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { ElMessageBox } from "element-plus";
+import { Document } from "@element-plus/icons-vue";
 import { reactive } from "vue";
 import { useCool } from "/@/cool";
 
 const { service } = useCool();
 
-const tab = reactive({
-	value: "",
-	list: [
+// 选项
+const options = reactive({
+	dataType: [
 		{
-			label: "代码编辑器",
-			value: "cl-editor-monaco"
+			label: "字符串",
+			value: 0,
+			type: "info"
 		},
 		{
-			label: "富文本编辑器",
-			value: "cl-editor-wang"
+			label: "富文本",
+			value: 1,
+			type: "success"
+		},
+		{
+			label: "文件",
+			value: 2
 		}
 	]
 });
@@ -81,10 +72,10 @@ const Table = useTable({
 			minWidth: 150
 		},
 		{
-			label: "数据",
-			prop: "data",
+			label: "数据类型",
+			prop: "dataType",
 			minWidth: 150,
-			showOverflowTooltip: true
+			dict: options.dataType
 		},
 		{
 			label: "备注",
@@ -94,8 +85,7 @@ const Table = useTable({
 		},
 		{
 			label: "操作",
-			type: "op",
-			buttons: ["edit", "delete"]
+			type: "op"
 		}
 	]
 });
@@ -129,10 +119,54 @@ const Upsert = useUpsert({
 			}
 		},
 		{
-			prop: "data",
-			label: "数据",
+			prop: "dataType",
+			label: "类型",
+			value: 0,
 			component: {
-				name: "slot-content"
+				name: "el-radio-group",
+				options: options.dataType
+			}
+		},
+		{
+			prop: "data_0",
+			label: "数据",
+			hidden({ scope }) {
+				return scope.dataType != 0;
+			},
+			component: {
+				name: "el-input",
+				props: {
+					rows: 6,
+					type: "textarea"
+				}
+			}
+		},
+		{
+			prop: "data_1",
+			label: "数据",
+			hidden({ scope }) {
+				return scope.dataType != 1;
+			},
+			component: {
+				name: "cl-editor",
+				props: {
+					name: "cl-editor-wang"
+				}
+			}
+		},
+		{
+			prop: "data_2",
+			label: "数据",
+			hidden({ scope }) {
+				return scope.dataType != 2;
+			},
+			component: {
+				name: "cl-upload",
+				props: {
+					icon: Document,
+					multiple: true,
+					type: "file"
+				}
 			}
 		},
 		{
@@ -150,19 +184,17 @@ const Upsert = useUpsert({
 	],
 
 	onOpened(data) {
-		tab.value = /<*>/g.test(data.data) ? tab.list[1].value : tab.list[0].value;
+		data[`data_${data.dataType}`] = data.data;
+	},
+
+	onSubmit(data, { next }) {
+		next({
+			...data,
+			data: data[`data_${data.dataType}`],
+			data_0: undefined,
+			data_1: undefined,
+			data_2: undefined
+		});
 	}
 });
-
-// 切换编辑器
-function onTabChange(name: any) {
-	ElMessageBox.confirm("切换编辑器会清空输入内容，是否继续？", "提示", {
-		type: "warning"
-	})
-		.then(() => {
-			tab.value = name;
-			Upsert.value?.setForm("data", "");
-		})
-		.catch(() => null);
-}
 </script>

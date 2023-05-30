@@ -90,13 +90,8 @@ function sheet_from_array_of_arrays(data, opts) {
 				r: R
 			});
 
-			if (typeof cell.v === "number") cell.t = "n";
-			else if (typeof cell.v === "boolean") cell.t = "b";
-			else if (cell.v instanceof Date) {
-				cell.t = "n";
-				cell.z = XLSX.SSF._table[14];
-				cell.v = datenum(cell.v);
-			} else cell.t = "s";
+			// 修改这里：无论原始类型是什么，都将单元格类型设置为 "s"
+			cell.t = "s";
 
 			ws[cell_ref] = cell;
 		}

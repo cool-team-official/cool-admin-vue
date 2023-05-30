@@ -20,6 +20,10 @@
 
 			<cl-flex1 />
 
+			<!-- 导入 -->
+			<cl-import-btn template="/用户导入模版.xlsx" />
+
+			<!-- 导出 -->
 			<cl-export-btn :columns="Table?.columns" />
 
 			<!-- 自定义列 -->
