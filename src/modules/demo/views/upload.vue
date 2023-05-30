@@ -13,8 +13,12 @@
 				<cl-upload v-model="v3" multiple text="文件上传" type="file" />
 			</el-tab-pane>
 
-			<el-tab-pane label="可拖拽">
+			<el-tab-pane label="拖拽">
+				<el-divider content-position="left"> 拖拽排序 </el-divider>
 				<cl-upload multiple draggable />
+
+				<el-divider content-position="left"> 拖拽上传 </el-divider>
+				<cl-upload drag :size="[160, 300]" />
 			</el-tab-pane>
 
 			<el-tab-pane label="自定义内容">
@@ -25,10 +29,6 @@
 						<div class="item" v-show="item.url">{{ item.url }}</div>
 					</template>
 				</cl-upload>
-			</el-tab-pane>
-
-			<el-tab-pane label="自定义大小">
-				<cl-upload :size="[120, 200]" />
 			</el-tab-pane>
 
 			<el-tab-pane label="上传校验">
@@ -55,7 +55,7 @@
 
 <script lang="ts" name="demo-upload" setup>
 import { ref } from "vue";
-import { Upload } from "@element-plus/icons-vue";
+import { Upload, UploadFilled } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 
 const v1 = ref("");

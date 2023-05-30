@@ -5,34 +5,45 @@
 			:class="[
 				`cl-upload--${type}`,
 				{
-					'is-disabled': disabled
+					'is-disabled': disabled,
+					'is-drag': drag
 				}
 			]"
 		>
-			<div class="cl-upload__file-btn" v-if="type == 'file'" @click="space.open()">
-				<el-upload
-					:ref="setRefs('upload')"
-					action=""
-					:accept="accept"
-					:show-file-list="false"
-					:before-upload="beforeUpload"
-					:http-request="httpRequest"
-					:headers="headers"
-					:multiple="multiple"
-					:disabled="uploadDisabled"
-				>
-					<slot>
-						<el-button type="success">{{ text }}</el-button>
-					</slot>
-				</el-upload>
-			</div>
+			<template v-if="!drag">
+				<div class="cl-upload__file-btn" v-if="type == 'file'" @click="space.open()">
+					<el-upload
+						:ref="setRefs('upload')"
+						:drag="drag"
+						action=""
+						:accept="accept"
+						:show-file-list="false"
+						:before-upload="beforeUpload"
+						:http-request="httpRequest"
+						:headers="headers"
+						:multiple="multiple"
+						:disabled="uploadDisabled"
+					>
+						<slot>
+							<el-button type="success">{{ text }}</el-button>
+						</slot>
+					</el-upload>
+				</div>
+			</template>
 
 			<!-- 列表 -->
 			<draggable
 				class="cl-upload__list"
 				tag="div"
 				v-model="list"
-				v-bind="drag.options"
+				:options="{
+					group: 'Upload',
+					animation: 300,
+					ghostClass: 'Ghost',
+					dragClass: 'Drag',
+					draggable: '.is-drag',
+					disabled: !draggable
+				}"
 				item-key="uid"
 				@end="update"
 				v-if="showFileList"
@@ -40,10 +51,11 @@
 				<template #footer>
 					<div
 						class="cl-upload__footer"
-						v-if="type == 'image' && isAdd"
+						v-if="(type == 'image' || drag) && isAdd"
 						@click="space.open()"
 					>
 						<el-upload
+							:drag="drag"
 							:ref="setRefs('upload')"
 							action=""
 							:accept="accept"
@@ -55,8 +67,18 @@
 							:disabled="uploadDisabled"
 						>
 							<slot>
-								<div class="cl-upload__item">
-									<el-icon :size="24"><picture-filled /></el-icon>
+								<div class="cl-upload__dragger" v-if="drag">
+									<el-icon><upload-filled /></el-icon>
+									<div>
+										点击上传或将文件拖动到此处，文件大小限制{{ limitSize }}M
+									</div>
+								</div>
+
+								<div class="cl-upload__item" v-else>
+									<el-icon :size="24">
+										<component :is="icon" v-if="icon" />
+										<picture-filled v-else />
+									</el-icon>
 									<span class="cl-upload__text" v-if="text">{{ text }}</span>
 								</div>
 							</slot>
@@ -98,17 +120,12 @@
 									<span class="cl-upload__name">
 										{{ fileName(item.preload) }}.{{ extname(item.preload) }}
 									</span>
-
-									<!-- 大小 -->
-									<span class="cl-upload__size">
-										{{ fileSize(item.size) }}
-									</span>
 								</template>
 
 								<!-- 工具 -->
 								<div class="cl-upload__actions">
 									<!-- 预览 -->
-									<el-icon @click.stop="preview(item)" v-show="item.url">
+									<el-icon @click.stop="preview(item)">
 										<zoom-in />
 									</el-icon>
 
@@ -152,15 +169,15 @@
 </template>
 
 <script lang="ts" setup name="cl-upload">
-import { computed, ref, reactive, watch, PropType } from "vue";
+import { computed, ref, watch, PropType } from "vue";
 import { isArray, isNumber } from "lodash-es";
 import Draggable from "vuedraggable";
 import { ElMessage } from "element-plus";
-import { PictureFilled, ZoomIn, Delete } from "@element-plus/icons-vue";
+import { PictureFilled, ZoomIn, Delete, UploadFilled } from "@element-plus/icons-vue";
 import { useCool, module } from "/@/cool";
 import { extname, uuid, isPromise } from "/@/cool/utils";
 import { useBase } from "/$/base";
-import { fileSize, fileName, fileType, getUrls } from "../utils";
+import { fileName, fileType, getUrls } from "../utils";
 import { Upload } from "../types";
 import ItemViewer from "./items/viewer.vue";
 
@@ -182,6 +199,7 @@ const props = defineProps({
 		default: true
 	},
 	size: [String, Number, Array],
+	icon: null,
 	text: String,
 	prefixPath: {
 		type: String,
@@ -196,6 +214,7 @@ const props = defineProps({
 		default: true
 	},
 	draggable: Boolean,
+	drag: Boolean,
 	disabled: Boolean,
 	customClass: String,
 	beforeUpload: Function,
@@ -250,21 +269,9 @@ const headers = computed(() => {
 // 列表
 const list = ref<Upload.Item[]>([]);
 
-// 拖拽
-const drag = reactive({
-	options: {
-		group: "Upload",
-		animation: 300,
-		ghostClass: "Ghost",
-		dragClass: "Drag",
-		draggable: ".is-drag",
-		disabled: !props.draggable
-	}
-});
-
 // 文件格式
 const accept = computed(() => {
-	return props.accept || (props.type == "file" ? "*" : "image/*");
+	return props.accept || (props.type == "file" ? "" : "image/*");
 });
 
 // 能否添加
@@ -299,6 +306,11 @@ async function beforeUpload(file: any, item?: Upload.Item) {
 		d.preload =
 			d.url || (d.type == "image" ? window.webkitURL.createObjectURL(file) : file.name);
 
+		// 默认
+		if (!d.url) {
+			d.url = d.preload;
+		}
+
 		// 赋值
 		if (item) {
 			Object.assign(item, d);
@@ -319,7 +331,7 @@ async function beforeUpload(file: any, item?: Upload.Item) {
 
 	// 自定义上传事件
 	if (props.beforeUpload) {
-		const r = props.beforeUpload(file, item);
+		const r = props.beforeUpload(file, item, { next });
 
 		if (isPromise(r)) {
 			r.then(next).catch(() => null);
@@ -580,6 +592,29 @@ defineExpose({
 });
 </script>
 
+<style lang="scss">
+.cl-upload__dragger {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border: 1px dashed var(--el-border-color);
+	padding: 20px;
+	border-radius: 8px;
+	font-size: 14px;
+	color: #666;
+	height: v-bind("size[0]");
+	width: v-bind("size[1]");
+	box-sizing: border-box;
+
+	.el-icon {
+		font-size: 46px;
+		margin-bottom: 10px;
+		color: #a8abb2;
+	}
+}
+</style>
+
 <style lang="scss" scoped>
 .cl-upload {
 	line-height: normal;
@@ -687,15 +722,6 @@ defineExpose({
 					text-align: center;
 					word-break: break-all;
 				}
-
-				&__size {
-					position: absolute;
-					top: 5px;
-					right: 5px;
-					font-size: 12px;
-					line-height: 12px;
-					color: #999;
-				}
 			}
 		}
 	}
@@ -716,9 +742,32 @@ defineExpose({
 		box-sizing: border-box;
 	}
 
-	&--file {
-		.cl-upload__list {
-			margin-top: 10px;
+	:deep(.el-upload) {
+		&.is-drag {
+			.el-upload-dragger {
+				padding: 0;
+				border: 0;
+				background-color: transparent !important;
+				position: relative;
+
+				$color: var(--el-color-primary);
+
+				&.is-dragover {
+					&::after {
+						display: block;
+						content: "";
+						position: absolute;
+						left: 0;
+						top: 0;
+						height: 100%;
+						width: 100%;
+						pointer-events: none;
+						border-radius: 8px;
+						box-sizing: border-box;
+						border: 1px dashed var(--color-primary);
+					}
+				}
+			}
 		}
 	}
 
@@ -726,6 +775,14 @@ defineExpose({
 		:deep(.cl-upload__item) {
 			cursor: not-allowed;
 			background-color: var(--el-disabled-bg-color);
+		}
+	}
+
+	&--file {
+		&:not(.is-drag) {
+			.cl-upload__list {
+				margin-top: 10px;
+			}
 		}
 	}
 }
