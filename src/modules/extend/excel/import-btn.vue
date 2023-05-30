@@ -12,6 +12,7 @@
 				<div class="inner">
 					<cl-upload
 						drag
+						:limit-size="limitSize"
 						:accept="accept"
 						:disabled="disabled"
 						type="file"
@@ -33,6 +34,8 @@ import { useForm } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
 import { reactive, ref } from "vue";
 import XLSX from "xlsx";
+import chardet from "chardet";
+import { extname } from "/@/cool/utils";
 
 const props = defineProps({
 	onConfig: Function,
@@ -53,7 +56,11 @@ const props = defineProps({
 		default: 10
 	},
 	disabled: Boolean,
-	accept: String
+	accept: {
+		type: String,
+		default:
+			"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/csv"
+	}
 });
 
 const emit = defineEmits(["change"]);
@@ -63,7 +70,7 @@ const Form = useForm();
 // 上传信息
 const upload = reactive({
 	filename: "",
-	data: []
+	data: [] as any[]
 });
 
 // 进度
@@ -127,27 +134,41 @@ function open() {
 
 function onUpload(raw: File, _: any, { next }: any) {
 	const reader = new FileReader();
+	const ext = extname(raw.name);
 
 	reader.onload = (event: any) => {
-		const { result } = event.target;
+		let data = "";
 
-		const workbook = XLSX.read(result, { type: "binary" });
+		if (ext == "csv") {
+			const detected = chardet.detect(new Uint8Array(event.target.result));
+			const decoder = new TextDecoder(detected);
+			data = decoder.decode(event.target.result);
+		} else {
+			data = event.target.result;
+		}
 
-		let data: any[] = [];
+		const workbook = XLSX.read(data, { type: "binary" });
+
+		let json: any[] = [];
 		for (const sheet in workbook.Sheets) {
 			if (workbook.Sheets.hasOwnProperty(sheet)) {
-				data = data.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
+				json = json.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
 			}
 		}
-		// @ts-ignore
-		upload.data = data;
+
+		upload.data = json;
 		upload.filename = raw.name;
 
 		console.log(upload.filename, upload.data);
 
-		emit("change", data);
+		emit("change", json);
 	};
-	reader.readAsBinaryString(raw);
+
+	if (ext == "csv") {
+		reader.readAsArrayBuffer(raw);
+	} else {
+		reader.readAsBinaryString(raw);
+	}
 
 	next();
 
@@ -166,6 +187,13 @@ function download() {
 function setProgress(val: string) {
 	progress.value = parseInt(val);
 }
+
+defineExpose({
+	open,
+	clear,
+	setProgress,
+	Form
+});
 </script>
 
 <style lang="scss" scoped>
