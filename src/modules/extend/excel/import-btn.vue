@@ -40,8 +40,7 @@ import { extname } from "/@/cool/utils";
 const props = defineProps({
 	onConfig: Function,
 	onSubmit: {
-		type: Function,
-		required: true
+		type: Function
 	},
 	template: {
 		type: String,

@@ -9,8 +9,6 @@ export default () => {
 		options: {
 			// 尺寸
 			size: 120,
-			// 显示文案
-			text: "选择图片",
 			// 限制
 			limit: {
 				// 上传最大数量

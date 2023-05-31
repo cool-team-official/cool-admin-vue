@@ -169,7 +169,7 @@
 </template>
 
 <script lang="ts" setup name="cl-upload">
-import { computed, ref, watch, PropType } from "vue";
+import { computed, ref, watch, PropType, nextTick } from "vue";
 import { isArray, isNumber } from "lodash-es";
 import Draggable from "vuedraggable";
 import { ElMessage } from "element-plus";
@@ -180,6 +180,7 @@ import { useBase } from "/$/base";
 import { fileName, fileType, getUrls } from "../utils";
 import { Upload } from "../types";
 import ItemViewer from "./items/viewer.vue";
+import { useForm } from "@cool-vue/crud";
 
 const props = defineProps({
 	modelValue: {
@@ -223,6 +224,7 @@ const props = defineProps({
 	// 穿透值
 	isEdit: null,
 	scope: null,
+	prop: null,
 	isDisabled: Boolean
 });
 
@@ -230,6 +232,7 @@ const emit = defineEmits(["update:modelValue", "upload", "success", "error", "pr
 
 const { service, refs, setRefs } = useCool();
 const { user } = useBase();
+const Form = useForm();
 
 // 模块配置
 const { options } = module.get("upload");
@@ -257,7 +260,19 @@ const limit = props.limit || options.limit.upload;
 const limitSize = props.limitSize || options.limit.size;
 
 // 文案
-const text = props.text === undefined ? options.text : props.text;
+const text = computed(() => {
+	if (props.text) {
+		return props.text;
+	} else {
+		switch (props.type) {
+			case "file":
+				return "选择文件";
+
+			case "image":
+				return "选择图片";
+		}
+	}
+});
 
 // 请求头
 const headers = computed(() => {
@@ -507,6 +522,10 @@ function update() {
 
 	if (!check) {
 		emit("update:modelValue", getUrls(list.value));
+
+		nextTick(() => {
+			Form.value?.validateField(props.prop);
+		});
 	}
 }
 

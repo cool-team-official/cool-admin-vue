@@ -20,8 +20,7 @@ export default defineComponent({
 		},
 		header: Array,
 		columns: {
-			type: Array as PropType<any[]>,
-			required: true
+			type: Array as PropType<any[]>
 		},
 		data: [Function, Array],
 		maxExportLimit: Number // 最大导出条数，不传或者小于等于0为不限制

@@ -38,7 +38,7 @@ export function parseNode(vnode: any, options: Options): VNode {
 		const rn = slots[vnode.name];
 
 		if (rn) {
-			return rn({ scope, ...options._data });
+			return rn({ scope, prop, ..._data });
 		} else {
 			return <cl-error-message title={`${vnode.name} is not found`} />;
 		}
@@ -52,13 +52,14 @@ export function parseNode(vnode: any, options: Options): VNode {
 
 	// 处理 props
 	if (isFunction(vnode.props)) {
-		vnode.props = vnode.props({ scope, ...options._data });
+		vnode.props = vnode.props({ scope, prop, ..._data });
 	}
 
 	// 组件参数
 	const props = {
 		...vnode.props,
 		..._data,
+		prop,
 		scope
 	};
 

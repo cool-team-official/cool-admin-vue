@@ -122,6 +122,7 @@ const Upsert = useUpsert({
 			prop: "dataType",
 			label: "类型",
 			value: 0,
+			required: true,
 			component: {
 				name: "el-radio-group",
 				options: options.dataType
@@ -133,6 +134,7 @@ const Upsert = useUpsert({
 			hidden({ scope }) {
 				return scope.dataType != 0;
 			},
+			required: true,
 			component: {
 				name: "el-input",
 				props: {
@@ -147,6 +149,7 @@ const Upsert = useUpsert({
 			hidden({ scope }) {
 				return scope.dataType != 1;
 			},
+			required: true,
 			component: {
 				name: "cl-editor",
 				props: {
@@ -157,6 +160,7 @@ const Upsert = useUpsert({
 		{
 			prop: "data_2",
 			label: "数据",
+			required: true,
 			hidden({ scope }) {
 				return scope.dataType != 2;
 			},

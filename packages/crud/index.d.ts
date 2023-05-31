@@ -454,7 +454,7 @@ declare namespace ClForm {
 	}) => void;
 
 	interface Config {
-		title?: string;
+		title?: any;
 		width?: string;
 		props: ElementPlus.FormProps;
 		items: Item[];
@@ -473,7 +473,7 @@ declare namespace ClForm {
 			buttons?: Array<CloseAction | Render.OpButton>;
 		};
 		dialog: {
-			title?: string;
+			title?: any;
 			width?: string;
 			hideHeader?: boolean;
 			controls?: Array<"fullscreen" | "close">;
