@@ -12,7 +12,7 @@ import {
 import { renderNode } from "../../utils/vnode";
 import { parseTableDict, parseTableOpButtons } from "../../utils/parse";
 import { ContextMenu } from "../context-menu";
-import { orderBy } from "lodash";
+import { orderBy } from "lodash-es";
 
 declare type Emit = (name: "selection-change" | "sort-change", ...args: any[]) => void;
 declare type Table = Vue.Ref<any>;

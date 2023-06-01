@@ -127,7 +127,7 @@ import { useBrowser } from "/@/cool";
 import { ContextMenu, useForm, setFocus } from "@cool-vue/crud";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { ClViewGroup } from "./hook";
-import { isEmpty } from "lodash";
+import { isEmpty } from "lodash-es";
 
 const { browser, onScreenChange } = useBrowser();
 const slots = useSlots();
