@@ -1,7 +1,8 @@
-import axios, { AxiosInterceptorOptions } from "axios";
+import axios from "axios";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { ElMessage } from "element-plus";
+import { endsWith } from "lodash-es";
 import { isDev, config } from "/@/cool";
 import { storage } from "/@/cool/utils";
 import { useBase } from "/$/base";
@@ -49,7 +50,8 @@ request.interceptors.request.use(
 				req.headers["Authorization"] = user.token;
 			}
 
-			if (req.url?.includes("refreshToken")) {
+			// 忽略
+			if (["eps", "refreshToken"].some((e) => endsWith(req.url, e))) {
 				return req;
 			}
 
