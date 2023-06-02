@@ -139,14 +139,14 @@ function onUpload(raw: File, _: any, { next }: any) {
 		let data = "";
 
 		if (ext == "csv") {
-			const detected = chardet.detect(new Uint8Array(event.target.result));
+			const detected: any = chardet.detect(new Uint8Array(event.target.result));
 			const decoder = new TextDecoder(detected);
 			data = decoder.decode(event.target.result);
 		} else {
 			data = event.target.result;
 		}
 
-		const workbook = XLSX.read(data, { type: "binary" });
+		const workbook = XLSX.read(data, { type: "binary", raw: ext == "csv" });
 
 		let json: any[] = [];
 		for (const sheet in workbook.Sheets) {
