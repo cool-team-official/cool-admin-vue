@@ -524,7 +524,9 @@ function update() {
 		emit("update:modelValue", getUrls(list.value));
 
 		nextTick(() => {
-			Form.value?.validateField(props.prop);
+			if (props.prop) {
+				Form.value?.validateField(props.prop);
+			}
 		});
 	}
 }
