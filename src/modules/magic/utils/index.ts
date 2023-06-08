@@ -51,7 +51,7 @@ const handler = {
 
 	// 多选
 	dict_multiple(entity: Entity) {
-		const { table, form } = this.dict(entity);
+		const { table, form } = handler.dict(entity);
 
 		if (!form.component?.props) {
 			form.component!.props = {};

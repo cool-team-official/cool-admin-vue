@@ -172,7 +172,8 @@ function open() {
 						mitt.emit("magic.createMenu");
 						close();
 					})
-					.catch(() => {
+					.catch((err) => {
+						console.error(err);
 						done();
 					});
 			}
