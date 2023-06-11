@@ -289,8 +289,8 @@ const Upsert = useUpsert({
 
 	onSubmit(data, { next }) {
 		next({
-			...data,
-			departmentId: ViewGroup.value?.selected?.id
+			departmentId: ViewGroup.value?.selected?.id,
+			...data
 		});
 	},
 
