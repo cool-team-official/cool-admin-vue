@@ -7,8 +7,6 @@ import { mergeConfig } from "../../utils";
 export default defineComponent({
 	name: "cl-upsert",
 
-	emits: ["opened", "closed"],
-
 	props: {
 		// 表单项
 		items: {
@@ -36,6 +34,8 @@ export default defineComponent({
 		// 表单提交钩子
 		onSubmit: Function
 	},
+
+	emits: ["opened", "closed"],
 
 	setup(props, { slots, expose }) {
 		const { crud } = useCore();

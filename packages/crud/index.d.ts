@@ -429,6 +429,18 @@ declare namespace ClForm {
 			size?: "medium" | "default" | "small";
 			[key: string]: any;
 		};
+		col?: {
+			span: number;
+			offset: number;
+			push: number;
+			pull: number;
+			xs: any;
+			sm: any;
+			md: any;
+			lg: any;
+			xl: any;
+			tag: string;
+		};
 		hook?: Hook.Form;
 		group?: string;
 		collapse?: boolean;
@@ -443,6 +455,7 @@ declare namespace ClForm {
 		append?: Render.Component;
 		rules?: Rule | Rule[];
 		required?: boolean;
+		children?: Item[];
 		[key: string]: any;
 	}
 

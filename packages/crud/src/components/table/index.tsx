@@ -6,8 +6,6 @@ import { mergeConfig } from "../../utils";
 export default defineComponent({
 	name: "cl-table",
 
-	emits: ["selection-change", "sort-change"],
-
 	props: {
 		// 列配置
 		columns: {
@@ -38,6 +36,8 @@ export default defineComponent({
 			default: "id"
 		}
 	},
+
+	emits: ["selection-change", "sort-change"],
 
 	setup(props, { emit, expose }) {
 		const { crud } = useCore();

@@ -138,7 +138,7 @@ export function useTabs({ config, Form }: { config: Config; Form: Form }) {
 	}
 
 	// 切换
-	function change(value: any, isValid: boolean = true) {
+	function change(value: any, isValid = true) {
 		return new Promise((resolve: Function, reject: Function) => {
 			function next() {
 				active.value = value;
@@ -146,7 +146,7 @@ export function useTabs({ config, Form }: { config: Config; Form: Form }) {
 			}
 
 			if (isValid) {
-				let isError: boolean = false;
+				let isError = false;
 
 				const arr = config.items
 					.filter((e: any) => e.group == active.value && !e._hidden && e.prop)

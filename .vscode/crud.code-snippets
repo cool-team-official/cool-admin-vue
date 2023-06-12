@@ -58,6 +58,11 @@
 			"        app.refresh();",
 			"    }",
 			");",
+			"",
+			"// 刷新",
+			"function refresh(params?: any) {",
+			"    Crud.value?.refresh(params);",
+			"}",
 			"</script>",
 			""
 		],

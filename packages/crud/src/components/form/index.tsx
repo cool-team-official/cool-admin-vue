@@ -274,35 +274,44 @@ export default defineComponent({
 
 			// 设置表单数据
 			config.items.map((e) => {
-				if (e.prop) {
-					// 解析 prop
-					if (e.prop.includes(".")) {
-						e.prop = e.prop.replace(/\./g, "-");
+				function deep(e: ClForm.Item) {
+					if (e.prop) {
+						// 解析 prop
+						if (e.prop.includes(".")) {
+							e.prop = e.prop.replace(/\./g, "-");
+						}
+
+						// prop 合并
+						Tabs.mergeProp(e);
+
+						// 绑定值
+						formHook.bind({
+							...e,
+							value: form[e.prop] !== undefined ? form[e.prop] : cloneDeep(e.value),
+							form
+						});
+
+						// 表单验证
+						if (e.required) {
+							e.rules = {
+								required: true,
+								message: `${e.label}不能为空`
+							};
+						}
+
+						// 子集
+						if (e.children) {
+							e.children.forEach(deep);
+						}
 					}
 
-					// prop 合并
-					Tabs.mergeProp(e);
-
-					// 绑定值
-					formHook.bind({
-						...e,
-						value: form[e.prop] !== undefined ? form[e.prop] : cloneDeep(e.value),
-						form
-					});
-
-					// 表单验证
-					if (e.required) {
-						e.rules = {
-							required: true,
-							message: `${e.label}不能为空`
-						};
+					// 设置 tabs 默认值
+					if (e.type == "tabs") {
+						Tabs.set(e.value);
 					}
 				}
 
-				// 设置 tabs 默认值
-				if (e.type == "tabs") {
-					Tabs.set(e.value);
-				}
+				deep(e);
 			});
 
 			// 设置默认值
@@ -337,113 +346,131 @@ export default defineComponent({
 			Object.assign(form, data);
 		}
 
-		// 渲染表单及表单项
-		function renderForm() {
+		// 渲染表单项
+		function renderFormItem(e: ClForm.Item) {
 			const { isDisabled } = config._data;
 
-			// 表单项列表
-			const children = config.items.map((e) => {
-				if (e.type == "tabs") {
-					return <cl-form-tabs v-model={Tabs.active.value} {...e.props} />;
-				}
+			if (e.type == "tabs") {
+				return <cl-form-tabs v-model={Tabs.active.value} {...e.props} />;
+			}
 
-				// 是否隐藏
-				e._hidden = parseFormHidden(e.hidden, {
-					scope: form
-				});
+			// 是否隐藏
+			e._hidden = parseFormHidden(e.hidden, {
+				scope: form
+			});
 
-				// 分组显示
-				const inGroup =
-					isEmpty(Tabs.active.value) || isEmpty(e.group)
-						? true
-						: e.group === Tabs.active.value;
+			// 分组显示
+			const inGroup =
+				isEmpty(Tabs.active.value) || isEmpty(e.group)
+					? true
+					: e.group === Tabs.active.value;
 
-				// 表单项
-				const FormItem = e.component
-					? h(
-							<el-form-item
-								label-width={props.inline ? "auto" : ""}
-								label={e.label}
-								prop={e.prop}
-								rules={isDisabled ? null : e.rules}
-								v-show={inGroup}
-							/>,
-							e.props,
-							{
-								label() {
-									return e.renderLabel
-										? renderNode(e.renderLabel, {
-												scope: form,
-												render: "slot",
-												slots
-										  })
-										: e.label;
-								},
-								default() {
-									return (
-										<div>
-											<div class="cl-form-item">
-												{["prepend", "component", "append"].map((name) => {
+			// 表单项
+			const FormItem = e.component
+				? h(
+						<el-form-item
+							class={{
+								"no-label": !(e.renderLabel || e.label),
+								"has-children": !!e.children
+							}}
+							label-width={props.inline ? "auto" : ""}
+							label={e.label}
+							prop={e.prop}
+							rules={isDisabled ? null : e.rules}
+							v-show={inGroup}
+						/>,
+						e.props,
+						{
+							label() {
+								return e.renderLabel
+									? renderNode(e.renderLabel, {
+											scope: form,
+											render: "slot",
+											slots
+									  })
+									: e.label;
+							},
+							default() {
+								return (
+									<div>
+										<div class="cl-form-item">
+											{["prepend", "component", "append"]
+												.filter((k) => e[k])
+												.map((name) => {
+													const children = e.children && (
+														<div class="cl-form-item__children">
+															<el-row gutter={10}>
+																{e.children.map(renderFormItem)}
+															</el-row>
+														</div>
+													);
+
+													const Item = renderNode(e[name], {
+														item: e,
+														prop: e.prop,
+														scope: form,
+														slots,
+														children,
+														_data: {
+															isDisabled
+														}
+													});
+
 													return (
-														e[name] && (
-															<div
-																v-show={!e.collapse}
-																class={[
-																	`cl-form-item__${name}`,
-																	{
-																		flex1: e.flex !== false
-																	}
-																]}
-																style={e[name].style}>
-																{renderNode(e[name], {
-																	item: e,
-																	prop: e.prop,
-																	scope: form,
-																	slots,
-																	_data: {
-																		isDisabled
-																	}
-																})}
-															</div>
-														)
+														<div
+															v-show={!e.collapse}
+															class={[
+																`cl-form-item__${name}`,
+																{
+																	flex1: e.flex !== false
+																}
+															]}
+															style={e[name].style}>
+															{Item}
+														</div>
 													);
 												})}
-											</div>
-
-											{isBoolean(e.collapse) && (
-												<div
-													class="cl-form-item__collapse"
-													onClick={() => {
-														Action.collapseItem(e);
-													}}>
-													<el-divider content-position="center">
-														{e.collapse ? "查看更多" : "隐藏内容"}
-													</el-divider>
-												</div>
-											)}
 										</div>
-									);
-								}
+
+										{isBoolean(e.collapse) && (
+											<div
+												class="cl-form-item__collapse"
+												onClick={() => {
+													Action.collapseItem(e);
+												}}>
+												<el-divider content-position="center">
+													{e.collapse ? "查看更多" : "隐藏内容"}
+												</el-divider>
+											</div>
+										)}
+									</div>
+								);
 							}
-					  )
-					: null;
+						}
+				  )
+				: null;
 
-				// 隐藏
-				if (e._hidden) {
-					return null;
-				}
+			// 隐藏
+			if (e._hidden) {
+				return null;
+			}
 
-				// 行内
-				if (props.inline) {
-					return FormItem;
-				}
+			// 行内
+			if (props.inline) {
+				return FormItem;
+			}
 
-				return (
-					<el-col span={24} key={e.prop} {...e}>
-						{FormItem}
-					</el-col>
-				);
-			});
+			return (
+				<el-col key={e.prop} span={e.span || 24} {...e.col}>
+					{FormItem}
+				</el-col>
+			);
+		}
+
+		// 渲染表单
+		function renderForm() {
+			// 表单项列表
+			const children = config.items.map(renderFormItem);
 
 			return (
 				<div class="cl-form__container">

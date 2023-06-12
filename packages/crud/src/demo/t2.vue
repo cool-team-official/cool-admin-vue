@@ -1,7 +1,7 @@
 <template>
 	<div class="c">
 		<!-- <el-button @click="submit">submit</el-button> -->
-		{{ Form?.form.t2.name }} - {{ disabled }}
+		{{ form?.t2.name }} - {{ disabled }}
 		<el-input v-model="val" @input="onChange"></el-input>
 		<el-button @click="add">a</el-button>
 		<el-button @click="remove">b</el-button>
@@ -9,10 +9,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useForm, useUpsert } from "../hooks";
 
-const props = defineProps({
+defineProps({
 	modelValue: Object,
 	title: String,
 	scope: null,
@@ -27,7 +27,7 @@ const Form = useForm();
 
 const form = computed(() => Upsert.value?.form);
 
-const val = ref<string>("");
+const val = ref("");
 
 function onChange(val: string) {
 	emit("update:modelValue", val);

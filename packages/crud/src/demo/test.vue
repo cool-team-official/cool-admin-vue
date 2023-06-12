@@ -21,7 +21,7 @@ export default defineComponent({
 		const Form = useForm();
 		const Crud = useCrud();
 
-		const Upsert = useUpsert({
+		useUpsert({
 			onOpened(data) {
 				console.log(data);
 			}

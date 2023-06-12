@@ -18,9 +18,48 @@ const { refs, setRefs } = useRefs();
 const Upsert = useUpsert({
 	items: [
 		{
+			prop: "user",
+			component: {
+				name: "cl-form-card",
+				props: {
+					label: "用户信息"
+				}
+			},
+			children: [
+				{
+					label: "账号",
+					prop: "account",
+					span: 12,
+					required: true,
+					component: {
+						name: "el-input"
+					}
+				},
+				{
+					label: "密码",
+					prop: "password",
+					span: 12,
+					required: true,
+					component: {
+						name: "el-input",
+						props: {
+							type: "password"
+						}
+					}
+				},
+				{
+					label: "手机号",
+					prop: "phone",
+					component: {
+						name: "el-input"
+					}
+				}
+			]
+		},
+		{
 			label: "姓名",
 			renderLabel: () => {
-				return <p>1</p>;
+				return <p style="color: green">姓名</p>;
 			},
 			prop: "name",
 			required: true,

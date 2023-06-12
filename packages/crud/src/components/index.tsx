@@ -6,6 +6,7 @@ import AdvSearch from "./adv/search";
 import Flex from "./flex1";
 import Form from "./form";
 import FormTabs from "./form-tabs";
+import FormCard from "./form-card";
 import MultiDeleteBtn from "./multi-delete-btn";
 import Pagination from "./pagination";
 import Query from "./query";
@@ -27,6 +28,7 @@ export const components: { [key: string]: any } = {
 	Flex,
 	Form,
 	FormTabs,
+	FormCard,
 	MultiDeleteBtn,
 	Pagination,
 	Query,

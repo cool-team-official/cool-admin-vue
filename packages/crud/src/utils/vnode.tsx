@@ -14,6 +14,8 @@ interface Options {
 	item?: any;
 	// 插槽
 	slots?: any;
+	// 子集
+	children?: any[] & any;
 	// 自定义
 	custom?: (vnode: any) => any;
 	// 渲染方式
@@ -105,7 +107,7 @@ export function parseNode(vnode: any, options: Options): VNode {
 
 // 渲染节点
 export function renderNode(vnode: any, options: Options) {
-	const { item, scope, _data, render } = options || {};
+	const { item, scope, children, _data, render } = options || {};
 
 	if (!vnode) {
 		return null;
@@ -174,8 +176,7 @@ export function renderNode(vnode: any, options: Options) {
 	// jsx 模式
 	if (isObject(vnode)) {
 		if (vnode.name) {
-			const { children } = parseExtensionComponent(vnode);
-			return parseNode(vnode, { ...options, children });
+			return parseNode(vnode, { ...options, children, ...parseExtensionComponent(vnode) });
 		} else {
 			if (options.custom) {
 				return options.custom(vnode);
