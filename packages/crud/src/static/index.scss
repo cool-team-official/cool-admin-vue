@@ -165,7 +165,7 @@
 	}
 
 	.el-select {
-		min-width: 120px;
+		min-width: 100px;
 	}
 }
 
@@ -293,6 +293,13 @@
 				width: 100%;
 			}
 		}
+
+		&.no-label {
+			& > .el-form-item__label {
+				padding: 0;
+				width: 0 !important;
+			}
+		}
 	}
 
 	&-item {
@@ -334,6 +341,12 @@
 
 			i {
 				margin-left: 6px;
+			}
+		}
+
+		&__children {
+			.el-form-item {
+				margin-bottom: 18px !important;
 			}
 		}
 
@@ -421,6 +434,39 @@
 					border-left-color: transparent;
 				}
 			}
+		}
+	}
+}
+
+.cl-form-card {
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		font-size: 15px;
+		padding: 0 5px;
+	}
+
+	&__container {
+		border: 1px solid transparent;
+		border-top: 1px solid var(--el-border-color);
+		border-radius: 0;
+		transition: all 0.3s;
+		display: grid;
+		grid-template-rows: 0fr;
+
+		.cl-form-item__children {
+			margin: 10px 10px 10px 0px;
+			min-height: 0;
+			overflow: hidden;
+		}
+	}
+
+	&.is-expand {
+		.cl-form-card__container {
+			border: 1px solid var(--el-border-color);
+			border-radius: var(--el-border-radius-base);
+			grid-template-rows: 1fr;
 		}
 	}
 }
