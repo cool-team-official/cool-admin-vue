@@ -54,7 +54,7 @@
 				</cl-row>
 
 				<cl-row>
-					<el-button>11</el-button>
+					<el-button>总金额：100</el-button>
 					<cl-flex1></cl-flex1>
 					<cl-pagination :page-size="2"></cl-pagination>
 				</cl-row>
@@ -99,6 +99,7 @@ import { computed, reactive, onMounted, ref, nextTick } from "vue";
 import Upsert from "./upsert.vue";
 import FormCrud from "./form-crud.vue";
 import Btn from "./btn.vue";
+import { ElMessage } from "element-plus";
 
 const { refs, setRefs } = useRefs();
 
@@ -221,7 +222,9 @@ const Table = useTable({
 					{
 						label: "测试",
 						hidden: false,
-						onClick() {}
+						onClick() {
+							ElMessage.success(`测试 - ${scope.row.name}`);
+						}
 					}
 				];
 			}
