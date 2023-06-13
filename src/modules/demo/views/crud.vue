@@ -15,6 +15,7 @@
 
 			<!-- 筛选 -->
 			<cl-filter label="状态筛选">
+				<!-- 配置props，选择后会自动过滤列表 -->
 				<cl-select :options="options.status" prop="status" />
 			</cl-filter>
 
@@ -85,14 +86,18 @@
 <script lang="tsx" name="demo-crud" setup>
 import { useCrud, useUpsert, useTable, useAdvSearch, setFocus } from "@cool-vue/crud";
 import { useDict } from "/$/dict";
-import FormBtn from "../components/form-btn.vue";
 import { reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { useCool } from "/@/cool";
+import FormBtn from "../components/form-btn.vue";
+
+// 基础
+const { service } = useCool();
 
 // 字典
 const { dict } = useDict();
 
-// 选项
+// 选项，统一命名options，存放所有的下拉等其他选项列表数据
 const options = reactive({
 	status: [
 		{
@@ -110,12 +115,21 @@ const options = reactive({
 // crud
 const Crud = useCrud(
 	{
+		// 绑定的服务，如：service.demo.goods、service.base.sys.user
 		service: "test"
 	},
 	(app) => {
-		app.refresh();
+		// Crud 加载完，默认刷新一次
+		app.refresh({
+			// status: 1 // 带额外参数的请求
+		});
 	}
 );
+
+// 刷新列表，统一调用这个方法去刷新
+function refresh(params?: any) {
+	Crud.value?.refresh(params);
+}
 
 // 新增、编辑
 const Upsert = useUpsert({
@@ -153,13 +167,13 @@ const Upsert = useUpsert({
 				name: "el-input"
 			}
 		},
-		// 判断mode
+		// 动态配置，新增显示、编辑隐藏
 		() => {
 			return {
 				label: "密码",
 				group: "base",
 				prop: "password",
-				hidden: Upsert.value?.mode == "update",
+				hidden: Upsert.value?.mode == "update", // 通过 mode 参数判断
 				component: {
 					name: "el-input",
 					props: {
@@ -168,18 +182,34 @@ const Upsert = useUpsert({
 				}
 			};
 		},
-		// 动态值
-		() => {
-			return {
-				label: "姓名",
-				prop: "name",
-				required: true,
-				group: "base",
-				component: {
-					name: "el-input"
+		{
+			prop: "user",
+			group: "base",
+			component: {
+				name: "cl-form-card",
+				props: {
+					label: "用户信息（多层级展示）"
 				}
-			};
+			},
+			children: [
+				{
+					label: "姓名",
+					prop: "name",
+					required: true,
+					component: {
+						name: "el-input"
+					}
+				},
+				{
+					label: "年龄",
+					prop: "age",
+					component: {
+						name: "el-input-number"
+					}
+				}
+			]
 		},
+
 		{
 			label: "省市区",
 			prop: "pca",
@@ -188,14 +218,7 @@ const Upsert = useUpsert({
 				name: "cl-distpicker"
 			}
 		},
-		{
-			label: "年龄",
-			group: "base",
-			prop: "age",
-			component: {
-				name: "el-input-number"
-			}
-		},
+
 		{
 			label: "职业",
 			prop: "occupation",
@@ -225,14 +248,20 @@ const Upsert = useUpsert({
 	// 插件
 	plugins: [
 		// 自动聚焦
-		setFocus("name")
+		setFocus("account")
 	],
 
 	// 详情钩子
 	onInfo(data, { next, done }) {
-		// 继续请求 info 接口
+		// 继续请求 info 接口，可以带其他自定义参数
 		// next({
-		// 	id: data.id
+		// 	id: data.id,
+		//	status: 1
+		// });
+
+		// 使用其他接口
+		// service.demo.goods.info({ id: data.id }).then((res) => {
+		// 	done(res);
 		// });
 
 		// 直接取列表的数据返回
@@ -244,9 +273,28 @@ const Upsert = useUpsert({
 		console.log("onSubmit", data);
 		// 继续请求 update/add 接口
 		next(data);
+
+		// 自定义接口
+		// service.demo.goods
+		// 	.update(data)
+		// 	.then(() => {
+		// 		ElMessage.success("保存成功");
+
+		// 		// 操作完，刷新列表
+		// 		refresh();
+
+		// 		// 关闭窗口
+		// 		close();
+		// 	})
+		// 	.catch((err) => {
+		// 		ElMessage.error(err.message);
+
+		// 		// 关闭加载状态
+		// 		done();
+		// 	});
 	},
 
-	// 打开后
+	// 打开后，数据加载完，onInfo 之后
 	onOpened(data) {
 		if (Upsert.value?.mode != "info") {
 			ElMessage.success("编辑中");
@@ -281,12 +329,11 @@ const Table = useTable({
 			type: "selection",
 			width: 60
 		},
-		() => {
-			return {
-				label: "#",
-				type: "expand",
-				prop: "detail"
-			};
+		// 展开列
+		{
+			label: "#",
+			type: "expand",
+			prop: "detail"
 		},
 		{
 			label: "姓名",
@@ -307,22 +354,28 @@ const Table = useTable({
 			label: "创建时间",
 			orderNum: 1,
 			prop: "createTime",
-			sortable: "desc"
+			sortable: "desc" // 默认倒序
 		},
 		{
 			type: "op",
 			width: 350,
-			buttons: [
-				"info",
-				"edit",
-				"delete",
-				{
-					label: "自定义按钮",
-					onClick({ scope }) {
-						ElMessage.success(scope.row.name + "正常");
+			// 静态配置按钮
+			// buttons: ["info", "edit", "delete"],
+			// 动态配置按钮
+			buttons({ scope }) {
+				return [
+					"info",
+					"edit",
+					"delete",
+					{
+						label: "自定义按钮",
+						hidden: !scope.row.status,
+						onClick({ scope }) {
+							ElMessage.success(scope.row.name + "正常");
+						}
 					}
-				}
-			]
+				];
+			}
 		}
 	]
 });

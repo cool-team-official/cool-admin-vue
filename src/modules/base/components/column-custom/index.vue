@@ -5,7 +5,7 @@
 		<cl-dialog v-model="visible" title="自定义列">
 			<div class="cl-column-custom__dialog">
 				<div class="left">
-					<draggable v-model="list">
+					<draggable item-key="prop" v-model="list">
 						<template #item="{ element: item }">
 							<el-checkbox border v-model="item.checked">{{
 								item.label
@@ -34,6 +34,10 @@ import { isBoolean, orderBy } from "lodash-es";
 export default defineComponent({
 	name: "cl-column-custom",
 
+	components: {
+		Draggable
+	},
+
 	props: {
 		name: String,
 		columns: {
@@ -41,10 +45,6 @@ export default defineComponent({
 			required: true,
 			default: () => []
 		}
-	},
-
-	components: {
-		Draggable
 	},
 
 	setup(props) {

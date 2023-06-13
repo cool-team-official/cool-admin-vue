@@ -1,4 +1,6 @@
 import { Merge, ModuleConfig } from "/@/cool";
+
+// npm
 import Crud from "@cool-vue/crud";
 import "@cool-vue/crud/dist/index.css";
 
