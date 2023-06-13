@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" name="sys-param" setup>
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
+import { setFocus, useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { Document } from "@element-plus/icons-vue";
 import { reactive } from "vue";
 import { useCool } from "/@/cool";
@@ -199,6 +199,8 @@ const Upsert = useUpsert({
 			data_1: undefined,
 			data_2: undefined
 		});
-	}
+	},
+
+	plugins: [setFocus()]
 });
 </script>

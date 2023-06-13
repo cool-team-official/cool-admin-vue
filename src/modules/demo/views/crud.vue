@@ -1,5 +1,5 @@
 <template>
-	<cl-crud ref="Crud">
+	<cl-crud ref="Crud" border>
 		<cl-row>
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn />

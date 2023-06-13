@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts" name="dict-list" setup>
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
+import { setFocus, useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import { computed } from "vue";
 import { deepTree } from "/@/cool/utils";
@@ -171,7 +171,8 @@ const Upsert = useUpsert({
 			...data,
 			typeId: ViewGroup.value?.selected?.id
 		});
-	}
+	},
+	plugins: [setFocus("name")]
 });
 
 // cl-table

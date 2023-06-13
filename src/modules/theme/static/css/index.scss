@@ -6,6 +6,10 @@ html.dark {
 		.cl-form-tabs {
 			border-bottom: 1px solid #222;
 		}
+
+		.cl-form-tabs * {
+			border-color: #222;
+		}
 	}
 
 	.cl-crud {

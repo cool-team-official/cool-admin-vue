@@ -6,7 +6,7 @@
 	background-color: #fff;
 
 	&.is-border {
-		border: 1px solid #eee;
+		border: 1px solid var(--el-border-color);
 	}
 
 	.el-input-number {
@@ -141,7 +141,7 @@
 			span {
 				display: inline-block;
 				padding: 0 15px;
-				border-right: 1px solid #ddd;
+				border-right: 1px solid var(--el-border-color);
 			}
 
 			&:last-child {
@@ -258,7 +258,7 @@
 		align-items: center;
 		justify-content: flex-end;
 		height: 60px;
-		border-top: 1px solid #ebeef5;
+		border-top: 1px solid var(--el-border-color);
 		padding: 0 10px;
 		box-sizing: border-box;
 	}
@@ -365,7 +365,7 @@
 }
 
 .cl-form-tabs {
-	border-bottom: 1px solid #dcdfe6;
+	border-bottom: 1px solid var(--el-border-color);
 	overflow: hidden;
 	width: calc(100% - 10px);
 	margin: 0 5px 20px 5px;
@@ -422,15 +422,15 @@
 		}
 
 		ul {
-			border: 1px solid #dcdfe6;
+			border: 1px solid var(--el-border-color);
 			border-top-left-radius: 5px;
 			border-top-right-radius: 5px;
 
 			li {
-				border-left: 1px solid #dcdfe6;
+				border-left: 1px solid var(--el-border-color);
 
 				&:first-child {
-					border-left-color: transparent;
+					border-left-width: 0;
 				}
 			}
 		}
