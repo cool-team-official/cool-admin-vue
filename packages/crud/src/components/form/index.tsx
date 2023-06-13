@@ -244,11 +244,22 @@ export default defineComponent({
 			// 合并配置
 			for (const i in config) {
 				switch (i) {
-					// 动态处理
+					// 表单项
 					case "items":
-						config.items = (options.items || []).map((e) => getValue(e));
+						function deep(arr: any[]): any[] {
+							return arr.map((e) => {
+								const d = getValue(e);
+
+								return {
+									...d,
+									children: d?.children ? deep(d.children) : undefined
+								};
+							});
+						}
+
+						config.items = deep(options.items || []);
 						break;
-					// 合并处理
+					// 事件、参数、操作
 					case "on":
 					case "op":
 					case "props":
@@ -256,7 +267,7 @@ export default defineComponent({
 					case "_data":
 						deepMerge(config[i], options[i] || {});
 						break;
-					// 赋值
+					// 标题、宽度
 					case "title":
 					case "width":
 					default:

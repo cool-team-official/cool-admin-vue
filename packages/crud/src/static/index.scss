@@ -297,7 +297,6 @@
 		&.no-label {
 			& > .el-form-item__label {
 				padding: 0;
-				width: 0 !important;
 			}
 		}
 	}
@@ -455,7 +454,7 @@
 		display: grid;
 		grid-template-rows: 0fr;
 
-		.cl-form-item__children {
+		> .cl-form-item__children {
 			margin: 10px 10px 10px 0px;
 			min-height: 0;
 			overflow: hidden;
@@ -463,11 +462,15 @@
 	}
 
 	&.is-expand {
-		.cl-form-card__container {
+		> .cl-form-card__container {
 			border: 1px solid var(--el-border-color);
 			border-radius: var(--el-border-radius-base);
 			grid-template-rows: 1fr;
 		}
+	}
+
+	.cl-form-card {
+		margin-left: 10px;
 	}
 }
 

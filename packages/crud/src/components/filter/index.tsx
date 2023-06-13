@@ -15,7 +15,7 @@ export default defineComponent({
 						{props.label}
 					</span>
 
-					{slots.default && slots.default()}
+					{slots.default?.()}
 				</div>
 			);
 		};

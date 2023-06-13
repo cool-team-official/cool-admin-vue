@@ -1,8 +1,10 @@
 import { Merge, ModuleConfig } from "/@/cool";
 import Crud from "@cool-vue/crud";
-// 调试或者自定义crud
-// import Crud from "../../../packages/crud/src";
 import "@cool-vue/crud/dist/index.css";
+
+// 调试、自定义crud
+// import Crud from "../../../packages/crud/src";
+// import "../../../packages/crud/src/static/index.scss";
 
 export default (): Merge<ModuleConfig, CrudOptions> => {
 	return {

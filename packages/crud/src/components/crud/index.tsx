@@ -80,7 +80,7 @@ export default defineComponent({
 				<div
 					class={["cl-crud", { "is-border": props.border }]}
 					style={{ padding: props.padding }}>
-					{slots.default && slots.default()}
+					{slots.default?.()}
 				</div>
 			);
 		};

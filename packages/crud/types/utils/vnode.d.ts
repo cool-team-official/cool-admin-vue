@@ -4,6 +4,7 @@ interface Options {
     scope?: any;
     item?: any;
     slots?: any;
+    children?: any[] & any;
     custom?: (vnode: any) => any;
     render?: "slot" | null;
     [key: string]: any;

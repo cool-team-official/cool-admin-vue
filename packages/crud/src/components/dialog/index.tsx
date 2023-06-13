@@ -253,7 +253,7 @@ export default defineComponent({
 								class="cl-dialog__container"
 								style={{ height: props.height }}
 								key={cacheKey.value}>
-								{slots.default && slots.default()}
+								{slots.default?.()}
 							</div>
 						);
 					},

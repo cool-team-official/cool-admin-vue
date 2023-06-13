@@ -47,12 +47,15 @@ const Upsert = useUpsert({
 						}
 					}
 				},
-				{
-					label: "手机号",
-					prop: "phone",
-					component: {
-						name: "el-input"
-					}
+				() => {
+					return {
+						label: "手机号",
+						prop: "phone",
+						hidden: Upsert.value?.mode == "update",
+						component: {
+							name: "el-input"
+						}
+					};
 				}
 			]
 		},
@@ -102,7 +105,7 @@ const Upsert = useUpsert({
 		}
 	],
 
-	plugins: [setFocus()],
+	plugins: [setFocus("account")],
 
 	onOpened() {
 		Upsert.value?.setOptions("work", [
@@ -115,6 +118,10 @@ const Upsert = useUpsert({
 				value: 2
 			}
 		]);
+
+		// Upsert.value?.setProps("account", {
+		// 	disabled: Upsert.value?.mode == "update"
+		// });
 	},
 
 	onClose(action, done) {

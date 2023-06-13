@@ -11,6 +11,12 @@ export default defineComponent({
 
 	props: {
 		label: String,
+		// 展开状态
+		expand: {
+			type: Boolean,
+			default: true
+		},
+		// 是否能展开、收起
 		isExpand: {
 			type: Boolean,
 			default: true
@@ -18,21 +24,23 @@ export default defineComponent({
 	},
 
 	setup(props, { slots }) {
-		const isExpand = ref(props.isExpand);
+		const visible = ref(props.expand);
 
-		async function toExpand() {
-			isExpand.value = !isExpand.value;
+		function toExpand() {
+			if (props.isExpand) {
+				visible.value = !visible.value;
+			}
 		}
 
 		return () => {
 			return (
-				<div class={["cl-form-card", { "is-expand": isExpand.value }]}>
+				<div class={["cl-form-card", { "is-expand": visible.value }]}>
 					<div class="cl-form-card__header" v-show={props.label} onClick={toExpand}>
 						<span>{props.label}</span>
 
-						<el-icon>
-							<arrow-down v-show={!isExpand.value} />
-							<arrow-up v-show={isExpand.value} />
+						<el-icon v-show={props.isExpand}>
+							<arrow-down v-show={!visible.value} />
+							<arrow-up v-show={visible.value} />
 						</el-icon>
 					</div>
 					<div class="cl-form-card__container">{slots.default?.()}</div>

@@ -8,37 +8,63 @@ declare type Form = Vue.Ref<any>;
 // 操作
 export function useAction({ config, form, Form }: { config: Config; form: obj; Form: Form }) {
 	// 设置数据
-	function set({ prop, options, hidden, path, props }: any, data?: any): any {
+	function set(
+		{
+			prop,
+			key,
+			path
+		}: { prop?: string; key?: "options" | "props" | "hidden" | "hidden-toggle"; path?: string },
+		data?: any
+	) {
 		let p: string = path || "";
 
-		if (prop) {
-			p = `items[prop:${prop}]`;
+		if (path) {
+			dataset(config, p, data);
+		} else {
+			let d: any;
+
+			if (prop) {
+				function deep(arr: ClForm.Item[]) {
+					arr.forEach((e) => {
+						if (e.prop == prop) {
+							d = e;
+						} else {
+							if (e.children) {
+								deep(e.children);
+							}
+						}
+					});
+				}
+
+				deep(config.items);
+			}
+
+			if (d) {
+				switch (key) {
+					case "options":
+						d.component.options = data;
+						break;
+
+					case "props":
+						Object.assign(d.component.props, data);
+						break;
+
+					case "hidden":
+						d.hidden = data;
+						break;
+
+					case "hidden-toggle":
+						d.hidden = data === undefined ? !d.hidden : !data;
+						break;
+
+					default:
+						Object.assign(d, data);
+						break;
+				}
+			} else {
+				console.error(`prop "${prop}" not found`);
+			}
 		}
-
-		if (options) {
-			p += `.component.options`;
-		}
-
-		if (props) {
-			p += `.component.props`;
-		}
-
-		if (hidden) {
-			p += ".hidden";
-		}
-
-		return dataset(config, p, data);
-	}
-
-	// 合并数据
-	function merge(options: any, value: any): any {
-		return set(
-			{
-				...options,
-				isMerge: true
-			},
-			value
-		);
 	}
 
 	// 获取表单值
@@ -63,33 +89,30 @@ export function useAction({ config, form, Form }: { config: Config; form: obj; F
 
 	// 设置表单项的下拉数据列表
 	function setOptions(prop: string, value: any[]) {
-		set({ options: true, prop }, value);
+		set({ prop, key: "options" }, value);
 	}
 
 	// 设置表单项的组件参数
 	function setProps(prop: string, value: any) {
-		merge({ props: true, prop }, value);
+		set({ prop, key: "props" }, value);
 	}
 
 	// 切换表单项的显示、隐藏
 	function toggleItem(prop: string, value?: boolean) {
-		if (value === undefined) {
-			value = set({ prop, hidden: true });
-		}
-		set({ hidden: true, prop }, !value);
+		set({ prop, key: "hidden-toggle" }, value);
 	}
 
 	// 对部分表单项隐藏
 	function hideItem(...props: string[]) {
 		props.forEach((prop) => {
-			set({ hidden: true, prop }, true);
+			set({ prop, key: "hidden" }, true);
 		});
 	}
 
 	// 对部分表单项显示
 	function showItem(...props: string[]) {
 		props.forEach((prop) => {
-			set({ hidden: true, prop }, false);
+			set({ prop, key: "hidden" }, false);
 		});
 	}
 
@@ -221,6 +244,7 @@ export function useApi({ Form }: { Form: Form }) {
 			"getForm",
 			"setForm",
 			"setData",
+			"setConfig",
 			"setOptions",
 			"setProps",
 			"toggleItem",

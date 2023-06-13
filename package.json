@@ -9,7 +9,7 @@
 		"lint:eslint": "eslint \"{src}/**/*.{vue,ts,tsx}\" --fix"
 	},
 	"dependencies": {
-		"@cool-vue/crud": "^6.2.2",
+		"@cool-vue/crud": "^6.3.1",
 		"@element-plus/icons-vue": "^2.0.10",
 		"@vueuse/core": "^9.1.0",
 		"@wangeditor/editor": "^5.1.23",

@@ -116,7 +116,7 @@ export default defineComponent({
 									);
 								},
 								default: () => {
-									slots.default && slots.default();
+									slots.default?.();
 								}
 							}
 						)}

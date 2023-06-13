@@ -517,10 +517,11 @@ declare namespace ClForm {
 		hideLoading(): void;
 		setData(prop: string, value: any): void;
 		bindForm(data: obj): void;
-		setOptions(prop: string, list: Array<{ label: string; value?: any }>): void;
-		setProps(prop: string, value: any): void;
 		getForm(prop?: string): any;
 		setForm(prop: string, value: any): void;
+		setOptions(prop: string, list: { label: string; value?: any; [key: string]: any }[]): void;
+		setProps(prop: string, value: any): void;
+		setConfig(path: string, value: any): void;
 		showItem(props: string[] | string): void;
 		hideItem(props: string[] | string): void;
 		toggleItem(prop: string, flag?: boolean): void;
