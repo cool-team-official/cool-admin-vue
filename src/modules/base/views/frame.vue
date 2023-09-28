@@ -19,7 +19,8 @@ watch(
 		url.value = val.meta?.iframeUrl;
 	},
 	{
-		immediate: true
+		immediate: true,
+		deep: true
 	}
 );
 
