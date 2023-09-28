@@ -1,0 +1,32 @@
+// Element-plus
+.el-input-number {
+	&__decrease,
+	&__increase {
+		border: 0 !important;
+		background-color: transparent;
+	}
+}
+
+.el-message,
+.el-overlay.is-message-box {
+	z-index: 10000 !important;
+}
+
+.el-message {
+	&.el-message--success,
+	&.el-message--error,
+	&.el-message--info,
+	&.el-message--warning {
+		border-radius: 6px;
+	}
+
+	&__icon {
+		font-size: 18px;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.el-message-box {
+		width: 90% !important;
+	}
+}

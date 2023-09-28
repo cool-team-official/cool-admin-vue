@@ -1,6 +1,1 @@
-/public/
-/dist/
-/node_modules/
-/src/icons/svg/
-/mock/
-vue.config.js
+vite.config.ts

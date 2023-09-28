@@ -1,11 +1,11 @@
 FROM node:lts-alpine
 WORKDIR /build
 # 设置Node-Sass的镜像地址
-RUN npm config set sass_binary_site https://repo.huaweicloud.com/node-sass 
+RUN npm config set sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
 # 设置npm镜像
-RUN npm config set registry https://repo.huaweicloud.com/repository/npm/
+RUN npm config set registry https://registry.npm.taobao.org
 COPY package.json /build/package.json
-RUN npm install
+RUN yarn
 COPY ./ /build
 RUN npm run build
 

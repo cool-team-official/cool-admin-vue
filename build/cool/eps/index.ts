@@ -1,0 +1,450 @@
+import { createDir, error, firstUpperCase, readFile, toCamel } from "../utils";
+import { join } from "path";
+import { Entity, DistPath } from "./config";
+import axios from "axios";
+import { isArray, isEmpty, last } from "lodash";
+import { createWriteStream } from "fs";
+import prettier from "prettier";
+import { proxy } from "../../../src/config/proxy";
+
+// 实体类型
+type Entity = {
+	api: {
+		dts: {
+			parameters?: {
+				description: string;
+				name: string;
+				required: boolean;
+				schema: {
+					type: string;
+				};
+			}[];
+		};
+		name: string;
+		method: string;
+		path: string;
+		prefix: string;
+		summary: string;
+		tag: string;
+	}[];
+	columns: {
+		comment: string;
+		length: string;
+		nullable: boolean;
+		propertyName: string;
+		type: string;
+	}[];
+	module: string;
+	name: string;
+	prefix: string;
+};
+
+// 获取方法名
+function getNames(v: any) {
+	return Object.keys(v).filter((e) => !["namespace", "permission"].includes(e));
+}
+
+// 获取数据
+async function getData(temps: any[]) {
+	let list: Entity[] = [];
+
+	// 本地文件
+	try {
+		list = JSON.parse(readFile(join(DistPath, "eps.json")) || "[]");
+	} catch (err) {
+		error(`[eps] ${join(DistPath, "eps.json")} 文件异常, ${err.message}`);
+	}
+
+	// 远程数据
+	const url = proxy["/dev/"].target + "/admin/base/open/eps";
+
+	await axios
+		.get(url, {
+			timeout: 5000
+		})
+		.then((res) => {
+			const { code, data, message } = res.data;
+
+			if (code === 1000) {
+				if (!isEmpty(data) && data) {
+					// @ts-ignore
+					list = Object.values(data).flat();
+				}
+			} else {
+				error(`[eps] ${message}`);
+			}
+		})
+		.catch(() => {
+			error(`[eps] 获取失败, ${url} 无法访问！`);
+		});
+
+	return [...list, ...temps];
+}
+
+// 创建数据文件
+function createJson(eps: Entity[]) {
+	createWriteStream(join(DistPath, "eps.json"), {
+		flags: "w"
+	}).write(
+		JSON.stringify(
+			eps.map((e) => {
+				return {
+					prefix: e.prefix,
+					name: e.name || "",
+					api: e.api.map((e) => {
+						return {
+							name: e.name,
+							method: e.method,
+							path: e.path
+						};
+					})
+				};
+			})
+		)
+	);
+}
+
+// 创建描述文件
+async function createDescribe({ list, service }: { list: Entity[]; service: any }) {
+	// 获取类型
+	function getType({ propertyName, type }) {
+		for (const map of Entity.mapping) {
+			if (map.custom) {
+				const resType = map.custom({ propertyName, type });
+				if (resType) return resType;
+			}
+			if (map.test) {
+				if (map.test.includes(type)) return map.type;
+			}
+		}
+		return type;
+	}
+
+	// 创建 Entity
+	function createEntity() {
+		const t0: string[][] = [];
+
+		for (const item of list) {
+			if (!item.name) continue;
+			const t = [`interface ${item.name} {`];
+			for (const col of item.columns || []) {
+				// 描述
+				t.push("\n");
+				t.push("/**\n");
+				t.push(` * ${col.comment}\n`);
+				t.push(" */\n");
+				t.push(
+					`${col.propertyName}?: ${getType({
+						propertyName: col.propertyName,
+						type: col.type
+					})};`
+				);
+			}
+			t.push("\n");
+			t.push("/**\n");
+			t.push(` * 任意键值\n`);
+			t.push(" */\n");
+			t.push(`[key: string]: any;`);
+			t.push("}");
+			t0.push(t);
+		}
+
+		return t0.map((e) => e.join("")).join("\n\n");
+	}
+
+	// 创建 Service
+	function createDts() {
+		const t0: string[][] = [];
+
+		const t1 = [
+			`
+			type json = any;
+
+			type Service = {
+				request(options?: {
+					url: string;
+					method?: "POST" | "GET" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS";
+					data?: any;
+					params?: any;
+					headers?: {
+						[key: string]: any;
+					},
+					timeout?: number;
+					proxy?: boolean;
+					[key: string]: any;
+				}): Promise<any>;
+		`
+		];
+
+		// 处理数据
+		function deep(d: any, k?: string) {
+			if (!k) k = "";
+
+			for (const i in d) {
+				const name = k + toCamel(firstUpperCase(i.replace(/[:]/g, "")));
+
+				if (d[i].namespace) {
+					// 查找配置
+					const item = list.find((e) => (e.prefix || "").includes(d[i].namespace));
+
+					if (item) {
+						const t = [`interface ${name} {`];
+
+						t1.push(`${i}: ${name};`);
+
+						// 插入方法
+						if (item.api) {
+							// 权限列表
+							const permission: string[] = [];
+
+							item.api.forEach((a) => {
+								// 方法名
+								const n = toCamel(a.name || last(a.path.split("/")) || "").replace(
+									/[:\/-]/g,
+									""
+								);
+
+								if (n) {
+									// 参数类型
+									let q: string[] = [];
+
+									// 参数列表
+									const { parameters = [] } = a.dts || {};
+
+									parameters.forEach((p) => {
+										if (p.description) {
+											q.push(`\n/** ${p.description}  */\n`);
+										}
+
+										if (p.name.includes(":")) {
+											return false;
+										}
+
+										const a = `${p.name}${p.required ? "" : "?"}`;
+										const b = `${p.schema.type || "string"}`;
+
+										q.push(`${a}: ${b},`);
+									});
+
+									if (isEmpty(q)) {
+										q = ["any"];
+									} else {
+										q.unshift("{");
+										q.push("}");
+									}
+
+									// 返回类型
+									let res = "";
+
+									// 实体名
+									const en = item.name || "any";
+
+									switch (a.path) {
+										case "/page":
+											res = `
+											{
+												pagination: { size: number; page: number; total: number; [key: string]: any };
+												list: ${en} [];
+												[key: string]: any;
+											}
+										`;
+											break;
+
+										case "/list":
+											res = `${en} []`;
+											break;
+
+										case "/info":
+											res = en;
+											break;
+
+										default:
+											res = "any";
+											break;
+									}
+
+									// 描述
+									t.push("\n");
+									t.push("/**\n");
+									t.push(` * ${a.summary || n}\n`);
+									t.push(" */\n");
+
+									t.push(
+										`${n}(data${q.length == 1 ? "?" : ""}: ${q.join(
+											""
+										)}): Promise<${res}>;`
+									);
+								}
+
+								permission.push(n);
+							});
+
+							// 权限标识
+							t.push("\n");
+							t.push("/**\n");
+							t.push(" * 权限标识\n");
+							t.push(" */\n");
+							t.push(
+								`permission: { ${permission
+									.map((e) => `${e}: string;`)
+									.join("\n")} };`
+							);
+
+							// 权限状态
+							t.push("\n");
+							t.push("/**\n");
+							t.push(" * 权限状态\n");
+							t.push(" */\n");
+							t.push(
+								`_permission: { ${permission
+									.map((e) => `${e}: boolean;`)
+									.join("\n")} };`
+							);
+
+							// 请求
+							t.push("\n");
+							t.push("/**\n");
+							t.push(" * 请求\n");
+							t.push(" */\n");
+							t.push(`request: Service['request']`);
+						}
+
+						t.push("}");
+						t0.push(t);
+					}
+				} else {
+					t1.push(`${i}: {`);
+					deep(d[i], name);
+					t1.push(`},`);
+				}
+			}
+		}
+
+		// 深度
+		deep(service);
+
+		// 结束
+		t1.push("}");
+
+		// 追加
+		t0.push(t1);
+
+		return t0.map((e) => e.join("")).join("\n\n");
+	}
+
+	// 文件内容
+	const text = `
+		declare namespace Eps {
+			${createEntity()}
+			${createDts()}
+		}
+	`;
+
+	// 文本内容
+	const content = await prettier.format(text, {
+		parser: "typescript",
+		useTabs: true,
+		tabWidth: 4,
+		endOfLine: "lf",
+		semi: true,
+		singleQuote: false,
+		printWidth: 100,
+		trailingComma: "none"
+	});
+
+	// 创建 eps 描述文件
+	createWriteStream(join(DistPath, "eps.d.ts"), {
+		flags: "w"
+	}).write(content);
+}
+
+// 创建服务
+function createService(data: Entity[]) {
+	const list: Entity[] = [];
+	const service = {};
+	const d = { data };
+
+	for (const i in d) {
+		if (isArray(d[i])) {
+			d[i].forEach((e: Entity) => {
+				// 分隔路径
+				const arr = e.prefix
+					.replace(/\//, "")
+					.replace("admin", "")
+					.split("/")
+					.filter(Boolean)
+					.map(toCamel);
+
+				// 遍历
+				function deep(d: any, i: number) {
+					const k = arr[i];
+
+					if (k) {
+						// 是否最后一个
+						if (arr[i + 1]) {
+							if (!d[k]) {
+								d[k] = {};
+							}
+
+							deep(d[k], i + 1);
+						} else {
+							// 本地不存在则创建实例
+							if (!d[k]) {
+								d[k] = {
+									namespace: e.prefix.substring(1, e.prefix.length),
+									permission: {}
+								};
+							}
+
+							// 创建方法
+							e.api.forEach((a) => {
+								// 方法名
+								const n = a.path.replace("/", "");
+
+								if (n && !/[-:]/g.test(n)) {
+									d[k][n] = a;
+								}
+							});
+
+							// 创建权限
+							getNames(d[k]).forEach((e) => {
+								d[k].permission[e] = `${d[k].namespace.replace(
+									"admin/",
+									""
+								)}/${e}`.replace(/\//g, ":");
+							});
+
+							list.push(e);
+						}
+					}
+				}
+
+				deep(service, 0);
+			});
+		}
+	}
+
+	return { service, list };
+}
+
+// 创建 eps
+export async function createEps(query?: { list: any[] }) {
+	// 获取数据
+	const data = await getData(query?.list || []);
+
+	// 生成数据
+	const { service, list } = createService(data);
+
+	// 创建临时目录
+	createDir(DistPath);
+
+	// 创建数据文件
+	createJson(data);
+
+	// 创建描述文件
+	createDescribe({ service, list });
+
+	return `
+	export const eps = ${JSON.stringify({ service, list })}
+	`;
+}
