@@ -34,8 +34,8 @@ declare const _default: import("vue").DefineComponent<{
     onReset?: ((...args: any[]) => any) | undefined;
     onClear?: ((...args: any[]) => any) | undefined;
 }, {
+    size: string | number;
     items: ClForm.Item[];
     op: unknown[];
-    size: string | number;
 }, {}>;
 export default _default;

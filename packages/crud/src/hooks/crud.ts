@@ -1,3 +1,4 @@
+import { TestService } from "../test/service";
 import { watch, ref, nextTick, getCurrentInstance, Ref, inject, provide } from "vue";
 
 // 获取上级
@@ -56,6 +57,11 @@ export function useCrud(options?: DeepPartial<ClCrud.Options>, cb?: (app: ClCrud
 	useParent("cl-crud", Crud);
 
 	if (options) {
+		// 测试模式
+		if (options.service == "test") {
+			options.service = new TestService();
+		}
+
 		provide("useCrud__options", options);
 	}
 

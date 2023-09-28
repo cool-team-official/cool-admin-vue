@@ -5,7 +5,7 @@
 			<cl-add-btn />
 			<cl-multi-delete-btn />
 			<cl-flex1 />
-			<cl-search-key />
+			<cl-search-key placeholder="搜索名称" />
 		</cl-row>
 
 		<cl-row>

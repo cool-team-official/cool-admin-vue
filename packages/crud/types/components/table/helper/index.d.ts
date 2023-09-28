@@ -80,7 +80,7 @@ export declare function useTable(props: any): {
                 column: any;
                 $index: number;
             }) => any;
-            sortable: boolean | "desc" | "asc" | "custom" | "descending" | "ascending";
+            sortable: boolean | "asc" | "desc" | "custom" | "descending" | "ascending";
             sortMethod: fn;
             sortBy: string | any[] | ((row: any, index: number) => any);
             resizable: boolean;

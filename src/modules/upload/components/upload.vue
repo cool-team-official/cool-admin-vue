@@ -291,7 +291,8 @@ async function onBeforeUpload(file: any, item?: Upload.Item) {
 			type: getType(file.name),
 			progress: 0,
 			url: "",
-			preload: ""
+			preload: "",
+			error: ""
 		};
 
 		// 图片预览地址

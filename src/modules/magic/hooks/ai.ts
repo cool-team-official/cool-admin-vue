@@ -1,7 +1,6 @@
 import { ElNotification } from "element-plus";
 import { io, Socket } from "socket.io-client";
 import { useCool } from "/@/cool";
-import { isString } from "lodash-es";
 
 export function useAi() {
 	const { route, router } = useCool();
@@ -11,7 +10,7 @@ export function useAi() {
 	// 连接
 	function connect(cb: { onMessage?(content: string): void; onComplete?(): void }) {
 		if (!socket) {
-			socket = io("http://192.168.0.224:9009/code", {
+			socket = io("https://service.cool-js.com/code", {
 				transports: ["websocket"]
 			});
 

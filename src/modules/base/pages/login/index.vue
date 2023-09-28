@@ -125,11 +125,15 @@ async function toLogin() {
 		// 设置缓存
 		storage.set("username", form.username);
 
-		// 跳转
+		// 跳转首页
 		router.push("/");
-	} catch (err: any) {
+	} catch (err) {
+		// 刷新验证码
 		refs.picCaptcha.refresh();
-		ElMessage.error(err.message);
+
+		if (err instanceof Error) {
+			ElMessage.error(err.message);
+		}
 	}
 
 	saving.value = false;

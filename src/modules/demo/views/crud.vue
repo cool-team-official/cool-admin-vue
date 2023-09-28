@@ -96,7 +96,7 @@
 </template>
 
 <script lang="tsx" name="demo-crud" setup>
-import { useCrud, useUpsert, useTable, useAdvSearch, setFocus } from "@cool-vue/crud";
+import { useCrud, useUpsert, useTable, useAdvSearch, setFocus, useSearch } from "@cool-vue/crud";
 import { useDict } from "/$/dict";
 import { reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -481,6 +481,22 @@ const AdvSearch = useAdvSearch({
 			component: {
 				name: "el-select",
 				options: dict.get("occupation")
+			}
+		}
+	]
+});
+
+// 搜索
+const Search = useSearch({
+	items: [
+		{
+			label: "姓名",
+			prop: "name",
+			component: {
+				name: "el-input",
+				props: {
+					clearable: true
+				}
 			}
 		}
 	]

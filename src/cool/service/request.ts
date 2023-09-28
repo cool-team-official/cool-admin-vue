@@ -127,17 +127,13 @@ request.interceptors.response.use(
 		NProgress.done();
 
 		if (error.response) {
-			const { status, config: c } = error.response;
+			const { status } = error.response;
 			const { user } = useBase();
 
 			if (status == 401) {
 				user.logout();
 			} else {
-				if (isDev) {
-					if (c.url != `${config.baseUrl}/`) {
-						ElMessage.error(`${c.url} ${status}`);
-					}
-				} else {
+				if (!isDev) {
 					switch (status) {
 						case 403:
 							router.push("/403");
