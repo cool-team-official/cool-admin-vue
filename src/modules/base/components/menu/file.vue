@@ -3,9 +3,11 @@
 		<template v-if="isEdit">
 			<el-input placeholder="请输入" v-model="text" @change="onTextChange"></el-input>
 
-			<el-icon @click="toggle(false)">
-				<FolderChecked />
-			</el-icon>
+			<el-tooltip content="选择文件">
+				<el-icon @click="toggle(false)">
+					<FolderChecked />
+				</el-icon>
+			</el-tooltip>
 		</template>
 
 		<template v-else>
@@ -18,9 +20,11 @@
 				@change="onPathChange"
 			/>
 
-			<el-icon @click="toggle(true)">
-				<Edit />
-			</el-icon>
+			<el-tooltip content="输入编辑">
+				<el-icon @click="toggle(true)">
+					<Edit />
+				</el-icon>
+			</el-tooltip>
 		</template>
 	</div>
 </template>
