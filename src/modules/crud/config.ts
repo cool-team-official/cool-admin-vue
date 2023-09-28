@@ -17,6 +17,11 @@ export default (): Merge<ModuleConfig, CrudOptions> => {
 					order: "sort"
 				},
 				label: locale.zhCn
+			},
+			render: {
+				functionSlots: {
+					exclude: ["el-date-picker", "el-cascader", "el-time-select", "el-transfer"]
+				}
 			}
 		},
 		install: Crud.install
