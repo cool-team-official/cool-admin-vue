@@ -55,9 +55,10 @@ async function getData(temps: any[]) {
 		error(`[eps] ${join(DistPath, "eps.json")} 文件异常, ${err.message}`);
 	}
 
-	// 远程数据
+	// 远程地址
 	const url = proxy["/dev/"].target + "/admin/base/open/eps";
 
+	// 请求数据
 	await axios
 		.get(url, {
 			timeout: 5000
@@ -78,7 +79,18 @@ async function getData(temps: any[]) {
 			error(`[eps] 获取失败, ${url} 无法访问！`);
 		});
 
-	return [...list, ...temps];
+	// 判断是否重复项
+	if (isArray(temps)) {
+		temps.forEach((e) => {
+			const d = list.find((a) => e.prefix === a.prefix);
+
+			if (!d) {
+				list.push(e);
+			}
+		});
+	}
+
+	return list;
 }
 
 // 创建数据文件
