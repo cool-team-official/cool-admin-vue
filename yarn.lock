@@ -282,10 +282,10 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@cool-vue/crud@^7.0.1-beta1":
-  version "7.0.1-beta1"
-  resolved "https://registry.yarnpkg.com/@cool-vue/crud/-/crud-7.0.1-beta1.tgz#74f74b2c2604bfb3a006fe19dfe96aee389ce21e"
-  integrity sha512-69QaNJ6I+Ha4bYo5vZiMpbb0z2q6hPbR/G997WIhXdLYDfwhRjrjpB2PnH1JIXMo00iuC5DJS01QdYBpXxVHFw==
+"@cool-vue/crud@^7.0.1-beta2":
+  version "7.0.1-beta2"
+  resolved "https://registry.yarnpkg.com/@cool-vue/crud/-/crud-7.0.1-beta2.tgz#1c43ad0d5af3fe009bfcfa312c71d8b99a676213"
+  integrity sha512-CN9hlfsWKOU/qf7E1COjgLqEqJBOd3v8v8bHeivFt7BHdDmwxrgqGZWXvZ6zp4LXSBq7dacF7dqn1FOe7TYzCQ==
   dependencies:
     array.prototype.flat "^1.2.4"
     core-js "^3.21.1"
