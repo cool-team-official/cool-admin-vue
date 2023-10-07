@@ -84,7 +84,9 @@ async function getData(temps: any[]) {
 		temps.forEach((e) => {
 			const d = list.find((a) => e.prefix === a.prefix);
 
-			if (!d) {
+			if (d) {
+				Object.assign(d, e);
+			} else {
 				list.push(e);
 			}
 		});

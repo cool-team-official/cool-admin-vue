@@ -36,7 +36,7 @@ export function createEps(modules: Module[]) {
 					.filter((e) => !["constructor", "namespace"].includes(e))
 					.map((e) => {
 						return {
-							path: e
+							path: `/${e}`
 						};
 					});
 
@@ -44,7 +44,7 @@ export function createEps(modules: Module[]) {
 					api,
 					module: s.namespace.split("/")[0],
 					name: s.constructor.name,
-					prefix: s.namespace
+					prefix: `/admin/${s.namespace}`
 				});
 			} else {
 				for (const i in s) {
