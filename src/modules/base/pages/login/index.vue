@@ -127,13 +127,12 @@ async function toLogin() {
 
 		// 跳转首页
 		router.push("/");
-	} catch (err) {
+	} catch (err: any) {
 		// 刷新验证码
 		refs.picCaptcha.refresh();
 
-		if (err instanceof Error) {
-			ElMessage.error(err.message);
-		}
+		// 提示错误
+		ElMessage.error(err.message);
 	}
 
 	saving.value = false;
