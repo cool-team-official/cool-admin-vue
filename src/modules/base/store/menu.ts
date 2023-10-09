@@ -143,12 +143,7 @@ export const useMenuStore = defineStore("menu", function () {
 			});
 		} else {
 			// 动态菜单
-			await service.base.comm
-				.permmenu()
-				.then(next)
-				.catch(() => {
-					ElMessage.error("菜单加载异常！");
-				});
+			await service.base.comm.permmenu().then(next);
 		}
 	}
 
