@@ -1,6 +1,6 @@
 import { PropType } from "vue";
 declare const _default: import("vue").DefineComponent<{
-    modelValue: (StringConstructor | NumberConstructor)[];
+    modelValue: (NumberConstructor | StringConstructor)[];
     labels: {
         type: ArrayConstructor;
         default: () => never[];
@@ -14,7 +14,7 @@ declare const _default: import("vue").DefineComponent<{
         default: string;
     };
 }, () => JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("change" | "update:modelValue")[], "change" | "update:modelValue", import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    modelValue: (StringConstructor | NumberConstructor)[];
+    modelValue: (NumberConstructor | StringConstructor)[];
     labels: {
         type: ArrayConstructor;
         default: () => never[];

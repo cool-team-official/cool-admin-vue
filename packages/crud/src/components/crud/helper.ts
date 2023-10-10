@@ -1,7 +1,8 @@
 import { ElMessageBox, ElMessage } from "element-plus";
 import { Mitt } from "../../utils/mitt";
 import { ref } from "vue";
-import { isArray, isFunction, merge } from "lodash-es";
+import { isArray, isFunction } from "lodash-es";
+import { merge } from "../../utils";
 
 interface Options {
 	mitt: Mitt;

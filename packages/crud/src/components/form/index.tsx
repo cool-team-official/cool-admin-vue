@@ -1,8 +1,8 @@
 import { defineComponent, h, nextTick } from "vue";
-import { cloneDeep, isBoolean, isEmpty, merge } from "lodash-es";
+import { cloneDeep, isBoolean, isEmpty } from "lodash-es";
 import { useAction, useForm, usePlugins, useTabs } from "./helper";
 import { useBrowser, useConfig, useElApi } from "../../hooks";
-import { getValue } from "../../utils";
+import { getValue, merge } from "../../utils";
 import formHook from "../../utils/form-hook";
 import { renderNode } from "../../utils/vnode";
 import { parseFormHidden } from "../../utils/parse";

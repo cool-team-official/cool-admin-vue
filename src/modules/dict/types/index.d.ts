@@ -1,12 +1,13 @@
 export namespace Dict {
-	type List = {
+	interface Item {
 		id: string;
 		label: string;
 		value: any;
+		children?: Item[];
 		[key: string]: any;
-	}[];
+	}
 
 	interface Data {
-		[key: string]: List;
+		[key: string]: Item[];
 	}
 }
