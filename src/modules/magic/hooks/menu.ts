@@ -71,7 +71,6 @@ export function useCode() {
 
 			// 编辑器处理
 			if (item.component?.name?.includes("cl-editor-")) {
-				table.columns.push(column);
 				column.component = {
 					name: "cl-editor-preview",
 					props: {

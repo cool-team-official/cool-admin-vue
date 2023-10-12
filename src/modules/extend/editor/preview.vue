@@ -1,10 +1,15 @@
 <template>
 	<div>
+		<slot>
+			<el-button @click="open()">点击查看</el-button>
+		</slot>
+
 		<cl-dialog width="1000px" :title="title" append-to-body v-model="visible">
 			<cl-editor
 				:name="`cl-editor-${name}`"
 				:ref="setRefs('editor')"
 				:height="600"
+				preview
 				v-bind="props.props"
 				v-model="text"
 			/>
@@ -25,6 +30,7 @@ import { nextTick, PropType, ref } from "vue";
 import { useCool } from "/@/cool";
 
 const props = defineProps({
+	modelValue: String,
 	title: {
 		type: String,
 		default: "文本预览"
@@ -45,7 +51,11 @@ const visible = ref(false);
 // 文本
 const text = ref("");
 
-async function open(data: string) {
+async function open(data?: string) {
+	if (!data) {
+		data = props.modelValue;
+	}
+
 	if (isString(data)) {
 		text.value = data;
 	}
