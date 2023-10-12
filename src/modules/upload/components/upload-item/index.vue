@@ -92,7 +92,7 @@
 							</el-icon>
 						</template>
 
-						<el-icon @click.stop="remove">
+						<el-icon @click.stop="remove" v-if="!disabled">
 							<delete />
 						</el-icon>
 					</div>
@@ -125,7 +125,8 @@ const props = defineProps({
 	list: {
 		type: Array as PropType<Upload.Item[]>,
 		default: () => []
-	}
+	},
+	disabled: Boolean
 });
 
 const emit = defineEmits(["remove"]);

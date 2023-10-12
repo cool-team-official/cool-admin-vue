@@ -111,7 +111,12 @@
 					>
 						<slot name="item" :item="item" :index="index">
 							<div class="cl-upload__item">
-								<upload-item :item="item" :list="list" @remove="remove(index)" />
+								<upload-item
+									:item="item"
+									:list="list"
+									:disabled="disabled"
+									@remove="remove(index)"
+								/>
 							</div>
 						</slot>
 					</el-upload>
