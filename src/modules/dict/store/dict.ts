@@ -13,7 +13,7 @@ const useDictStore = defineStore("dict", () => {
 
 	// 获取
 	function get(name: string) {
-		return computed(() => data[name]);
+		return computed(() => data[name] || []);
 	}
 
 	// 查找
