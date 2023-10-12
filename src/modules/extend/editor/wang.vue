@@ -1,13 +1,16 @@
 <template>
 	<div class="cl-editor-wang" :class="{ disabled }" :ref="setRefs('editor')">
 		<!-- 工具栏 -->
-		<toolbar :editor="Editor" :mode="mode" />
+		<toolbar :editor="Editor" :mode="mode" v-if="!preview" />
 
 		<!-- 编辑框 -->
 		<editor
 			v-model="value"
 			:defaultConfig="editorConfig"
 			:mode="mode"
+			:style="{
+				height: parsePx(height)
+			}"
 			@onCreated="onCreated"
 			@onFocus="onFocus"
 			@onBlur="onBlur"
@@ -58,8 +61,8 @@ export default defineComponent({
 			type: [String, Number],
 			default: 400
 		},
-		maxHeight: [String, Number],
-		disabled: Boolean
+		disabled: Boolean,
+		preview: Boolean
 	},
 
 	emits: ["update:modelValue", "change", "focus", "blur"],
@@ -110,7 +113,6 @@ export default defineComponent({
 		function onCreated(editor: any) {
 			Editor.value = editor;
 			onDisabled();
-			onHeight();
 		}
 
 		// 聚焦
@@ -144,32 +146,16 @@ export default defineComponent({
 			}
 		}
 
-		// 设置高度
-		function onHeight() {
-			const { style } = refs.editor.querySelector(".w-e-text-container");
-			style.maxHeight = parsePx(props.maxHeight || "auto");
-			style.height = parsePx(props.height);
-		}
-
 		// 禁用
 		function onDisabled() {
-			if (props.disabled) {
+			if (props.disabled || props.preview) {
 				Editor.value?.disable();
 			} else {
 				Editor.value?.enable();
 			}
 		}
 
-		watch(() => props.disabled, onDisabled);
-
-		watch(
-			() => {
-				return [props.height, props.maxHeight];
-			},
-			() => {
-				onHeight();
-			}
-		);
+		watch(() => [props.disabled, props.preview], onDisabled);
 
 		onBeforeUnmount(() => {
 			const editor = Editor.value;
@@ -187,7 +173,8 @@ export default defineComponent({
 			onBlur,
 			onChange,
 			editorConfig,
-			onFileConfirm
+			onFileConfirm,
+			parsePx
 		};
 	}
 });
