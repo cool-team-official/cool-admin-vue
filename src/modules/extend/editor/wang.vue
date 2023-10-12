@@ -106,20 +106,24 @@ export default defineComponent({
 			}
 		};
 
+		// 创建后
 		function onCreated(editor: any) {
 			Editor.value = editor;
 			onDisabled();
 			onHeight();
 		}
 
+		// 聚焦
 		function onFocus(editor: any) {
 			emit("focus", editor);
 		}
 
+		// 失焦
 		function onBlur(editor: any) {
 			emit("blur", editor);
 		}
 
+		// 值改变
 		function onChange() {
 			if (value.value == "<p><br></p>") {
 				value.value = "";
@@ -129,6 +133,7 @@ export default defineComponent({
 			emit("change", value.value);
 		}
 
+		// 文件选择
 		function onFileConfirm(files: any[]) {
 			if (files.length > 0) {
 				files.forEach((file) => {
@@ -137,6 +142,13 @@ export default defineComponent({
 					}
 				});
 			}
+		}
+
+		// 设置高度
+		function onHeight() {
+			const { style } = refs.editor.querySelector(".w-e-text-container");
+			style.maxHeight = parsePx(props.maxHeight || "auto");
+			style.height = parsePx(props.height);
 		}
 
 		// 禁用
@@ -149,13 +161,6 @@ export default defineComponent({
 		}
 
 		watch(() => props.disabled, onDisabled);
-
-		// 设置高度
-		function onHeight() {
-			const scroll = refs.editor.querySelector(".w-e-text-container");
-			scroll.style.maxHeight = parsePx(props.maxHeight || "auto");
-			scroll.style.height = parsePx(props.height);
-		}
 
 		watch(
 			() => {
