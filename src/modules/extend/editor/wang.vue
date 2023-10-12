@@ -152,7 +152,7 @@ export default defineComponent({
 
 		// 设置高度
 		function onHeight() {
-			const scroll = refs.editor.querySelector(".w-e-scroll");
+			const scroll = refs.editor.querySelector(".w-e-text-container");
 			scroll.style.maxHeight = parsePx(props.maxHeight || "auto");
 			scroll.style.height = parsePx(props.height);
 		}
