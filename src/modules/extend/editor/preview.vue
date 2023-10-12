@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<slot>
-			<el-button @click="open()">点击查看</el-button>
+			<el-button @click="open()">{{ text }}</el-button>
 		</slot>
 
 		<cl-dialog width="1000px" :title="title" append-to-body v-model="visible">
@@ -38,6 +38,10 @@ const props = defineProps({
 	name: {
 		type: String as PropType<"monaco" | "quill" | "wang">,
 		required: true
+	},
+	text: {
+		type: String,
+		default: "点击查看"
 	},
 	props: Object
 });
