@@ -2,7 +2,7 @@ import { createDir, error, firstUpperCase, readFile, toCamel } from "../utils";
 import { join } from "path";
 import { Entity, DistPath } from "./config";
 import axios from "axios";
-import { isArray, isEmpty, last } from "lodash";
+import { isArray, isEmpty, last, merge } from "lodash";
 import { createWriteStream } from "fs";
 import prettier from "prettier";
 import { proxy } from "../../../src/config/proxy";
@@ -50,7 +50,7 @@ async function getData(temps: any[]) {
 
 	// 本地文件
 	try {
-		list = JSON.parse(readFile(join(DistPath, "eps.json")) || "[]");
+		list = JSON.parse(readFile(join(DistPath, "eps.json")));
 	} catch (err) {
 		error(`[eps] ${join(DistPath, "eps.json")} 文件异常, ${err.message}`);
 	}
@@ -76,7 +76,7 @@ async function getData(temps: any[]) {
 			}
 		})
 		.catch(() => {
-			error(`[eps] 获取失败, ${url} 无法访问！`);
+			error(`[eps] 获取失败, ${url} 无法访问，请启动服务！`);
 		});
 
 	// 判断是否重复项
@@ -85,7 +85,7 @@ async function getData(temps: any[]) {
 			const d = list.find((a) => e.prefix === a.prefix);
 
 			if (d) {
-				Object.assign(d, e);
+				merge(d, e);
 			} else {
 				list.push(e);
 			}
