@@ -8,7 +8,5 @@ export function createModule() {
 		dirs = dirs.filter((e) => !e.includes("."));
 	} catch (err) {}
 
-	return `
-		export const dirs = ${JSON.stringify(dirs)}
-	`;
+	return { dirs };
 }
