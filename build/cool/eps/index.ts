@@ -22,7 +22,7 @@ async function getData(temps?: Eps.Entity[]) {
 	// 本地文件
 	try {
 		list = JSON.parse(readFile(join(DistPath, "eps.json")) || "[]");
-	} catch (err) {
+	} catch (err: any) {
 		error(`[eps] ${join(DistPath, "eps.json")} 文件异常, ${err.message}`);
 	}
 
@@ -87,7 +87,7 @@ function createJson() {
 // 创建描述文件
 async function createDescribe({ list, service }: { list: Eps.Entity[]; service: any }) {
 	// 获取类型
-	function getType({ propertyName, type }) {
+	function getType({ propertyName, type }: any) {
 		for (const map of Entity.mapping) {
 			if (map.custom) {
 				const resType = map.custom({ propertyName, type });

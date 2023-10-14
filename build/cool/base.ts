@@ -1,4 +1,4 @@
-import { Plugin } from "vite";
+import type { Plugin } from "vite";
 import { createSvg } from "./svg";
 import { createTag } from "./tag";
 import { createEps } from "./eps";
