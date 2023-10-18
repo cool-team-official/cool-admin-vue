@@ -68,7 +68,9 @@ function setContent(value: string = "") {
 		value = value.toString();
 	}
 
-	editor?.setValue(value);
+	if (value != getContent()) {
+		editor?.setValue(value);
+	}
 }
 
 // 格式化内容
