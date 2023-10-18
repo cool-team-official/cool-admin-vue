@@ -56,8 +56,8 @@ declare type List<T> = Array<DeepPartial<T> | (() => DeepPartial<T>)>;
 
 // 字典选项
 declare type DictOptions = {
-	label: string;
-	value: any;
+	label?: string;
+	value?: any;
 	color?: string;
 	type?: string;
 	[key: string]: any;

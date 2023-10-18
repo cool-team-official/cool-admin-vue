@@ -29,15 +29,14 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 	// 设置颜色
 	if (item.dictColor) {
 		options.forEach((e, i) => {
-			e.color = style.colors[i];
+			if (!e.color) {
+				e.color = style.colors[i];
+			}
 		});
 	}
 
-	// 格式化方法
-	const formatter = item.dictFormatter;
-
-	// 多个值
-	const values = isArray(value) ? value : [value];
+	// 绑定值
+	const values = (isArray(value) ? value : [value]).filter((e) => e !== undefined);
 
 	// 返回值
 	const list = values.map((v) => {
@@ -48,8 +47,8 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 	});
 
 	// 是否格式化
-	if (formatter) {
-		return formatter(list);
+	if (item.dictFormatter) {
+		return item.dictFormatter(list);
 	} else {
 		return list.map((e) => {
 			return h(
@@ -66,14 +65,14 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 /**
  * 解析 table.op.buttons
  */
-export function parseTableOpButtons(buttons: any, { scope }: any) {
+export function parseTableOpButtons(buttons: any[], { scope }: any) {
 	const { crud } = useCore();
 	const { style } = useConfig();
 	const slots = useSlots();
 
-	const list = getValue(buttons, { scope }) || ["edit", "delete"];
+	const list: any[] = getValue(buttons, { scope }) || ["edit", "delete"];
 
-	return list.map((vnode: any) => {
+	return list.map((vnode) => {
 		if (vnode === "info") {
 			return (
 				<el-button
