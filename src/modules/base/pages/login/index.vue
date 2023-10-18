@@ -68,9 +68,7 @@
 			<cl-svg name="bg"></cl-svg>
 		</div>
 
-		<a href="https://beian.miit.gov.cn" class="copyright">
-			Copyright © 2023 COOL | 粤 ICP 备 2022012608 号
-		</a>
+		<a href="https://cool-js.com" class="copyright"> Copyright © COOL </a>
 	</div>
 </template>
 
