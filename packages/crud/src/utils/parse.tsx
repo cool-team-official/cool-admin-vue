@@ -37,8 +37,10 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 
 	// 绑定值
 	const values = (isArray(value) ? value : [value]).filter(
-		(e) => e !== undefined || e !== null || e !== ""
+		(e) => e !== undefined && e !== null && e !== ""
 	);
+
+	console.log(values);
 
 	// 返回值
 	const list = values.map((v) => {
