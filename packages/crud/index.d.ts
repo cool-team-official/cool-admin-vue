@@ -703,7 +703,7 @@ declare interface Config {
 		size: ElementPlus.Size;
 		colors: string[];
 		form: {
-			labelPostion: ElementPlus.FormProps["labelPosition"];
+			labelPosition: ElementPlus.FormProps["labelPosition"];
 			labelWidth: ElementPlus.FormProps["labelWidth"];
 			span: number;
 		};

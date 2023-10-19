@@ -40,8 +40,6 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 		(e) => e !== undefined && e !== null && e !== ""
 	);
 
-	console.log(values);
-
 	// 返回值
 	const list = values.map((v) => {
 		const d = deepFind(v, options) || { label: v, value: v };
