@@ -78,8 +78,8 @@ export default defineComponent({
 						) : (
 							<el-option
 								disabled={e.disabled}
-								label={e[props.labelKey] || ""}
-								value={e[props.valueKey] || ""}
+								label={e[props.labelKey]}
+								value={e[props.valueKey]}
 							/>
 						);
 					})}

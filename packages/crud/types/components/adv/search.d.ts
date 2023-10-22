@@ -7,7 +7,7 @@ declare const _default: import("vue").DefineComponent<{
     };
     title: StringConstructor;
     size: {
-        type: (StringConstructor | NumberConstructor)[];
+        type: (NumberConstructor | StringConstructor)[];
         default: string;
     };
     op: {
@@ -22,7 +22,7 @@ declare const _default: import("vue").DefineComponent<{
     };
     title: StringConstructor;
     size: {
-        type: (StringConstructor | NumberConstructor)[];
+        type: (NumberConstructor | StringConstructor)[];
         default: string;
     };
     op: {

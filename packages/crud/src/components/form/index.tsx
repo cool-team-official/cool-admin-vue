@@ -463,9 +463,6 @@ export default defineComponent({
 						<el-form
 							ref={Form}
 							size={style.size}
-							label-position={
-								browser.isMini && !props.inline ? "top" : style.form.labelPostion
-							}
 							label-width={style.form.labelWidth}
 							inline={props.inline}
 							disabled={saving.value}
@@ -476,7 +473,13 @@ export default defineComponent({
 								e.preventDefault();
 							}}
 						/>,
-						config.props,
+						{
+							...config.props,
+							labelPosition:
+								browser.isMini && !props.inline
+									? "top"
+									: config.props.labelPosition || style.form.labelPosition
+						},
 						{
 							default: () => {
 								return (

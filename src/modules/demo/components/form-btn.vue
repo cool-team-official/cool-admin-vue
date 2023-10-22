@@ -129,6 +129,9 @@ function open() {
 				}
 			}
 		],
+		op: {
+			// buttons: ["save"]
+		},
 		on: {
 			open() {
 				refs.name.focus();

@@ -74,15 +74,15 @@ export declare function useForm(): {
                 name?: string | undefined;
                 options?: {
                     [x: string]: any;
-                    label: string;
-                    value: any;
+                    label?: string | undefined;
+                    value?: any;
                     color?: string | undefined;
                     type?: string | undefined;
                 }[] | {
                     value: {
                         [x: string]: any;
-                        label: string;
-                        value: any;
+                        label?: string | undefined;
+                        value?: any;
                         color?: string | undefined;
                         type?: string | undefined;
                     }[];
@@ -105,15 +105,15 @@ export declare function useForm(): {
                 name?: string | undefined;
                 options?: {
                     [x: string]: any;
-                    label: string;
-                    value: any;
+                    label?: string | undefined;
+                    value?: any;
                     color?: string | undefined;
                     type?: string | undefined;
                 }[] | {
                     value: {
                         [x: string]: any;
-                        label: string;
-                        value: any;
+                        label?: string | undefined;
+                        value?: any;
                         color?: string | undefined;
                         type?: string | undefined;
                     }[];
@@ -136,15 +136,15 @@ export declare function useForm(): {
                 name?: string | undefined;
                 options?: {
                     [x: string]: any;
-                    label: string;
-                    value: any;
+                    label?: string | undefined;
+                    value?: any;
                     color?: string | undefined;
                     type?: string | undefined;
                 }[] | {
                     value: {
                         [x: string]: any;
-                        label: string;
-                        value: any;
+                        label?: string | undefined;
+                        value?: any;
                         color?: string | undefined;
                         type?: string | undefined;
                     }[];

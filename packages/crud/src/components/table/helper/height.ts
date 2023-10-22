@@ -15,7 +15,7 @@ export function useHeight({ config, Table }: { Table: Vue.Ref<any>; config: ClTa
 		let vm = Table.value;
 
 		if (vm) {
-			while (!vm.$parent?.$el.className.includes("cl-crud")) {
+			while (!vm.$parent?.$el.className?.includes("cl-crud")) {
 				vm = vm.$parent;
 			}
 

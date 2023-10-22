@@ -19,7 +19,7 @@ import { useFormat } from "./format";
 import { parsePx } from "/@/cool/utils";
 import { useTypes } from "./types";
 import { useCool } from "/@/cool";
-import { merge } from "lodash-es";
+import { isObject, merge } from "lodash-es";
 
 const props = defineProps({
 	modelValue: String,
@@ -61,9 +61,15 @@ function getContent() {
 }
 
 // 设置内容
-function setContent(value?: string) {
+function setContent(value: string = "") {
+	if (isObject(value)) {
+		value = JSON.stringify(value);
+	} else {
+		value = value.toString();
+	}
+
 	if (value != getContent()) {
-		editor?.setValue(value || "");
+		editor?.setValue(value);
 	}
 }
 
@@ -74,7 +80,7 @@ async function formatCode() {
 }
 
 // 创建编辑器
-function init() {
+function create() {
 	const options = merge(
 		{
 			theme: "default",
@@ -148,7 +154,7 @@ watch(
 );
 
 onMounted(() => {
-	init();
+	create();
 });
 
 onUnmounted(() => {

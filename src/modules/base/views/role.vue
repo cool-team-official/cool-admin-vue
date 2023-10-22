@@ -9,13 +9,7 @@
 		</cl-row>
 
 		<cl-row>
-			<cl-table
-				ref="Table"
-				:default-sort="{
-					prop: 'createTime',
-					order: 'descending'
-				}"
-			/>
+			<cl-table ref="Table" />
 		</cl-row>
 
 		<cl-row>
@@ -154,7 +148,7 @@ const Table = useTable({
 		{
 			prop: "createTime",
 			label: "创建时间",
-			sortable: "custom",
+			sortable: "desc",
 			minWidth: 160
 		},
 		{

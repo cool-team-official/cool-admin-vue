@@ -200,34 +200,26 @@ export function deepPaths(paths: string[], splitor?: string) {
 }
 
 // 列表转树形
-export function deepTree(list: any[], order?: "asc" | "desc"): any[] {
+export function deepTree(list: any[], sort?: "desc" | "asc"): any[] {
 	const newList: any[] = [];
 	const map: any = {};
 
-	list.forEach((e) => (map[e.id] = e));
+	orderBy(list, "orderNum", sort)
+		.map((e) => {
+			map[e.id] = e;
+			return e;
+		})
+		.forEach((e) => {
+			const parent = map[e.parentId];
 
-	list.forEach((e) => {
-		const parent = map[e.parentId];
-
-		if (parent) {
-			(parent.children || (parent.children = [])).push(e);
-		} else {
-			newList.push(e);
-		}
-	});
-
-	const fn = (list: Array<any>) => {
-		list.map((e) => {
-			if (isArray(e.children)) {
-				e.children = orderBy(e.children, "orderNum", order);
-				fn(e.children);
+			if (parent) {
+				(parent.children || (parent.children = [])).push(e);
+			} else {
+				newList.push(e);
 			}
 		});
-	};
 
-	fn(newList);
-
-	return orderBy(newList, "orderNum", order);
+	return newList;
 }
 
 // 树形转列表

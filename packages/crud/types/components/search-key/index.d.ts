@@ -15,7 +15,7 @@ declare const _default: import("vue").DefineComponent<{
     onSearch: FunctionConstructor;
     placeholder: StringConstructor;
     width: {
-        type: (StringConstructor | NumberConstructor)[];
+        type: (NumberConstructor | StringConstructor)[];
         default: number;
     };
 }, () => JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("change" | "update:modelValue" | "field-change")[], "change" | "update:modelValue" | "field-change", import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
@@ -34,7 +34,7 @@ declare const _default: import("vue").DefineComponent<{
     onSearch: FunctionConstructor;
     placeholder: StringConstructor;
     width: {
-        type: (StringConstructor | NumberConstructor)[];
+        type: (NumberConstructor | StringConstructor)[];
         default: number;
     };
 }>> & {
