@@ -1,8 +1,8 @@
 import { defineComponent, h, nextTick } from "vue";
-import { cloneDeep, isBoolean, isEmpty, merge } from "lodash-es";
+import { cloneDeep, isBoolean, isEmpty } from "lodash-es";
 import { useAction, useForm, usePlugins, useTabs } from "./helper";
-import { useBrowser, useConfig, useElApi } from "../../hooks";
-import { getValue } from "../../utils";
+import { useBrowser, useConfig, useElApi, useRefs } from "../../hooks";
+import { getValue, merge } from "../../utils";
 import formHook from "../../utils/form-hook";
 import { renderNode } from "../../utils/vnode";
 import { parseFormHidden } from "../../utils/parse";
@@ -16,6 +16,7 @@ export default defineComponent({
 	},
 
 	setup(props, { expose, slots }) {
+		const { refs, setRefs } = useRefs();
 		const { style, dict } = useConfig();
 		const browser = useBrowser();
 		const { Form, config, form, visible, saving, loading, disabled } = useForm();
@@ -184,10 +185,11 @@ export default defineComponent({
 					const keys = Object.keys(error);
 
 					if (Tabs.active.value) {
-						const item = config.items.find((e) => e.prop === keys[0]);
+						const el = refs.form.querySelector(`[data-prop="${keys[0]}"]`);
 
-						if (item) {
-							Tabs.set(item.group);
+						if (el) {
+							const group = el.getAttribute("data-group");
+							Tabs.set(group);
 						}
 					}
 				}
@@ -352,6 +354,8 @@ export default defineComponent({
 								"no-label": !(e.renderLabel || e.label),
 								"has-children": !!e.children
 							}}
+							data-group={e.group}
+							data-prop={e.prop}
 							label-width={props.inline ? "auto" : ""}
 							label={e.label}
 							prop={e.prop}
@@ -454,7 +458,7 @@ export default defineComponent({
 			const children = config.items.map(renderFormItem);
 
 			return (
-				<div class="cl-form__container">
+				<div class="cl-form__container" ref={setRefs("form")}>
 					{h(
 						<el-form
 							ref={Form}
@@ -589,15 +593,15 @@ export default defineComponent({
 		});
 
 		return () => {
-			const Form = (
-				<div class="cl-form">
-					{renderContainer()}
-					{renderFooter()}
-				</div>
-			);
-
 			if (props.inner) {
-				return visible.value && Form;
+				return (
+					visible.value && (
+						<div class="cl-form">
+							{renderContainer()}
+							{renderFooter()}
+						</div>
+					)
+				);
 			} else {
 				return h(
 					<cl-dialog v-model={visible.value} class="cl-form" />,
