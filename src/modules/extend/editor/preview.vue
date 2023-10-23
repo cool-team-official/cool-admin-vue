@@ -11,7 +11,7 @@
 				:height="600"
 				preview
 				v-bind="props.props"
-				v-model="text"
+				v-model="content"
 			/>
 
 			<template #footer>
@@ -52,8 +52,8 @@ const { copy } = useClipboard();
 // 是否可见
 const visible = ref(false);
 
-// 文本
-const text = ref("");
+// 内容
+const content = ref("");
 
 async function open(data?: string) {
 	if (!data) {
@@ -61,11 +61,11 @@ async function open(data?: string) {
 	}
 
 	if (isString(data)) {
-		text.value = data;
+		content.value = data;
 	}
 
 	if (isObject(data)) {
-		text.value = JSON.stringify(data, null, 4);
+		content.value = JSON.stringify(data, null, 4);
 	}
 
 	visible.value = true;
@@ -82,7 +82,7 @@ function close() {
 }
 
 function toCopy() {
-	copy(text.value);
+	copy(content.value);
 	ElMessage.success("复制成功");
 }
 
