@@ -33,6 +33,12 @@ export function virtual(): Plugin {
 			// 代码保存时触发 eps 刷新
 			if (!file.includes("build/cool/dist")) {
 				buildEps(server);
+
+				// 通知客户端刷新
+				server.ws.send({
+					type: "custom",
+					event: "eps-update"
+				});
 			}
 		},
 		resolveId(id) {

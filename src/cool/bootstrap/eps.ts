@@ -43,7 +43,7 @@ export function createEps(modules: Module[]) {
 				list.push({
 					api,
 					module: s.namespace.split("/")[0],
-					name: s.constructor.name,
+					name: s.constructor.name + "Entity",
 					prefix: `/admin/${s.namespace}`
 				});
 			} else {

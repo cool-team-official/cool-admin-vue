@@ -3,11 +3,13 @@ import { hmr } from "../hook";
 import { eps } from "virtual:eps";
 import { merge } from "lodash-es";
 
+// service 数据集合
 export const service: Eps.Service = hmr.getData("service", {
 	request: new BaseService().request
 });
 
-function main() {
+// 同步 service 数据
+function update() {
 	function deep(d: any) {
 		if (d.namespace) {
 			const a = new BaseService(d.namespace);
@@ -46,8 +48,17 @@ function main() {
 
 	// 缓存
 	hmr.setData("service", service);
+
+	// tips
+	console.log("[eps] update");
 }
 
-main();
+update();
+
+if (import.meta.hot) {
+	import.meta.hot.on("eps-update", () => {
+		update();
+	});
+}
 
 export * from "./base";
