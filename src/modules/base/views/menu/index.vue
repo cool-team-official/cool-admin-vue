@@ -29,16 +29,32 @@
 					<cl-svg :name="scope.row.icon" size="16px" style="margin-top: 5px" />
 				</template>
 
-				<!-- 权限 -->
-				<template #column-perms="{ scope }">
-					<el-tag
-						v-for="(item, index) in scope.row.permList"
-						:key="index"
-						effect="plain"
-						size="small"
-						style="margin: 2px; letter-spacing: 0.5px"
-						>{{ item }}</el-tag
-					>
+				<!-- 是否显示 -->
+				<template #column-isShow="{ scope }">
+					<cl-switch
+						v-model="scope.row.isShow"
+						:active-value="true"
+						:inactive-value="false"
+						:scope="scope.row"
+						:column="scope.column"
+						v-if="scope.row.type != 2"
+					/>
+
+					<span v-else></span>
+				</template>
+
+				<!-- 图标 -->
+				<template #column-keepAlive="{ scope }">
+					<cl-switch
+						v-model="scope.row.keepAlive"
+						:active-value="true"
+						:inactive-value="false"
+						:scope="scope.row"
+						:column="scope.column"
+						v-if="scope.row.type == 1"
+					/>
+
+					<span v-else></span>
 				</template>
 
 				<!-- 路由 -->
@@ -47,15 +63,6 @@
 						scope.row.router
 					}}</el-link>
 					<span v-else>{{ scope.row.router }}</span>
-				</template>
-
-				<!-- 路由缓存 -->
-				<template #column-keepAlive="{ scope }">
-					<el-icon v-if="scope.row.type == 1">
-						<check v-if="scope.row.keepAlive" />
-						<close v-else />
-					</el-icon>
-					<span v-else></span>
 				</template>
 
 				<!-- 行新增 -->
@@ -92,7 +99,6 @@
 </template>
 
 <script lang="ts" name="sys-menu" setup>
-import { Check, Close } from "@element-plus/icons-vue";
 import { setFocus, useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import { deepTree } from "/@/cool/utils";
@@ -145,17 +151,7 @@ const Table = useTable({
 		{
 			prop: "isShow",
 			label: "是否显示",
-			width: 100,
-			component: {
-				name: "cl-switch",
-				props: {
-					activeValue: true,
-					inactiveValue: false,
-					onChange() {
-						menu.get();
-					}
-				}
-			}
+			width: 100
 		},
 		{
 			prop: "icon",
@@ -204,7 +200,8 @@ const Table = useTable({
 			prop: "perms",
 			label: "权限",
 			headerAlign: "center",
-			minWidth: 300
+			minWidth: 300,
+			dict: []
 		},
 		{
 			prop: "orderNum",
@@ -359,10 +356,6 @@ const Crud = useCrud(
 		service: service.base.sys.menu,
 		onRefresh(_, { render }) {
 			service.base.sys.menu.list().then((list) => {
-				list.map((e) => {
-					e.permList = e.perms ? e.perms.split(",") : [];
-				});
-
 				render(deepTree(list));
 				menu.get();
 			});

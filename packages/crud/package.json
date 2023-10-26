@@ -1,6 +1,6 @@
 {
 	"name": "@cool-vue/crud",
-	"version": "7.0.1-beta11",
+	"version": "7.0.1-beta14",
 	"private": false,
 	"main": "./dist/index.umd.min.js",
 	"typings": "types/index.d.ts",
@@ -10,6 +10,7 @@
 		"dist": "tsc && yarn build --target lib --name index ./src/index.ts"
 	},
 	"dependencies": {
+		"@cool-vue/crud": "^7.0.1-beta14",
 		"array.prototype.flat": "^1.2.4",
 		"core-js": "^3.21.1",
 		"element-plus": "^2.3.9",

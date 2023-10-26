@@ -329,6 +329,7 @@ declare namespace ClTable {
 		dict: DictOptions | Vue.Ref<DictOptions>;
 		dictFormatter: (values: DictOptions) => string;
 		dictColor: boolean;
+		dictSeparator: string;
 		buttons: OpButton | ((options: { scope: obj }) => OpButton);
 		align: "left" | "center" | "right";
 		label: string | Vue.Ref<string>;

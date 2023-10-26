@@ -43,6 +43,7 @@ const { app } = useBase();
 			font-weight: bold;
 			font-size: 26px;
 			margin-left: 10px;
+			line-height: 1;
 			white-space: nowrap;
 		}
 	}

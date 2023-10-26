@@ -961,6 +961,19 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
+"@cool-vue/crud@^7.0.1-beta14":
+  version "7.0.1-beta14"
+  resolved "https://registry.yarnpkg.com/@cool-vue/crud/-/crud-7.0.1-beta14.tgz#5e6b28d67090fc36118cf3b79da2ccbe7db56266"
+  integrity sha512-/fM382tuvdS2xOVCfnBx/ZdltwJrKdmcXJcZufWf3y0SYv9TU/QSNB91vBJlxLvv2N3VabjeYgfn8TB86HT3gg==
+  dependencies:
+    array.prototype.flat "^1.2.4"
+    core-js "^3.21.1"
+    element-plus "^2.3.9"
+    lodash "^4.17.21"
+    lodash-es "^4.17.21"
+    mitt "^3.0.1"
+    vue "^3.3.4"
+
 "@ctrl/tinycolor@^3.4.1":
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-3.6.0.tgz#53fa5fe9c34faee89469e48f91d51a3766108bc8"

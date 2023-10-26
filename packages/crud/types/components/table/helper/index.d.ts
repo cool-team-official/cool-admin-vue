@@ -56,6 +56,7 @@ export declare function useTable(props: any): {
             };
             dictFormatter: (values: DictOptions) => string;
             dictColor: boolean;
+            dictSeparator: string;
             buttons: ((options: {
                 scope: obj;
             }) => ClTable.OpButton) | ("info" | "delete" | "edit" | `slot-${string}` | {

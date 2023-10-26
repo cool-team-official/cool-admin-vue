@@ -26,6 +26,9 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 	// 选项列表
 	const options: DictOptions = cloneDeep(getValue(item.dict || []));
 
+	// 字符串分隔符
+	const separator = item.dictSeparator === undefined ? "," : item.dictSeparator;
+
 	// 设置颜色
 	if (item.dictColor) {
 		options.forEach((e, i) => {
@@ -36,22 +39,36 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 	}
 
 	// 绑定值
-	const values = (isArray(value) ? value : [value]).filter(
-		(e) => e !== undefined && e !== null && e !== ""
-	);
+	let values = [];
+
+	// 格式化值
+	if (isArray(value)) {
+		values = value;
+	} else if (isString(value)) {
+		if (separator) {
+			values = value.split(separator);
+		} else {
+			values = [value];
+		}
+	} else {
+		values = [value];
+	}
 
 	// 返回值
-	const list = values.map((v) => {
-		const d = deepFind(v, options) || { label: v, value: v };
-		delete d.children;
+	const list = values
+		.filter((e) => e !== undefined && e !== null && e !== "")
+		.map((v) => {
+			const d = deepFind(v, options) || { label: v, value: v };
+			delete d.children;
 
-		return d;
-	});
+			return d;
+		});
 
-	// 是否格式化
+	// 格式化返回
 	if (item.dictFormatter) {
 		return item.dictFormatter(list);
 	} else {
+		// tag 返回
 		return list.map((e) => {
 			return h(
 				<el-tag disable-transitions effect="dark" style="margin: 2px; border: 0" />,
