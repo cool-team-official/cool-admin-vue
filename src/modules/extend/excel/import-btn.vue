@@ -174,7 +174,7 @@ function onUpload(raw: File, _: any, { next }: any) {
 
 	next();
 
-	return false;
+	return true;
 }
 
 // 下载模版
