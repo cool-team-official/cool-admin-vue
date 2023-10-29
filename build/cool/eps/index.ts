@@ -65,19 +65,21 @@ async function getData(temps?: Eps.Entity[]) {
 
 // 创建 json 文件
 function createJson() {
-	const d = list.map((e) => {
-		return {
-			prefix: e.prefix,
-			name: e.name || "",
-			api: e.api.map((e) => {
-				return {
-					name: e.name,
-					method: e.method,
-					path: e.path
-				};
-			})
-		};
-	});
+	const d = list
+		.filter((e) => !e.isLocal) // 过滤本地的 service 数据
+		.map((e) => {
+			return {
+				prefix: e.prefix,
+				name: e.name || "",
+				api: e.api.map((e) => {
+					return {
+						name: e.name,
+						method: e.method,
+						path: e.path
+					};
+				})
+			};
+		});
 
 	createWriteStream(join(DistPath, "eps.json"), {
 		flags: "w"

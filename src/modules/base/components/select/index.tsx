@@ -1,5 +1,5 @@
 import { useCrud } from "@cool-vue/crud";
-import { isObject, isString } from "lodash-es";
+import { isString } from "lodash-es";
 import { computed, defineComponent, isRef, PropType, Ref, ref, watch } from "vue";
 import { parsePx } from "/@/cool/utils";
 

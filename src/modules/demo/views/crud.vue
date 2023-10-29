@@ -45,7 +45,7 @@
 					},
 					{ label: '手机号', value: 'phone' }
 				]"
-				:width="200"
+				:width="250"
 			/>
 
 			<!-- 高级搜索按钮 -->
@@ -88,7 +88,11 @@
 		</cl-row>
 
 		<!-- 新增、编辑 -->
-		<cl-upsert ref="Upsert" />
+		<cl-upsert ref="Upsert">
+			<template #slot-userIds="{ scope }">
+				<select-user v-model="scope.userIds" />
+			</template>
+		</cl-upsert>
 
 		<!-- 高级搜索 -->
 		<cl-adv-search ref="AdvSearch" />
@@ -102,6 +106,7 @@ import { reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useCool } from "/@/cool";
 import FormBtn from "../components/form-btn.vue";
+import SelectUser from "../components/select-user.vue";
 
 // 基础
 const { service, refs, setRefs } = useCool();
@@ -156,6 +161,11 @@ function refresh(params?: any) {
 
 // 新增、编辑
 const Upsert = useUpsert({
+	dialog: {
+		height: "600px", // 固定高
+		width: "1000px" // 固定宽
+	},
+
 	items: [
 		// 分组
 		{
@@ -232,13 +242,20 @@ const Upsert = useUpsert({
 				}
 			]
 		},
-
 		{
 			label: "省市区",
 			prop: "pca",
 			group: "base",
 			component: {
 				name: "cl-distpicker"
+			}
+		},
+		{
+			label: "选择用户",
+			prop: "userIds",
+			group: "base",
+			component: {
+				name: "slot-userIds"
 			}
 		},
 

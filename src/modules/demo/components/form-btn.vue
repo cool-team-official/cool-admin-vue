@@ -104,7 +104,8 @@ function open() {
 			labelPosition: "top"
 		},
 		dialog: {
-			height: "500px"
+			height: "500px",
+			width: "1000px"
 		},
 		items: [
 			{

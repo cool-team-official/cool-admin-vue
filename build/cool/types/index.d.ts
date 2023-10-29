@@ -28,5 +28,6 @@ export namespace Eps {
 		module: string;
 		name: string;
 		prefix: string;
+		[key: string]: any;
 	}
 }
