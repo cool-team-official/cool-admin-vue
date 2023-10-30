@@ -2,7 +2,9 @@
 	<div class="select-user__inner">
 		<div class="btns">
 			<el-button type="success" @click="open">添加</el-button>
-			<el-button type="danger" :disabled="list.length == 0" @click="remove">移除</el-button>
+			<el-button type="danger" :disabled="refs.table?.selection.length == 0" @click="remove"
+				>移除</el-button
+			>
 		</div>
 
 		<cl-table :data="list" :ref="setRefs('table')" :auto-height="false" />

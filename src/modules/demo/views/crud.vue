@@ -178,6 +178,10 @@ const Upsert = useUpsert({
 						value: "base"
 					},
 					{
+						label: "选择",
+						value: "select"
+					},
+					{
 						label: "其他",
 						value: "other"
 					}
@@ -253,7 +257,7 @@ const Upsert = useUpsert({
 		{
 			label: "选择用户",
 			prop: "userIds",
-			group: "base",
+			group: "select",
 			component: {
 				name: "slot-userIds"
 			}

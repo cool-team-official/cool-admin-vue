@@ -39,7 +39,7 @@ async function getData(temps?: Eps.Entity[]) {
 
 			if (code === 1000) {
 				if (!isEmpty(data) && data) {
-					list = Object.values(data).flat() as Eps.Entity[];
+					merge(list, Object.values(data).flat() as Eps.Entity[]);
 				}
 			} else {
 				error(`[eps] ${message}`);
@@ -49,7 +49,7 @@ async function getData(temps?: Eps.Entity[]) {
 			error(`[eps] ${url} 服务未启动！！！`);
 		});
 
-	// 合并本地 service 数据
+	// 合并其他数据
 	if (isArray(temps)) {
 		temps.forEach((e) => {
 			const d = list.find((a) => e.prefix === a.prefix);
@@ -65,21 +65,19 @@ async function getData(temps?: Eps.Entity[]) {
 
 // 创建 json 文件
 function createJson() {
-	const d = list
-		.filter((e) => !e.isLocal) // 过滤本地的 service 数据
-		.map((e) => {
-			return {
-				prefix: e.prefix,
-				name: e.name || "",
-				api: e.api.map((e) => {
-					return {
-						name: e.name,
-						method: e.method,
-						path: e.path
-					};
-				})
-			};
-		});
+	const d = list.map((e) => {
+		return {
+			prefix: e.prefix,
+			name: e.name || "",
+			api: e.api.map((e) => {
+				return {
+					name: e.name,
+					method: e.method,
+					path: e.path
+				};
+			})
+		};
+	});
 
 	createWriteStream(join(DistPath, "eps.json"), {
 		flags: "w"

@@ -86,7 +86,7 @@ export default defineComponent({
 								return [];
 							});
 					} else {
-						console.error("Crud 中未配置 service 参数");
+						console.error("useCrud 中未设置 service 参数");
 						return [];
 					}
 				}
