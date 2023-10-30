@@ -61,7 +61,7 @@
 		"sass": "^1.66.1",
 		"terser": "^5.19.2",
 		"typescript": "^5.2.2",
-		"vite": "^4.4.9",
+		"vite": "^4.5.0",
 		"vite-plugin-compression": "^0.5.1"
 	}
 }

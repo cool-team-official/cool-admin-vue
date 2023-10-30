@@ -120,7 +120,10 @@ export function createEps(modules: Module[]) {
 
 // 监听 vite 触发事件
 if (import.meta.hot) {
-	import.meta.hot.on("eps-update", () => {
+	import.meta.hot.on("eps-update", ({ service }) => {
+		if (service) {
+			eps.service = service;
+		}
 		onUpdate();
 	});
 }
