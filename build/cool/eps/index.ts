@@ -373,10 +373,16 @@ function createService() {
 					// 创建方法
 					e.api.forEach((a) => {
 						// 方法名
-						const n = a.path.replace("/", "");
+						let n = a.path.replace("/", "");
 
-						if (n && !/[-:]/g.test(n)) {
-							d[k][n] = a;
+						if (n) {
+							// 示例 /info/:id
+							if (n.includes("/:")) {
+								a.path = a.path.split("/:")[0];
+								n = n.split("/:")[0];
+							}
+
+							d[k][toCamel(n)] = a;
 						}
 					});
 
