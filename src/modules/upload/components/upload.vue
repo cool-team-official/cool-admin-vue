@@ -209,9 +209,9 @@ const props = defineProps({
 	},
 
 	// CRUD穿透值
-	isEdit: null,
-	scope: null,
-	prop: null,
+	isEdit: Boolean,
+	scope: Object,
+	prop: String,
 	isDisabled: Boolean
 });
 
@@ -330,7 +330,7 @@ async function onBeforeUpload(file: any, item?: Upload.Item) {
 			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	// 自定义上传事件
@@ -534,6 +534,9 @@ function update() {
 			if (props.prop) {
 				Form.value?.validateField(props.prop);
 			}
+
+			// 清空
+			refs.upload?.clearFiles();
 		});
 	}
 }
@@ -541,9 +544,13 @@ function update() {
 // 手动上传
 function upload(file: File) {
 	clear();
+
 	refs.upload?.clearFiles();
-	refs.upload?.handleStart(file);
-	refs.upload?.submit();
+
+	nextTick(() => {
+		refs.upload?.handleStart(file);
+		refs.upload?.submit();
+	});
 }
 
 // 文件空间

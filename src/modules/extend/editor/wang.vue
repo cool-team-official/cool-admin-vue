@@ -17,21 +17,27 @@
 			@onChange="onChange"
 		/>
 
-		<!-- 图片 -->
-		<cl-upload-space
-			:ref="setRefs('image')"
-			accept="image/*"
-			:show-btn="false"
-			@confirm="onFileConfirm"
-		/>
-
-		<!-- 视频 -->
+		<!-- 文件空间 - 视频 -->
 		<cl-upload-space
 			:ref="setRefs('video')"
 			accept="video/*"
 			:show-btn="false"
 			@confirm="onFileConfirm"
 		/>
+
+		<!-- 文件空间 - 图片 -->
+		<cl-upload-space
+			:ref="setRefs('image')"
+			accept="image/*"
+			:show-btn="false"
+			@confirm="onFileConfirm"
+			v-if="isSpace"
+		/>
+
+		<!-- 直接上传 - 图片 -->
+		<div class="upload-inner" v-else>
+			<cl-upload :ref="setRefs('image')" accept="image/*" @success="onFileConfirm" />
+		</div>
 	</div>
 </template>
 
@@ -41,6 +47,7 @@ import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import { IEditorConfig } from "@wangeditor/editor";
 import { useCool } from "/@/cool";
 import { parsePx } from "/@/cool/utils";
+import { isArray } from "lodash-es";
 import "@wangeditor/editor/dist/css/style.css";
 
 export default defineComponent({
@@ -53,16 +60,25 @@ export default defineComponent({
 
 	props: {
 		modelValue: String,
+		// 模式
 		mode: {
 			type: String as PropType<"default" | "simple">,
 			default: "default"
 		},
+		// 高度
 		height: {
 			type: [String, Number],
 			default: 400
 		},
+		// 禁用
 		disabled: Boolean,
-		preview: Boolean
+		// 是否预览模式
+		preview: Boolean,
+		// 是否使用文件空间
+		isSpace: {
+			type: Boolean,
+			default: false
+		}
 	},
 
 	emits: ["update:modelValue", "change", "focus", "blur"],
@@ -86,6 +102,7 @@ export default defineComponent({
 			}
 		);
 
+		// 临时
 		const temp: { insertFn: ((url: string) => void) | null } = {
 			insertFn: null
 		};
@@ -94,12 +111,7 @@ export default defineComponent({
 		const editorConfig: Partial<IEditorConfig> = {
 			placeholder: "请输入",
 			MENU_CONF: {
-				uploadImage: {
-					customBrowseAndUpload(fn: any) {
-						temp.insertFn = fn;
-						refs.image.open();
-					}
-				},
+				uploadImage: {},
 				uploadVideo: {
 					customBrowseAndUpload(fn: any) {
 						temp.insertFn = fn;
@@ -108,6 +120,21 @@ export default defineComponent({
 				}
 			}
 		};
+
+		// 图片上传，两种模式
+		if (props.isSpace) {
+			// 文件空间上传
+			editorConfig.MENU_CONF!.uploadImage.customBrowseAndUpload = (fn: any) => {
+				temp.insertFn = fn;
+				refs.image.open();
+			};
+		} else {
+			// 直接上传
+			editorConfig.MENU_CONF!.uploadImage.customUpload = (file: File, fn: any) => {
+				temp.insertFn = fn;
+				refs.image.upload(file);
+			};
+		}
 
 		// 创建后
 		function onCreated(editor: any) {
@@ -137,6 +164,10 @@ export default defineComponent({
 
 		// 文件选择
 		function onFileConfirm(files: any[]) {
+			if (!isArray(files)) {
+				files = [files];
+			}
+
 			if (files.length > 0) {
 				files.forEach((file) => {
 					if (temp.insertFn) {
@@ -155,8 +186,10 @@ export default defineComponent({
 			}
 		}
 
+		// 监听
 		watch(() => [props.disabled, props.preview], onDisabled);
 
+		// 销毁
 		onBeforeUnmount(() => {
 			const editor = Editor.value;
 			if (editor == null) return;
@@ -188,6 +221,21 @@ export default defineComponent({
 
 	:deep(.w-e-toolbar) {
 		border-bottom: 1px solid var(--el-border-color);
+
+		button {
+			font-size: 12px;
+
+			&::before {
+				font-size: 12px;
+			}
+		}
+	}
+
+	.upload-inner {
+		visibility: hidden;
+		position: absolute;
+		left: 0;
+		top: 0;
 	}
 
 	&.disabled {

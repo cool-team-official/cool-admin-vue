@@ -19,8 +19,7 @@ const wang = ref(
 	'<p><span style="font-size: 22px;"><em>富文本编</em></span><span style="color: rgb(216, 68, 147); font-size: 22px;"><em>辑器</em></span></p>'
 );
 
-const monaco = ref(`
-class User {
+const monaco = ref(`class User {
   main() {
     console.log('Name', '神仙都没用')
   }
