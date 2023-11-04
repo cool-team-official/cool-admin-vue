@@ -528,7 +528,8 @@ function check() {
 // 更新
 function update() {
 	if (!check()) {
-		emit("update:modelValue", getUrls(list.value));
+		const urls = getUrls(list.value);
+		emit("update:modelValue", props.multiple ? getUrls(list.value) : urls[0]);
 
 		nextTick(() => {
 			if (props.prop) {
