@@ -102,7 +102,7 @@
 <script lang="tsx" name="demo-crud" setup>
 import { useCrud, useUpsert, useTable, useAdvSearch, setFocus, useSearch } from "@cool-vue/crud";
 import { useDict } from "/$/dict";
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useCool } from "/@/cool";
 import FormBtn from "../components/form-btn.vue";
@@ -255,9 +255,12 @@ const Upsert = useUpsert({
 			}
 		},
 		{
-			label: "选择用户",
+			label: "",
 			prop: "userIds",
 			group: "select",
+			props: {
+				labelWidth: "0px"
+			},
 			component: {
 				name: "slot-userIds"
 			}
@@ -267,9 +270,6 @@ const Upsert = useUpsert({
 			label: "工作",
 			prop: "occupation",
 			group: "other",
-			hook: {
-				bind: "string"
-			},
 			component: {
 				name: "el-tree-select",
 				props: {
@@ -420,10 +420,7 @@ const Table = useTable({
 			prop: "occupation",
 			dict: dict.get("occupation"),
 			dictColor: true,
-			minWidth: 120,
-			formatter(row) {
-				return String(row.occupation);
-			}
+			minWidth: 120
 		},
 		{
 			label: "状态",

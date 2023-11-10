@@ -34,7 +34,7 @@ const useDictStore = defineStore("dict", () => {
 				for (const [i, arr] of Object.entries(res)) {
 					arr.forEach((e) => {
 						e.label = e.name;
-						e.value = e.value || e.id;
+						e.value = e.value ?? e.id;
 					});
 
 					d[i] = deepTree(arr, "desc");

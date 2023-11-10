@@ -16,6 +16,9 @@
 				<!-- 刷新按钮 -->
 				<cl-refresh-btn />
 
+				<!-- 全选 -->
+				<el-button type="primary" @click="selectAll">全选</el-button>
+
 				<cl-filter label="状态">
 					<cl-select :options="options.status" prop="status" :width="120" />
 				</cl-filter>
@@ -27,11 +30,11 @@
 
 			<cl-row>
 				<!-- 数据表格 -->
-				<cl-table ref="Table" :auto-height="false" />
+				<cl-table ref="Table" :auto-height="false" @selection-change="onSelectionChange" />
 			</cl-row>
 
 			<cl-row>
-				<span>已选 {{ Table?.selection.length }} 人</span>
+				<span>已选 {{ selection.length }} 人</span>
 				<cl-flex1 />
 				<!-- 分页控件 -->
 				<cl-pagination />
@@ -48,12 +51,15 @@
 <script lang="ts" setup name="select-user">
 import { useCrud, useForm, useTable } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
-import { nextTick, reactive, ref, watch } from "vue";
+import { PropType, nextTick, reactive, ref, watch } from "vue";
 import { cloneDeep } from "lodash";
+
+// 替换你的类型
+type Item = Eps.BaseSysUserEntity;
 
 const props = defineProps({
 	modelValue: {
-		type: Array,
+		type: Array as PropType<Item[]>,
 		default: () => []
 	},
 	isDisabled: Boolean,
@@ -134,7 +140,10 @@ const Table = useTable({
 const Crud = useCrud({
 	service: service.base.sys.user,
 	async onRefresh(params, { next }) {
-		await next(params);
+		const res = await next(params);
+
+		// 添加已加载列表的 id
+		loadIds.value.push(...res.list.map((e) => e.id));
 
 		// 数据反选
 		list.value.forEach((e) => {
@@ -155,16 +164,37 @@ async function refresh(params?: any) {
 // 弹窗是否可见
 const visible = ref(false);
 
+// 已选的数据列表，双向绑定用
+const list = ref<Item[]>([]);
+
 // 已选列表
-const list = ref<Eps.BaseSysUserEntity[]>([]);
+const selection = ref<any[]>([]);
+
+// 已加载列表的 id
+const loadIds = ref<number[]>([]);
+
+// 监听已选列表
+function onSelectionChange(arr: Item[]) {
+	// 已加载的
+	const ids = Array.from(new Set(loadIds.value));
+
+	// 过滤掉已加载的，再加上已选的
+	selection.value = selection.value.filter((e) => !ids.includes(e.id!)).concat(...arr);
+}
 
 // 打开选择弹窗
 function open() {
 	visible.value = true;
 
+	// 清空数据
+	loadIds.value = [];
+
+	// 设置已选
+	selection.value = cloneDeep(list.value);
+
 	nextTick(() => {
 		refresh({
-			size: 10
+			size: 2
 		});
 	});
 }
@@ -176,7 +206,20 @@ function close() {
 
 // 选择
 function select() {
-	list.value = cloneDeep(Table.value?.selection || []);
+	list.value = cloneDeep(selection.value || []);
+	close();
+}
+
+// 全选
+async function selectAll() {
+	// 全部数据
+	await Crud.value?.service.page({ page: 1, size: 10000 }).then((res) => {
+		list.value = res.list;
+	});
+
+	// 当前页数据
+	// list.value = Table.value?.data || [];
+
 	close();
 }
 
