@@ -179,8 +179,8 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 
 							item.api.forEach((a) => {
 								// 方法名
-								const n = toCamel(a.name || last(a.path.split("/")) || "").replace(
-									/[:\/-]/g,
+								const n = (a.name || last(a.path.split("/")) || "").replace(
+									/[:\/]/g,
 									""
 								);
 
@@ -203,7 +203,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 										const a = `${p.name}${p.required ? "" : "?"}`;
 										const b = `${p.schema.type || "string"}`;
 
-										q.push(`${a}: ${b},`);
+										q.push(`"${a}": ${b},`);
 									});
 
 									if (isEmpty(q)) {
@@ -250,7 +250,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 									t.push(" */\n");
 
 									t.push(
-										`${n}(data${q.length == 1 ? "?" : ""}: ${q.join(
+										`"${n}"(data${q.length == 1 ? "?" : ""}: ${q.join(
 											""
 										)}): Promise<${res}>;`
 									);
@@ -266,7 +266,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 							t.push(" */\n");
 							t.push(
 								`permission: { ${permission
-									.map((e) => `${e}: string;`)
+									.map((e) => `"${e}": string;`)
 									.join("\n")} };`
 							);
 
@@ -277,7 +277,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 							t.push(" */\n");
 							t.push(
 								`_permission: { ${permission
-									.map((e) => `${e}: boolean;`)
+									.map((e) => `"${e}": boolean;`)
 									.join("\n")} };`
 							);
 
@@ -382,7 +382,7 @@ function createService() {
 								n = n.split("/:")[0];
 							}
 
-							d[k][toCamel(n)] = a;
+							d[k][n] = a;
 						}
 					});
 
