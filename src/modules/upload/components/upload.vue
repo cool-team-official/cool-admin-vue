@@ -439,14 +439,15 @@ async function httpRequest(req: any, item?: any) {
 						NProgress: false
 					})
 					.then((res) => {
+						item.key = encodeURIComponent(key);
+
 						if (isLocal) {
 							item.url = res;
 						} else {
-							item.url = pathJoin(preview || host, key);
+							item.url = pathJoin(preview || host, item.key);
 						}
 
 						item.fileId = fileId;
-						item.key = key;
 
 						emit("success", item);
 						resolve(item.url);
