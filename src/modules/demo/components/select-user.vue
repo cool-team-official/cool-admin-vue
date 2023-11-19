@@ -52,7 +52,7 @@
 import { useCrud, useForm, useTable } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import { PropType, nextTick, reactive, ref, watch } from "vue";
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "lodash-es";
 
 // 替换你的类型
 type Item = Eps.BaseSysUserEntity;
