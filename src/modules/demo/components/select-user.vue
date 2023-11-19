@@ -146,7 +146,7 @@ const Crud = useCrud({
 		loadIds.value.push(...res.list.map((e) => e.id));
 
 		// 数据反选
-		list.value.forEach((e) => {
+		selection.value.forEach((e) => {
 			const d = Table.value?.data.find((a) => a.id == e.id);
 
 			if (d) {
