@@ -76,7 +76,7 @@ request.interceptors.request.use(
 								isRefreshing = false;
 							})
 							.catch(() => {
-								user.clear();
+								user.logout();
 							});
 					}
 
