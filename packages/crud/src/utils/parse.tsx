@@ -177,7 +177,7 @@ export function parseExtensionComponent(vnode: any) {
 						label = e.label;
 						value = e.value;
 					} else {
-						return <cl-error-message title={`组件渲染失败，options 参数错误`} />;
+						return <cl-error-message title={`Component options error`} />;
 					}
 
 					switch (vnode.name) {

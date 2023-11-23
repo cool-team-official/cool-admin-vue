@@ -15,6 +15,7 @@ export default {
 	advSearch: "高度な検索",
 	searchKey: "検索キーワード",
 	placeholder: "入力してください",
+	placeholderSelect: "選択してください",
 	tips: "ヒント",
 	saveSuccess: "保存が成功しました",
 	deleteSuccess: "削除が成功しました",

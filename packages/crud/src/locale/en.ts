@@ -15,6 +15,7 @@ export default {
 	advSearch: "Advanced Search",
 	searchKey: "Search Keyword",
 	placeholder: "Please enter",
+	placeholderSelect: "Please select",
 	tips: "Tips",
 	saveSuccess: "Save successful",
 	deleteSuccess: "Delete successful",

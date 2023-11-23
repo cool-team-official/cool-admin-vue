@@ -16,6 +16,7 @@ export declare const locale: {
         advSearch: string;
         searchKey: string;
         placeholder: string;
+        placeholderSelect: string;
         tips: string;
         saveSuccess: string;
         deleteSuccess: string;
@@ -46,6 +47,7 @@ export declare const locale: {
         advSearch: string;
         searchKey: string;
         placeholder: string;
+        placeholderSelect: string;
         tips: string;
         saveSuccess: string;
         deleteSuccess: string;
@@ -76,6 +78,7 @@ export declare const locale: {
         advSearch: string;
         searchKey: string;
         placeholder: string;
+        placeholderSelect: string;
         tips: string;
         saveSuccess: string;
         deleteSuccess: string;
@@ -106,6 +109,7 @@ export declare const locale: {
         advSearch: string;
         searchKey: string;
         placeholder: string;
+        placeholderSelect: string;
         tips: string;
         saveSuccess: string;
         deleteSuccess: string;

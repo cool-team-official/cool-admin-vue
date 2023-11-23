@@ -15,6 +15,7 @@ export default {
 	advSearch: "高级搜索",
 	searchKey: "搜索关键字",
 	placeholder: "请输入",
+	placeholderSelect: "请选择",
 	tips: "提示",
 	saveSuccess: "保存成功",
 	deleteSuccess: "删除成功",

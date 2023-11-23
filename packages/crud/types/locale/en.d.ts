@@ -15,6 +15,7 @@ declare const _default: {
     advSearch: string;
     searchKey: string;
     placeholder: string;
+    placeholderSelect: string;
     tips: string;
     saveSuccess: string;
     deleteSuccess: string;
