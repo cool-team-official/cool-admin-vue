@@ -198,7 +198,10 @@ export function useMenu() {
 	function create(data: EpsModule): Promise<() => void> {
 		return new Promise((resolve, reject) => {
 			// 视图文件路径
-			data.viewPath = `modules/${data.module}/views/${last(data.router?.split("/"))}.vue`;
+			data.viewPath = `modules/${data.module}/views${data.router?.replace(
+				`/${data.module}`,
+				""
+			)}.vue`;
 
 			// 添加菜单
 			service.base.sys.menu

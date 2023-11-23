@@ -264,7 +264,11 @@ const Upsert = useUpsert({
 		{
 			prop: "parentId",
 			label: "上级节点",
-			hook: "empty",
+			hook: {
+				submit(value) {
+					return value === "" ? null : value;
+				}
+			},
 			component: {
 				name: "slot-parentId"
 			}

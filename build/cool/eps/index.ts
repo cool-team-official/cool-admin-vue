@@ -2,7 +2,7 @@ import { createDir, error, firstUpperCase, readFile, toCamel } from "../utils";
 import { join } from "path";
 import { Entity, DistPath } from "./config";
 import axios from "axios";
-import { isArray, isEmpty, last, merge } from "lodash";
+import { isArray, isEmpty, last, merge, unionBy } from "lodash";
 import { createWriteStream } from "fs";
 import prettier from "prettier";
 import { proxy } from "../../../src/config/proxy";
@@ -61,6 +61,8 @@ async function getData(temps?: Eps.Entity[]) {
 			}
 		});
 	}
+
+	list = unionBy(list, "prefix");
 }
 
 // 创建 json 文件
@@ -107,6 +109,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 		for (const item of list) {
 			if (!item.name) continue;
 			const t = [`interface ${item.name} {`];
+
 			for (const col of item.columns || []) {
 				// 描述
 				t.push("\n");

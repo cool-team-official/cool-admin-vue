@@ -85,6 +85,16 @@ function open() {
 					props: {
 						placeholder: "请输入菜单路由，如：/test"
 					}
+				},
+				rules: {
+					required: true,
+					validator(_, value, callback) {
+						if (!(value || "").startsWith("/")) {
+							callback(new Error("必须以 / 开头"));
+						} else {
+							callback();
+						}
+					}
 				}
 			},
 			{

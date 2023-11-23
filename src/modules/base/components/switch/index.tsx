@@ -73,6 +73,11 @@ export default defineComponent({
 			}
 		}
 
+		// 点击事件, 阻止冒泡
+		function onClick(event: MouseEvent) {
+			event.stopPropagation();
+		}
+
 		return () => {
 			return (
 				<el-switch
@@ -80,6 +85,7 @@ export default defineComponent({
 					active-value={props.activeValue}
 					inactive-value={props.inactiveValue}
 					onChange={onChange}
+					onClick={onClick}
 				/>
 			);
 		};
