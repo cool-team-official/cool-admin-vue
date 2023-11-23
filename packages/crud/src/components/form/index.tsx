@@ -181,14 +181,11 @@ export default defineComponent({
 						done();
 					}
 				} else {
-					// 判断是否使用form-tabs，切换到对应的选项卡
-					const keys = Object.keys(error);
-
+					// 判断是否使用 cl-form-tabs，切换到对应的选项卡
 					if (Tabs.active.value) {
-						const el = refs.form.querySelector(`[data-prop="${keys[0]}"]`);
+						const group = Tabs.findGroup(config.items, Object.keys(error)[0]);
 
-						if (el) {
-							const group = el.getAttribute("data-group");
+						if (group) {
 							Tabs.set(group);
 						}
 					}
@@ -332,7 +329,9 @@ export default defineComponent({
 			const { isDisabled } = config._data;
 
 			if (e.type == "tabs") {
-				return <cl-form-tabs v-model={Tabs.active.value} {...e.props} />;
+				return (
+					<cl-form-tabs v-model={Tabs.active.value} {...e.props} onChange={Tabs.onLoad} />
+				);
 			}
 
 			// 是否隐藏
@@ -341,13 +340,13 @@ export default defineComponent({
 			});
 
 			// 分组显示
-			const inGroup =
-				isEmpty(Tabs.active.value) || isEmpty(e.group)
-					? true
-					: e.group === Tabs.active.value;
+			const inGroup = e.group ? e.group === Tabs.active.value : true;
+
+			// 是否已加载完成
+			const isLoaded = e.component && Tabs.isLoaded(e.group);
 
 			// 表单项
-			const FormItem = e.component
+			const FormItem = isLoaded
 				? h(
 						<el-form-item
 							class={{

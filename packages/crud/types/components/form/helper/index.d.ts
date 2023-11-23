@@ -27,10 +27,12 @@ export declare function useForm(): {
             props?: {
                 [x: string]: any;
                 labels?: {
+                    [x: string]: any;
                     label: string;
                     value: string;
                     name?: string | undefined;
                     icon?: any;
+                    lazy?: boolean | undefined;
                 }[] | undefined;
                 justify?: "center" | "left" | "right" | undefined;
                 color?: string | undefined;

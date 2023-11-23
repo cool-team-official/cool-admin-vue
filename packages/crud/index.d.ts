@@ -422,6 +422,17 @@ declare namespace ClTable {
 	}
 }
 
+declare namespace ClFormTabs {
+	type labels = {
+		label: string;
+		value: string;
+		name?: string;
+		icon?: any;
+		lazy?: boolean;
+		[key: string]: any;
+	}[];
+}
+
 declare namespace ClForm {
 	type CloseAction = "close" | "save";
 
@@ -455,7 +466,7 @@ declare namespace ClForm {
 		type?: "tabs";
 		prop?: string;
 		props?: {
-			labels?: Array<{ label: string; value: string; name?: string; icon?: any }>;
+			labels?: ClFormTabs.labels;
 			justify?: "left" | "center" | "right";
 			color?: string;
 			mergeProp?: boolean;
