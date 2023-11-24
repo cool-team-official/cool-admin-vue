@@ -80,7 +80,10 @@ export function createModule(app: App) {
 		e.components?.forEach(async (c: any) => {
 			const v = await (isFunction(c) ? c() : c);
 			const n = v.default || v;
-			app.component(n.name, n);
+
+			if (n.name) {
+				app.component(n.name, n);
+			}
 		});
 
 		// 注册指令

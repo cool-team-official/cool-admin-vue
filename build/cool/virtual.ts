@@ -5,6 +5,9 @@ import { createModule } from "./module";
 export function virtual(): Plugin {
 	const virtualModuleIds = ["virtual:eps", "virtual:module"];
 
+	// 首次启动加载 Eps
+	createEps();
+
 	return {
 		name: "vite-cool-virtual",
 		enforce: "pre",

@@ -1,5 +1,6 @@
 import fs from "fs";
 import { join } from "path";
+import dayjs from "dayjs";
 
 // 首字母大写
 export function firstUpperCase(value: string): string {
@@ -70,5 +71,5 @@ export function mkdirs(path: string) {
 }
 
 export function error(message: string) {
-	console.log("\x1B[31m%s\x1B[0m", message);
+	console.log("\x1B[31m%s\x1B[0m", `${dayjs().format("HH:mm:ss")} ${message || ""}`);
 }

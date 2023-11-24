@@ -2,7 +2,7 @@ import { TreeData } from "element-plus/es/components/tree/src/tree.type";
 import { ClViewGroup, useViewGroup } from "/$/base";
 import { service } from "/@/cool";
 import Node from "element-plus/es/components/tree/src/model/node";
-import ClAvatar from "../avatar/index";
+import ClAvatar from "../components/avatar/index";
 
 export function useDeptViewGroup(options: DeepPartial<ClViewGroup.Options>) {
 	const { ViewGroup } = useViewGroup({

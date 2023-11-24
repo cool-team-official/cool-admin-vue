@@ -35,23 +35,23 @@ async function getData(temps?: Eps.Entity[]) {
 			timeout: 5000
 		})
 		.then((res) => {
-			const { code, data, message } = res.data;
+			const { code, data } = res.data;
 
 			if (code === 1000) {
 				if (!isEmpty(data) && data) {
 					merge(list, Object.values(data).flat() as Eps.Entity[]);
 				}
-			} else {
-				error(`[eps] ${message}`);
 			}
 		})
 		.catch(() => {
-			error(`[eps] ${url} 服务未启动！！！`);
+			error(`[eps] 服务未启动 ➜  ${url}`);
 		});
 
 	// 合并其他数据
 	if (isArray(temps)) {
 		temps.forEach((e) => {
+			e.isLocal = true;
+
 			const d = list.find((a) => e.prefix === a.prefix);
 
 			if (d) {
@@ -67,19 +67,21 @@ async function getData(temps?: Eps.Entity[]) {
 
 // 创建 json 文件
 function createJson() {
-	const d = list.map((e) => {
-		return {
-			prefix: e.prefix,
-			name: e.name || "",
-			api: e.api.map((e) => {
-				return {
-					name: e.name,
-					method: e.method,
-					path: e.path
-				};
-			})
-		};
-	});
+	const d = list
+		.filter((e) => !e.isLocal)
+		.map((e) => {
+			return {
+				prefix: e.prefix,
+				name: e.name || "",
+				api: e.api.map((e) => {
+					return {
+						name: e.name,
+						method: e.method,
+						path: e.path
+					};
+				})
+			};
+		});
 
 	createWriteStream(join(DistPath, "eps.json"), {
 		flags: "w"
