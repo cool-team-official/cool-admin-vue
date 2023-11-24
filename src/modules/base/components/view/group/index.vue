@@ -24,56 +24,80 @@
 							</el-tooltip>
 						</div>
 
-						<div class="list" v-loading="loading">
+						<div class="data" v-loading="loading">
 							<el-scrollbar>
-								<ul
-									v-infinite-scroll="onMore"
-									:infinite-scroll-immediate="false"
-									:infinite-scroll-disabled="loaded"
-								>
-									<li
-										v-for="(item, index) in list"
-										:key="index"
-										@click="select(item)"
-										@contextmenu="
-											(e) => {
-												onContextMenu(e, item);
-											}
-										"
+								<!-- 树类型 -->
+								<template v-if="tree.visible">
+									<el-tree
+										class="tree"
+										highlight-current
+										:lazy="tree.lazy"
+										:data="list"
+										:props="tree.props"
+										:load="tree.onLoad"
+										:default-expanded-keys="tree.defaultExpandedKeys"
 									>
-										<slot
-											name="item"
-											:item="item"
-											:selected="selected"
-											:index="index"
-										>
-											<div
-												class="item"
-												:class="{
-													'is-active': selected?.id == item.id
-												}"
-											>
-												<slot
-													name="item-name"
-													:item="item"
-													:selected="selected"
-													:index="index"
-												>
-													<span>{{ item.name }}</span>
-												</slot>
-
-												<el-icon
-													class="arrow-right"
-													v-show="selected?.id == item.id"
-												>
-													<arrow-right-bold />
-												</el-icon>
+										<template #default="{ data }">
+											<div class="item" @click="select(data)">
+												<component :is="data.icon" v-if="data.icon" />
+												<span>{{ data[tree.props.label] }}</span>
 											</div>
-										</slot>
-									</li>
+										</template>
+									</el-tree>
+								</template>
 
-									<el-empty v-if="list.length == 0" :image-size="80" />
-								</ul>
+								<!-- 列表类型 -->
+								<template v-else>
+									<ul
+										class="list"
+										v-infinite-scroll="onMore"
+										:infinite-scroll-immediate="false"
+										:infinite-scroll-disabled="loaded"
+									>
+										<li
+											v-for="(item, index) in list"
+											:key="index"
+											@click="select(item)"
+											@contextmenu="
+												(e) => {
+													onContextMenu(e, item);
+												}
+											"
+										>
+											<slot
+												name="item"
+												:item="item"
+												:selected="selected"
+												:index="index"
+											>
+												<div
+													class="item"
+													:class="{
+														'is-active': selected?.id == item.id
+													}"
+												>
+													<slot
+														name="item-name"
+														:item="item"
+														:selected="selected"
+														:index="index"
+													>
+														<span>{{ item.name }}</span>
+													</slot>
+
+													<el-icon
+														class="arrow-right"
+														v-show="selected?.id == item.id"
+													>
+														<arrow-right-bold />
+													</el-icon>
+												</div>
+											</slot>
+										</li>
+
+										<el-empty v-if="list.length == 0" :image-size="80" />
+									</ul>
+								</template>
 							</el-scrollbar>
 						</div>
 					</div>
@@ -127,7 +151,8 @@ import { useBrowser } from "/@/cool";
 import { ContextMenu, useForm, setFocus } from "@cool-vue/crud";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { ClViewGroup } from "./hook";
-import { isEmpty } from "lodash-es";
+import { isEmpty, merge } from "lodash-es";
+import { deepTree } from "/@/cool/utils";
 
 const { browser, onScreenChange } = useBrowser();
 const slots = useSlots();
@@ -168,6 +193,24 @@ const isExpand = ref(true);
 
 // 选中值
 const selected = ref<ClViewGroup.Item>();
+
+// 树配置
+const tree = reactive(
+	merge(
+		{
+			visible: !!config.tree,
+			props: {
+				label: "name",
+				children: "children",
+				disabled: "disabled",
+				isLeaf: "isLeaf",
+				class: ""
+			},
+			defaultExpandedKeys: [] as number[]
+		},
+		config.tree
+	)
+);
 
 // 收起、展开
 function expand(value?: boolean) {
@@ -278,12 +321,19 @@ async function refresh(params?: any) {
 
 	loading.value = true;
 
-	await config.service
-		.page({
-			...reqParams,
-			...config.data
-		})
-		.then((res) => {
+	const data = {
+		...reqParams,
+		...config.data
+	};
+
+	let req;
+
+	if (tree.visible) {
+		req = config.service.list(data).then((res) => {
+			list.value = deepTree(res);
+		});
+	} else {
+		req = config.service.page(data).then((res) => {
 			const arr = config.onData?.(res.list) || res.list;
 
 			if (reqParams.page == 1) {
@@ -292,9 +342,19 @@ async function refresh(params?: any) {
 				list.value.push(...arr);
 			}
 
-			select(selected.value || list.value[0]);
-
 			loaded.value = res.pagination.total <= list.value.length;
+		});
+	}
+
+	await req
+		.then(() => {
+			const item = selected.value || list.value[0];
+
+			if (item) {
+				tree.defaultExpandedKeys = [item.id];
+			}
+
+			select(item);
 		})
 		.catch((err) => {
 			ElMessage.error(err.message);
@@ -434,11 +494,25 @@ defineExpose({
 				}
 			}
 
-			.list {
+			.data {
 				height: calc(100% - 40px);
 				box-sizing: border-box;
 
-				ul {
+				:deep(.el-tree-node__content) {
+					height: 36px;
+					margin: 0 5px;
+				}
+
+				.tree {
+					.item {
+						display: flex;
+						align-items: center;
+						line-height: 1;
+						width: 100%;
+					}
+				}
+
+				.list {
 					height: 100%;
 
 					li {

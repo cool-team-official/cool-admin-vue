@@ -1,9 +1,11 @@
 import { provide, ref } from "vue";
 import { useParent } from "/@/cool";
+import { TreeData } from "element-plus/es/components/tree/src/tree.type";
+import Node from "element-plus/es/components/tree/src/model/node";
 
 export declare namespace ClViewGroup {
 	interface Item {
-		id: string;
+		id: any;
 		name: string;
 		[key: string]: any;
 	}
@@ -24,6 +26,17 @@ export declare namespace ClViewGroup {
 		data: {
 			[key: string]: any;
 		};
+		tree: {
+			lazy?: boolean;
+			props?: {
+				label?: string | ((node: Node, data: any) => string);
+				children?: any;
+				disabled?: string | ((node: Node, data: any) => string);
+				isLeaf?: string | ((node: Node, data: any) => string);
+				class?: any;
+			};
+			onLoad?(node: Node, resolve: (data: TreeData) => void): void;
+		};
 		service: {
 			_permission: {
 				[key: string]: boolean;
@@ -35,6 +48,7 @@ export declare namespace ClViewGroup {
 				list: any[];
 				pagination: { page: number; size: number; total: number };
 			}>;
+			list(data?: any): Promise<any[]>;
 			update(data: any): Promise<any>;
 			add(data: any): Promise<any>;
 			delete(data: any): Promise<any>;
