@@ -31,11 +31,13 @@
 									<el-tree
 										class="tree"
 										highlight-current
+										auto-expand-parent
+										:expand-on-click-node="false"
+										:ref="setRefs('tree')"
 										:lazy="tree.lazy"
 										:data="list"
 										:props="tree.props"
 										:load="tree.onLoad"
-										:default-expanded-keys="tree.defaultExpandedKeys"
 										@node-click="select"
 									>
 										<template #default="{ data }">
@@ -148,7 +150,7 @@ import {
 	Refresh as IconRefresh,
 	Plus
 } from "@element-plus/icons-vue";
-import { useBrowser } from "/@/cool";
+import { useBrowser, useCool } from "/@/cool";
 import { ContextMenu, useForm, setFocus } from "@cool-vue/crud";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { ClViewGroup } from "./hook";
@@ -158,6 +160,7 @@ import { deepTree } from "/@/cool/utils";
 const { browser, onScreenChange } = useBrowser();
 const slots = useSlots();
 const Form = useForm();
+const { refs, setRefs } = useCool();
 
 // 配置
 const config = reactive(
@@ -330,10 +333,12 @@ async function refresh(params?: any) {
 	let req;
 
 	if (tree.visible) {
+		// 树形数据
 		req = config.service.list(data).then((res) => {
 			list.value = deepTree(res);
 		});
 	} else {
+		// 列表数据
 		req = config.service.page(data).then((res) => {
 			const arr = config.onData?.(res.list) || res.list;
 
@@ -352,10 +357,13 @@ async function refresh(params?: any) {
 			const item = selected.value || list.value[0];
 
 			if (item) {
-				tree.defaultExpandedKeys = [item.id];
-			}
+				if (tree.visible) {
+					const node = refs.tree.getNode(item);
+					node.expand();
+				}
 
-			select(item);
+				select(item);
+			}
 		})
 		.catch((err) => {
 			ElMessage.error(err.message);
@@ -509,8 +517,6 @@ defineExpose({
 						display: flex;
 						align-items: center;
 						line-height: 1;
-						height: 100%;
-						width: 100%;
 					}
 				}
 

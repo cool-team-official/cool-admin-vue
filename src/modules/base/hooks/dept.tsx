@@ -7,9 +7,11 @@ import ClAvatar from "../components/avatar/index";
 export function useDeptViewGroup(options: DeepPartial<ClViewGroup.Options>) {
 	const { ViewGroup } = useViewGroup({
 		...options,
+		label: "员工列表",
 		service: service.base.sys.department,
 		enableAdd: false,
-		label: "员工列表",
+		enableRefresh: false,
+		enableContextMenu: false,
 		tree: {
 			lazy: true,
 			onLoad(node: Node, resolve: (data: TreeData) => void) {
@@ -25,6 +27,7 @@ export function useDeptViewGroup(options: DeepPartial<ClViewGroup.Options>) {
 								/>
 							);
 						});
+
 						res.unshift(...(node.data.children || []));
 
 						resolve(res);

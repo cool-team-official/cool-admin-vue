@@ -33,11 +33,11 @@
 					v-loading="loading"
 					node-key="id"
 					default-expand-all
-					highlight-current
 					:data="list"
 					:props="{
 						label: 'name'
 					}"
+					highlight-current
 					:draggable="isDrag"
 					:allow-drag="allowDrag"
 					:allow-drop="allowDrop"
@@ -450,7 +450,6 @@ onMounted(function () {
 
 			&.is-active {
 				color: var(--color-primary);
-				font-weight: bold;
 			}
 		}
 
