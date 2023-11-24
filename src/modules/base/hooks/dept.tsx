@@ -6,7 +6,6 @@ import ClAvatar from "../components/avatar/index";
 
 export function useDeptViewGroup(options: DeepPartial<ClViewGroup.Options>) {
 	const { ViewGroup } = useViewGroup({
-		...options,
 		label: "员工列表",
 		service: service.base.sys.department,
 		enableAdd: false,
@@ -34,7 +33,8 @@ export function useDeptViewGroup(options: DeepPartial<ClViewGroup.Options>) {
 					});
 				}
 			}
-		}
+		},
+		...options
 	});
 
 	return {
