@@ -36,9 +36,10 @@
 										:props="tree.props"
 										:load="tree.onLoad"
 										:default-expanded-keys="tree.defaultExpandedKeys"
+										@node-click="select"
 									>
 										<template #default="{ data }">
-											<div class="item" @click="select(data)">
+											<div class="item">
 												<component :is="data.icon" v-if="data.icon" />
 												<span>{{ data[tree.props.label] }}</span>
 											</div>
@@ -508,6 +509,7 @@ defineExpose({
 						display: flex;
 						align-items: center;
 						line-height: 1;
+						height: 100%;
 						width: 100%;
 					}
 				}

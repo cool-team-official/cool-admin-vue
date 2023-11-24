@@ -33,6 +33,7 @@
 					v-loading="loading"
 					node-key="id"
 					default-expand-all
+					highlight-current
 					:data="list"
 					:props="{
 						label: 'name'
@@ -42,6 +43,7 @@
 					:allow-drop="allowDrop"
 					:expand-on-click-node="false"
 					@node-contextmenu="onContextMenu"
+					@node-click="rowClick"
 				>
 					<template #default="{ node, data }">
 						<div class="dept-tree__node">
@@ -50,7 +52,6 @@
 								:class="{
 									'is-active': data.id == ViewGroup?.selected?.id
 								}"
-								@click="rowClick(data)"
 								>{{ node.label }}</span
 							>
 							<span
