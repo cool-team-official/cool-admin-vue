@@ -295,10 +295,10 @@
     mitt "^3.0.1"
     vue "^3.3.4"
 
-"@cool-vue/crud@^7.0.5":
-  version "7.0.5"
-  resolved "https://registry.yarnpkg.com/@cool-vue/crud/-/crud-7.0.5.tgz#63cf8794241ec639ac802cc443d05d82ecf9c442"
-  integrity sha512-PWR/yeJh9EfhKDDiiK1bfrCUpY9vtIMTQ/MsLzaKnKsTTALisOfimvSxaA6dVS2jb9LsfhIKcB3WQinJnI/GIQ==
+"@cool-vue/crud@^7.0.6":
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/@cool-vue/crud/-/crud-7.0.6.tgz#32e49364dd3ded9d97d0551d1f381a6632d39f57"
+  integrity sha512-NQvsXPixIAynwjiTj0ivNjC8EOWq9ChHPJZHsvjJZrchTKyEajjUr14w4Q1OupZa/AKDN6SOGuNkY/Lj1dNHpg==
   dependencies:
     "@cool-vue/crud" "^7.0.1-beta14"
     array.prototype.flat "^1.2.4"

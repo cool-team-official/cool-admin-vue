@@ -27,22 +27,32 @@ export function useTabs({ config, Form }: { config: ClForm.Config; Form: Vue.Ref
 	}
 
 	// 查找分组
-	function findGroup(list: ClForm.Item[], prop: string) {
-		let name;
+	function toGroup(opts: { config: ClForm.Config; prop: string; refs: any }) {
+		if (active.value) {
+			let name;
 
-		function deep(d: ClForm.Item) {
-			if (d.prop == prop) {
-				name = d.group;
+			// 查找标签上绑定的数据
+			const el = opts.refs.form.querySelector(`[data-prop="${opts.prop}"]`);
+
+			// 各自判断
+			if (el) {
+				name = el?.getAttribute("data-group");
 			} else {
-				if (d.children) {
-					d.children.forEach(deep);
+				function deep(d: ClForm.Item) {
+					if (d.prop == opts.prop) {
+						name = d.group;
+					} else {
+						if (d.children) {
+							d.children.forEach(deep);
+						}
+					}
 				}
+
+				config.items.forEach(deep);
 			}
+
+			set(name);
 		}
-
-		list.forEach(deep);
-
-		return name;
 	}
 
 	// 获取参数
@@ -134,6 +144,6 @@ export function useTabs({ config, Form }: { config: ClForm.Config; Form: Vue.Ref
 		change,
 		clear,
 		mergeProp,
-		findGroup
+		toGroup
 	};
 }

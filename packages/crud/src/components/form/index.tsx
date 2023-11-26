@@ -181,14 +181,12 @@ export default defineComponent({
 						done();
 					}
 				} else {
-					// 判断是否使用 cl-form-tabs，切换到对应的选项卡
-					if (Tabs.active.value) {
-						const group = Tabs.findGroup(config.items, Object.keys(error)[0]);
-
-						if (group) {
-							Tabs.set(group);
-						}
-					}
+					// 切换到对应的选项卡
+					Tabs.toGroup({
+						refs,
+						config,
+						prop: Object.keys(error)[0]
+					});
 				}
 			});
 		}

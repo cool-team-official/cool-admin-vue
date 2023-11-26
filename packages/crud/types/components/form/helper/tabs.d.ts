@@ -12,5 +12,9 @@ export declare function useTabs({ config, Form }: {
     change: (value: any, isValid?: boolean) => Promise<unknown>;
     clear: () => void;
     mergeProp: (item: ClForm.Item) => void;
-    findGroup: (list: ClForm.Item[], prop: string) => undefined;
+    toGroup: (opts: {
+        config: ClForm.Config;
+        prop: string;
+        refs: any;
+    }) => void;
 };
