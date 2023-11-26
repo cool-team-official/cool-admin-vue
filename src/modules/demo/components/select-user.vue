@@ -104,12 +104,13 @@ const Table = useTable({
 			label: "头像",
 			component: {
 				name: "cl-avatar"
-			}
+			},
+			minWidth: 100
 		},
 		{
 			prop: "username",
 			label: "手机号",
-			minWidth: 150
+			minWidth: 120
 		},
 		{
 			prop: "name",
@@ -194,7 +195,7 @@ function open() {
 
 	nextTick(() => {
 		refresh({
-			size: 2
+			size: 10
 		});
 	});
 }
