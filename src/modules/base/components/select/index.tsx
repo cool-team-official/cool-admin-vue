@@ -43,11 +43,13 @@ export default defineComponent({
 
 		// 值改变
 		function onChange(val: string) {
-			emit("update:modelValue", val);
-			emit("change", val);
+			const v = val === "" ? undefined : val;
+
+			emit("update:modelValue", v);
+			emit("change", v);
 
 			if (props.prop) {
-				Crud.value?.refresh({ page: 1, [props.prop]: val === "" ? undefined : val });
+				Crud.value?.refresh({ page: 1, [props.prop]: v });
 			}
 		}
 
