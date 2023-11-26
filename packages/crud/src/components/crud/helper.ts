@@ -54,7 +54,7 @@ export function useHelper({ config, crud, mitt }: Options) {
 	function refresh(params?: obj) {
 		const { service, dict } = crud;
 
-		return new Promise((end) => {
+		return new Promise((success, error) => {
 			// 合并请求参数
 			const reqParams = paramsReplace(Object.assign(crud.params, params));
 
@@ -67,13 +67,14 @@ export function useHelper({ config, crud, mitt }: Options) {
 			// 完成事件
 			function done() {
 				crud.loading = false;
-				end(true);
 			}
 
 			// 渲染
 			function render(list: any[], pagination?: any) {
-				mitt.emit("crud.refresh", { list, pagination });
+				const res = { list, pagination };
 				done();
+				success(res);
+				mitt.emit("crud.refresh", res);
 			}
 
 			// 下一步
@@ -91,16 +92,16 @@ export function useHelper({ config, crud, mitt }: Options) {
 								render(res.list, res.pagination);
 							}
 
+							success(res);
 							resolve(res);
-							done();
 						})
 						.catch((err) => {
 							ElMessage.error(err.message);
+							error(err);
 							reject(err);
-							done();
 						});
 
-					end(true);
+					done();
 				});
 			}
 

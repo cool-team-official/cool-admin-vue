@@ -214,7 +214,7 @@ function select() {
 // 全选
 async function selectAll() {
 	// 全部数据
-	await Crud.value?.service.page({ page: 1, size: 10000 }).then((res) => {
+	await Crud.value?.refresh({ page: 1, size: 10000 }).then((res) => {
 		list.value = res.list;
 	});
 
@@ -240,7 +240,7 @@ function remove() {
 // 监听已选列表，返回 ids
 watch(
 	list,
-	(arr) => {
+	(arr = []) => {
 		emit(
 			"update:modelValue",
 			arr.map((e) => e.id)
