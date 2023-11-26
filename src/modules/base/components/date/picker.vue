@@ -9,7 +9,7 @@
 			@change="onChange"
 		/>
 
-		<el-radio-group v-model="btnType" @change="onBtnTypeChange" v-if="quickBtn && isRange">
+		<el-radio-group v-model="quickType" @change="onQuickTypeChange" v-if="quickBtn && isRange">
 			<el-radio-button label="day">今日</el-radio-button>
 			<el-radio-button label="week">本周</el-radio-button>
 			<el-radio-button label="month">本月</el-radio-button>
@@ -21,23 +21,41 @@
 <script lang="ts" setup name="cl-date-picker">
 import { useCrud } from "@cool-vue/crud";
 import dayjs from "dayjs";
-import { computed, ref, watch } from "vue";
+import { PropType, computed, ref, watch } from "vue";
 
 const props = defineProps({
 	modelValue: Array,
+	// 日期类型
 	type: {
-		type: String,
+		type: String as PropType<
+			| "year"
+			| "month"
+			| "date"
+			| "dates"
+			| "datetime"
+			| "week"
+			| "datetimerange"
+			| "daterange"
+			| "monthrange"
+		>,
 		default: "datetimerange"
 	},
+	// 日期格式
 	valueFormat: {
-		type: String,
+		type: null,
 		default: "YYYY-MM-DD HH:mm:ss"
 	},
-	prop: {
-		type: String
-	},
+	// 搜索请求的字段
+	prop: String,
+	// 宽度
 	width: String,
-	quickBtn: Boolean
+	// 是否显示快速按钮
+	quickBtn: Boolean,
+	// 默认按钮类型
+	defaultQuickType: {
+		type: String as PropType<"day" | "week" | "month" | "year" | "">,
+		default: "day"
+	}
 });
 
 const emit = defineEmits(["update:modelValue", "change"]);
@@ -56,12 +74,12 @@ const defaultTime = ref(
 const date = ref();
 
 // 按钮类型
-const btnType = ref("month");
+const quickType = ref(props.defaultQuickType);
 
 // 日期改变
 function onChange(value: any[]) {
 	// 重置按钮类型
-	btnType.value = "";
+	quickType.value = "";
 
 	// 参数
 	let params = {};
@@ -95,13 +113,13 @@ function onChange(value: any[]) {
 }
 
 // 按钮类型改变
-function onBtnTypeChange() {
+function onQuickTypeChange() {
 	date.value = isRange.value ? [] : undefined;
 
 	let start = dayjs();
 	let end = dayjs();
 
-	switch (btnType.value) {
+	switch (quickType.value) {
 		case "day":
 			break;
 		case "week":
@@ -129,7 +147,7 @@ function onBtnTypeChange() {
 }
 
 function init() {
-	onBtnTypeChange();
+	onQuickTypeChange();
 }
 
 watch(
