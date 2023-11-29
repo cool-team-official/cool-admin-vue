@@ -368,10 +368,11 @@ onMounted(() => {
 		border-radius: 2px;
 		text-transform: uppercase;
 		line-height: 1;
-		max-width: 80px;
+		max-width: 65px;
 		box-sizing: border-box;
 		white-space: nowrap;
 		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	&__actions {

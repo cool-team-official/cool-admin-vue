@@ -6,7 +6,7 @@ import { mkdirs } from "../utils";
 // 创建文件
 export async function createMenu(options: { viewPath: string; code: string }) {
 	// 格式化内容
-	const content = prettier.format(options.code, {
+	const content = await prettier.format(options.code, {
 		parser: "vue",
 		useTabs: true,
 		tabWidth: 4,

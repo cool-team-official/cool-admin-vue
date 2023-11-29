@@ -1,25 +1,26 @@
 import { languages } from "monaco-editor";
 import prettier from "prettier/standalone";
-import parserHtml from "prettier/parser-html";
-import parserTypescript from "prettier/parser-typescript";
-import parserPostcss from "prettier/parser-postcss";
+import pluginHtml from "prettier/plugins/html";
+import pluginTypescript from "prettier/plugins/typescript";
+import pluginPostcss from "prettier/plugins/postcss";
+import pluginEstree from "prettier/plugins/estree";
 
 const options: { [key: string]: { parser: string; plugins: any[] } } = {
 	html: {
 		parser: "html",
-		plugins: [parserHtml, parserTypescript, parserPostcss]
+		plugins: [pluginHtml, pluginTypescript, pluginPostcss, pluginEstree]
 	},
 	typescript: {
 		parser: "typescript",
-		plugins: [parserTypescript]
+		plugins: [pluginTypescript, pluginEstree]
 	},
 	css: {
 		parser: "css",
-		plugins: [parserPostcss]
+		plugins: [pluginPostcss]
 	},
 	scss: {
 		parser: "scss",
-		plugins: [parserPostcss]
+		plugins: [pluginPostcss]
 	}
 };
 
@@ -27,11 +28,11 @@ export function useFormat() {
 	function register() {
 		for (const i in options) {
 			languages.registerDocumentFormattingEditProvider(i, {
-				provideDocumentFormattingEdits(model) {
+				async provideDocumentFormattingEdits(model) {
 					let text = model.getValue();
 
 					try {
-						text = prettier.format(text, {
+						text = await prettier.format(text, {
 							parser: options[i].parser,
 							plugins: options[i].plugins,
 							semi: true,

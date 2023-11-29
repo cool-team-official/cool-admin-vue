@@ -14,7 +14,7 @@ function getNames(v: any) {
 }
 
 // 数据
-let service = {};
+const service = {};
 let list: Eps.Entity[] = [];
 
 // 获取数据
@@ -326,7 +326,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 	`;
 
 	// 文本内容
-	const content = prettier.format(text, {
+	const content = await prettier.format(text, {
 		parser: "typescript",
 		useTabs: true,
 		tabWidth: 4,
