@@ -9,14 +9,14 @@
 			collapse-tags-tooltip
 			:disabled="disabled"
 			:options="data"
-			:props="{ multiple: true }"
+			:props="cascaderProps"
 			@change="onChange"
 		/>
 	</div>
 </template>
 
 <script lang="ts" name="cl-menu-perms" setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, reactive } from "vue";
 import { useCool } from "/@/cool";
 import { deepPaths } from "/@/cool/utils";
 
@@ -37,6 +37,9 @@ const value = ref<string[][]>([]);
 
 // 权限列表
 const data = ref<any[]>([]);
+
+// elm BUG
+const cascaderProps = reactive({ multiple: true });
 
 // 监听改变
 function onChange(arr: any) {
