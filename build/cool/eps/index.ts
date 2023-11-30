@@ -259,9 +259,9 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 											""
 										)}): Promise<${res}>;`
 									);
-								}
 
-								permission.push(n);
+									permission.push(n);
+								}
 							});
 
 							// 权限标识
