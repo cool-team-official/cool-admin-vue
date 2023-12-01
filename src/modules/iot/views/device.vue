@@ -102,7 +102,7 @@ import { ContextMenu } from "@cool-vue/crud";
 import { useClipboard } from "@vueuse/core";
 import { ElMessage } from "element-plus";
 import { debounce, orderBy } from "lodash-es";
-import { computed, nextTick, onActivated, onMounted, onUnmounted, ref } from "vue";
+import { computed, nextTick, onActivated, ref } from "vue";
 import { useMqtt } from "../hooks";
 import { useBase, useViewGroup } from "/$/base";
 import { useCool } from "/@/cool";

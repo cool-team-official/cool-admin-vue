@@ -248,11 +248,6 @@ function onIndex(id?: number) {
 	return selection.value.findIndex((e) => e.id === id) + 1;
 }
 
-// 确认
-function confirm(item: Upload.Item) {
-	emit("confirm", [item]);
-}
-
 // 删除选中
 function remove(item?: Upload.Item) {
 	// 已选文件 id

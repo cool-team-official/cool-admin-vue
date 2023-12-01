@@ -145,6 +145,7 @@ export function parseTableOpButtons(buttons: any[], { scope }: any) {
 								text
 								type={vnode.type}
 								bg
+								{...vnode?.props}
 								onClick={() => {
 									vnode.onClick({ scope });
 								}}>

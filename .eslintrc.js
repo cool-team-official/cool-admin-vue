@@ -28,29 +28,18 @@ module.exports = {
 		"@typescript-eslint/no-explicit-any": "off",
 		"@typescript-eslint/no-var-requires": "off",
 		"@typescript-eslint/no-empty-function": "off",
+		"vue/no-mutating-props": "off",
 		"vue/component-name-in-template-casing": ["error", "kebab-case"],
 		"vue/component-definition-name-casing": ["error", "kebab-case"],
 		"no-use-before-define": "off",
+		"no-unused-vars": "off",
 		"@typescript-eslint/no-use-before-define": "off",
 		"@typescript-eslint/ban-ts-comment": "off",
 		"@typescript-eslint/ban-types": "off",
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/explicit-module-boundary-types": "off",
 		"@typescript-eslint/no-namespace": "off",
-		"@typescript-eslint/no-unused-vars": [
-			"error",
-			{
-				argsIgnorePattern: "^h$",
-				varsIgnorePattern: "^h$"
-			}
-		],
-		"no-unused-vars": [
-			"error",
-			{
-				argsIgnorePattern: "^h$",
-				varsIgnorePattern: "^h$"
-			}
-		],
+		"@typescript-eslint/no-unused-vars": "off",
 		"space-before-function-paren": "off",
 		"vue/attributes-order": "off",
 		"vue/one-component-per-file": "off",

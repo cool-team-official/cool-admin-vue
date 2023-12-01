@@ -1,5 +1,5 @@
 import * as mqtt from "mqtt/dist/mqtt.min";
-import { useCool, hmr } from "/@/cool";
+import { useCool } from "/@/cool";
 
 let client: mqtt.MqttClient;
 

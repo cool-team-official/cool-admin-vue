@@ -1,9 +1,8 @@
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
 import { useCrud, useForm } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
 import dayjs from "dayjs";
 import { isEmpty, orderBy } from "lodash-es";
-import { ref } from "vue";
 import { export_json_to_excel } from "./utils";
 import { deepFind } from "/$/dict/utils";
 
@@ -73,6 +72,7 @@ export default defineComponent({
 
 											// 字典
 											if (col.dict) {
+												// @ts-ignore
 												e[k] = deepFind(e[k], col.dict)?.label || e[k];
 											}
 										}

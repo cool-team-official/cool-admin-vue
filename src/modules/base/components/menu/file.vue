@@ -5,7 +5,7 @@
 
 			<el-tooltip content="选择文件">
 				<el-icon @click="toggle(false)">
-					<FolderChecked />
+					<folder-checked />
 				</el-icon>
 			</el-tooltip>
 		</template>
@@ -22,7 +22,7 @@
 
 			<el-tooltip content="输入编辑">
 				<el-icon @click="toggle(true)">
-					<Edit />
+					<edit />
 				</el-icon>
 			</el-tooltip>
 		</template>

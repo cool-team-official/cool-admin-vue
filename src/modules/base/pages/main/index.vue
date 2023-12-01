@@ -61,7 +61,8 @@ const { app } = useBase();
 			position: absolute;
 			left: 0;
 			z-index: 9999;
-			transition: transform 0.3s cubic-bezier(0.7, 0.3, 0.1, 1),
+			transition:
+				transform 0.3s cubic-bezier(0.7, 0.3, 0.1, 1),
 				box-shadow 0.3s cubic-bezier(0.7, 0.3, 0.1, 1);
 		}
 

@@ -102,7 +102,7 @@
 <script lang="tsx" name="demo-crud" setup>
 import { useCrud, useUpsert, useTable, useAdvSearch, setFocus, useSearch } from "@cool-vue/crud";
 import { useDict } from "/$/dict";
-import { onMounted, reactive } from "vue";
+import { reactive } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useCool } from "/@/cool";
 import FormBtn from "../components/form-btn.vue";

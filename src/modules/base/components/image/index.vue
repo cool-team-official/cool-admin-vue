@@ -1,12 +1,22 @@
 <template>
-	<div class="cl-image" :style="{
-		justifyContent: justify,
-		height: style.h
-	}">
-		<el-image :src="urls[0]" :fit="fit" :lazy="lazy" :preview-src-list="urls" :style="{
-			height: style.h,
-			width: style.w
-		}" preview-teleported>
+	<div
+		class="cl-image"
+		:style="{
+			justifyContent: justify,
+			height: style.h
+		}"
+	>
+		<el-image
+			:src="urls[0]"
+			:fit="fit"
+			:lazy="lazy"
+			:preview-src-list="urls"
+			:style="{
+				height: style.h,
+				width: style.w
+			}"
+			preview-teleported
+		>
 			<template #error>
 				<div class="image-slot">
 					<el-icon :size="20"><picture-filled /></el-icon>
@@ -38,7 +48,7 @@ export default defineComponent({
 		},
 		lazy: Boolean,
 		fit: {
-			type: String as PropType<'' | 'contain' | 'cover' | 'none' | 'fill' | 'scale-down'>,
+			type: String as PropType<"" | "contain" | "cover" | "none" | "fill" | "scale-down">,
 			default: "cover"
 		},
 		justify: {

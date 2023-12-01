@@ -162,9 +162,9 @@
 </template>
 
 <script lang="tsx" name="magic-ai-code" setup>
-import { nextTick, onMounted, reactive, watch } from "vue";
+import { onMounted, reactive, watch } from "vue";
 import { module, useCool, storage } from "/@/cool";
-import { Promotion, Loading, Close, Check, Refresh, VideoPlay } from "@element-plus/icons-vue";
+import { Promotion, Loading, Close, Check } from "@element-plus/icons-vue";
 import { ElLoading, ElMessage, ElMessageBox } from "element-plus";
 import { debounce, isEmpty } from "lodash-es";
 import { useClipboard } from "@vueuse/core";
@@ -466,6 +466,7 @@ watch(
 onMounted(() => {
 	ai.connect({
 		onMessage(content) {
+			// @ts-ignore
 			codes[temp.coding] = content.replace(/```typescript\n/g, "").replace(/```/g, "");
 		},
 		onComplete() {

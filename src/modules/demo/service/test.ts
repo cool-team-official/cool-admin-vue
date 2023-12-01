@@ -74,21 +74,24 @@ class Test {
 
 		return new Promise((resolve) => {
 			// 模拟延迟
-			setTimeout(() => {
-				resolve({
-					list: list.slice((page - 1) * size, page * size),
-					pagination: {
-						total: list.length,
-						page,
-						size
-					},
-					subData: {
-						wages: list.reduce((a, b) => {
-							return a + b.wages;
-						}, 0)
-					}
-				});
-			}, Mock.Random.integer(300, 600));
+			setTimeout(
+				() => {
+					resolve({
+						list: list.slice((page - 1) * size, page * size),
+						pagination: {
+							total: list.length,
+							page,
+							size
+						},
+						subData: {
+							wages: list.reduce((a, b) => {
+								return a + b.wages;
+							}, 0)
+						}
+					});
+				},
+				Mock.Random.integer(300, 600)
+			);
 		});
 	}
 

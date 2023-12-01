@@ -1,4 +1,3 @@
-import { ElMessage } from "element-plus";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { deepTree, revDeepTree, storage } from "/@/cool/utils";

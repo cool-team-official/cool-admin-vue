@@ -1,6 +1,6 @@
 import { useCrud } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
-import { defineComponent, ref, watch, nextTick } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { isBoolean, isFunction } from "lodash-es";
 
 export default defineComponent({

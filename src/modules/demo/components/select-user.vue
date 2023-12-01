@@ -7,7 +7,19 @@
 			>
 		</div>
 
-		<cl-table :data="list" :ref="setRefs('table')" :auto-height="false" />
+		<cl-crud :padding="0">
+			<cl-table :data="data" :ref="setRefs('table')" :auto-height="false" />
+
+			<cl-row type="flex" align="middle" justify="end" :style="{ marginTop: '10px' }">
+				<el-pagination
+					v-model:current-page="pager.page"
+					:page-size="pager.size"
+					:total="list.length"
+					background
+					layout="total, prev, pager, next, jumper"
+				/>
+			</cl-row>
+		</cl-crud>
 	</div>
 
 	<cl-dialog v-model="visible" width="1200px" title="选择用户">
@@ -51,7 +63,7 @@
 <script lang="ts" setup name="select-user">
 import { useCrud, useForm, useTable } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
-import { PropType, nextTick, reactive, ref, watch } from "vue";
+import { PropType, computed, nextTick, reactive, ref, watch } from "vue";
 import { cloneDeep } from "lodash-es";
 
 // 替换你的类型
@@ -93,6 +105,7 @@ const options = reactive({
 
 // cl-table
 const Table = useTable({
+	contextMenu: [],
 	columns: [
 		{
 			type: "selection",
@@ -170,6 +183,18 @@ const list = ref<Item[]>([]);
 
 // 已选列表
 const selection = ref<any[]>([]);
+
+// 分页
+const pager = reactive({
+	page: 1,
+	size: 2
+});
+
+// 分页数据
+const data = computed(() => {
+	const { page, size } = pager;
+	return list.value.slice((page - 1) * size, page * size);
+});
 
 // 已加载列表的 id
 const loadIds = ref<number[]>([]);

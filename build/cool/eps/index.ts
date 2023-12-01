@@ -16,9 +16,20 @@ function getNames(v: any) {
 // 数据
 const service = {};
 let list: Eps.Entity[] = [];
+let localList: Eps.Entity[] = [];
 
 // 获取数据
 async function getData(temps?: Eps.Entity[]) {
+	// 记录本地数据
+	if (!isEmpty(temps)) {
+		localList = (temps || []).map((e) => {
+			return {
+				...e,
+				isLocal: true
+			};
+		});
+	}
+
 	// 本地文件
 	try {
 		list = JSON.parse(readFile(join(DistPath, "eps.json")) || "[]");
@@ -47,11 +58,9 @@ async function getData(temps?: Eps.Entity[]) {
 			error(`[eps] 服务未启动 ➜  ${url}`);
 		});
 
-	// 合并其他数据
-	if (isArray(temps)) {
-		temps.forEach((e) => {
-			e.isLocal = true;
-
+	// 合并本地数据
+	if (isArray(localList)) {
+		localList.forEach((e) => {
 			const d = list.find((a) => e.prefix === a.prefix);
 
 			if (d) {
@@ -170,7 +179,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 
 				if (d[i].namespace) {
 					// 查找配置
-					const item = list.find((e) => (e.prefix || "").includes(d[i].namespace));
+					const item = list.find((e) => (e.prefix || "") === `/${d[i].namespace}`);
 
 					if (item) {
 						const t = [`interface ${name} {`];
@@ -260,7 +269,9 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 										)}): Promise<${res}>;`
 									);
 
-									permission.push(n);
+									if (!permission.includes(n)) {
+										permission.push(n);
+									}
 								}
 							});
 

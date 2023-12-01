@@ -1,7 +1,7 @@
 <template>
 	<div class="cl-view-head">
 		<el-icon class="cl-view-head__back" @click="router.back()">
-			<ArrowLeft />
+			<arrow-left />
 		</el-icon>
 
 		<span class="cl-view-head__title">{{ title }}</span>

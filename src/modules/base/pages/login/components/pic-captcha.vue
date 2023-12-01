@@ -5,7 +5,7 @@
 
 		<template v-else>
 			<el-icon class="is-loading">
-				<Loading />
+				<loading />
 			</el-icon>
 		</template>
 	</div>

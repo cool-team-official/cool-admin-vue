@@ -9,7 +9,6 @@
 		"resolveJsonModule": true,
 		"experimentalDecorators": true,
 		"esModuleInterop": true,
-		"suppressImplicitAnyIndexErrors": true,
 		"lib": ["esnext", "dom", "WebWorker"],
 		"types": ["vite/client", "element-plus/global"],
 		"paths": {
