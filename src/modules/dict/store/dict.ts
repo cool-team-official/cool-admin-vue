@@ -37,6 +37,7 @@ const useDictStore = defineStore("dict", () => {
 						e.value = e.value ?? e.id;
 					});
 
+					// @ts-ignore
 					d[i] = deepTree(arr, "desc");
 				}
 
