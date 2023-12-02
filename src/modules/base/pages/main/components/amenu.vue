@@ -6,10 +6,10 @@
 			background-color="transparent"
 			@select="select"
 		>
-			<template v-for="(item, index) in menu.group" :key="index">
-				<el-menu-item :index="`${index}`" v-if="item.isShow">
+			<template v-for="(item, index) in list" :key="item.id">
+				<el-menu-item :index="`${index}`">
 					<cl-svg v-if="item.icon" :name="item.icon" :size="18" />
-					<span class="a-menu__name">{{ item.name }}</span>
+					<span class="a-menu__name">{{ item.meta?.label }}</span>
 				</el-menu-item>
 			</template>
 		</el-menu>
@@ -17,65 +17,87 @@
 </template>
 
 <script lang="ts" name="a-menu" setup>
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useBase, Menu } from "/$/base";
 import { useCool } from "/@/cool";
+import { ElMessage } from "element-plus";
 
 const { router, route } = useCool();
 const { menu } = useBase();
 
 // 选中标识
-const active = ref("");
+const active = ref("0");
+
+// 组列表
+const list = computed(() => {
+	return menu.group.filter((e) => e.isShow);
+});
 
 // 选择导航
 function select(index: any) {
-	menu.setMenu(index);
+	if (String(index) == active.value) {
+		return false;
+	}
+
+	// 选中的组
+	const item = list.value[index];
 
 	// 获取第一个菜单地址
-	const url = menu.getPath(menu.group[index]);
-	router.push(url);
+	const url = menu.getPath(item);
+
+	if (url) {
+		// 设置左侧菜单
+		menu.setMenu(index);
+
+		// 跳转
+		router.push(url);
+	} else {
+		ElMessage.warning(`“${item.meta?.label}”下没有菜单，请先添加`);
+	}
 }
 
 // 刷新
 function refresh() {
+	let index = 0;
+
 	function deep(e: Menu.Item, i: number) {
 		switch (e.type) {
 			case 0:
-				(e.children || []).forEach((e) => {
-					deep(e, i);
-				});
+				if (e.children) {
+					e.children.forEach((e) => {
+						deep(e, i);
+					});
+				}
+
 				break;
 			case 1:
 				if (route.path.includes(e.path)) {
-					active.value = String(i);
-					menu.setMenu(i);
+					index = i;
 				}
 				break;
-			case 2:
 			default:
 				break;
 		}
 	}
 
-	menu.group.forEach(deep);
+	// 遍历所有分组
+	list.value.forEach(deep);
+
+	// 确认选择
+	active.value = String(index);
+
+	// 设置该分组下的菜单
+	menu.setMenu(index);
 }
 
-// 监听分组
+// 监听变化
 watch(
-	() => menu.group.length,
+	() => [route.path, menu.group.length],
 	() => {
 		refresh();
 	},
 	{
 		immediate: true
-	}
-);
-
-// 监听路由
-watch(
-	() => route.path,
-	() => {
-		refresh();
 	}
 );
 </script>

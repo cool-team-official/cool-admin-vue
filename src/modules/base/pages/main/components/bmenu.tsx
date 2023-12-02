@@ -33,7 +33,7 @@ export default defineComponent({
 							return (
 								<div class="wrap">
 									<cl-svg name={e.icon} />
-									<span v-show={!app.isFold || index != 1}>{e.name}</span>
+									<span v-show={!app.isFold || index != 1}>{e.meta?.label}</span>
 								</div>
 							);
 						};
@@ -59,7 +59,12 @@ export default defineComponent({
 							html = h(
 								<el-menu-item />,
 								{
-									index: e.path,
+									index:
+										route.path == "/"
+											? e.meta?.isHome
+												? "/"
+												: e.path
+											: e.path,
 									key: e.id
 								},
 								{

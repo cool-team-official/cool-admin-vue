@@ -7,7 +7,7 @@
 			<li class="item" @click="toRefresh">
 				<i class="cl-iconfont cl-icon-refresh"></i>
 			</li>
-			<li class="item" @click="router.push('/')">
+			<li class="item" @click="toHome">
 				<i class="cl-iconfont cl-icon-home"></i>
 			</li>
 		</ul>
@@ -48,6 +48,11 @@ const { process } = useBase();
 // 刷新当前路由
 function toRefresh() {
 	mitt.emit("view.refresh");
+}
+
+// 回首页
+function toHome() {
+	router.push("/");
 }
 
 // 跳转

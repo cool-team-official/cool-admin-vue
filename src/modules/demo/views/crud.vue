@@ -88,11 +88,7 @@
 		</cl-row>
 
 		<!-- 新增、编辑 -->
-		<cl-upsert ref="Upsert">
-			<template #slot-userIds="{ scope }">
-				<select-user v-model="scope.userIds" />
-			</template>
-		</cl-upsert>
+		<cl-upsert ref="Upsert" />
 
 		<!-- 高级搜索 -->
 		<cl-adv-search ref="AdvSearch" />
@@ -261,8 +257,9 @@ const Upsert = useUpsert({
 			props: {
 				labelWidth: "0px"
 			},
+			required: true,
 			component: {
-				name: "slot-userIds"
+				vm: SelectUser
 			}
 		},
 

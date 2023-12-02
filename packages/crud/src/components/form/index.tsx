@@ -1,5 +1,5 @@
 import { defineComponent, h, nextTick } from "vue";
-import { cloneDeep, isBoolean, isEmpty } from "lodash-es";
+import { cloneDeep, isBoolean } from "lodash-es";
 import { useAction, useForm, usePlugins, useTabs } from "./helper";
 import { useBrowser, useConfig, useElApi, useRefs } from "../../hooks";
 import { getValue, merge } from "../../utils";

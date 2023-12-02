@@ -141,7 +141,7 @@ const Upsert = useUpsert({
 			component: {
 				name: "el-input",
 				props: {
-					rows: 6,
+					rows: 12,
 					type: "textarea"
 				}
 			}

@@ -1,6 +1,6 @@
 .cl-crud {
 	height: 100%;
-	overflow: auto;
+	overflow: hidden auto;
 	position: relative;
 	box-sizing: border-box;
 	background-color: #fff;
@@ -362,7 +362,9 @@
 		position: absolute;
 		bottom: -1px;
 		left: 0;
-		transition: transform 0.3s ease-in-out, width 0.2s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+		transition:
+			transform 0.3s ease-in-out,
+			width 0.2s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
 		background-color: var(--el-color-primary);
 	}
 

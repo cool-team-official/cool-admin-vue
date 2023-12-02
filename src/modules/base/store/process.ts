@@ -11,7 +11,7 @@ export const useProcessStore = defineStore("process", function () {
 			e.active = false;
 		});
 
-		if (data.path != "/" && data.meta?.process !== false) {
+		if (!data.meta?.isHome && data.meta?.process !== false) {
 			const index = list.value.findIndex((e) => e.path === data.path);
 
 			if (index < 0) {

@@ -23,6 +23,8 @@ export declare namespace Menu {
 			label?: string;
 			keepAlive?: number | boolean;
 			iframeUrl?: string;
+			isHome?: boolean;
+			[key: string]: any;
 		};
 		children?: Item[];
 		component?: RouteComponent;

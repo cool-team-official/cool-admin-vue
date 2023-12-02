@@ -7,7 +7,7 @@
 			>
 		</div>
 
-		<cl-crud :padding="0">
+		<cl-crud padding="0">
 			<cl-table :data="data" :ref="setRefs('table')" :auto-height="false" />
 
 			<cl-row type="flex" align="middle" justify="end" :style="{ marginTop: '10px' }">
@@ -23,7 +23,7 @@
 	</div>
 
 	<cl-dialog v-model="visible" width="1200px" title="选择用户">
-		<cl-crud ref="Crud">
+		<cl-crud ref="Crud" padding="0">
 			<cl-row>
 				<!-- 刷新按钮 -->
 				<cl-refresh-btn />
@@ -187,7 +187,7 @@ const selection = ref<any[]>([]);
 // 分页
 const pager = reactive({
 	page: 1,
-	size: 2
+	size: 10
 });
 
 // 分页数据
