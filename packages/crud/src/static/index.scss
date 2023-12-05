@@ -362,9 +362,7 @@
 		position: absolute;
 		bottom: -1px;
 		left: 0;
-		transition:
-			transform 0.3s ease-in-out,
-			width 0.2s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+		transition: transform 0.3s ease-in-out, width 0.2s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
 		background-color: var(--el-color-primary);
 	}
 
@@ -399,23 +397,28 @@
 	}
 
 	&__container {
-		border: 1px solid transparent;
-		border-top: 1px solid var(--el-border-color);
+		border: 1px solid var(--el-border-color);
+		border-bottom: 0;
 		border-radius: 0;
 		transition: all 0.3s;
 		display: grid;
 		grid-template-rows: 0fr;
 
 		> .cl-form-item__children {
-			margin: 10px;
+			margin: 0 10px;
 			min-height: 0;
 			overflow: hidden;
+
+			.el-row {
+				margin-top: 10px;
+				margin-bottom: 10px;
+			}
 		}
 	}
 
 	&.is-expand {
 		> .cl-form-card__container {
-			border: 1px solid var(--el-border-color);
+			border-bottom: 1px solid var(--el-border-color);
 			border-radius: var(--el-border-radius-base);
 			grid-template-rows: 1fr;
 		}
