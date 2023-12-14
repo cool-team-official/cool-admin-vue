@@ -29,3 +29,4 @@ export * from "./render";
 export * from "./row";
 export * from "./selection";
 export * from "./sort";
+export * from "./header";

@@ -36,17 +36,7 @@
 			<cl-column-custom :columns="Table?.columns" :ref="setRefs('columnCustom')" />
 
 			<!-- 关键字搜索 -->
-			<cl-search-key
-				field="name"
-				:field-list="[
-					{
-						label: '姓名',
-						value: 'name'
-					},
-					{ label: '手机号', value: 'phone' }
-				]"
-				:width="250"
-			/>
+			<cl-search-key placeholder="搜索姓名、手机号" :width="250" />
 
 			<!-- 高级搜索按钮 -->
 			<cl-adv-btn />
@@ -76,6 +66,11 @@
 							</el-descriptions-item>
 						</el-descriptions>
 					</div>
+				</template>
+
+				<!-- 自定义列 -->
+				<template #column-wages="{ scope }">
+					<span>{{ scope.row.wages }}🤑</span>
 				</template>
 			</cl-table>
 		</cl-row>
@@ -394,22 +389,33 @@ const Table = useTable({
 		{
 			label: "姓名",
 			prop: "name",
-			minWidth: 150
+			minWidth: 120
 		},
 		{
 			label: "手机号",
 			prop: "phone",
-			minWidth: 140
+			minWidth: 140,
+
+			// 带搜索组件
+			search: {
+				// cool渲染方式
+				component: {
+					name: "el-input",
+					props: {
+						placeholder: "搜索手机号"
+					}
+				}
+			}
 		},
 		{
 			label: "账号",
 			prop: "account",
-			minWidth: 140
+			minWidth: 150
 		},
 		{
 			label: "存款(元)",
 			prop: "wages",
-			minWidth: 120,
+			minWidth: 150,
 			sortable: "desc" // 默认倒序
 		},
 		{
@@ -417,7 +423,18 @@ const Table = useTable({
 			prop: "occupation",
 			dict: dict.get("occupation"),
 			dictColor: true,
-			minWidth: 120
+			minWidth: 150,
+
+			// 带搜索组件
+			search: {
+				// jsx方式
+				component: {
+					name: "cl-select",
+					props: {
+						options: dict.get("occupation")
+					}
+				}
+			}
 		},
 		{
 			label: "状态",
@@ -431,9 +448,13 @@ const Table = useTable({
 		{
 			label: "出生年月",
 			orderNum: 1,
-			minWidth: 140,
+			minWidth: 165,
 			prop: "createTime",
-			sortable: "custom"
+			search: {
+				component: (
+					<cl-date-picker type="date" value-format="YYYY-MM-DD" placeholder="搜索日期" />
+				)
+			}
 		},
 		{
 			type: "op",

@@ -40,8 +40,8 @@ declare type obj = {
 declare type DeepPartial<T> = T extends Function
 	? T
 	: T extends object
-	? { [P in keyof T]?: DeepPartial<T[P]> }
-	: T;
+	  ? { [P in keyof T]?: DeepPartial<T[P]> }
+	  : T;
 
 // 合并
 declare type Merge<A, B> = Omit<A, keyof B> & B;
@@ -327,10 +327,17 @@ declare namespace ClTable {
 		type: "index" | "selection" | "expand" | "op";
 		hidden: boolean | Vue.Ref<boolean>;
 		component: Render.Component;
+		search: {
+			isInput: boolean;
+			value: any;
+			component: Render.Component;
+		};
+		searchComponent: Render.Component;
 		dict: DictOptions | Vue.Ref<DictOptions>;
 		dictFormatter: (values: DictOptions) => string;
 		dictColor: boolean;
 		dictSeparator: string;
+		dictAllLevels: boolean;
 		buttons: OpButton | ((options: { scope: obj }) => OpButton);
 		align: "left" | "center" | "right";
 		label: string | Vue.Ref<string>;

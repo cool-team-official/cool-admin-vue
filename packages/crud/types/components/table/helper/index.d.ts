@@ -39,6 +39,72 @@ export declare function useTable(props: any): {
                 functionSlot?: boolean | undefined;
                 vm?: any;
             };
+            search: {
+                isInput: boolean;
+                value: any;
+                component: {
+                    [x: string]: any;
+                    name?: string | undefined;
+                    options?: {
+                        [x: string]: any;
+                        label?: string | undefined;
+                        value?: any;
+                        color?: string | undefined;
+                        type?: string | undefined;
+                    }[] | {
+                        value: {
+                            [x: string]: any;
+                            label?: string | undefined;
+                            value?: any;
+                            color?: string | undefined;
+                            type?: string | undefined;
+                        }[];
+                    } | undefined;
+                    props?: {
+                        [x: string]: any;
+                        onChange?: ((value: any) => void) | undefined;
+                    } | {
+                        value: {
+                            [x: string]: any;
+                            onChange?: ((value: any) => void) | undefined;
+                        };
+                    } | undefined;
+                    style?: obj | undefined;
+                    functionSlot?: boolean | undefined;
+                    vm?: any;
+                };
+            };
+            searchComponent: {
+                [x: string]: any;
+                name?: string | undefined;
+                options?: {
+                    [x: string]: any;
+                    label?: string | undefined;
+                    value?: any;
+                    color?: string | undefined;
+                    type?: string | undefined;
+                }[] | {
+                    value: {
+                        [x: string]: any;
+                        label?: string | undefined;
+                        value?: any;
+                        color?: string | undefined;
+                        type?: string | undefined;
+                    }[];
+                } | undefined;
+                props?: {
+                    [x: string]: any;
+                    onChange?: ((value: any) => void) | undefined;
+                } | {
+                    value: {
+                        [x: string]: any;
+                        onChange?: ((value: any) => void) | undefined;
+                    };
+                } | undefined;
+                style?: obj | undefined;
+                functionSlot?: boolean | undefined;
+                vm?: any;
+            };
             dict: {
                 [x: string]: any;
                 label?: string | undefined;
@@ -57,6 +123,7 @@ export declare function useTable(props: any): {
             dictFormatter: (values: DictOptions) => string;
             dictColor: boolean;
             dictSeparator: string;
+            dictAllLevels: boolean;
             buttons: ((options: {
                 scope: obj;
             }) => ClTable.OpButton) | ("info" | "delete" | "edit" | `slot-${string}` | {
@@ -133,3 +200,4 @@ export * from "./render";
 export * from "./row";
 export * from "./selection";
 export * from "./sort";
+export * from "./header";

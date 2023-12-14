@@ -4,6 +4,7 @@ import { cloneDeep, isEmpty, orderBy } from "lodash-es";
 import { getValue } from "../../../utils";
 import { parseTableDict, parseTableOpButtons } from "../../../utils/parse";
 import { renderNode } from "../../../utils/vnode";
+import { renderHeader } from "./header";
 
 // 渲染
 export function useRender() {
@@ -78,15 +79,7 @@ export function useRender() {
 
 						return h(ElTableColumn, props, {
 							header(scope: any) {
-								const slot = slots[`header-${item.prop}`];
-
-								if (slot) {
-									return slot({
-										scope
-									});
-								} else {
-									return scope.column.label;
-								}
+								return renderHeader(item, { scope, slots });
 							},
 							default(scope: any) {
 								if (item.children) {

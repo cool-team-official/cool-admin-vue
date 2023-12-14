@@ -97,31 +97,42 @@ const userList = [
 class TestService {
 	// 分页列表
 	async page(params: any) {
-		const { status, occupation, keyWord, page, size, phone, name, sort, order } = params || {};
+		const { keyWord, page, size, sort, order } = params || {};
+
+		// 关键字查询
+		const keyWordLikeFields = ["phone", "name"];
+
+		// 等值查询
+		const fieldEq = ["createTime", "occupation", "status"];
+
+		// 模糊查询
+		const likeFields = ["phone", "name"];
 
 		// 过滤后的列表
-		const list = orderBy(userList, order, sort).filter((e) => {
-			if (status !== undefined) {
-				return e.status == status;
-			}
-
-			if (phone !== undefined) {
-				return String(e.phone).includes(phone);
-			}
-
-			if (name !== undefined) {
-				return e.name.includes(name);
-			}
+		const list = orderBy(userList, order, sort).filter((e: any) => {
+			let f = true;
 
 			if (keyWord !== undefined) {
-				return e.name.includes(keyWord) || String(e.phone).includes(keyWord);
+				f = !!keyWordLikeFields.find((k) => String(e[k]).includes(String(params.keyWord)));
 			}
 
-			if (occupation !== undefined) {
-				return e.occupation == occupation;
-			}
+			fieldEq.forEach((k) => {
+				if (f) {
+					if (params[k] !== undefined) {
+						f = e[k] == params[k];
+					}
+				}
+			});
 
-			return true;
+			likeFields.forEach((k) => {
+				if (f) {
+					if (params[k] !== undefined) {
+						f = String(e[k]).includes(String(params[k]));
+					}
+				}
+			});
+
+			return f;
 		});
 
 		return new Promise((resolve) => {

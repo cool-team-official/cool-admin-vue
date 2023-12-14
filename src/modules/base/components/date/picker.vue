@@ -3,6 +3,7 @@
 		<el-date-picker
 			v-model="date"
 			:type="type"
+			:editable="false"
 			:default-time="defaultTime"
 			:value-format="valueFormat"
 			:style="{ width }"
@@ -77,12 +78,16 @@ const date = ref();
 const quickType = ref(props.defaultQuickType);
 
 // 日期改变
-function onChange(value: any[]) {
+function onChange(value: any) {
 	// 重置按钮类型
 	quickType.value = "";
 
 	// 参数
 	let params = {};
+
+	if (value === null) {
+		value = undefined;
+	}
 
 	if (isRange.value) {
 		let [startTime, endTime] = value || [];
@@ -103,10 +108,12 @@ function onChange(value: any[]) {
 		};
 	}
 
-	Crud.value?.refresh({
-		...params,
-		page: 1
-	});
+	if (props.prop) {
+		Crud.value?.refresh({
+			...params,
+			page: 1
+		});
+	}
 
 	emit("update:modelValue", value);
 	emit("change", value);

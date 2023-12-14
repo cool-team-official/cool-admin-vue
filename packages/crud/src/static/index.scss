@@ -101,6 +101,31 @@
 			margin-bottom: 5px;
 		}
 	}
+
+	.cl-table-header__search {
+		display: inline-block;
+		width: 100%;
+		cursor: pointer;
+
+		.icon {
+			margin-right: 5px;
+			position: relative;
+			top: 2px;
+			font-size: 14px;
+		}
+
+		&:hover {
+			color: var(--el-color-primary);
+		}
+
+		& > div {
+			width: 100%;
+
+			.el-date-editor {
+				margin-right: 0;
+			}
+		}
+	}
 }
 
 .cl-filter {
@@ -362,7 +387,9 @@
 		position: absolute;
 		bottom: -1px;
 		left: 0;
-		transition: transform 0.3s ease-in-out, width 0.2s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+		transition:
+			transform 0.3s ease-in-out,
+			width 0.2s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
 		background-color: var(--el-color-primary);
 	}
 

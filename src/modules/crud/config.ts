@@ -11,6 +11,11 @@ import "@cool-vue/crud/dist/index.css";
 export default (): Merge<ModuleConfig, CrudOptions> => {
 	return {
 		options: {
+			style: {
+				table: {
+					// contextMenu: [], 是否关闭表格右键菜单
+				}
+			},
 			dict: {
 				sort: {
 					prop: "order",
