@@ -24,14 +24,14 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 	const { style } = useConfig();
 
 	// 选项列表
-	const options: DictOptions = cloneDeep(getValue(item.dict || []));
+	const list: DictOptions = cloneDeep(getValue(item.dict || []));
 
 	// 字符串分隔符
 	const separator = item.dictSeparator === undefined ? "," : item.dictSeparator;
 
 	// 设置颜色
 	if (item.dictColor) {
-		options.forEach((e, i) => {
+		list.forEach((e, i) => {
 			if (!e.color) {
 				e.color = style.colors[i];
 			}
@@ -55,10 +55,13 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 	}
 
 	// 返回值
-	const list = values
+	const result = values
 		.filter((e) => e !== undefined && e !== null && e !== "")
 		.map((v) => {
-			const d = deepFind(v, options) || { label: v, value: v };
+			const d = deepFind(v, list, { allLevels: item.dictAllLevels }) || {
+				label: v,
+				value: v
+			};
 			delete d.children;
 
 			return d;
@@ -66,10 +69,10 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 
 	// 格式化返回
 	if (item.dictFormatter) {
-		return item.dictFormatter(list);
+		return item.dictFormatter(result);
 	} else {
 		// tag 返回
-		return list.map((e) => {
+		return result.map((e) => {
 			return h(
 				<el-tag disable-transitions effect="dark" style="margin: 2px; border: 0" />,
 				e,
