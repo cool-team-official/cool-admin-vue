@@ -72,6 +72,16 @@
 				.cell {
 					line-height: normal;
 				}
+
+				&.is-sortable {
+					.cl-table-header__search {
+						width: auto;
+
+						&.is-input {
+							width: calc(100% - 24px) !important;
+						}
+					}
+				}
 			}
 		}
 

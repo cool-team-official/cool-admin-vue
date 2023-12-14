@@ -450,6 +450,7 @@ const Table = useTable({
 			orderNum: 1,
 			minWidth: 165,
 			prop: "createTime",
+			sortable: "custom",
 			search: {
 				component: (
 					<cl-date-picker type="date" value-format="YYYY-MM-DD" placeholder="搜索日期" />

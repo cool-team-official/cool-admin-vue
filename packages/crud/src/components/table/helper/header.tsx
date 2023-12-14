@@ -54,5 +54,9 @@ export function renderHeader(item: ClTable.Column, { scope, slots }: any) {
 		}
 	});
 
-	return <div class="cl-table-header__search">{item.search.isInput ? input : text}</div>;
+	return (
+		<div class={["cl-table-header__search", { "is-input": item.search.isInput }]}>
+			{item.search.isInput ? input : text}
+		</div>
+	);
 }
