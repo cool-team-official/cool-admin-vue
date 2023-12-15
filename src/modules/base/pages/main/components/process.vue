@@ -1,7 +1,7 @@
 <template>
 	<div class="app-process">
 		<ul class="app-process__op">
-			<li class="item" @click="router.back">
+			<li class="item" @click="toBack">
 				<i class="cl-iconfont cl-icon-back"></i>
 			</li>
 			<li class="item" @click="toRefresh">
@@ -53,6 +53,11 @@ function toRefresh() {
 // 回首页
 function toHome() {
 	router.push("/");
+}
+
+// 返回上一页
+function toBack() {
+	router.back();
 }
 
 // 跳转

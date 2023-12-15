@@ -18,7 +18,8 @@ const routes: RouteRecordRaw[] = [
 		children: []
 	},
 	{
-		path: "/:pathMatch(.*)*",
+		path: "/:catchAll(.*)",
+		name: "404",
 		component: () => import("/$/base/pages/error/404.vue")
 	}
 ];
@@ -174,9 +175,8 @@ router.beforeEach(async (to, from, next) => {
 	if (!route?.components) {
 		next(user.token ? "/404" : "/login");
 	} else {
-		// 注册后重定向
 		if (!isReg) {
-			next({ ...to, ...route });
+			next(to.fullPath);
 		} else {
 			// 登录成功
 			if (user.token) {
