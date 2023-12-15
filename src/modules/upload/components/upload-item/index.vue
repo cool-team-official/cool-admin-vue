@@ -22,8 +22,8 @@
 				</template>
 
 				<!-- 视频 -->
-				<template v-else-if="item.type === 'video' && item.url">
-					<video :ref="setRefs('video')" :src="item.url" />
+				<template v-else-if="item.type === 'video'">
+					<video :ref="setRefs('video')" :src="item.url" :key="item.url" />
 				</template>
 
 				<!-- 其他 -->
@@ -42,7 +42,7 @@
 				<!-- 音频 -->
 				<template v-if="item.type === 'audio'">
 					<audio controls :ref="setRefs('audio')">
-						<source :src="item.url" type="audio/mpeg" />
+						<source :src="item.url" type="audio/mpeg" :key="item.url" />
 					</audio>
 				</template>
 
@@ -220,24 +220,30 @@ const media = reactive({
 		}
 
 		// 媒体元素
-		const el = refs[props.item.type!];
+		let el: HTMLVideoElement | HTMLAudioElement | undefined;
 
 		// 监听播放\暂停
 		watch(
 			() => props.item.isPlay,
 			(val) => {
+				if (!el) {
+					el = refs[props.item.type!];
+
+					console.log(el);
+
+					// 监听播放完成
+					el?.addEventListener("ended", () => {
+						media.pause();
+					});
+				}
+
 				if (val) {
-					el.play();
+					el?.play();
 				} else {
-					el.pause();
+					el?.pause();
 				}
 			}
 		);
-
-		// 监听播放完成
-		el?.addEventListener("ended", () => {
-			media.pause();
-		});
 	}
 });
 

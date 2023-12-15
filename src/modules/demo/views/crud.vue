@@ -424,6 +424,7 @@ const Table = useTable({
 			dict: dict.get("occupation"),
 			dictColor: true,
 			minWidth: 150,
+			dictAllLevels: true, // 显示所有等级
 
 			// 带搜索组件
 			search: {
