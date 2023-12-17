@@ -294,7 +294,7 @@ async function onBeforeUpload(file: any, item?: Upload.Item) {
 			size: file.size,
 			name: file.name,
 			type: getType(file.name),
-			progress: 0,
+			progress: props.autoUpload ? 0 : 100, // 非自动上传时默认100%
 			url: "",
 			preload: "",
 			error: ""
@@ -310,24 +310,20 @@ async function onBeforeUpload(file: any, item?: Upload.Item) {
 		// 上传事件
 		emit("upload", d, file);
 
-		// 是否自动上传
-		if (props.autoUpload) {
-			// 赋值
-			if (item) {
-				Object.assign(item, d);
-			} else {
-				if (props.multiple) {
-					if (!isAdd.value) {
-						ElMessage.warning(`最多只能上传${limit.value}个文件`);
-					} else {
-						list.value.push(d);
-					}
+		// 赋值
+		if (item) {
+			Object.assign(item, d);
+		} else {
+			if (props.multiple) {
+				if (!isAdd.value) {
+					ElMessage.warning(`最多只能上传${limit}个文件`);
+					return false;
 				} else {
-					list.value = [d];
+					list.value.push(d);
 				}
+			} else {
+				list.value = [d];
 			}
-
-			return true;
 		}
 
 		return true;
@@ -335,13 +331,13 @@ async function onBeforeUpload(file: any, item?: Upload.Item) {
 
 	// 自定义上传事件
 	if (props.beforeUpload) {
-		const r = props.beforeUpload(file, item, { next });
+		let r = props.beforeUpload(file, item, { next });
 
 		if (isPromise(r)) {
 			r.then(next).catch(() => null);
 		} else {
 			if (r) {
-				next();
+				r = next();
 			}
 		}
 
