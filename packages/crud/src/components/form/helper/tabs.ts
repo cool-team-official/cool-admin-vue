@@ -51,7 +51,9 @@ export function useTabs({ config, Form }: { config: ClForm.Config; Form: Vue.Ref
 				config.items.forEach(deep);
 			}
 
-			set(name);
+			if (name) {
+				set(name);
+			}
 		}
 	}
 

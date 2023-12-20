@@ -1,7 +1,8 @@
 import { useCrud } from "@cool-vue/crud";
-import { isString } from "lodash-es";
-import { computed, defineComponent, isRef, PropType, Ref, ref, watch } from "vue";
+import { isEmpty, isString } from "lodash-es";
+import { computed, defineComponent, isRef, type PropType, type Ref, ref, watch } from "vue";
 import { parsePx } from "/@/cool/utils";
+import { Dict } from "/$/dict/types";
 
 export default defineComponent({
 	name: "cl-select",
@@ -24,7 +25,11 @@ export default defineComponent({
 		width: {
 			type: [String, Number],
 			default: "auto"
-		}
+		},
+		// 是否树形
+		tree: Boolean,
+		// 是否返回选中层级下的所有值
+		allLevelsId: Boolean
 	},
 
 	emits: ["update:modelValue", "change"],
@@ -41,9 +46,37 @@ export default defineComponent({
 			return (isRef(props.options) ? props.options.value : props.options) || [];
 		});
 
+		// 获取值
+		function getValue(val: any): any | any[] {
+			if (props.allLevelsId) {
+				const ids: any[] = [];
+
+				// 获取所有的值
+				function deep(arr: Dict.Item[], f: boolean) {
+					arr.forEach((e) => {
+						const f2 = e[props.valueKey] == val;
+
+						if (f || f2) {
+							ids.push(e[props.valueKey]);
+						}
+
+						if (e.children) {
+							deep(e.children, f || f2);
+						}
+					});
+				}
+
+				deep(list.value, false);
+
+				return isEmpty(ids) ? undefined : ids;
+			} else {
+				return val === "" ? undefined : val;
+			}
+		}
+
 		// 值改变
-		function onChange(val: string) {
-			const v = val === "" ? undefined : val;
+		function onChange(val: any) {
+			const v = getValue(val);
 
 			emit("update:modelValue", v);
 			emit("change", v);
@@ -64,15 +97,40 @@ export default defineComponent({
 		);
 
 		return () => {
-			return (
+			// 样式
+			const style = {
+				width: parsePx(props.width)
+			};
+
+			// 占位符
+			const placeholder = props.prop ? "选择搜索" : "请选择";
+
+			// 树形下拉框
+			const TreeSelect = (
+				<el-tree-select
+					v-model={value.value}
+					clearable
+					filterable
+					placeholder={placeholder}
+					data={list.value}
+					props={{
+						label: props.labelKey,
+						value: props.valueKey
+					}}
+					style={style}
+					onChange={onChange}
+				/>
+			);
+
+			// 普通下拉框
+			const Select = (
 				<el-select
 					v-model={value.value}
 					clearable
 					filterable
+					placeholder={placeholder}
+					style={style}
 					onChange={onChange}
-					style={{
-						width: parsePx(props.width)
-					}}
 				>
 					{list.value?.map((e) => {
 						return isString(e) ? (
@@ -87,6 +145,8 @@ export default defineComponent({
 					})}
 				</el-select>
 			);
+
+			return props.tree ? TreeSelect : Select;
 		};
 	}
 });

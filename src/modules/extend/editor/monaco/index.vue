@@ -22,7 +22,7 @@ import { useCool } from "/@/cool";
 import { isObject, merge } from "lodash-es";
 
 const props = defineProps({
-	modelValue: String,
+	modelValue: null,
 	options: Object,
 	height: {
 		type: [String, Number],
@@ -65,7 +65,7 @@ function setContent(value: string = "") {
 	if (isObject(value)) {
 		value = JSON.stringify(value);
 	} else {
-		value = value.toString();
+		value = (value || "").toString();
 	}
 
 	if (value != getContent()) {

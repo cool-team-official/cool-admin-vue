@@ -357,7 +357,8 @@ export default defineComponent({
 							label={e.label}
 							prop={e.prop}
 							rules={isDisabled ? null : e.rules}
-							v-show={inGroup}
+							required={e._hidden ? false : e.required}
+							v-show={inGroup && !e._hidden}
 						/>,
 						e.props,
 						{
@@ -431,11 +432,6 @@ export default defineComponent({
 						}
 				  )
 				: null;
-
-			// 隐藏
-			if (e._hidden) {
-				return null;
-			}
 
 			// 行内
 			if (props.inline) {
