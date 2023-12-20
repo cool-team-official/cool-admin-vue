@@ -483,6 +483,7 @@ async function httpRequest(req: any, item?: any) {
 							case "oss":
 								next({
 									host: res.host,
+									preview: res.publicDomain,
 									data: {
 										OSSAccessKeyId: res.OSSAccessKeyId,
 										policy: res.policy,
