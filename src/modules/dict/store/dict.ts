@@ -34,7 +34,10 @@ const useDictStore = defineStore("dict", () => {
 				for (const [i, arr] of Object.entries(res)) {
 					arr.forEach((e) => {
 						e.label = e.name;
-						e.value = e.value ?? e.id;
+
+						if (e.value === undefined || e.value === "" || e.value === null) {
+							e.value = e.id;
+						}
 					});
 
 					// @ts-ignore
