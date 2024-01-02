@@ -229,8 +229,6 @@ const media = reactive({
 				if (!el) {
 					el = refs[props.item.type!];
 
-					console.log(el);
-
 					// 监听播放完成
 					el?.addEventListener("ended", () => {
 						media.pause();
