@@ -55,7 +55,7 @@ async function getData(temps?: Eps.Entity[]) {
 			}
 		})
 		.catch(() => {
-			error(`[eps] 服务未启动 ➜  ${url}`);
+			error(`[eps] 后端未启动 ➜  ${url}`);
 		});
 
 	// 合并本地数据
