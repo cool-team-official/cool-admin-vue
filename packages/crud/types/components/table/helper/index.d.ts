@@ -1,4 +1,3 @@
-/// <reference types="../index" />
 export declare function useTable(props: any): {
     Table: import("vue").Ref<any>;
     config: {
@@ -74,37 +73,6 @@ export declare function useTable(props: any): {
                     vm?: any;
                 };
             };
-            searchComponent: {
-                [x: string]: any;
-                name?: string | undefined;
-                options?: {
-                    [x: string]: any;
-                    label?: string | undefined;
-                    value?: any;
-                    color?: string | undefined;
-                    type?: string | undefined;
-                }[] | {
-                    value: {
-                        [x: string]: any;
-                        label?: string | undefined;
-                        value?: any;
-                        color?: string | undefined;
-                        type?: string | undefined;
-                    }[];
-                } | undefined;
-                props?: {
-                    [x: string]: any;
-                    onChange?: ((value: any) => void) | undefined;
-                } | {
-                    value: {
-                        [x: string]: any;
-                        onChange?: ((value: any) => void) | undefined;
-                    };
-                } | undefined;
-                style?: obj | undefined;
-                functionSlot?: boolean | undefined;
-                vm?: any;
-            };
             dict: {
                 [x: string]: any;
                 label?: string | undefined;
@@ -125,7 +93,7 @@ export declare function useTable(props: any): {
             dictSeparator: string;
             dictAllLevels: boolean;
             buttons: ((options: {
-                scope: obj;
+                scope: any;
             }) => ClTable.OpButton) | ("info" | "delete" | "edit" | `slot-${string}` | {
                 [x: string]: any;
                 label: string;
@@ -136,9 +104,7 @@ export declare function useTable(props: any): {
                 }) => void;
             })[];
             align: "center" | "left" | "right";
-            label: string | {
-                value: string;
-            };
+            label: any;
             className: string;
             prop: string;
             orderNum: number;

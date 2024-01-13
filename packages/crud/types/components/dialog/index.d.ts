@@ -61,10 +61,10 @@ declare const _default: import("vue").DefineComponent<{
     title: string;
     padding: string;
     width: string;
-    keepAlive: boolean;
     hideHeader: boolean;
     controls: unknown[];
     fullscreen: boolean;
+    keepAlive: boolean;
     modelValue: boolean;
 }, {}>;
 export default _default;

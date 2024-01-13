@@ -143,9 +143,9 @@ export default defineComponent({
 						dialog: config.dialog,
 						items: config.items || [],
 						on: {
-							open(data) {
+							open() {
 								if (config.onOpen) {
-									config.onOpen(data);
+									config.onOpen();
 								}
 
 								resolve(true);

@@ -1,4 +1,3 @@
-/// <reference types="../index" />
 import { App } from "vue";
 import "./static/index.scss";
 declare const Crud: {

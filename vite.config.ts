@@ -47,12 +47,13 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 		resolve: {
 			alias: {
 				"/@": resolve("src"),
+				"/$": resolve("src/modules"),
 				"/#": resolve("types"),
-				"/$": resolve("src/modules")
+				"/~": resolve("packages")
 			}
 		},
 		esbuild: {
-			drop: isDev(mode) ? [] : ["console", "debugger"],
+			drop: isDev(mode) ? [] : ["console", "debugger"]
 		},
 		build: {
 			minify: "esbuild",

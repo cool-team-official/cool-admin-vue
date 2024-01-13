@@ -32,7 +32,7 @@ declare const _default: import("vue").DefineComponent<{
     onOpened?: ((...args: any[]) => any) | undefined;
     onClosed?: ((...args: any[]) => any) | undefined;
 }, {
-    items: unknown[];
     sync: boolean;
+    items: unknown[];
 }, {}>;
 export default _default;

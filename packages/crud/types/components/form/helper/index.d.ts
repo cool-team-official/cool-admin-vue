@@ -1,4 +1,3 @@
-/// <reference types="../index" />
 export declare function useForm(): {
     Form: import("vue").Ref<any>;
     config: {

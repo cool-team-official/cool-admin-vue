@@ -1,11 +1,11 @@
 /// <reference types="../index" />
 import { Ref } from "vue";
 export declare function useCrud(options?: DeepPartial<ClCrud.Options>, cb?: (app: ClCrud.Ref) => void): Ref<ClCrud.Ref | undefined>;
-export declare function useUpsert(options?: DeepPartial<ClUpsert.Options>): Ref<ClUpsert.Ref | undefined>;
-export declare function useTable(options?: DeepPartial<ClTable.Options>): Ref<ClTable.Ref | undefined>;
-export declare function useForm(cb?: (app: ClForm.Ref) => void): Ref<ClForm.Ref | undefined>;
-export declare function useAdvSearch(options?: DeepPartial<ClAdvSearch.Options>): Ref<ClAdvSearch.Ref | undefined>;
-export declare function useSearch(options?: DeepPartial<ClSearch.Options>): Ref<ClSearch.Ref | undefined>;
+export declare function useUpsert<T>(options?: ClUpsert.Options<T>): Ref<ClUpsert.Ref<T> | undefined>;
+export declare function useTable<T = any>(options?: ClTable.Options<T>): Ref<ClTable.Ref<T> | undefined>;
+export declare function useForm<T = any>(cb?: (app: ClForm.Ref<T>) => void): Ref<ClForm.Ref<T> | undefined>;
+export declare function useAdvSearch<T = any>(options?: ClAdvSearch.Options<T>): Ref<ClAdvSearch.Ref<T> | undefined>;
+export declare function useSearch<T = any>(options?: ClSearch.Options<T>): Ref<ClSearch.Ref<T> | undefined>;
 export declare function useDialog(options?: {
     onFullscreen(visible: boolean): void;
 }): ClDialog.Provide;

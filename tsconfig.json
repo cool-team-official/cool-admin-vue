@@ -12,9 +12,10 @@
 		"lib": ["esnext", "dom", "WebWorker"],
 		"types": ["vite/client", "element-plus/global"],
 		"paths": {
-			"/$/*": ["./src/modules/*"],
 			"/@/*": ["./src/*"],
-			"/#/*": ["./types/*"]
+			"/$/*": ["./src/modules/*"],
+			"/#/*": ["./types/*"],
+			"/~/*": ["./packages/*"]
 		}
 	},
 	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts"],

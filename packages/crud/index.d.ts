@@ -143,6 +143,8 @@ declare namespace Render {
 	}
 }
 
+declare type PropKey<T> = Extract<keyof Required<T>, string>;
+
 declare namespace ClCrud {
 	interface Label {
 		op: string;
@@ -323,7 +325,7 @@ declare namespace ClCrud {
 declare namespace ClTable {
 	type OpButton = Array<"info" | "edit" | "delete" | Render.OpButton>;
 
-	interface Column {
+	interface Column<T = any> {
 		type: "index" | "selection" | "expand" | "op";
 		hidden: boolean | Vue.Ref<boolean>;
 		component: Render.Component;
@@ -332,31 +334,30 @@ declare namespace ClTable {
 			value: any;
 			component: Render.Component;
 		};
-		searchComponent: Render.Component;
 		dict: DictOptions | Vue.Ref<DictOptions>;
 		dictFormatter: (values: DictOptions) => string;
 		dictColor: boolean;
 		dictSeparator: string;
 		dictAllLevels: boolean;
-		buttons: OpButton | ((options: { scope: obj }) => OpButton);
+		buttons: OpButton | ((options: { scope: T }) => OpButton);
 		align: "left" | "center" | "right";
-		label: string | Vue.Ref<string>;
+		label: any;
 		className: string;
-		prop: string;
+		prop: PropKey<T>;
 		orderNum: number;
 		width: number;
 		minWidth: number | string;
 		renderHeader: (options: { column: any; $index: number }) => any;
 		sortable: boolean | "desc" | "descending" | "ascending" | "asc" | "custom";
 		sortMethod: fn;
-		sortBy: string | ((row: any, index: number) => any) | any[];
+		sortBy: string | ((row: T, index: number) => any) | any[];
 		resizable: boolean;
 		columnKey: string;
 		headerAlign: string;
 		showOverflowTooltip: boolean;
 		fixed: boolean | string;
-		formatter: (row: any, column: any, value: any, index: number) => any;
-		selectable: (row: any, index: number) => boolean;
+		formatter: (row: T, column: any, value: any, index: number) => any;
+		selectable: (row: T, index: number) => boolean;
 		reserveSelection: boolean;
 		filterMethod: fn;
 		filteredValue: unknown[];
@@ -365,7 +366,7 @@ declare namespace ClTable {
 		filterMultiple: boolean;
 		index: ((index: number) => number) | number;
 		sortOrders: unknown[];
-		children: Column[];
+		children: Column<T>[];
 		[key: string]: any;
 	}
 
@@ -382,8 +383,8 @@ declare namespace ClTable {
 		| "order-asc"
 	>;
 
-	interface Config {
-		columns: Column[];
+	interface Config<T = any> {
+		columns: Column<T>[];
 		autoHeight: boolean;
 		height: string | number;
 		contextMenu: ContextMenu;
@@ -394,39 +395,39 @@ declare namespace ClTable {
 		sortRefresh: boolean;
 		emptyText: string;
 		rowKey: string;
-		onRowContextmenu?(row: any, column: any, event: any): void;
+		onRowContextmenu?(row: T, column: any, event: any): void;
 	}
 
-	interface Ref {
+	interface Ref<T = any> {
 		Table: any;
 		config: obj;
-		selection: obj[];
-		data: obj[];
-		columns: Column[];
+		selection: T[];
+		data: T[];
+		columns: Column<T>[];
 		reBuild(cb?: fn): void;
 		calcMaxHeight(): void;
-		setData(data: any[]): void;
+		setData(data: T[]): void;
 		setColumns(columns: Column[]): void;
-		showColumn(props: string | string[], status?: boolean): void;
-		hideColumn(props: string | string[]): void;
-		changeSort(prop: string, order: string): void;
+		showColumn(props: PropKey<T> | PropKey<T>[], status?: boolean): void;
+		hideColumn(props: PropKey<T> | PropKey<T>[]): void;
+		changeSort(prop: PropKey<T>, order: string): void;
 		clearSelection(): void;
 		getSelectionRows(): any[];
-		toggleRowSelection(row: any, selected?: boolean): void;
+		toggleRowSelection(row: T, selected?: boolean): void;
 		toggleAllSelection(): void;
-		toggleRowExpansion(row: any, expanded?: boolean): void;
-		setCurrentRow(row: any): void;
+		toggleRowExpansion(row: T, expanded?: boolean): void;
+		setCurrentRow(row: T): void;
 		clearSort(): void;
-		clearFilter(columnKeys: string[]): void;
+		clearFilter(columnKeys: PropKey<T>[]): void;
 		doLayout(): void;
-		sort(prop: string, order: string): void;
+		sort(prop: PropKey<T>, order: string): void;
 		scrollTo(position: { top?: number; left?: number }): void;
 		setScrollTop(top: number): void;
 		setScrollLeft(left: number): void;
 	}
 
-	interface Options extends Config {
-		columns: List<ClTable.Column>;
+	interface Options<T = any> extends DeepPartial<Config<T>> {
+		columns?: List<ClTable.Column<T>>;
 	}
 }
 
@@ -470,9 +471,9 @@ declare namespace ClForm {
 		[key: string]: any;
 	}
 
-	interface Item {
+	interface Item<T = any> {
 		type?: "tabs";
-		prop?: string;
+		prop?: PropKey<T>;
 		props?: {
 			labels?: ClFormTabs.labels;
 			justify?: "left" | "center" | "right";
@@ -515,13 +516,6 @@ declare namespace ClForm {
 		[key: string]: any;
 	}
 
-	type Plugin = (options: {
-		exposed: Ref;
-		onOpen(cb: () => void): void;
-		onClose(cb: () => void): void;
-		onSubmit(cb: (data: obj) => obj): void;
-	}) => void;
-
 	interface Config {
 		title?: any;
 		height?: string;
@@ -553,20 +547,23 @@ declare namespace ClForm {
 		[key: string]: any;
 	}
 
-	type Items = List<Item>;
+	type Plugin = (options: {
+		exposed: Ref;
+		onOpen(cb: () => void): void;
+		onClose(cb: () => void): void;
+		onSubmit(cb: (data: obj) => obj): void;
+	}) => void;
 
-	interface Options extends Config {
-		items: Items;
-	}
+	type Items<T = any> = List<Item<T>>;
 
-	interface Ref {
+	interface Ref<T = any> {
 		Form: any;
-		form: obj;
+		form: T;
 		config: {
 			items: Item[];
 			[key: string]: any;
 		};
-		open(options: DeepPartial<Options>, plugins?: Plugin[]): void;
+		open(options: Options<T>, plugins?: Plugin[]): void;
 		close(action?: CloseAction): void;
 		done(): void;
 		clear(): void;
@@ -596,71 +593,75 @@ declare namespace ClForm {
 		submit(cb?: (data: obj) => void): void;
 		[key: string]: any;
 	}
+
+	interface Options<T = any> extends DeepPartial<Config> {
+		items?: Items<T>;
+	}
 }
 
 declare namespace ClUpsert {
-	interface Config {
+	interface Config<T = obj> {
+		sync: boolean;
 		items: ClForm.Item[];
 		props: ClForm.Config["props"];
-		sync: boolean;
 		op: ClForm.Config["op"];
 		dialog: ClForm.Config["dialog"];
-		onOpen?(data: obj): void;
-		onOpened?(data: obj): void;
+		onOpen?(): void;
+		onOpened?(data: T): void;
 		onClose?(action: ClForm.CloseAction, done: fn): void;
 		onClosed?(): void;
 		onInfo?(
-			data: obj,
-			event: { close: fn; done(data: obj): void; next: ClCrud.Service["api"]["info"] }
+			data: T,
+			event: { close: fn; done(data: T): void; next: ClCrud.Service["api"]["info"] }
 		): void;
 		onSubmit?(
-			data: obj,
+			data: T,
 			event: { close: fn; done: fn; next: ClCrud.Service["api"]["update"] }
 		): void;
 		plugins?: ClForm.Plugin[];
 	}
 
-	interface Ref extends ClForm.Ref {
+	interface Ref<T = any> extends ClForm.Ref<T> {
 		mode: "add" | "update" | "info";
 	}
 
-	interface Options extends Config {
-		items: List<ClForm.Item>;
+	interface Options<T = any> extends DeepPartial<Config<T>> {
+		items?: ClForm.Items<T>;
 	}
 }
 
 declare namespace ClAdvSearch {
-	interface Config {
+	interface Config<T = any> {
 		items?: ClForm.Item[];
 		title?: string;
 		size?: string | number;
 		op?: Array<"clear" | "reset" | "close" | "search">;
-		onSearch?(data: obj, options: { next: ClCrud.Service["api"]["page"]; close(): void }): void;
+		onSearch?(data: T, options: { next: ClCrud.Service["api"]["page"]; close(): void }): void;
 	}
 
-	interface Options extends Config {
-		items: ClForm.Items;
-	}
+	interface Ref<T = any> extends ClForm.Ref<T> {}
 
-	interface Ref extends ClForm.Ref {}
+	interface Options<T = any> extends DeepPartial<Config<T>> {
+		items?: ClForm.Items<T>;
+	}
 }
 
 declare namespace ClSearch {
-	interface Config {
+	interface Config<T = any> {
 		items?: ClForm.Item[];
-		data?: obj;
+		data?: T;
 		resetBtn?: boolean;
-		onLoad?(data: obj): void;
-		onSearch?(data: obj, options: { next: ClCrud.Service["api"]["page"] }): void;
+		onLoad?(data: T): void;
+		onSearch?(data: T, options: { next: ClCrud.Service["api"]["page"] }): void;
 	}
 
-	interface Options extends Config {
-		items: ClForm.Items;
-	}
-
-	interface Ref extends ClForm.Ref {
+	interface Ref<T = any> extends ClForm.Ref<T> {
 		search(params?: obj): void;
 		reset(): void;
+	}
+
+	interface Options<T = any> extends DeepPartial<Config<T>> {
+		items?: ClForm.Items<T>;
 	}
 }
 
@@ -747,4 +748,12 @@ declare type Options = DeepPartial<Config>;
 
 declare interface CrudOptions {
 	options: Options;
+}
+
+interface obj2 {
+	[prop: string]: any;
+}
+
+interface Item2<T = any2> {
+	prop: keyof T;
 }

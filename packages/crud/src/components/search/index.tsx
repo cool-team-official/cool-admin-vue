@@ -34,6 +34,8 @@ export default defineComponent({
 		onSearch: Function
 	},
 
+	emits: ["reset"],
+
 	setup(props, { slots, expose, emit }) {
 		const { crud } = useCore();
 		const { style } = useConfig();

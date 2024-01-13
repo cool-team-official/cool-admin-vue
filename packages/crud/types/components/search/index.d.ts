@@ -1,4 +1,3 @@
-/// <reference types="../index" />
 import { PropType } from "vue";
 declare const _default: import("vue").DefineComponent<{
     data: {
@@ -6,7 +5,7 @@ declare const _default: import("vue").DefineComponent<{
         default: () => {};
     };
     items: {
-        type: PropType<ClForm.Item[]>;
+        type: PropType<ClForm.Item<any>[]>;
         default: () => never[];
     };
     resetBtn: {
@@ -15,13 +14,13 @@ declare const _default: import("vue").DefineComponent<{
     };
     onLoad: FunctionConstructor;
     onSearch: FunctionConstructor;
-}, () => true | JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, () => true | JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, "reset"[], "reset", import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
     data: {
         type: ObjectConstructor;
         default: () => {};
     };
     items: {
-        type: PropType<ClForm.Item[]>;
+        type: PropType<ClForm.Item<any>[]>;
         default: () => never[];
     };
     resetBtn: {
@@ -30,8 +29,10 @@ declare const _default: import("vue").DefineComponent<{
     };
     onLoad: FunctionConstructor;
     onSearch: FunctionConstructor;
-}>>, {
-    items: ClForm.Item[];
+}>> & {
+    onReset?: ((...args: any[]) => any) | undefined;
+}, {
+    items: ClForm.Item<any>[];
     data: Record<string, any>;
     resetBtn: boolean;
 }, {}>;

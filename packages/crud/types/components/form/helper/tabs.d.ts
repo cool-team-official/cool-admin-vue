@@ -7,7 +7,7 @@ export declare function useTabs({ config, Form }: {
     list: import("vue").ComputedRef<ClFormTabs.labels>;
     isLoaded: (value: any) => any;
     onLoad: (value: any) => void;
-    get: () => ClForm.Item | undefined;
+    get: () => ClForm.Item<any> | undefined;
     set: (data: any) => void;
     change: (value: any, isValid?: boolean) => Promise<unknown>;
     clear: () => void;

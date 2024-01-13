@@ -77,8 +77,8 @@ export function useCrud(options?: DeepPartial<ClCrud.Options>, cb?: (app: ClCrud
 }
 
 // 新增、编辑
-export function useUpsert(options?: DeepPartial<ClUpsert.Options>) {
-	const Upsert = ref<ClUpsert.Ref>();
+export function useUpsert<T>(options?: ClUpsert.Options<T>) {
+	const Upsert = ref<ClUpsert.Ref<T>>();
 	useParent("cl-upsert", Upsert);
 
 	if (options) {
@@ -109,8 +109,8 @@ export function useUpsert(options?: DeepPartial<ClUpsert.Options>) {
 }
 
 // 表格
-export function useTable(options?: DeepPartial<ClTable.Options>) {
-	const Table = ref<ClTable.Ref>();
+export function useTable<T = any>(options?: ClTable.Options<T>) {
+	const Table = ref<ClTable.Ref<T>>();
 	useParent("cl-table", Table);
 
 	if (options) {
@@ -121,8 +121,8 @@ export function useTable(options?: DeepPartial<ClTable.Options>) {
 }
 
 // 表单
-export function useForm(cb?: (app: ClForm.Ref) => void) {
-	const Form = ref<ClForm.Ref>();
+export function useForm<T = any>(cb?: (app: ClForm.Ref<T>) => void) {
+	const Form = ref<ClForm.Ref<T>>();
 	useParent("cl-form", Form);
 
 	nextTick(() => {
@@ -135,8 +135,8 @@ export function useForm(cb?: (app: ClForm.Ref) => void) {
 }
 
 // 高级搜索
-export function useAdvSearch(options?: DeepPartial<ClAdvSearch.Options>) {
-	const AdvSearch = ref<ClAdvSearch.Ref>();
+export function useAdvSearch<T = any>(options?: ClAdvSearch.Options<T>) {
+	const AdvSearch = ref<ClAdvSearch.Ref<T>>();
 	useParent("cl-adv-search", AdvSearch);
 
 	if (options) {
@@ -147,8 +147,8 @@ export function useAdvSearch(options?: DeepPartial<ClAdvSearch.Options>) {
 }
 
 // 搜索
-export function useSearch(options?: DeepPartial<ClSearch.Options>) {
-	const Search = ref<ClSearch.Ref>();
+export function useSearch<T = any>(options?: ClSearch.Options<T>) {
+	const Search = ref<ClSearch.Ref<T>>();
 	useParent("cl-search", Search);
 
 	if (options) {

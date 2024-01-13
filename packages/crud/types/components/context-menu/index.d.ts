@@ -1,4 +1,3 @@
-/// <reference types="../index" />
 declare const ClContextMenu: import("vue").DefineComponent<{
     show: BooleanConstructor;
     options: {
