@@ -52,7 +52,7 @@ function useEvent(names: string[], { r, options, clear }: any) {
 }
 
 // crud
-export function useCrud(options?: DeepPartial<ClCrud.Options>, cb?: (app: ClCrud.Ref) => void) {
+export function useCrud(options?: ClCrud.Options, cb?: (app: ClCrud.Ref) => void) {
 	const Crud = ref<ClCrud.Ref>();
 	useParent("cl-crud", Crud);
 
@@ -77,8 +77,8 @@ export function useCrud(options?: DeepPartial<ClCrud.Options>, cb?: (app: ClCrud
 }
 
 // 新增、编辑
-export function useUpsert<T>(options?: ClUpsert.Options<T>) {
-	const Upsert = ref<ClUpsert.Ref<T>>();
+export function useUpsert<T = any>(options?: ClUpsert.Options<T>): Ref<ClUpsert.Ref> {
+	const Upsert = ref<ClUpsert.Ref>();
 	useParent("cl-upsert", Upsert);
 
 	if (options) {
@@ -105,7 +105,7 @@ export function useUpsert<T>(options?: ClUpsert.Options<T>) {
 		}
 	);
 
-	return Upsert;
+	return Upsert as Ref<ClUpsert.Ref<T>>;
 }
 
 // 表格

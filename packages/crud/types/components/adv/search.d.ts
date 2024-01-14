@@ -1,3 +1,4 @@
+/// <reference types="../index" />
 import { PropType } from "vue";
 declare const _default: import("vue").DefineComponent<{
     items: {

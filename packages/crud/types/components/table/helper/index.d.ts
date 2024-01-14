@@ -1,3 +1,4 @@
+/// <reference types="../index" />
 export declare function useTable(props: any): {
     Table: import("vue").Ref<any>;
     config: {
@@ -103,10 +104,10 @@ export declare function useTable(props: any): {
                     scope: obj;
                 }) => void;
             })[];
-            align: "center" | "left" | "right";
+            align: ElementPlus.Align;
             label: any;
             className: string;
-            prop: string;
+            prop: string & {};
             orderNum: number;
             width: number;
             minWidth: string | number;
@@ -119,7 +120,7 @@ export declare function useTable(props: any): {
             sortBy: string | any[] | ((row: any, index: number) => any);
             resizable: boolean;
             columnKey: string;
-            headerAlign: string;
+            headerAlign: ElementPlus.Align;
             showOverflowTooltip: boolean;
             fixed: string | boolean;
             formatter: (row: any, column: any, value: any, index: number) => any;

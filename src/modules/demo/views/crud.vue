@@ -197,17 +197,19 @@ const Upsert = useUpsert({
 		},
 		// 动态配置，新增显示、编辑隐藏
 		() => {
-			return {
-				label: "密码",
-				group: "base",
-				prop: "password",
-				hidden: Upsert.value?.mode == "update", // 通过 mode 参数判断
-				component: {
-					name: "el-input",
-					props: {
-						type: "password"
+			return () => {
+				return {
+					label: "密码",
+					group: "base",
+					prop: "password",
+					hidden: Upsert.value?.mode == "update", // 通过 mode 参数判断
+					component: {
+						name: "el-input",
+						props: {
+							type: "password"
+						}
 					}
-				}
+				};
 			};
 		},
 		{

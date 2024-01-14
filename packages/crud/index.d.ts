@@ -10,7 +10,7 @@ declare namespace Vue {
 // element-plus
 declare namespace ElementPlus {
 	type Size = "large" | "default" | "small";
-	type Align = "large" | "default" | "small";
+	type Align = "left" | "center" | "right";
 
 	interface FormProps {
 		inline?: boolean;
@@ -40,8 +40,8 @@ declare type obj = {
 declare type DeepPartial<T> = T extends Function
 	? T
 	: T extends object
-	  ? { [P in keyof T]?: DeepPartial<T[P]> }
-	  : T;
+	? { [P in keyof T]?: DeepPartial<T[P]> }
+	: T;
 
 // 合并
 declare type Merge<A, B> = Omit<A, keyof B> & B;
@@ -143,7 +143,8 @@ declare namespace Render {
 	}
 }
 
-declare type PropKey<T> = Extract<keyof Required<T>, string>;
+// 获取keys
+type PropKey<T> = keyof RemoveIndex<T> | (string & {});
 
 declare namespace ClCrud {
 	interface Label {
@@ -290,10 +291,6 @@ declare namespace ClCrud {
 		): void;
 	}
 
-	interface Options extends Config {
-		service: any;
-	}
-
 	interface Ref {
 		"cl-table": ClTable.Ref;
 		"cl-upsert": ClUpsert.Ref;
@@ -320,6 +317,10 @@ declare namespace ClCrud {
 		refresh: Service["api"]["page"];
 		[key: string]: any;
 	}
+
+	interface Options extends DeepPartial<Config> {
+		service?: any;
+	}
 }
 
 declare namespace ClTable {
@@ -340,7 +341,7 @@ declare namespace ClTable {
 		dictSeparator: string;
 		dictAllLevels: boolean;
 		buttons: OpButton | ((options: { scope: T }) => OpButton);
-		align: "left" | "center" | "right";
+		align: ElementPlus.Align;
 		label: any;
 		className: string;
 		prop: PropKey<T>;
@@ -353,7 +354,7 @@ declare namespace ClTable {
 		sortBy: string | ((row: T, index: number) => any) | any[];
 		resizable: boolean;
 		columnKey: string;
-		headerAlign: string;
+		headerAlign: ElementPlus.Align;
 		showOverflowTooltip: boolean;
 		fixed: boolean | string;
 		formatter: (row: T, column: any, value: any, index: number) => any;
@@ -506,7 +507,7 @@ declare namespace ClForm {
 		label?: string;
 		renderLabel?: any;
 		flex?: boolean;
-		hidden?: boolean | Vue.Ref<boolean> | ((options: { scope: obj }) => boolean);
+		hidden?: (options: { scope: obj }) => boolean;
 		prepend?: Render.Component;
 		component?: Render.Component;
 		append?: Render.Component;
@@ -516,7 +517,7 @@ declare namespace ClForm {
 		[key: string]: any;
 	}
 
-	interface Config {
+	interface Config<T = any> {
 		title?: any;
 		height?: string;
 		width?: string;
@@ -525,9 +526,9 @@ declare namespace ClForm {
 		form: obj;
 		isReset?: boolean;
 		on?: {
-			open?(data: obj): void;
+			open?(data: T): void;
 			close?(action: CloseAction, done: fn): void;
-			submit?(data: obj, event: { close: fn; done: fn }): void;
+			submit?(data: T, event: { close: fn; done: fn }): void;
 		};
 		op: {
 			hidden?: boolean;
@@ -600,7 +601,7 @@ declare namespace ClForm {
 }
 
 declare namespace ClUpsert {
-	interface Config<T = obj> {
+	interface Config<T = any> {
 		sync: boolean;
 		items: ClForm.Item[];
 		props: ClForm.Config["props"];
@@ -625,9 +626,13 @@ declare namespace ClUpsert {
 		mode: "add" | "update" | "info";
 	}
 
-	interface Options<T = any> extends DeepPartial<Config<T>> {
+	interface Options<T> extends DeepPartial<Config> {
 		items?: ClForm.Items<T>;
 	}
+}
+
+interface UpsertOptions {
+	items: ClForm.Items;
 }
 
 declare namespace ClAdvSearch {
@@ -748,12 +753,4 @@ declare type Options = DeepPartial<Config>;
 
 declare interface CrudOptions {
 	options: Options;
-}
-
-interface obj2 {
-	[prop: string]: any;
-}
-
-interface Item2<T = any2> {
-	prop: keyof T;
 }

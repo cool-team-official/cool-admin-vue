@@ -1,3 +1,4 @@
+/// <reference types="../index" />
 export declare function useForm(): {
     Form: import("vue").Ref<any>;
     config: {
@@ -22,7 +23,7 @@ export declare function useForm(): {
         items: {
             [x: string]: any;
             type?: "tabs" | undefined;
-            prop?: string | undefined;
+            prop?: (string & {}) | undefined;
             props?: {
                 [x: string]: any;
                 labels?: {

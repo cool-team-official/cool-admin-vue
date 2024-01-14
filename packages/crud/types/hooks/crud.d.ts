@@ -1,7 +1,7 @@
 /// <reference types="../index" />
 import { Ref } from "vue";
-export declare function useCrud(options?: DeepPartial<ClCrud.Options>, cb?: (app: ClCrud.Ref) => void): Ref<ClCrud.Ref | undefined>;
-export declare function useUpsert<T>(options?: ClUpsert.Options<T>): Ref<ClUpsert.Ref<T> | undefined>;
+export declare function useCrud(options?: ClCrud.Options, cb?: (app: ClCrud.Ref) => void): Ref<ClCrud.Ref | undefined>;
+export declare function useUpsert<T = any>(options?: ClUpsert.Options<T>): Ref<ClUpsert.Ref<T> | undefined>;
 export declare function useTable<T = any>(options?: ClTable.Options<T>): Ref<ClTable.Ref<T> | undefined>;
 export declare function useForm<T = any>(cb?: (app: ClForm.Ref<T>) => void): Ref<ClForm.Ref<T> | undefined>;
 export declare function useAdvSearch<T = any>(options?: ClAdvSearch.Options<T>): Ref<ClAdvSearch.Ref<T> | undefined>;
