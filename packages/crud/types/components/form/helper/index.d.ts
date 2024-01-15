@@ -66,11 +66,9 @@ export declare function useForm(): {
             label?: string | undefined;
             renderLabel?: any;
             flex?: boolean | undefined;
-            hidden?: boolean | ((options: {
+            hidden?: ((options: {
                 scope: obj;
-            }) => boolean) | {
-                value: boolean;
-            } | undefined;
+            }) => boolean) | undefined;
             prepend?: {
                 [x: string]: any;
                 name?: string | undefined;
@@ -189,9 +187,9 @@ export declare function useForm(): {
         form: obj;
         isReset?: boolean | undefined;
         on?: {
-            open?: ((data: obj) => void) | undefined;
+            open?: ((data: any) => void) | undefined;
             close?: ((action: ClForm.CloseAction, done: fn) => void) | undefined;
-            submit?: ((data: obj, event: {
+            submit?: ((data: any, event: {
                 close: fn;
                 done: fn;
             }) => void) | undefined;

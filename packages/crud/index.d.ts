@@ -40,8 +40,8 @@ declare type obj = {
 declare type DeepPartial<T> = T extends Function
 	? T
 	: T extends object
-	? { [P in keyof T]?: DeepPartial<T[P]> }
-	: T;
+	  ? { [P in keyof T]?: DeepPartial<T[P]> }
+	  : T;
 
 // 合并
 declare type Merge<A, B> = Omit<A, keyof B> & B;
@@ -333,6 +333,7 @@ declare namespace ClTable {
 		search: {
 			isInput: boolean;
 			value: any;
+			refreshOnChange: Boolean;
 			component: Render.Component;
 		};
 		dict: DictOptions | Vue.Ref<DictOptions>;
@@ -626,7 +627,7 @@ declare namespace ClUpsert {
 		mode: "add" | "update" | "info";
 	}
 
-	interface Options<T> extends DeepPartial<Config> {
+	interface Options<T = any> extends DeepPartial<Config<T>> {
 		items?: ClForm.Items<T>;
 	}
 }

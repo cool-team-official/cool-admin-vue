@@ -47,10 +47,13 @@ export function renderHeader(item: ClTable.Column, { scope, slots }: any) {
 			item.search.value = val;
 		},
 		onChange(val: any) {
-			crud.value?.refresh({
-				page: 1,
-				[item.prop]: val === "" ? undefined : val
-			});
+			// 更改时刷新列表
+			if (item.search.refreshOnChange) {
+				crud.value?.refresh({
+					page: 1,
+					[item.prop]: val === "" ? undefined : val
+				});
+			}
 		}
 	});
 

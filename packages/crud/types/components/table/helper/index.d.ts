@@ -42,6 +42,9 @@ export declare function useTable(props: any): {
             search: {
                 isInput: boolean;
                 value: any;
+                refreshOnChange: {
+                    valueOf: () => boolean;
+                };
                 component: {
                     [x: string]: any;
                     name?: string | undefined;

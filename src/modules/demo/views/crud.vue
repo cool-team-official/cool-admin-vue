@@ -151,7 +151,8 @@ function refresh(params?: any) {
 }
 
 // 新增、编辑
-const Upsert = useUpsert({
+// 插入类型 <Eps.UserInfoEntity>，prop 和 data 会有提示
+const Upsert = useUpsert<Eps.UserInfoEntity>({
 	dialog: {
 		height: "600px", // 固定高
 		width: "1000px" // 固定宽
@@ -165,15 +166,15 @@ const Upsert = useUpsert({
 				type: "card",
 				labels: [
 					{
-						label: "基础",
+						label: "基础信息",
 						value: "base"
 					},
 					{
-						label: "选择",
+						label: "选择用户",
 						value: "select"
 					},
 					{
-						label: "其他",
+						label: "其他配置",
 						value: "other"
 					}
 				]
@@ -181,7 +182,7 @@ const Upsert = useUpsert({
 		},
 		{
 			label: "头像",
-			prop: "avatar",
+			prop: "avatarUrl",
 			group: "base",
 			component: {
 				name: "cl-upload"
@@ -240,13 +241,34 @@ const Upsert = useUpsert({
 			]
 		},
 		{
-			label: "省市区",
-			prop: "pca",
+			prop: "contact",
 			group: "base",
 			component: {
-				name: "cl-distpicker"
-			}
+				name: "cl-form-card",
+				props: {
+					label: "联系信息",
+					expand: false
+				}
+			},
+			children: [
+				{
+					label: "手机号",
+					prop: "phone",
+					component: {
+						name: "el-input"
+					}
+				},
+				{
+					label: "省市区",
+					prop: "pca",
+					group: "base",
+					component: {
+						name: "cl-distpicker"
+					}
+				}
+			]
 		},
+
 		{
 			label: "",
 			prop: "userIds",
@@ -400,7 +422,6 @@ const Table = useTable({
 
 			// 带搜索组件
 			search: {
-				// cool渲染方式
 				component: {
 					name: "el-input",
 					props: {
@@ -430,7 +451,6 @@ const Table = useTable({
 
 			// 带搜索组件
 			search: {
-				// jsx方式
 				component: {
 					name: "cl-select",
 					props: {
@@ -455,9 +475,14 @@ const Table = useTable({
 			prop: "createTime",
 			sortable: "custom",
 			search: {
-				component: (
-					<cl-date-picker type="date" value-format="YYYY-MM-DD" placeholder="搜索日期" />
-				)
+				component: {
+					name: "cl-date-picker",
+					props: {
+						type: "date",
+						valueFormat: "YYYY-MM-DD",
+						placeholder: "搜索日期"
+					}
+				}
 			}
 		},
 		{

@@ -65,7 +65,7 @@ export function useCrud(options?: ClCrud.Options, cb?: (app: ClCrud.Ref) => void
 		provide("useCrud__options", options);
 	}
 
-	watch(Crud, (val: any) => {
+	watch(Crud, (val) => {
 		if (val) {
 			if (cb) {
 				cb(val);
@@ -77,7 +77,7 @@ export function useCrud(options?: ClCrud.Options, cb?: (app: ClCrud.Ref) => void
 }
 
 // 新增、编辑
-export function useUpsert<T = any>(options?: ClUpsert.Options<T>): Ref<ClUpsert.Ref> {
+export function useUpsert<T = any>(options?: ClUpsert.Options<T>) {
 	const Upsert = ref<ClUpsert.Ref>();
 	useParent("cl-upsert", Upsert);
 
@@ -87,7 +87,7 @@ export function useUpsert<T = any>(options?: ClUpsert.Options<T>): Ref<ClUpsert.
 
 	watch(
 		Upsert,
-		(val: any) => {
+		(val) => {
 			if (val) {
 				if (options) {
 					const event = useEvent(["onOpen", "onOpened", "onClosed"], {
@@ -105,7 +105,7 @@ export function useUpsert<T = any>(options?: ClUpsert.Options<T>): Ref<ClUpsert.
 		}
 	);
 
-	return Upsert as Ref<ClUpsert.Ref<T>>;
+	return Upsert;
 }
 
 // 表格
@@ -164,7 +164,7 @@ export function useDialog(options?: { onFullscreen(visible: boolean): void }) {
 
 	watch(
 		() => Dialog?.fullscreen.value,
-		(val: any) => {
+		(val) => {
 			options?.onFullscreen(val);
 		}
 	);
