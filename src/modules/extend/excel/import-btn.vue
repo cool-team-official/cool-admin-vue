@@ -12,10 +12,11 @@
 				<div class="inner">
 					<cl-upload
 						drag
+						type="file"
 						:limit-size="limitSize"
 						:accept="accept"
 						:disabled="disabled"
-						type="file"
+						:auto-upload="false"
 						:before-upload="onUpload"
 						:size="[220, '100%']"
 					/>
