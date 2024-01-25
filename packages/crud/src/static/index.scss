@@ -371,6 +371,7 @@
 	ul {
 		display: inline-flex;
 		white-space: nowrap;
+		margin: 0;
 
 		li {
 			display: inline-flex;
@@ -397,7 +398,9 @@
 		position: absolute;
 		bottom: -1px;
 		left: 0;
-		transition: transform 0.3s ease-in-out, width 0.2s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
+		transition:
+			transform 0.3s ease-in-out,
+			width 0.2s 0.1s cubic-bezier(0.645, 0.045, 0.355, 1);
 		background-color: var(--el-color-primary);
 	}
 
@@ -514,14 +517,7 @@
 		user-select: none;
 	}
 
-	&__container {
-		& > .el-scrollbar__wrap > .el-scrollbar__view {
-			height: 100%;
-		}
-	}
-
 	&__default {
-		height: 100%;
 		box-sizing: border-box;
 	}
 

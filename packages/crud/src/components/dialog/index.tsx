@@ -50,7 +50,12 @@ export default defineComponent({
 		// 隐藏头部元素
 		hideHeader: Boolean,
 		// 关闭前
-		beforeClose: Function
+		beforeClose: Function,
+		// 是否需要滚动条
+		scrollbar: {
+			type: Boolean,
+			default: true
+		}
 	},
 
 	emits: ["update:modelValue", "fullscreen-change"],
@@ -242,16 +247,28 @@ export default defineComponent({
 						return renderHeader();
 					},
 					default() {
-						return (
-							<el-scrollbar
-								class="cl-dialog__container"
-								key={cacheKey.value}
-								style={{ height: props.height }}>
-								<div class="cl-dialog__default" style={{ padding: props.padding }}>
+						const height = isFullscreen.value ? "100%" : props.height;
+
+						const style = {
+							padding: props.padding,
+							height
+						};
+
+						function content() {
+							return (
+								<div class="cl-dialog__default" style={style} key={cacheKey.value}>
 									{slots.default?.()}
 								</div>
-							</el-scrollbar>
-						);
+							);
+						}
+
+						if (props.scrollbar) {
+							style.height = "auto";
+
+							return <el-scrollbar height={height}>{content()}</el-scrollbar>;
+						} else {
+							return content();
+						}
 					},
 					footer() {
 						const d = slots.footer?.();

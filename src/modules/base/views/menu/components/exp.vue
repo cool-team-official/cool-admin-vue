@@ -8,7 +8,7 @@
 import { useForm } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
 import { isEmpty } from "lodash-es";
-import { PropType } from "vue";
+import { type PropType } from "vue";
 import { useCool } from "/@/cool";
 import dayjs from "dayjs";
 import { Download } from "@element-plus/icons-vue";
@@ -29,6 +29,9 @@ function open() {
 		width: "600px",
 		props: {
 			labelPosition: "top"
+		},
+		op: {
+			saveButtonText: "导出"
 		},
 		items: [
 			{

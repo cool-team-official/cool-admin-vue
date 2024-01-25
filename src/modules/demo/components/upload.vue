@@ -1,7 +1,7 @@
 <template>
 	<div class="scope">
 		<div class="h">
-			<span>cl-upload</span>
+			<el-tag size="small" effect="dark">cl-upload</el-tag>
 			图片上传
 		</div>
 		<div class="c">

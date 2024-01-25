@@ -143,9 +143,8 @@ export declare function useTable(props: any): {
         contextMenu: ("info" | "update" | "delete" | "edit" | "refresh" | {
             [x: string]: any;
             label: string;
-            icon?: string | undefined;
-            prefixIcon?: string | undefined;
-            suffixIcon?: string | undefined;
+            prefixIcon?: any;
+            suffixIcon?: any;
             ellipsis?: boolean | undefined;
             disabled?: boolean | undefined;
             hidden?: boolean | undefined;

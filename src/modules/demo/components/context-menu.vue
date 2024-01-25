@@ -1,7 +1,7 @@
 <template>
 	<div class="scope">
 		<div class="h">
-			<span>cl-context-menu</span>
+			<el-tag size="small" effect="dark">cl-context-menu</el-tag>
 			右键菜单
 		</div>
 		<div class="c">
@@ -17,7 +17,7 @@
 import { ContextMenu } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
 
-function open(e: any) {
+function open(e: MouseEvent) {
 	ContextMenu.open(e, {
 		list: [
 			{

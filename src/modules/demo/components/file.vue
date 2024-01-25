@@ -1,7 +1,7 @@
 <template>
 	<div class="scope">
 		<div class="h">
-			<span>file</span>
+			<el-tag size="small" effect="dark">file</el-tag>
 			文件管理
 		</div>
 		<div class="c">

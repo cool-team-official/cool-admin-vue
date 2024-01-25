@@ -82,39 +82,6 @@ declare type Browser = {
 	isMini: boolean;
 };
 
-// hook
-declare namespace Hook {
-	interface Options {
-		form: obj;
-		prop: string;
-		method: "submit" | "bind";
-	}
-
-	type fn = (value: any, options: Options) => any;
-
-	type FormPipe =
-		| "number"
-		| "string"
-		| "split"
-		| "join"
-		| "boolean"
-		| "booleanNumber"
-		| "datetimeRange"
-		| "splitJoin"
-		| "json"
-		| "empty"
-		| fn;
-
-	type FormPipes = FormPipe | FormPipe[];
-
-	type Form =
-		| string
-		| {
-				bind?: FormPipes;
-				submit?: FormPipes;
-		  };
-}
-
 // render
 declare namespace Render {
 	type OpButton =
@@ -473,6 +440,26 @@ declare namespace ClForm {
 		[key: string]: any;
 	}
 
+	type HookFn = (
+		value: any,
+		options: { form: obj; prop: string; method: "submit" | "bind" }
+	) => any;
+
+	type HookKey =
+		| "number"
+		| "string"
+		| "split"
+		| "join"
+		| "boolean"
+		| "booleanNumber"
+		| "datetimeRange"
+		| "splitJoin"
+		| "json"
+		| "empty"
+		| (string & {});
+
+	type HookPipe = HookKey | HookFn;
+
 	interface Item<T = any> {
 		type?: "tabs";
 		prop?: PropKey<T>;
@@ -501,14 +488,19 @@ declare namespace ClForm {
 			xl: any;
 			tag: string;
 		};
-		hook?: Hook.Form;
 		group?: string;
 		collapse?: boolean;
 		value?: any;
 		label?: string;
 		renderLabel?: any;
 		flex?: boolean;
-		hidden?: (options: { scope: obj }) => boolean;
+		hook?:
+			| HookKey
+			| {
+					bind?: HookPipe | HookPipe[];
+					submit?: HookPipe | HookPipe[];
+			  };
+		hidden?: boolean | ((options: { scope: obj }) => boolean);
 		prepend?: Render.Component;
 		component?: Render.Component;
 		append?: Render.Component;
@@ -632,16 +624,12 @@ declare namespace ClUpsert {
 	}
 }
 
-interface UpsertOptions {
-	items: ClForm.Items;
-}
-
 declare namespace ClAdvSearch {
 	interface Config<T = any> {
 		items?: ClForm.Item[];
 		title?: string;
 		size?: string | number;
-		op?: Array<"clear" | "reset" | "close" | "search">;
+		op?: ("clear" | "reset" | "close" | "search" | `slot-${string}`)[];
 		onSearch?(data: T, options: { next: ClCrud.Service["api"]["page"]; close(): void }): void;
 	}
 
@@ -674,9 +662,8 @@ declare namespace ClSearch {
 declare namespace ClContextMenu {
 	interface Item {
 		label: string;
-		icon?: string;
-		prefixIcon?: string;
-		suffixIcon?: string;
+		prefixIcon?: any;
+		suffixIcon?: any;
 		ellipsis?: boolean;
 		disabled?: boolean;
 		hidden?: boolean;

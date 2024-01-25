@@ -13,6 +13,9 @@ const module = {
 	get(name: string): Module {
 		return this.list.find((e) => e.name == name)!;
 	},
+	config(name: string) {
+		return this.get(name).options || {};
+	},
 	add(data: Module) {
 		this.list.push(data);
 	},

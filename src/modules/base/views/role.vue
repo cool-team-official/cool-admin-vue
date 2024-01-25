@@ -19,19 +19,29 @@
 
 		<cl-upsert ref="Upsert">
 			<template #slot-relevance="{ scope }">
-				<el-switch
-					v-model="scope.relevance"
-					:active-value="1"
-					:inactive-value="0"
-					@change="onRelevanceChange"
-				/>
-				<span
-					:style="{
-						marginLeft: '10px',
-						fontSize: '12px'
-					}"
-					>是否关联上下级</span
-				>
+				<div>
+					<el-row>
+						<el-switch
+							v-model="scope.relevance"
+							:active-value="1"
+							:inactive-value="0"
+						/>
+
+						<span
+							:style="{
+								marginLeft: '10px',
+								fontSize: '12px'
+							}"
+						>
+							是否关联上下级
+						</span>
+					</el-row>
+
+					<cl-dept-check
+						v-model="scope.departmentIdList"
+						:check-strictly="scope.relevance == 0"
+					/>
+				</div>
 			</template>
 		</cl-upsert>
 	</cl-crud>
@@ -96,30 +106,20 @@ const Upsert = useUpsert({
 		{
 			label: "数据权限",
 			prop: "relevance",
-			flex: false,
 			component: {
 				name: "slot-relevance"
-			}
-		},
-		{
-			label: "",
-			prop: "departmentIdList",
-			value: [],
-			component: {
-				name: "cl-dept-check",
-				props: {},
-				style: {
-					marginTop: "-10px"
-				}
 			}
 		}
 	],
 
-	plugins: [setFocus()],
+	onSubmit(data, { next }) {
+		next({
+			...data,
+			departmentIdList: data.departmentIdList || []
+		});
+	},
 
-	onOpened(data) {
-		onRelevanceChange(data.relevance || 0);
-	}
+	plugins: [setFocus()]
 });
 
 // cl-table
@@ -164,11 +164,4 @@ const Table = useTable({
 		}
 	]
 });
-
-// 是否关联上下级
-function onRelevanceChange(val: number | string | boolean) {
-	Upsert.value?.setProps("departmentIdList", {
-		checkStrictly: val == 0
-	});
-}
 </script>

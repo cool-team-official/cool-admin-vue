@@ -1,6 +1,6 @@
 import { ModuleConfig } from "/@/cool";
-import { addDeclare } from "/$/extend";
 import { CodeDeclare } from "./dict";
+import { addDeclare } from "/@/plugins/editor-monaco";
 
 export default (): ModuleConfig => {
 	return {

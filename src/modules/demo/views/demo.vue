@@ -22,32 +22,26 @@ import ClForm from "../components/form.vue";
 const list = [ContextMenu, ClForm, Crud, Upload, Editor, Svg, Copy, File, Design];
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .demo {
 	overflow-x: hidden;
 
-	.scope {
+	:deep(.scope) {
 		background-color: #fff;
 		border-radius: 4px;
 		margin-bottom: 10px;
 		white-space: nowrap;
 
 		.h {
-			height: 30px;
 			display: flex;
 			align-items: center;
+			height: 30px;
 			padding: 10px;
 			font-size: 12px;
 			color: #666;
 
-			span {
-				background-color: var(--color-primary);
-				border-radius: 4px;
-				padding: 2px 5px;
+			.el-tag {
 				margin-right: 10px;
-				font-size: 14px;
-				letter-spacing: 1px;
-				color: #fff;
 			}
 		}
 
@@ -59,24 +53,6 @@ const list = [ContextMenu, ClForm, Crud, Upload, Editor, Svg, Copy, File, Design
 			&._svg {
 				.cl-svg {
 					margin-right: 15px;
-				}
-			}
-
-			a {
-				font-size: 13px;
-				color: #666;
-				position: relative;
-
-				&:hover {
-					&:after {
-						content: "";
-						width: 100%;
-						height: 1px;
-						position: absolute;
-						bottom: -2px;
-						left: 0;
-						background-color: var(--color-primary);
-					}
 				}
 			}
 		}

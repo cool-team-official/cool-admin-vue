@@ -81,7 +81,8 @@ import { deepTree, revDeepTree } from "/@/cool/utils";
 import { isArray } from "lodash-es";
 import { ContextMenu, setFocus, useForm } from "@cool-vue/crud";
 import { Refresh as RefreshIcon, Operation, MoreFilled } from "@element-plus/icons-vue";
-import { checkPerm, useViewGroup } from "/$/base";
+import { checkPerm } from "/$/base";
+import { useViewGroup } from "/@/plugins/view";
 
 const props = defineProps({
 	drag: {
@@ -97,9 +98,8 @@ const props = defineProps({
 const emit = defineEmits(["refresh", "user-add"]);
 
 const { service, browser } = useCool();
-const { ViewGroup } = useViewGroup();
-
 const Form = useForm();
+const { ViewGroup } = useViewGroup();
 
 // 树形列表
 const list = ref<Eps.BaseSysDepartmentEntity[]>([]);

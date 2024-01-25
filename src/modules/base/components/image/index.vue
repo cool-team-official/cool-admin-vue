@@ -18,7 +18,7 @@
 			preview-teleported
 		>
 			<template #error>
-				<div class="image-slot">
+				<div class="cl-image__slot">
 					<el-icon :size="20"><picture-filled /></el-icon>
 				</div>
 			</template>
@@ -27,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { PropType, computed, defineComponent } from "vue";
+import { type PropType, computed, defineComponent } from "vue";
 import { isArray, isNumber, isString } from "lodash-es";
 import { PictureFilled } from "@element-plus/icons-vue";
 import { parsePx } from "/@/cool/utils";
@@ -91,20 +91,13 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .cl-image {
-	display: flex;
-	align-items: center;
-
-	.el-image {
-		display: block;
-
-		.image-slot {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: 100%;
-			background-color: #f7f7f7;
-			border-radius: 4px;
-		}
+	&__slot {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 100%;
+		background-color: #f7f7f7;
+		border-radius: 4px;
 	}
 }
 </style>

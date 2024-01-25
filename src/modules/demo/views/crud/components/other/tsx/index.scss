@@ -1,0 +1,28 @@
+.tsx-list {
+	.item {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border: 1px solid var(--el-border-color);
+		padding: 10px;
+		margin-bottom: 10px;
+		cursor: pointer;
+		border-radius: 4px;
+
+		.el-icon {
+			display: none;
+		}
+
+		&:hover {
+			background-color: var(--el-bg-color-page);
+		}
+
+		&.is-active {
+			color: var(--el-color-primary);
+
+			.el-icon {
+				display: block;
+			}
+		}
+	}
+}

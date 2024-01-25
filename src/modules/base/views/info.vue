@@ -4,7 +4,7 @@
 
 		<el-form label-width="100px" :model="form" :disabled="loading">
 			<el-form-item label="头像">
-				<cl-upload is-space v-model="form.headImg" />
+				<cl-upload v-model="form.headImg" />
 			</el-form-item>
 
 			<el-form-item label="昵称">

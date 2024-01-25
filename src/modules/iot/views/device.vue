@@ -3,7 +3,7 @@
 		<template #item="{ item, selected }">
 			<div class="device-item" :class="{ 'is-active': selected.id == item.id }">
 				<div class="icon">
-					<cl-avatar shape="square" :src="item.icon || Icon" />
+					<cl-avatar shape="square" :src="item.icon || DeviceIcon" />
 				</div>
 
 				<div class="det">
@@ -43,7 +43,7 @@
 										:src="
 											item.type == 0
 												? user.info?.headImg
-												: ViewGroup?.selected?.icon || Icon
+												: ViewGroup?.selected?.icon || DeviceIcon
 										"
 									/>
 								</div>
@@ -104,11 +104,12 @@ import { ElMessage } from "element-plus";
 import { debounce, orderBy } from "lodash-es";
 import { computed, nextTick, onActivated, ref } from "vue";
 import { useMqtt } from "../hooks";
-import { useBase, useViewGroup } from "/$/base";
+import { useBase } from "/$/base";
 import { useCool } from "/@/cool";
 import dayjs from "dayjs";
-import Icon from "../static/icon/device.png";
 import { onBeforeRouteLeave } from "vue-router";
+import { useViewGroup } from "/@/plugins/view";
+import DeviceIcon from "../static/icon/device.png";
 
 const { service, refs, setRefs, mitt } = useCool();
 const { copy } = useClipboard();

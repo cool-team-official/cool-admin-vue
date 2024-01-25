@@ -56,17 +56,17 @@ export declare function useForm(): {
                 xl: any;
                 tag: string;
             } | undefined;
-            hook?: string | {
-                bind?: Hook.FormPipe | Hook.FormPipe[] | undefined;
-                submit?: Hook.FormPipe | Hook.FormPipe[] | undefined;
-            } | undefined;
             group?: string | undefined;
             collapse?: boolean | undefined;
             value?: any;
             label?: string | undefined;
             renderLabel?: any;
             flex?: boolean | undefined;
-            hidden?: ((options: {
+            hook?: ClForm.HookKey | {
+                bind?: ClForm.HookPipe | ClForm.HookPipe[] | undefined;
+                submit?: ClForm.HookPipe | ClForm.HookPipe[] | undefined;
+            } | undefined;
+            hidden?: boolean | ((options: {
                 scope: obj;
             }) => boolean) | undefined;
             prepend?: {

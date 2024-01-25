@@ -105,8 +105,8 @@ import { deepTree } from "/@/cool/utils";
 import { useStore } from "/$/base/store";
 import MenuImp from "./components/imp.vue";
 import MenuExp from "./components/exp.vue";
-import AutoMenu from "/$/magic/components/auto-menu/index.vue";
-import AutoPerms from "/$/magic/components/auto-perms/index.vue";
+import AutoMenu from "/$/helper/components/auto-menu/index.vue";
+import AutoPerms from "/$/helper/components/auto-perms/index.vue";
 
 const { service, mitt } = useCool();
 const { menu } = useStore();
@@ -401,5 +401,5 @@ function addPermission({ id }: any) {
 	});
 }
 
-mitt.on("magic.createMenu", refresh);
+mitt.on("helper.createMenu", refresh);
 </script>

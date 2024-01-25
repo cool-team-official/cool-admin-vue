@@ -54,9 +54,9 @@
 import { useForm } from "@cool-vue/crud";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { reactive, ref } from "vue";
-import { useViewGroup } from "/$/base";
 import { useCool } from "/@/cool";
 import { CodeSnippets, Status } from "../dict";
+import { useViewGroup } from "/@/plugins/view";
 
 const { service } = useCool();
 

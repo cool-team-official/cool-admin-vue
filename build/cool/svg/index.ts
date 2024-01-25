@@ -42,7 +42,7 @@ function findFiles(dir: string): string[] {
 }
 
 export function createSvg(html: string) {
-	const res = findFiles("./src/modules/");
+	const res = findFiles("./src/");
 
 	return html.replace(
 		"<body>",

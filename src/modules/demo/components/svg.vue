@@ -1,7 +1,7 @@
 <template>
 	<div class="scope">
 		<div class="h">
-			<span>cl-svg</span>
+			<el-tag size="small" effect="dark">cl-svg</el-tag>
 			svg图片库
 		</div>
 		<div class="c _svg">

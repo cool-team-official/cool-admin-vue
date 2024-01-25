@@ -119,21 +119,32 @@ export default defineComponent({
 					// 拷贝表单值
 					const d = cloneDeep(form);
 
-					// 过滤隐藏的表单项
 					config.items.forEach((e) => {
-						if (e._hidden) {
+						function deep(e: ClForm.Item) {
 							if (e.prop) {
-								delete d[e.prop];
+								// 过滤隐藏的表单项
+								if (e._hidden) {
+									if (e.prop) {
+										delete d[e.prop];
+									}
+								}
+
+								// hook 提交处理
+								if (e.hook) {
+									formHook.submit({
+										...e,
+										value: e.prop ? d[e.prop] : undefined,
+										form: d
+									});
+								}
+							}
+
+							if (e.children) {
+								e.children.forEach(deep);
 							}
 						}
 
-						if (e.hook) {
-							formHook.submit({
-								...e,
-								value: e.prop ? d[e.prop] : undefined,
-								form: d
-							});
-						}
+						deep(e);
 					});
 
 					// 处理 "-" 多层级
@@ -152,7 +163,7 @@ export default defineComponent({
 							let f: any = d[a];
 
 							// 设置默认值
-							arr.forEach((e: any) => {
+							arr.forEach((e) => {
 								if (!f[e]) {
 									f[e] = {};
 								}
@@ -249,7 +260,7 @@ export default defineComponent({
 			}
 
 			// 设置表单数据
-			config.items.map((e) => {
+			config.items.forEach((e) => {
 				function deep(e: ClForm.Item) {
 					if (e.prop) {
 						// 解析 prop
@@ -260,7 +271,7 @@ export default defineComponent({
 						// prop 合并
 						Tabs.mergeProp(e);
 
-						// 绑定值
+						// hook 绑定值
 						formHook.bind({
 							...e,
 							value: form[e.prop] !== undefined ? form[e.prop] : cloneDeep(e.value),
@@ -274,16 +285,16 @@ export default defineComponent({
 								message: `${e.label}${dict.label.nonEmpty}`
 							};
 						}
-
-						// 子集
-						if (e.children) {
-							e.children.forEach(deep);
-						}
 					}
 
 					// 设置 tabs 默认值
 					if (e.type == "tabs") {
 						Tabs.set(e.value);
+					}
+
+					// 子集
+					if (e.children) {
+						e.children.forEach(deep);
 					}
 				}
 
@@ -312,11 +323,19 @@ export default defineComponent({
 		// 绑定表单数据
 		function bindForm(data: any) {
 			config.items.forEach((e) => {
-				formHook.bind({
-					...e,
-					value: e.prop ? data[e.prop] : undefined,
-					form: data
-				});
+				function deep(e: ClForm.Item) {
+					formHook.bind({
+						...e,
+						value: e.prop ? data[e.prop] : undefined,
+						form: data
+					});
+
+					if (e.children) {
+						e.children.forEach(deep);
+					}
+				}
+
+				deep(e);
 			});
 
 			Object.assign(form, data);
@@ -344,105 +363,104 @@ export default defineComponent({
 			const isLoaded = e.component && Tabs.isLoaded(e.group);
 
 			// 表单项
-			const FormItem = isLoaded
-				? h(
-						<el-form-item
-							class={{
-								"no-label": !(e.renderLabel || e.label),
-								"has-children": !!e.children
-							}}
-							data-group={e.group}
-							data-prop={e.prop}
-							label-width={props.inline ? "auto" : ""}
-							label={e.label}
-							prop={e.prop}
-							rules={isDisabled ? null : e.rules}
-							required={e._hidden ? false : e.required}
-							v-show={inGroup && !e._hidden}
-						/>,
-						e.props,
-						{
-							label() {
-								return e.renderLabel
-									? renderNode(e.renderLabel, {
-											scope: form,
-											render: "slot",
-											slots
-									  })
-									: e.label;
-							},
-							default() {
-								return (
-									<div>
-										<div class="cl-form-item">
-											{["prepend", "component", "append"]
-												.filter((k) => e[k])
-												.map((name) => {
-													const children = e.children && (
-														<div class="cl-form-item__children">
-															<el-row gutter={10}>
-																{e.children.map(renderFormItem)}
-															</el-row>
-														</div>
-													);
+			const FormItem = h(
+				<el-form-item
+					class={{
+						"no-label": !(e.renderLabel || e.label),
+						"has-children": !!e.children
+					}}
+					key={e.prop}
+					data-group={e.group || "-"}
+					data-prop={e.prop || "-"}
+					label-width={props.inline ? "auto" : ""}
+					label={e.label}
+					prop={e.prop}
+					rules={isDisabled ? null : e.rules}
+					required={e._hidden ? false : e.required}
+					v-show={inGroup && !e._hidden}
+				/>,
+				e.props,
+				{
+					label() {
+						return e.renderLabel
+							? renderNode(e.renderLabel, {
+									scope: form,
+									render: "slot",
+									slots
+							  })
+							: e.label;
+					},
+					default() {
+						return (
+							<div>
+								<div class="cl-form-item">
+									{["prepend", "component", "append"]
+										.filter((k) => e[k])
+										.map((name) => {
+											const children = e.children && (
+												<div class="cl-form-item__children">
+													<el-row gutter={10}>
+														{e.children.map(renderFormItem)}
+													</el-row>
+												</div>
+											);
 
-													const Item = renderNode(e[name], {
-														item: e,
-														prop: e.prop,
-														scope: form,
-														slots,
-														children,
-														_data: {
-															isDisabled
+											const Item = renderNode(e[name], {
+												item: e,
+												prop: e.prop,
+												scope: form,
+												slots,
+												children,
+												_data: {
+													isDisabled
+												}
+											});
+
+											return (
+												<div
+													v-show={!e.collapse}
+													class={[
+														`cl-form-item__${name}`,
+														{
+															flex1: e.flex !== false
 														}
-													});
+													]}
+													style={e[name].style}>
+													{Item}
+												</div>
+											);
+										})}
+								</div>
 
-													return (
-														<div
-															v-show={!e.collapse}
-															class={[
-																`cl-form-item__${name}`,
-																{
-																	flex1: e.flex !== false
-																}
-															]}
-															style={e[name].style}>
-															{Item}
-														</div>
-													);
-												})}
-										</div>
-
-										{isBoolean(e.collapse) && (
-											<div
-												class="cl-form-item__collapse"
-												onClick={() => {
-													Action.collapseItem(e);
-												}}>
-												<el-divider content-position="center">
-													{e.collapse
-														? dict.label.seeMore
-														: dict.label.hideContent}
-												</el-divider>
-											</div>
-										)}
+								{isBoolean(e.collapse) && (
+									<div
+										class="cl-form-item__collapse"
+										onClick={() => {
+											Action.collapseItem(e);
+										}}>
+										<el-divider content-position="center">
+											{e.collapse
+												? dict.label.seeMore
+												: dict.label.hideContent}
+										</el-divider>
 									</div>
-								);
-							}
-						}
-				  )
-				: null;
+								)}
+							</div>
+						);
+					}
+				}
+			);
 
-			// 行内
-			if (props.inline) {
-				return FormItem;
-			}
-
-			return (
-				<el-col key={e.prop} span={e.span || style.form.span} {...e.col}>
+			// 是否行内
+			const Item = props.inline ? (
+				FormItem
+			) : (
+				<el-col span={e.span || style.form.span} {...e.col} v-show={inGroup && !e._hidden}>
 					{FormItem}
 				</el-col>
 			);
+
+			return isLoaded ? Item : null;
 		}
 
 		// 渲染表单

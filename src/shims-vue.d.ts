@@ -8,3 +8,4 @@ declare module "*.vue" {
 declare module "element-plus/dist/locale/zh-cn.mjs";
 declare module "virtual:module";
 declare module "virtual:eps";
+declare module "virtual:demo";

@@ -71,13 +71,13 @@ function onCheckChange(_: any, { checkedKeys }: any) {
 
 // 监听过滤
 watch(keyword, (val: string) => {
-	Tree.value.filter(val);
+	Tree.value?.filter(val);
 });
 
 useUpsert({
 	async onOpened() {
 		await refresh();
-		Tree.value.setCheckedKeys(props.modelValue || []);
+		Tree.value?.setCheckedKeys(props.modelValue || []);
 	}
 });
 </script>

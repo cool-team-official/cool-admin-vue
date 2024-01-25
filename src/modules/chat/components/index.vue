@@ -1,6 +1,6 @@
 <template>
 	<div class="cl-chat__wrap">
-		<el-badge :value="unCount">
+		<el-badge :value="unCount" :hidden="!unCount">
 			<div class="cl-chat__icon" @click="open">
 				<cl-svg name="icon-notice" :size="16" />
 			</div>
@@ -14,6 +14,7 @@
 			width="1200px"
 			padding="0"
 			keep-alive
+			:scrollbar="false"
 			:close-on-click-modal="false"
 			close-on-press-escape
 			:controls="['slot-expand', 'cl-flex1', 'fullscreen', 'close']"

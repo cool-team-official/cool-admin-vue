@@ -1,7 +1,7 @@
 <template>
 	<div class="scope">
 		<div class="h">
-			<span>design-page</span>
+			<el-tag size="small" effect="dark">design-page</el-tag>
 			页面设计
 		</div>
 		<div class="c">

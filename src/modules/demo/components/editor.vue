@@ -1,7 +1,7 @@
 <template>
 	<div class="scope">
 		<div class="h">
-			<span>cl-editor</span>
+			<el-tag size="small" effect="dark">cl-editor</el-tag>
 			编辑器
 		</div>
 		<div class="c">

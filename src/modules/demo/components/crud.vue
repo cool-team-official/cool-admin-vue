@@ -1,7 +1,7 @@
 <template>
 	<div class="scope">
 		<div class="h">
-			<span>cl-crud</span>
+			<el-tag size="small" effect="dark">cl-crud</el-tag>
 			增删改查，超快的
 		</div>
 		<div class="c">

@@ -41,32 +41,32 @@
 
 			<el-tab-pane label="文件空间">
 				<div>
-					<el-divider content-position="left"> cl-upload-space </el-divider>
+					<el-divider content-position="left"> 单选 </el-divider>
+
+					<cl-upload-space v-model="v4" :multiple="false" accept="image/*" />
+				</div>
+
+				<div>
+					<el-divider content-position="left"> 多选 </el-divider>
+
+					<cl-upload-space v-model="v5" :limit="3" accept="image/*" />
+				</div>
+
+				<div>
+					<el-divider content-position="left"> 自定义 </el-divider>
+
 					<cl-upload-space
-						v-model="v4"
-						:limit="3"
+						v-model="v6"
+						:multiple="false"
+						:show-btn="false"
 						accept="image/*"
-						@confirm="onConfirm"
-					/>
-
-					<div class="space-upload">
-						<el-image
-							fit="cover"
-							v-for="(item, index) in v4"
-							:key="index"
-							:src="item"
-						/>
-					</div>
-				</div>
-
-				<div>
-					<el-divider content-position="left"> cl-upload 单选</el-divider>
-					<cl-upload is-space v-model="v5" />
-				</div>
-
-				<div>
-					<el-divider content-position="left"> cl-upload 多选</el-divider>
-					<cl-upload multiple is-space v-model="v6" />
+						:ref="setRefs('uploadSpace')"
+					>
+						<div class="space-custom" @click="refs.uploadSpace?.open">
+							<cl-avatar :size="50" :src="v6" />
+							<p>选择头像</p>
+						</div>
+					</cl-upload-space>
 				</div>
 			</el-tab-pane>
 		</el-tabs>
@@ -77,17 +77,16 @@
 import { ref } from "vue";
 import { Upload } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
+import { useCool } from "/@/cool";
+
+const { refs, setRefs } = useCool();
 
 const v1 = ref("");
 const v2 = ref([]);
 const v3 = ref("");
 const v4 = ref<string[]>([]);
-const v5 = ref<string>("");
-const v6 = ref<string[]>([]);
-
-function onConfirm(list: any[]) {
-	v4.value = list.map((e) => e.url);
-}
+const v5 = ref<string[]>([]);
+const v6 = ref("");
 
 function onBeforeUpload(file: any) {
 	return new Promise((resolve) => {
@@ -104,7 +103,7 @@ function onBeforeUpload(file: any) {
 .demo {
 	background-color: var(--el-bg-color);
 	padding: 10px;
-	height: 100%;
+	min-height: 100%;
 	box-sizing: border-box;
 
 	:deep(.custom-upload) {
@@ -119,13 +118,26 @@ function onBeforeUpload(file: any) {
 		}
 	}
 
-	.space-upload {
-		margin-top: 10px;
+	.space-custom {
+		border: 1px dashed var(--el-border-color);
+		border-radius: 6px;
+		padding: 5px 10px;
+		font-size: 14px;
+		box-sizing: border-box;
+		height: 120px;
+		width: 120px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
 
-		.el-image {
-			margin-right: 10px;
-			height: 100px;
-			width: 100px;
+		p {
+			margin-top: 10px;
+		}
+
+		&:hover {
+			border-color: var(--el-color-primary);
 		}
 	}
 }

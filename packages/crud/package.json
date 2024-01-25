@@ -1,6 +1,6 @@
 {
 	"name": "@cool-vue/crud",
-	"version": "7.1.3",
+	"version": "7.1.10",
 	"private": false,
 	"main": "./dist/index.umd.min.js",
 	"typings": "types/index.d.ts",

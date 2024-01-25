@@ -73,7 +73,7 @@ watch(keyword, (val: string) => {
 useUpsert({
 	async onOpened() {
 		await refresh();
-		Tree.value.setCheckedKeys(
+		Tree.value?.setCheckedKeys(
 			(props.modelValue || []).filter((e) => Tree.value.getNode(e)?.isLeaf)
 		);
 	}

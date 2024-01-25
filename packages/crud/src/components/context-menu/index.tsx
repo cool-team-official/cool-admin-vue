@@ -1,7 +1,9 @@
-import { defineComponent, nextTick, onMounted, reactive, ref, h, render } from "vue";
+import { defineComponent, nextTick, onMounted, reactive, ref, h, render, toRaw } from "vue";
 import { isString } from "lodash-es";
 import { addClass, contains, removeClass } from "../../utils";
 import { useRefs } from "../../hooks";
+import { ElIcon } from "element-plus";
+import { ArrowRight } from "@element-plus/icons-vue";
 
 const ClContextMenu = defineComponent({
 	name: "cl-context-menu",
@@ -89,7 +91,7 @@ const ClContextMenu = defineComponent({
 
 			// 点击样式
 			if (options.hover) {
-				let d = options.hover === true ? {} : options.hover;
+				const d = options.hover === true ? {} : options.hover;
 				targetEl = event.target;
 
 				if (targetEl && isString(targetEl.className)) {
@@ -187,15 +189,22 @@ const ClContextMenu = defineComponent({
 							.map((e, i) => {
 								const id = `${pId}-${i}`;
 
+								if (!e.suffixIcon) {
+									// 默认图标
+									if (e.children) {
+										e.suffixIcon = ArrowRight;
+									}
+								}
+
 								return (
 									<div
 										class={{
 											"is-active": ids.value.includes(id),
-											"is-ellipsis": e.ellipsis,
+											"is-ellipsis": e.ellipsis ?? true,
 											"is-disabled": e.disabled
 										}}>
 										{/* 前缀图标 */}
-										{e.prefixIcon && <i class={e.prefixIcon}></i>}
+										{e.prefixIcon && <ElIcon>{h(toRaw(e.prefixIcon))}</ElIcon>}
 
 										{/* 标题 */}
 										<span
@@ -206,9 +215,9 @@ const ClContextMenu = defineComponent({
 										</span>
 
 										{/* 后缀图标 */}
-										{e.suffixIcon && <i class={e.suffixIcon}></i>}
+										{e.suffixIcon && <ElIcon>{h(toRaw(e.suffixIcon))}</ElIcon>}
 
-										{/* 子集*/}
+										{/* 子集 */}
 										{e.children &&
 											e.showChildren &&
 											deep(e.children, id, level + 1)}

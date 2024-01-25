@@ -334,7 +334,7 @@ function onContextMenu(e: any, item: Eps.TaskInfoEntity) {
 							stop(item);
 							done();
 						}
-				  }
+					}
 				: {
 						label: "开始",
 						hidden: !service.task.info._permission.start,
@@ -342,7 +342,7 @@ function onContextMenu(e: any, item: Eps.TaskInfoEntity) {
 							start(item);
 							done();
 						}
-				  },
+					},
 			{
 				label: "立即执行",
 				hidden: !service.task.info._permission.once,

@@ -1,13 +1,16 @@
 import { App } from "vue";
-import { isFunction, orderBy } from "lodash-es";
+import { isFunction, orderBy, chain } from "lodash-es";
 import { filename } from "../utils";
 import { module } from "../module";
 import { hmr } from "../hook";
 
 // 扫描文件
-const files: any = import.meta.glob("/src/modules/*/{config.ts,service/**,directives/**}", {
-	eager: true
-});
+const files: any = import.meta.glob(
+	"/src/{modules,plugins}/*/{config.ts,service/**,directives/**}",
+	{
+		eager: true
+	}
+);
 
 // 模块列表
 module.list = hmr.getData("modules", []);
@@ -15,7 +18,7 @@ module.list = hmr.getData("modules", []);
 // 解析
 for (const i in files) {
 	// 分割
-	const [, , , name, action] = i.split("/");
+	const [, , type, name, action] = i.split("/");
 
 	// 文件名
 	const fname = filename(i);
@@ -29,6 +32,7 @@ for (const i in files) {
 	// 数据
 	const d = m || {
 		name,
+		type,
 		value: null,
 		services: [],
 		directives: []

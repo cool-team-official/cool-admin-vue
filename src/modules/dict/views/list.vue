@@ -69,8 +69,8 @@ import { useCool } from "/@/cool";
 import { computed } from "vue";
 import { deepTree } from "/@/cool/utils";
 import { cloneDeep } from "lodash-es";
-import { useViewGroup } from "/$/base";
 import { useDict } from "../index";
+import { useViewGroup } from "/@/plugins/view";
 
 const { service } = useCool();
 const { dict } = useDict();
@@ -226,6 +226,7 @@ const Table = useTable({
 			type: "selection"
 		},
 		{ label: "名称", prop: "name", align: "left", minWidth: 200 },
+		{ label: "ID", prop: "id", minWidth: 120 },
 		{ label: "值", prop: "value", minWidth: 200, showOverflowTooltip: true },
 		{ label: "备注", prop: "remark", showOverflowTooltip: true, minWidth: 160 },
 		{ label: "排序", prop: "orderNum", sortable: "desc", width: 100, fixed: "right" },

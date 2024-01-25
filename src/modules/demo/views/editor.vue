@@ -34,7 +34,7 @@ user.main();
 .editor {
 	background-color: var(--el-bg-color);
 	padding: 10px;
-	height: 100%;
+	min-height: 100%;
 	box-sizing: border-box;
 }
 </style>

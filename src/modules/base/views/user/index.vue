@@ -59,9 +59,9 @@
 <script lang="ts" name="sys-user" setup>
 import { useTable, useUpsert, useCrud } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
-import { useViewGroup } from "../../hooks";
 import DeptList from "./components/dept-list.vue";
 import UserMove from "./components/user-move.vue";
+import { useViewGroup } from "/@/plugins/view";
 
 const { service, refs, setRefs } = useCool();
 

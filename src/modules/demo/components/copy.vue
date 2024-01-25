@@ -1,7 +1,7 @@
 <template>
 	<div class="scope">
 		<div class="h">
-			<span>v-copy</span>
+			<el-tag size="small" effect="dark">v-copy</el-tag>
 			复制到剪贴板
 		</div>
 

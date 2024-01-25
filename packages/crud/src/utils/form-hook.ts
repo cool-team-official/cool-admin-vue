@@ -1,6 +1,6 @@
-import { isArray, isFunction, isObject, isString } from "lodash-es";
+import { isArray, isEmpty, isFunction, isObject, isString } from "lodash-es";
 
-export const format: { [key: string]: Hook.fn } = {
+export const format: { [key: string]: ClForm.HookFn } = {
 	number(value) {
 		return value ? (isArray(value) ? value.map(Number) : Number(value)) : value;
 	},
@@ -61,6 +61,10 @@ export const format: { [key: string]: Hook.fn } = {
 	empty(value) {
 		if (isString(value)) {
 			return value === "" ? undefined : value;
+		}
+
+		if (isArray(value)) {
+			return isEmpty(value) ? undefined : value;
 		}
 
 		return value;
@@ -139,7 +143,7 @@ const formHook = {
 	}
 };
 
-export function registerFormHook(name: string, fn: Hook.fn) {
+export function registerFormHook(name: string, fn: ClForm.HookFn) {
 	format[name] = fn;
 }
 

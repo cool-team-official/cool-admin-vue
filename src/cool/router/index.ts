@@ -6,6 +6,9 @@ import { useBase } from "/$/base";
 import { Loading } from "../utils";
 import { config } from "/@/config";
 
+// 基本路径
+const baseUrl = import.meta.env.BASE_URL;
+
 // 扫描文件
 const files = import.meta.glob(["/src/modules/*/{views,pages}/**/*", "!**/components"]);
 
@@ -26,7 +29,10 @@ const routes: RouteRecordRaw[] = [
 
 // 创建路由器
 const router = createRouter({
-	history: config.app.router.mode == "history" ? createWebHistory() : createWebHashHistory(),
+	history:
+		config.app.router.mode == "history"
+			? createWebHistory(baseUrl)
+			: createWebHashHistory(baseUrl),
 	routes
 }) as Router;
 
