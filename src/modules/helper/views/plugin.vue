@@ -16,13 +16,17 @@
 						<img class="logo" :src="'data:image/jpg;base64,' + item.logo" />
 
 						<div class="det">
-							<p class="title">
+							<div class="title">
+								<el-tag size="small" effect="dark">{{ item.keyName }}</el-tag>
 								{{ item.name || "-" }} <span>{{ item.version }}</span>
-							</p>
+							</div>
 
 							<p class="desc">{{ item.description || "暂无描述" }}</p>
 
-							<p class="date">{{ item.updateTime }}</p>
+							<div class="author">
+								<span>{{ item.author }}：</span>
+								<span>{{ item.updateTime }}</span>
+							</div>
 						</div>
 					</div>
 
@@ -312,8 +316,13 @@ onActivated(() => {
 				flex: 1;
 
 				.title {
+					display: flex;
+					align-items: center;
 					margin-bottom: 10px;
 					font-size: 14px;
+					.el-tag {
+						margin-right: 5px;
+					}
 
 					.version {
 						margin-left: 10px;
@@ -335,7 +344,7 @@ onActivated(() => {
 					align-items: center;
 				}
 
-				.date {
+				.author {
 					font-size: 12px;
 					color: #999;
 				}
