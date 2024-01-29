@@ -282,7 +282,6 @@ onActivated(() => {
 	.scope {
 		border-radius: 8px;
 		margin-bottom: 10px;
-		white-space: nowrap;
 		border: 1px solid var(--el-border-color-light);
 		height: 180px;
 		width: 100%;
