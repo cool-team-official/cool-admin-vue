@@ -55,25 +55,7 @@ function open() {
 				label: "标签",
 				prop: "label",
 				component: {
-					name: "el-select",
-					options: [
-						{
-							label: "javascript",
-							value: 1
-						},
-						{
-							label: "vue",
-							value: 2
-						},
-						{
-							label: "html",
-							value: 3
-						},
-						{
-							label: "css",
-							value: 4
-						}
-					]
+					name: "el-input"
 				}
 			},
 			{
