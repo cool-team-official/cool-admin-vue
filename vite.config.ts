@@ -22,7 +22,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 			vue(),
 			compression(),
 			vueJsx(),
-			cool(),
+			cool(false), // 是否测试模式
 			visualizer({
 				open: false,
 				gzipSize: true,
