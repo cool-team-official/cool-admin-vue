@@ -21,7 +21,7 @@
 
 <script lang="ts" name="cl-dept-select" setup>
 import { ElMessage } from "element-plus";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, useModel } from "vue";
 import { useCool } from "/@/cool";
 import { deepTree } from "/@/cool/utils";
 
@@ -38,7 +38,7 @@ const emit = defineEmits(["update:modelValue", "change"]);
 
 const { service } = useCool();
 
-const value = ref();
+const value = useModel(props, "modelValue");
 
 const list = ref();
 
@@ -68,16 +68,6 @@ function refresh() {
 			ElMessage.error(err.message);
 		});
 }
-
-watch(
-	() => props.modelValue,
-	(val) => {
-		value.value = val;
-	},
-	{
-		immediate: true
-	}
-);
 
 onMounted(() => {
 	refresh();

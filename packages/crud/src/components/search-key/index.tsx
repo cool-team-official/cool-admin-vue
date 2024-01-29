@@ -1,6 +1,7 @@
-import { defineComponent, ref, watch, computed, PropType } from "vue";
+import { defineComponent, ref, computed, type PropType, useModel } from "vue";
 import { useConfig, useCore } from "../../hooks";
 import { parsePx } from "../../utils";
+import { debounce } from "lodash-es";
 
 export default defineComponent({
 	name: "cl-search-key",
@@ -26,7 +27,9 @@ export default defineComponent({
 		width: {
 			type: [String, Number],
 			default: 300
-		}
+		},
+		// 是否实时刷新
+		refreshOnInput: Boolean
 	},
 
 	emits: ["update:modelValue", "change", "field-change"],
@@ -57,17 +60,7 @@ export default defineComponent({
 		});
 
 		// 搜索内容
-		const value = ref("");
-
-		watch(
-			() => props.modelValue,
-			(val) => {
-				value.value = val || "";
-			},
-			{
-				immediate: true
-			}
-		);
+		const value = useModel(props, "modelValue");
 
 		// 锁
 		let lock = false;
@@ -109,27 +102,33 @@ export default defineComponent({
 			}
 		}
 
-		// 监听输入
-		function onInput(val: string) {
-			emit("update:modelValue", val);
-			emit("change", val);
-		}
-
 		// 监听变化
-		function onChange() {
-			search();
-			lock = true;
+		function onChange(val: string) {
+			if (!props.refreshOnInput) {
+				search();
+				lock = true;
 
-			setTimeout(() => {
-				lock = false;
-			}, 300);
+				setTimeout(() => {
+					lock = false;
+				}, 300);
+
+				emit("change", val);
+			}
 		}
+
+		// 监听输入
+		const onInput = debounce((val: string) => {
+			emit("change", val);
+
+			if (props.refreshOnInput) {
+				search();
+			}
+		}, 300);
 
 		// 监听字段选择
 		function onFieldChange() {
 			emit("field-change", selectField.value);
-			onInput("");
-			value.value = "";
+			value.value = undefined;
 		}
 
 		expose({
@@ -157,8 +156,8 @@ export default defineComponent({
 							size={style.size}
 							placeholder={placeholder.value}
 							onKeydown={onKeydown}
-							onInput={onInput}
 							onChange={onChange}
+							onInput={onInput}
 							clearable
 						/>
 

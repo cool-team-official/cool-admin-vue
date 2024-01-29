@@ -6,6 +6,10 @@
 			<cl-row>
 				<cl-add-btn />
 				<cl-adv-btn />
+
+				<cl-flex1 />
+
+				<cl-search-key v-model="v1" @change="onChange" refreshOnInput></cl-search-key>
 			</cl-row>
 
 			<cl-row>
@@ -20,10 +24,6 @@
 			<cl-upsert ref="Upsert"></cl-upsert>
 			<cl-adv-search ref="AdvSearch"></cl-adv-search>
 		</cl-crud>
-
-		<cl-dialog v-model="visible" height="20vh">
-			<div style="height: 50px" v-for="d in 100" :key="d">{{ d }}</div>
-		</cl-dialog>
 	</div>
 </template>
 
@@ -38,7 +38,11 @@ interface Data {
 	[key: string]: any;
 }
 
-const visible = ref(true);
+const v1 = ref();
+
+function onChange() {
+	console.log(1111);
+}
 
 const Upsert = useUpsert<Data>({
 	items: [
@@ -152,15 +156,6 @@ const Crud = useCrud(
 );
 
 const Form = useForm<Data>();
-
-Form.value?.open({
-	items: [
-		{
-			type: "tabs",
-			prop: "age"
-		}
-	]
-});
 </script>
 
 <style scoped>

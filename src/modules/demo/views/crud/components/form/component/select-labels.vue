@@ -23,16 +23,16 @@ const props = defineProps({
 // 选项列表
 const list = ref<{ label: string; value: string }[]>([
 	{
-		label: "倒茶",
-		value: "倒茶" // 测试直接使用label，真实情况可能是1，2，3，4或者id
+		label: "帅气",
+		value: "帅气" // 测试直接使用label，真实情况可能是1，2，3，4或者id
 	},
 	{
-		label: "设计",
-		value: "设计"
+		label: "多金",
+		value: "多金"
 	},
 	{
-		label: "开发",
-		value: "开发"
+		label: "深情",
+		value: "深情"
 	}
 ]);
 </script>

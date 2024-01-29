@@ -14,7 +14,7 @@
 import { ref, watch } from "vue";
 
 const props = defineProps({
-	modelValue: Number
+	modelValue: String
 });
 
 const emit = defineEmits(["update:modelValue", "change"]);

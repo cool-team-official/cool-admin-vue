@@ -30,9 +30,12 @@
 						<!-- 字典 -->
 						<cl-filter label="工作（字典）">
 							<cl-select
+								tree
 								:options="dict.get('occupation')"
 								prop="occupation"
-								:width="120"
+								:width="140"
+								check-strictly
+								@change="onChange"
 							/>
 						</cl-filter>
 
@@ -123,6 +126,8 @@ import { useDict } from "/$/dict";
 import { reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useCool } from "/@/cool";
+
+const v = ref();
 
 // 基础
 const { service, refs, setRefs } = useCool();
@@ -574,5 +579,9 @@ const visible = ref(false);
 
 function open() {
 	visible.value = true;
+}
+
+function onChange(val: any) {
+	console.log(val);
 }
 </script>

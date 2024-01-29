@@ -1,5 +1,5 @@
 <template>
-	<el-select filterable v-model="name" fit-input-width @change="onChange">
+	<el-select filterable v-model="value" fit-input-width>
 		<div class="cl-menu-icon">
 			<el-option :value="item" v-for="item in list" :key="item">
 				<cl-svg :name="item" />
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts" name="cl-menu-icon" setup>
-import { ref, watch } from "vue";
+import { ref, useModel } from "vue";
 import { basename } from "/@/cool/utils";
 
 // svg 图标加载
@@ -42,22 +42,7 @@ function iconList() {
 const list = ref(iconList());
 
 // 已选图标
-const name = ref<string>();
-
-// 监听改变
-function onChange(val: string) {
-	emit("update:modelValue", val);
-}
-
-watch(
-	() => props.modelValue,
-	(val) => {
-		name.value = val;
-	},
-	{
-		immediate: true
-	}
-);
+const value = useModel(props, "modelValue");
 </script>
 
 <style lang="scss" scoped>

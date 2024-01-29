@@ -1,8 +1,8 @@
 import { useCrud } from "@cool-vue/crud";
 import { isEmpty, isString } from "lodash-es";
-import { computed, defineComponent, isRef, type PropType, type Ref, ref, watch } from "vue";
+import { computed, defineComponent, type PropType, type Ref, toValue, useModel } from "vue";
 import { parsePx } from "/@/cool/utils";
-import { Dict } from "/$/dict/types";
+import type { Dict } from "/$/dict/types";
 
 export default defineComponent({
 	name: "cl-select",
@@ -27,7 +27,9 @@ export default defineComponent({
 		// 是否树形
 		tree: Boolean,
 		// 是否返回选中层级下的所有值
-		allLevelsId: Boolean
+		allLevelsId: Boolean,
+		// 是否父子不互相关联
+		checkStrictly: Boolean
 	},
 
 	emits: ["update:modelValue", "change"],
@@ -37,11 +39,11 @@ export default defineComponent({
 		const Crud = useCrud();
 
 		// 选中值
-		const value = ref();
+		const value = useModel(props, "modelValue");
 
 		// 列表
 		const list = computed(() => {
-			return (isRef(props.options) ? props.options.value : props.options) || [];
+			return toValue(props.options) || [];
 		});
 
 		// 获取值
@@ -84,16 +86,6 @@ export default defineComponent({
 			}
 		}
 
-		watch(
-			() => props.modelValue,
-			(val) => {
-				value.value = val;
-			},
-			{
-				immediate: true
-			}
-		);
-
 		return () => {
 			// 样式
 			const style = {
@@ -111,6 +103,7 @@ export default defineComponent({
 					filterable
 					placeholder={placeholder}
 					data={list.value}
+					checkStrictly={props.allLevelsId || props.checkStrictly}
 					props={{
 						label: props.labelKey,
 						value: props.valueKey

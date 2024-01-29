@@ -50,6 +50,10 @@ const list = [ContextMenu, ClForm, Crud, Upload, Editor, Svg, Copy, File, Design
 			height: 50px;
 			box-sizing: border-box;
 
+			a {
+				font-size: 12px;
+			}
+
 			&._svg {
 				.cl-svg {
 					margin-right: 15px;

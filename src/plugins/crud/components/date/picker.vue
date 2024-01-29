@@ -22,10 +22,10 @@
 <script lang="ts" setup name="cl-date-picker">
 import { useCrud } from "@cool-vue/crud";
 import dayjs from "dayjs";
-import { type PropType, computed, ref, watch } from "vue";
+import { type PropType, computed, ref, useModel } from "vue";
 
 const props = defineProps({
-	modelValue: Array,
+	modelValue: null,
 	// 日期类型
 	type: {
 		type: String as PropType<
@@ -72,7 +72,7 @@ const defaultTime = ref<any>(
 );
 
 // 日期
-const date = ref();
+const date = useModel(props, "modelValue");
 
 // 按钮类型
 const quickType = ref(props.defaultQuickType);
@@ -156,16 +156,6 @@ function onQuickTypeChange() {
 function init() {
 	onQuickTypeChange();
 }
-
-watch(
-	() => props.modelValue,
-	(val) => {
-		date.value = val;
-	},
-	{
-		immediate: true
-	}
-);
 
 defineExpose({
 	init

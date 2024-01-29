@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup name="demo-crud">
-import { ref, onActivated } from "vue";
+import { ref, onActivated, getCurrentScope, toValue } from "vue";
 
 import CrudBase from "./components/crud/base.vue";
 import CrudAll from "./components/crud/all.vue";

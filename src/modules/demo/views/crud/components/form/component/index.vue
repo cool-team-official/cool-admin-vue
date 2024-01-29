@@ -12,7 +12,8 @@
 					'form/component/index.vue',
 					'form/component/select-labels.vue',
 					'form/component/select-status.vue',
-					'form/component/select-work.vue'
+					'form/component/select-work.vue',
+					'form/component/select-work2.vue'
 				]"
 			/>
 
@@ -35,7 +36,7 @@
 <script setup lang="ts">
 import { useForm } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
-import SelectWork from "./select-work.vue";
+import SelectWork from "./select-work2.vue";
 import SelectLabels from "./select-labels.vue";
 import SelectStatus from "./select-status.vue";
 
@@ -48,8 +49,9 @@ function open() {
 		items: [
 			{
 				label: "昵称",
-				prop: "nickname",
+				prop: "name",
 				// 组件配置方式1：标签名（方便，但是不建议组件全局注册）
+				value: "神仙",
 				component: {
 					// 必须是“全局注册”的组件名，如 element-plus 的 el-input、el-date-picker 等
 					name: "el-input"
@@ -59,6 +61,7 @@ function open() {
 				label: "年龄",
 				prop: "age",
 				// 组件配置方式2：插槽（万能，就是代码多写点）
+				value: 18,
 				component: {
 					// 必须是 "slot-" 开头
 					name: "slot-age"
@@ -68,6 +71,7 @@ function open() {
 			{
 				label: "工作",
 				prop: "work",
+				value: "设计",
 				component: {
 					// 双向绑定
 					vm: SelectWork
@@ -76,7 +80,7 @@ function open() {
 			{
 				label: "标签",
 				prop: "labels",
-				value: [],
+				value: ["多金", "深情"],
 				component: {
 					// scope[prop]绑定
 					vm: SelectLabels
