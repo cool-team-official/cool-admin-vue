@@ -35,7 +35,6 @@
 								prop="occupation"
 								:width="140"
 								check-strictly
-								@change="onChange"
 							/>
 						</cl-filter>
 
@@ -579,9 +578,5 @@ const visible = ref(false);
 
 function open() {
 	visible.value = true;
-}
-
-function onChange(val: any) {
-	console.log(val);
 }
 </script>
