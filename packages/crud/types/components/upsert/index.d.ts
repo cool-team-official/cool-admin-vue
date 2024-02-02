@@ -13,7 +13,7 @@ declare const _default: import("vue").DefineComponent<{
     onClosed: FunctionConstructor;
     onInfo: FunctionConstructor;
     onSubmit: FunctionConstructor;
-}, () => JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("opened" | "closed")[], "opened" | "closed", import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, () => any, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("opened" | "closed")[], "opened" | "closed", import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     items: {
         type: ArrayConstructor;
         default: () => never[];

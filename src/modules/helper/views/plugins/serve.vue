@@ -1,5 +1,5 @@
 <template>
-	<div class="plugin" @dragover="onDragover" @drop="onDrop">
+	<div class="plugins" @dragover="onDragover" @drop="onDrop">
 		<el-tabs v-model="tab.active" type="card" @tab-change="tab.onChange">
 			<el-tab-pane label="已安装插件" name="installed"> </el-tab-pane>
 			<el-tab-pane label="插件市场" name="shop"> </el-tab-pane>
@@ -16,10 +16,16 @@
 						<img class="logo" :src="'data:image/jpg;base64,' + item.logo" />
 
 						<div class="det">
-							<div class="title">
+							<div class="tag">
 								<el-tag size="small" effect="dark">{{ item.keyName }}</el-tag>
-								{{ item.name || "-" }} <span>{{ item.version }}</span>
+								<el-tag size="small" effect="dark" type="success"
+									>v{{ item.version }}</el-tag
+								>
 							</div>
+
+							<p class="title">
+								{{ item.name || "未知" }}
+							</p>
 
 							<p class="desc">{{ item.description || "暂无描述" }}</p>
 
@@ -72,7 +78,7 @@
 	</div>
 </template>
 
-<script lang="ts" setup name="helper-plugin">
+<script lang="ts" setup name="helper-plugins-serve">
 import { onActivated, reactive, ref, nextTick } from "vue";
 import { useCool } from "/@/cool";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -272,112 +278,7 @@ onActivated(() => {
 </script>
 
 <style lang="scss" scoped>
-.plugin {
-	overflow-x: hidden;
-	background-color: var(--el-bg-color);
-	padding: 10px;
-	height: 100%;
-	box-sizing: border-box;
-
-	.scope {
-		border-radius: 8px;
-		margin-bottom: 10px;
-		border: 1px solid var(--el-border-color-light);
-		height: 180px;
-		width: 100%;
-		box-sizing: border-box;
-		cursor: pointer;
-
-		.c {
-			display: flex;
-			box-sizing: border-box;
-			padding: 15px;
-			height: 130px;
-			position: relative;
-
-			.set {
-				position: absolute;
-				right: 10px;
-				top: 10px;
-				font-size: 18px;
-				color: var(--el-color-info);
-			}
-
-			.logo {
-				height: 40px;
-				width: 40px;
-				margin-right: 15px;
-			}
-
-			.det {
-				display: flex;
-				flex-direction: column;
-				flex: 1;
-
-				.title {
-					display: flex;
-					align-items: center;
-					margin-bottom: 10px;
-					font-size: 14px;
-					.el-tag {
-						margin-right: 5px;
-					}
-
-					.version {
-						margin-left: 10px;
-					}
-				}
-
-				.desc {
-					font-size: 12px;
-					color: #666;
-					flex: 1;
-					display: -webkit-box;
-					-webkit-line-clamp: 3;
-					-webkit-box-orient: vertical;
-					overflow: hidden;
-				}
-
-				.link {
-					display: flex;
-					align-items: center;
-				}
-
-				.author {
-					font-size: 12px;
-					color: #999;
-				}
-			}
-		}
-
-		.f {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
-			padding: 10px;
-			height: 30px;
-		}
-
-		&.is-add {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			background-color: var(--el-disabled-bg-color);
-			border-color: var(--el-disabled-bg-color);
-			width: 180px;
-
-			.el-icon {
-				font-size: 36px;
-				color: #666;
-			}
-		}
-
-		&:not(.is-add):hover {
-			box-shadow: 0px 0px 10px 1px var(--el-color-info-light-9);
-		}
-	}
-}
+@import "../../static/index.scss";
 
 .info-header {
 	display: flex;

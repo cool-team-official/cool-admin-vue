@@ -10,7 +10,7 @@
 		<cl-dialog
 			v-model="visible"
 			title="聊天窗口"
-			height="700px"
+			height="70vh"
 			width="1200px"
 			padding="0"
 			keep-alive

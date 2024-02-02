@@ -1,12 +1,14 @@
 import { Ref, WatchStopHandle, getCurrentInstance, watch } from "vue";
+import { useConfig } from "../../../hooks";
 
 export function usePlugins({ visible }: { visible: Ref<boolean> }) {
 	const that: any = getCurrentInstance();
+	const { style } = useConfig();
 
 	interface Event {
 		onOpen: (() => void)[];
 		onClose: (() => void)[];
-		onSubmit: ((data: obj) => obj)[];
+		onSubmit: ((data: obj) => Promise<obj> | obj)[];
 		[key: string]: any;
 	}
 
@@ -21,47 +23,46 @@ export function usePlugins({ visible }: { visible: Ref<boolean> }) {
 	let timer: WatchStopHandle | null = null;
 
 	// 插件创建
-	function create(plugins?: ClForm.Plugin[]) {
+	function create(plugins: ClForm.Plugin[] = []) {
 		for (const i in ev) {
 			ev[i] = [];
 		}
 
+		// 停止监听
 		if (timer) {
 			timer();
 		}
 
-		if (plugins) {
-			plugins.forEach((p) => {
-				p({
-					exposed: that.exposed,
-					onOpen(cb: any) {
-						ev.onOpen.push(cb);
-					},
-					onClose(cb: any) {
-						ev.onClose.push(cb);
-					},
-					onSubmit(cb: any) {
-						ev.onSubmit.push(cb);
-					}
-				});
-			});
+		// 执行
+		[...(style.form.plugins || []), ...plugins].forEach((p) => {
+			const d: any = {
+				exposed: that.exposed
+			};
 
-			timer = watch(
-				visible,
-				(val) => {
-					if (val) {
-						setTimeout(() => {
-							ev.onOpen.forEach((e) => e());
-						}, 10);
-					} else {
-						ev.onClose.forEach((e) => e());
-					}
-				},
-				{
-					immediate: true
+			for (const i in ev) {
+				d[i] = (cb: any) => {
+					ev[i].push(cb);
+				};
+			}
+
+			p(d);
+		});
+
+		timer = watch(
+			visible,
+			(val) => {
+				if (val) {
+					setTimeout(() => {
+						ev.onOpen.forEach((e) => e());
+					}, 10);
+				} else {
+					ev.onClose.forEach((e) => e());
 				}
-			);
-		}
+			},
+			{
+				immediate: true
+			}
+		);
 	}
 
 	// 表单提交

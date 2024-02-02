@@ -4,7 +4,15 @@ import { Router as VueRouter, RouteRecordRaw } from "vue-router";
 export declare type Merge<A, B> = Omit<A, keyof B> & B;
 
 export declare interface ModuleConfig {
+	name?: string;
+	label?: string;
+	description?: string;
 	order?: number;
+	version?: string;
+	logo?: string;
+	author?: string;
+	updateTime?: string;
+	demo?: { name: string; component: Component }[] | string;
 	options?: {
 		[key: string]: any;
 	};

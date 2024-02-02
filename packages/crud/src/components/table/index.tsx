@@ -10,6 +10,7 @@ import {
 	useTable
 } from "./helper";
 import { useCore, useProxy, useElApi, useConfig } from "../../hooks";
+import { usePlugins } from "./helper/plugins";
 
 export default defineComponent({
 	name: "cl-table",
@@ -54,6 +55,7 @@ export default defineComponent({
 		const { crud } = useCore();
 		const { style } = useConfig();
 		const { Table, config } = useTable(props);
+		const plugin = usePlugins();
 
 		// 排序
 		const Sort = useSort({ config, emit, Table });
@@ -111,6 +113,7 @@ export default defineComponent({
 
 		useProxy(ctx);
 		expose(ctx);
+		plugin.create(config.plugins);
 
 		return () => {
 			const { renderColumn, renderAppend, renderEmpty } = useRender();

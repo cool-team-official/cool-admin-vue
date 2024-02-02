@@ -89,13 +89,13 @@ function parse(method: "submit" | "bind", { value, hook: pipe, form, prop }: any
 		return false;
 	}
 
-	let pipes = [];
+	let pipes: any[] = [];
 
 	if (isString(pipe)) {
 		if (format[pipe]) {
 			pipes = [pipe];
 		} else {
-			console.error(`Hook[${pipe}] is not found`);
+			console.error(`[hook] ${pipe} is not found`);
 		}
 	} else if (isArray(pipe)) {
 		pipes = pipe;
@@ -105,13 +105,13 @@ function parse(method: "submit" | "bind", { value, hook: pipe, form, prop }: any
 	} else if (isFunction(pipe)) {
 		pipes = [pipe];
 	} else {
-		console.error(`Hook error`);
+		console.error(`[hook] ${pipe} format error`);
 	}
 
 	let v = value;
 
-	pipes.forEach((e: any) => {
-		let f = null;
+	pipes.forEach((e) => {
+		let f: any = null;
 
 		if (isString(e)) {
 			f = format[e];

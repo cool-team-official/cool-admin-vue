@@ -15,7 +15,7 @@ declare const _default: import("vue").DefineComponent<{
     };
     onLoad: FunctionConstructor;
     onSearch: FunctionConstructor;
-}, () => true | JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, "reset"[], "reset", import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, () => any, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, "reset"[], "reset", import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     data: {
         type: ObjectConstructor;
         default: () => {};

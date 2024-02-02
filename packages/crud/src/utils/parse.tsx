@@ -39,7 +39,7 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 	}
 
 	// 绑定值
-	let values = [];
+	let values: any[] = [];
 
 	// 格式化值
 	if (isArray(value)) {

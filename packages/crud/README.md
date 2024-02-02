@@ -10,7 +10,7 @@ Vue.js 是一套用于构建用户界面的渐进式框架。与其它大型框�
 
 <img src='https://cool-js.com/assets/home.1706ac70.png' />
 
-<span style="font-size: 18px; color: #F56C6C">v6.0.0 新增 Ai 极速编码 ~~~~</span>
+<span style="font-size: 18px; color: #F56C6C">v7.0.0 新增 Ai 极速编码 ~~~~</span>
 
 <img src='https://cool-js.com/assets/ai-code2.9a122008.png' />
 

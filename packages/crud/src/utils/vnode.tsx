@@ -39,7 +39,7 @@ export function parseNode(vnode: any, options: Options): VNode {
 	let comp: VNode | null = null;
 
 	// 插槽模式渲染
-	if (vnode.name.includes("slot-")) {
+	if (vnode.name?.includes("slot-")) {
 		const rn = slots[vnode.name];
 
 		if (rn) {

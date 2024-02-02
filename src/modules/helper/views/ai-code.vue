@@ -6,32 +6,38 @@
 			</div>
 
 			<div class="form">
-				<el-form :disabled="temp.disabled">
+				<el-form :disabled="temp.disabled" size="large">
 					<div class="label required">CRUD</div>
 
-					<div class="row">
-						<cl-select
-							class="module"
-							placeholder="请选择模块"
-							size="large"
-							v-model="form.module"
-							:options="module.dirs"
-							label-key="name"
-							value-key="name"
-							allow-create
-						/>
-						<el-input
-							class="name"
-							v-model="form.name"
-							placeholder="实体名称，如：收货地址"
-						/>
-						<el-input
-							class="columns"
-							size="large"
-							v-model="form.columns"
-							placeholder="请填写字段，如：姓名、年龄、状态"
-						/>
-					</div>
+					<el-row :gutter="10">
+						<el-col :lg="6" :xs="24" :sm="12">
+							<cl-select
+								class="module"
+								placeholder="请选择模块"
+								v-model="form.module"
+								:options="module.dirs"
+								label-key="name"
+								value-key="name"
+								allow-create
+							/>
+						</el-col>
+
+						<el-col :lg="6" :xs="24" :sm="12">
+							<el-input
+								class="name"
+								v-model="form.name"
+								placeholder="实体名称，如：收货地址"
+							/>
+						</el-col>
+
+						<el-col :lg="12" :xs="24" :sm="24">
+							<el-input
+								class="columns"
+								v-model="form.columns"
+								placeholder="请填写字段，如：姓名、年龄、状态"
+							/>
+						</el-col>
+					</el-row>
 
 					<div class="label">其他你想做的事？</div>
 
@@ -75,7 +81,13 @@
 							<el-button round size="small" @click="copyCode('entity')"
 								>Copy</el-button
 							>
-							<el-button round type="success" size="small" @click="createVue()">
+							<el-button
+								round
+								type="success"
+								size="small"
+								:loading="!codes.vue"
+								@click="createVue()"
+							>
 								生成Vue代码
 							</el-button>
 						</template>
@@ -161,7 +173,7 @@
 	</div>
 </template>
 
-<script lang="tsx" name="helper-ai-code" setup>
+<script lang="tsx" setup name="helper-ai-code">
 import { onMounted, reactive, watch } from "vue";
 import { module, useCool, storage } from "/@/cool";
 import { Promotion, Loading, Close, Check } from "@element-plus/icons-vue";
@@ -169,10 +181,10 @@ import { ElLoading, ElMessage, ElMessageBox } from "element-plus";
 import { debounce, isEmpty } from "lodash-es";
 import { useClipboard } from "@vueuse/core";
 import { useMenu, useAi, useScroll } from "../hooks";
-import { useForm } from "@cool-vue/crud";
-import Text2 from "../components/text.vue";
-import type { CodeType } from "../types";
 import { isDev } from "/@/config";
+import { useForm } from "@cool-vue/crud";
+import type { CodeType } from "../types";
+import Text2 from "../components/text.vue";
 
 const { service, mitt, refs, setRefs } = useCool();
 const { copy } = useClipboard();
@@ -184,7 +196,7 @@ const Form = useForm();
 // 编辑器
 const editor = reactive({
 	options: {
-		fontSize: 16
+		fontSize: 15
 	}
 });
 
@@ -433,7 +445,12 @@ function createFile() {
 const createVue = debounce((auto?: boolean) => {
 	async function next() {
 		if (codes.entity) {
+			// ai分析
+			await ai.matchType({ columns: temp.data.columns, name: form.name });
+
+			// 生成代码
 			codes.vue = menu.createVue(temp.data);
+
 			stop();
 
 			setTimeout(() => {
@@ -449,12 +466,34 @@ const createVue = debounce((auto?: boolean) => {
 		ElMessageBox.confirm("此操作将会重新生成vue代码，是否继续？", "提示", {
 			type: "warning"
 		})
-			.then(() => {
+			.then(async () => {
+				temp.coding = "vue";
+				codes.vue = "";
+
+				await parseEntity();
 				next();
 			})
 			.catch(() => null);
 	}
 }, 300);
+
+// 解析实体
+async function parseEntity() {
+	await service.base.sys.menu
+		.parse({
+			entity: codes.entity,
+			module: form.module
+		})
+		.then((res) => {
+			temp.data = {
+				...form,
+				...res,
+				router: res.path.replace("/admin", ""),
+				prefix: res.path,
+				api: temp.api
+			};
+		});
+}
 
 // 监听表单
 watch(
@@ -469,27 +508,16 @@ onMounted(() => {
 		onMessage(content) {
 			codes[temp.coding] = content;
 		},
-		onComplete() {
-			if (temp.coding == "entity") {
-				// 请求 controller
-				service.base.sys.menu
-					.parse({
-						entity: codes.entity,
-						module: form.module
-					})
-					.then((res) => {
-						temp.data = {
-							...form,
-							...res,
-							router: res.path.replace("/admin", ""),
-							prefix: res.path,
-							api: temp.api
-						};
+		async onComplete() {
+			switch (temp.coding) {
+				case "entity":
+					await parseEntity();
+					send("controller", temp.data);
+					break;
 
-						send("controller", temp.data);
-					});
-			} else if (temp.coding == "controller") {
-				createVue(true);
+				case "controller":
+					createVue(true);
+					break;
 			}
 		}
 	});
@@ -501,8 +529,6 @@ onMounted(() => {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 10px;
-	box-sizing: border-box;
 	position: relative;
 
 	.head {
@@ -511,6 +537,7 @@ onMounted(() => {
 
 	.container {
 		width: 1040px;
+		max-width: 100%;
 	}
 
 	.form {
@@ -529,33 +556,8 @@ onMounted(() => {
 			}
 		}
 
-		.row {
-			display: flex;
-			margin-bottom: 30px;
-
-			.module {
-				width: 160px;
-			}
-
-			.columns {
-				flex: 1;
-				margin-left: 10px;
-			}
-
-			.name {
-				width: 200px;
-				margin-left: 10px;
-			}
-
-			.balance {
-				font-size: 15px;
-				margin-left: 10px;
-				white-space: nowrap;
-
-				.el-icon {
-					margin-left: 10px;
-				}
-			}
+		.el-col {
+			margin-bottom: 10px;
 		}
 	}
 
@@ -577,6 +579,7 @@ onMounted(() => {
 					font-size: 18px;
 					font-weight: bold;
 					flex: 1;
+					line-height: 1;
 				}
 
 				.el-button {

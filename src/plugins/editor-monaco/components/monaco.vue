@@ -26,7 +26,7 @@ const props = defineProps({
 	options: Object,
 	height: {
 		type: [String, Number],
-		default: 400
+		default: 500
 	},
 	autofocus: {
 		type: Boolean,
@@ -86,7 +86,7 @@ function create() {
 			theme: "default",
 			language: props.language,
 			minimap: {
-				enabled: true
+				enabled: false
 			},
 			automaticLayout: true,
 			scrollbar: {

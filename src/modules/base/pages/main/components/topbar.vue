@@ -51,7 +51,7 @@
 
 <script lang="ts" name="app-topbar" setup>
 import { computed, markRaw, onMounted, reactive } from "vue";
-import { orderBy } from "lodash-es";
+import { isFunction, orderBy } from "lodash-es";
 import { useBase } from "/$/base";
 import { module, useCool } from "/@/cool";
 import RouteNav from "./route-nav.vue";
@@ -90,9 +90,11 @@ const toolbar = reactive({
 		this.list = await Promise.all(
 			arr.map(async (e) => {
 				if (e) {
+					const c = await (isFunction(e.component) ? e.component() : e.component);
+
 					return {
 						...e,
-						component: markRaw((await e.component).default)
+						component: markRaw(c.default)
 					};
 				}
 			})

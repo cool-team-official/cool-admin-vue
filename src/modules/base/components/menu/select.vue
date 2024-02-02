@@ -20,9 +20,9 @@
 </template>
 
 <script lang="ts" name="cl-menu-select" setup>
-import { useForm, useUpsert } from "@cool-vue/crud";
+import { useForm } from "@cool-vue/crud";
 import { cloneDeep } from "lodash-es";
-import { computed, ref, useModel } from "vue";
+import { computed, ref, useModel, onMounted } from "vue";
 import { useCool } from "/@/cool";
 import { deepTree } from "/@/cool/utils";
 
@@ -53,25 +53,24 @@ const list = ref<any[]>([]);
 
 // 树形列表
 const tree = computed(() => {
-	return deepTree(cloneDeep(list.value)).filter((e) => !e.parentId);
+	// 过滤掉自己和下级的数据
+	const data = list.value.filter(
+		(e) =>
+			e.id != Form.value?.form.id && (props.type === 0 ? e.type == 0 : props.type > e.type!)
+	);
+
+	return deepTree(cloneDeep(data)).filter((e) => !e.parentId);
 });
 
 // 刷新列表
-async function refresh() {
-	return service.base.sys.menu.list().then((res) => {
-		// 过滤掉自己和下级的数据
-		list.value = res.filter(
-			(e) =>
-				e.id != Form.value?.form.id &&
-				(props.type === 0 ? e.type == 0 : props.type > e.type!)
-		);
+function refresh() {
+	service.base.sys.menu.list().then((res) => {
+		list.value = res;
 	});
 }
 
-useUpsert({
-	onOpened() {
-		refresh();
-	}
+onMounted(() => {
+	refresh();
 });
 </script>
 

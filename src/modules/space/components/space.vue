@@ -18,6 +18,7 @@
 			width="1070px"
 			padding="0"
 			keep-alive
+			:scrollbar="false"
 			:close-on-click-modal="false"
 			:close-on-press-escape="false"
 		>

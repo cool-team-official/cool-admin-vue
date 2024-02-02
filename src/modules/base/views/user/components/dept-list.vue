@@ -79,7 +79,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { useCool } from "/@/cool";
 import { deepTree, revDeepTree } from "/@/cool/utils";
 import { isArray } from "lodash-es";
-import { ContextMenu, setFocus, useForm } from "@cool-vue/crud";
+import { ContextMenu, useForm } from "@cool-vue/crud";
 import { Refresh as RefreshIcon, Operation, MoreFilled } from "@element-plus/icons-vue";
 import { checkPerm } from "/$/base";
 import { useViewGroup } from "/@/plugins/view";
@@ -160,70 +160,67 @@ function rowClick(item?: Eps.BaseSysDepartmentEntity) {
 function rowEdit(item: Eps.BaseSysDepartmentEntity) {
 	const method = item.id ? "update" : "add";
 
-	Form.value?.open(
-		{
-			title: "编辑部门",
-			width: "550px",
-			props: {
-				labelWidth: "100px"
+	Form.value?.open({
+		title: "编辑部门",
+		width: "550px",
+		props: {
+			labelWidth: "100px"
+		},
+		items: [
+			{
+				label: "部门名称",
+				prop: "name",
+				component: {
+					name: "el-input"
+				},
+				required: true
 			},
-			items: [
-				{
-					label: "部门名称",
-					prop: "name",
-					component: {
-						name: "el-input"
-					},
-					required: true
-				},
-				{
-					label: "上级部门",
-					prop: "parentName",
-					component: {
-						name: "el-input",
-						props: {
-							disabled: true
-						}
-					}
-				},
-				{
-					label: "排序",
-					prop: "orderNum",
-					component: {
-						name: "el-input-number",
-						props: {
-							"controls-position": "right",
-							min: 0,
-							max: 100
-						}
+			{
+				label: "上级部门",
+				prop: "parentName",
+				component: {
+					name: "el-input",
+					props: {
+						disabled: true
 					}
 				}
-			],
-			form: {
-				...item
 			},
-			on: {
-				submit(data, { done, close }) {
-					service.base.sys.department[method]({
-						id: item.id,
-						parentId: item.parentId,
-						name: data.name,
-						orderNum: data.orderNum
-					})
-						.then(() => {
-							ElMessage.success(`新增部门 “${data.name}” 成功`);
-							close();
-							refresh();
-						})
-						.catch((err) => {
-							ElMessage.error(err.message);
-							done();
-						});
+			{
+				label: "排序",
+				prop: "orderNum",
+				component: {
+					name: "el-input-number",
+					props: {
+						"controls-position": "right",
+						min: 0,
+						max: 100
+					}
 				}
 			}
+		],
+		form: {
+			...item
 		},
-		[setFocus()]
-	);
+		on: {
+			submit(data, { done, close }) {
+				service.base.sys.department[method]({
+					id: item.id,
+					parentId: item.parentId,
+					name: data.name,
+					orderNum: data.orderNum
+				})
+					.then(() => {
+						ElMessage.success(`新增部门 “${data.name}” 成功`);
+						close();
+						refresh();
+					})
+					.catch((err) => {
+						ElMessage.error(err.message);
+						done();
+					});
+			}
+		}
+	});
 }
 
 // 删除部门

@@ -4,7 +4,7 @@ export declare function useTable(props: any): {
     config: {
         columns: {
             [x: string]: any;
-            type: "op" | "expand" | "selection" | "index";
+            type: ClTable.ColumnType;
             hidden: boolean | {
                 value: boolean;
             };
@@ -98,7 +98,7 @@ export declare function useTable(props: any): {
             dictAllLevels: boolean;
             buttons: ((options: {
                 scope: any;
-            }) => ClTable.OpButton) | ("info" | "delete" | "edit" | `slot-${string}` | {
+            }) => ClTable.OpButton) | ("info" | "delete" | "edit" | AnyString | `slot-${string}` | {
                 [x: string]: any;
                 label: string;
                 type?: string | undefined;
@@ -139,7 +139,7 @@ export declare function useTable(props: any): {
             children: any[];
         }[];
         autoHeight: boolean;
-        height: string | number;
+        height: any;
         contextMenu: ("info" | "update" | "delete" | "edit" | "refresh" | {
             [x: string]: any;
             label: string;
@@ -159,6 +159,7 @@ export declare function useTable(props: any): {
         sortRefresh: boolean;
         emptyText: string;
         rowKey: string;
+        plugins?: ClTable.Plugin[] | undefined;
         onRowContextmenu?: ((row: any, column: any, event: any) => void) | undefined;
     };
 };

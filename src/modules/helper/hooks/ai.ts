@@ -57,8 +57,8 @@ export function useAi() {
 
 								// 拼接内容
 								content += msg.content || "";
-							} catch (e) {
-								console.error(e);
+							} catch (err) {
+								console.error(err);
 							}
 						}
 

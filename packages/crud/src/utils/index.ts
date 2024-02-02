@@ -59,7 +59,7 @@ export function dataset(obj: any, key: string, value: any): any {
 
 		return obj;
 	} catch (e) {
-		console.error("Format error", `${key}`);
+		console.error("[dataset] format error", `${key}`);
 		return {};
 	}
 }

@@ -15,7 +15,7 @@ declare const _default: import("vue").DefineComponent<{
         default: () => string[];
     };
     onSearch: FunctionConstructor;
-}, () => JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("clear" | "reset")[], "clear" | "reset", import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, () => any, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("clear" | "reset")[], "clear" | "reset", import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     items: {
         type: PropType<ClForm.Item<any>[]>;
         default: () => never[];

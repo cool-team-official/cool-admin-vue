@@ -47,8 +47,8 @@
 	</cl-crud>
 </template>
 
-<script lang="ts" name="sys-role" setup>
-import { useTable, useUpsert, useCrud, setFocus } from "@cool-vue/crud";
+<script lang="ts" setup name="sys-role">
+import { useTable, useUpsert, useCrud } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 
 const { service } = useCool();
@@ -117,9 +117,7 @@ const Upsert = useUpsert({
 			...data,
 			departmentIdList: data.departmentIdList || []
 		});
-	},
-
-	plugins: [setFocus()]
+	}
 });
 
 // cl-table

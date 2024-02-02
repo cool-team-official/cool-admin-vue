@@ -113,6 +113,9 @@ declare namespace Render {
 // 获取keys
 type PropKey<T> = keyof RemoveIndex<T> | (string & {});
 
+// 任意字符串
+type AnyString = string & {};
+
 declare namespace ClCrud {
 	interface Label {
 		op: string;
@@ -291,10 +294,12 @@ declare namespace ClCrud {
 }
 
 declare namespace ClTable {
-	type OpButton = Array<"info" | "edit" | "delete" | Render.OpButton>;
+	type OpButton = Array<"info" | "edit" | "delete" | AnyString | Render.OpButton>;
+
+	type ColumnType = "index" | "selection" | "expand" | "op" | AnyString;
 
 	interface Column<T = any> {
-		type: "index" | "selection" | "expand" | "op";
+		type: ColumnType;
 		hidden: boolean | Vue.Ref<boolean>;
 		component: Render.Component;
 		search: {
@@ -352,10 +357,12 @@ declare namespace ClTable {
 		| "order-asc"
 	>;
 
+	type Plugin = (options: { exposed: Ref }) => void;
+
 	interface Config<T = any> {
 		columns: Column<T>[];
 		autoHeight: boolean;
-		height: string | number;
+		height: any;
 		contextMenu: ContextMenu;
 		defaultSort: {
 			prop: string;
@@ -364,6 +371,7 @@ declare namespace ClTable {
 		sortRefresh: boolean;
 		emptyText: string;
 		rowKey: string;
+		plugins?: Plugin[];
 		onRowContextmenu?(row: T, column: any, event: any): void;
 	}
 
@@ -412,7 +420,7 @@ declare namespace ClFormTabs {
 }
 
 declare namespace ClForm {
-	type CloseAction = "close" | "save";
+	type CloseAction = "close" | "save" | AnyString;
 
 	interface Rule {
 		type?:
@@ -456,7 +464,7 @@ declare namespace ClForm {
 		| "splitJoin"
 		| "json"
 		| "empty"
-		| (string & {});
+		| AnyString;
 
 	type HookPipe = HookKey | HookFn;
 
@@ -512,8 +520,8 @@ declare namespace ClForm {
 
 	interface Config<T = any> {
 		title?: any;
-		height?: string;
-		width?: string;
+		height?: any;
+		width?: any;
 		props: ElementPlus.FormProps;
 		items: Item[];
 		form: obj;
@@ -535,7 +543,7 @@ declare namespace ClForm {
 			height?: string;
 			width?: string;
 			hideHeader?: boolean;
-			controls?: Array<"fullscreen" | "close">;
+			controls?: Array<"fullscreen" | "close" | AnyString>;
 			[key: string]: any;
 		};
 		[key: string]: any;
@@ -616,7 +624,7 @@ declare namespace ClUpsert {
 	}
 
 	interface Ref<T = any> extends ClForm.Ref<T> {
-		mode: "add" | "update" | "info";
+		mode: "add" | "update" | "info" | AnyString;
 	}
 
 	interface Options<T = any> extends DeepPartial<Config<T>> {
@@ -720,6 +728,7 @@ declare interface Config {
 			labelPosition: ElementPlus.FormProps["labelPosition"];
 			labelWidth: ElementPlus.FormProps["labelWidth"];
 			span: number;
+			plugins: ClForm.Plugin[];
 		};
 		table: {
 			stripe: boolean;
@@ -733,6 +742,7 @@ declare interface Config {
 				align: ElementPlus.Align;
 				headerAlign: ElementPlus.Align;
 			};
+			plugins: ClTable.Plugin[];
 		};
 	};
 }

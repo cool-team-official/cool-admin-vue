@@ -4,8 +4,8 @@ export declare function useForm(): {
     config: {
         [x: string]: any;
         title?: any;
-        height?: string | undefined;
-        width?: string | undefined;
+        height?: any;
+        width?: any;
         props: {
             [x: string]: any;
             inline?: boolean | undefined;
@@ -215,7 +215,7 @@ export declare function useForm(): {
             height?: string | undefined;
             width?: string | undefined;
             hideHeader?: boolean | undefined;
-            controls?: ("close" | "fullscreen")[] | undefined;
+            controls?: ("close" | AnyString | "fullscreen")[] | undefined;
         };
     };
     form: obj;

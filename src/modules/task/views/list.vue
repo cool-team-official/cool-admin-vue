@@ -91,7 +91,7 @@
 import { onActivated, ref } from "vue";
 import { useBrowser, useCool } from "/@/cool";
 import { VideoPlay, VideoPause, Plus, Tickets, Delete } from "@element-plus/icons-vue";
-import { ContextMenu, setFocus, useForm } from "@cool-vue/crud";
+import { ContextMenu, useForm } from "@cool-vue/crud";
 import { ElMessage, ElMessageBox } from "element-plus";
 import TaskLogs from "../components/logs.vue";
 
@@ -179,135 +179,132 @@ async function edit(item?: Eps.TaskInfoEntity) {
 		return false;
 	}
 
-	Form.value?.open(
-		{
-			title: "编辑计划任务",
-			width: "600px",
-			props: {
-				labelWidth: "80px"
+	Form.value?.open({
+		title: "编辑计划任务",
+		width: "600px",
+		props: {
+			labelWidth: "80px"
+		},
+		items: [
+			{
+				label: "名称",
+				prop: "name",
+				component: {
+					name: "el-input",
+					props: {
+						placeholder: "请输入名称"
+					}
+				},
+				required: true
 			},
-			items: [
-				{
-					label: "名称",
-					prop: "name",
-					component: {
-						name: "el-input",
-						props: {
-							placeholder: "请输入名称"
-						}
-					},
-					required: true
-				},
-				{
-					label: "类型",
-					prop: "taskType",
-					value: 0,
-					component: {
-						name: "el-radio-group",
-						options: [
-							{
-								label: "cron",
-								value: 0
-							},
-							{
-								label: "时间间隔",
-								value: 1
-							}
-						]
-					},
-					required: true
-				},
-				{
-					label: "cron",
-					prop: "cron",
-					hidden: ({ scope }) => scope.taskType == 1,
-					component: {
-						name: "el-input",
-						props: {
-							placeholder: "* * * * * *"
-						}
-					},
-					required: true
-				},
-				{
-					label: "间隔(秒)",
-					prop: "every",
-					hidden: ({ scope }) => scope.taskType == 0,
-					hook: {
-						bind(value) {
-							return value / 1000;
+			{
+				label: "类型",
+				prop: "taskType",
+				value: 0,
+				component: {
+					name: "el-radio-group",
+					options: [
+						{
+							label: "cron",
+							value: 0
 						},
-						submit(value) {
-							return value * 1000;
+						{
+							label: "时间间隔",
+							value: 1
 						}
-					},
-					component: {
-						name: "el-input-number",
-						props: {
-							min: 1,
-							max: 100000000
-						}
-					},
-					required: true
+					]
 				},
-				{
-					label: "service",
-					prop: "service",
-					component: {
-						name: "el-input",
-						props: {
-							placeholder: "taskDemoService.test([1, 2])"
-						}
+				required: true
+			},
+			{
+				label: "cron",
+				prop: "cron",
+				hidden: ({ scope }) => scope.taskType == 1,
+				component: {
+					name: "el-input",
+					props: {
+						placeholder: "* * * * * *"
 					}
 				},
-				{
-					label: "开始时间",
-					prop: "startDate",
-					hidden: ({ scope }) => scope.taskType == 1,
-					component: {
-						name: "el-date-picker",
-						props: {
-							type: "datetime",
-							"value-format": "YYYY-MM-DD HH:mm:ss"
-						}
+				required: true
+			},
+			{
+				label: "间隔(秒)",
+				prop: "every",
+				hidden: ({ scope }) => scope.taskType == 0,
+				hook: {
+					bind(value) {
+						return value / 1000;
+					},
+					submit(value) {
+						return value * 1000;
 					}
 				},
-				{
-					label: "备注",
-					prop: "remark",
-					component: {
-						name: "el-input",
-						props: {
-							type: "textarea",
-							rows: 3
-						}
+				component: {
+					name: "el-input-number",
+					props: {
+						min: 1,
+						max: 100000000
+					}
+				},
+				required: true
+			},
+			{
+				label: "service",
+				prop: "service",
+				component: {
+					name: "el-input",
+					props: {
+						placeholder: "taskDemoService.test([1, 2])"
 					}
 				}
-			],
-			form: {
-				...item
 			},
-			on: {
-				submit: (data, { close, done }) => {
-					if (!data.limit) {
-						data.limit = null;
+			{
+				label: "开始时间",
+				prop: "startDate",
+				hidden: ({ scope }) => scope.taskType == 1,
+				component: {
+					name: "el-date-picker",
+					props: {
+						type: "datetime",
+						"value-format": "YYYY-MM-DD HH:mm:ss"
 					}
-
-					service.task.info[item?.id ? "update" : "add"](data)
-						.then(() => {
-							refresh();
-							ElMessage.success("保存成功");
-							close();
-						})
-						.catch((err) => {
-							ElMessage.error(err.message);
-							done();
-						});
+				}
+			},
+			{
+				label: "备注",
+				prop: "remark",
+				component: {
+					name: "el-input",
+					props: {
+						type: "textarea",
+						rows: 3
+					}
 				}
 			}
+		],
+		form: {
+			...item
 		},
-		[setFocus()]
-	);
+		on: {
+			submit: (data, { close, done }) => {
+				if (!data.limit) {
+					data.limit = null;
+				}
+
+				service.task.info[item?.id ? "update" : "add"](data)
+					.then(() => {
+						refresh();
+						ElMessage.success("保存成功");
+						close();
+					})
+					.catch((err) => {
+						ElMessage.error(err.message);
+						done();
+					});
+			}
+		}
+	});
 }
 
 // 执行一次

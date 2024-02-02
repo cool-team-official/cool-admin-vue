@@ -60,6 +60,7 @@ import TableDict from "./components/table/dict.vue";
 import TableSpanMethod from "./components/table/span-method.vue";
 import TableColumnCustom from "./components/table/column-custom.vue";
 import TableComponent from "./components/table/component/index.vue";
+import TablePlugin from "./components/table/plugin/index.vue";
 
 import UpsertBase from "./components/upsert/base.vue";
 import UpsertEvent from "./components/upsert/event.vue";
@@ -115,7 +116,7 @@ const list = [
 			},
 			{
 				label: "高级",
-				children: [TableColumnCustom, TableComponent]
+				children: [TableColumnCustom, TableComponent, TablePlugin]
 			}
 		]
 	},

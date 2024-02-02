@@ -24,7 +24,7 @@ declare const _default: import("vue").DefineComponent<{
     };
 }, () => false | import("vue").VNode<import("vue").RendererNode, import("vue").RendererElement, {
     [key: string]: any;
-}>, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("selection-change" | "sort-change")[], "selection-change" | "sort-change", import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}>, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("selection-change" | "sort-change")[], "selection-change" | "sort-change", import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     columns: {
         type: ArrayConstructor;
         default: () => never[];

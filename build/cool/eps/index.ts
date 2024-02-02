@@ -2,7 +2,7 @@ import { createDir, error, firstUpperCase, readFile, toCamel } from "../utils";
 import { join } from "path";
 import { Entity, DistPath } from "./config";
 import axios from "axios";
-import { isArray, isEmpty, last, merge, unionBy } from "lodash";
+import { isArray, isEmpty, last, merge, unionBy } from "lodash-es";
 import { createWriteStream } from "fs";
 import prettier from "prettier";
 import { proxy } from "../../../src/config/proxy";

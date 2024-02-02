@@ -141,7 +141,7 @@
 	</div>
 </template>
 
-<script lang="ts" name="cl-view-group" setup>
+<script lang="ts" setup name="cl-view-group">
 import { inject, nextTick, onMounted, reactive, ref, useSlots } from "vue";
 import {
 	ArrowLeft,
@@ -151,7 +151,7 @@ import {
 	Plus
 } from "@element-plus/icons-vue";
 import { useBrowser, useCool } from "/@/cool";
-import { ContextMenu, useForm, setFocus } from "@cool-vue/crud";
+import { ContextMenu, useForm } from "@cool-vue/crud";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { isEmpty, merge } from "lodash-es";
 import { deepTree } from "/@/cool/utils";
@@ -183,7 +183,7 @@ const config = reactive(
 const isCustom = !!slots.left;
 
 if (isEmpty(config.service) && !isCustom) {
-	console.error("[cl-view-group] 参数 service 不能为空");
+	console.error("<cl-view-group /> 参数 service 不能为空");
 }
 
 // 加载中
@@ -244,36 +244,33 @@ function select(data?: ClViewGroup.Item) {
 
 // 编辑
 function edit(item?: ClViewGroup.Item) {
-	Form.value?.open(
-		{
-			title: (item ? "编辑" : "添加") + config.label,
-			form: {
-				...item
-			},
-			on: {
-				submit(data, { close, done }) {
-					config.service[item ? "update" : "add"](data)
-						.then(() => {
-							ElMessage.success("保存成功");
-
-							if (item) {
-								Object.assign(item, data);
-							} else {
-								refresh();
-							}
-
-							close();
-						})
-						.catch((err) => {
-							ElMessage.error(err.message);
-							done();
-						});
-				}
-			},
-			...config.onEdit?.(item)
+	Form.value?.open({
+		title: (item ? "编辑" : "添加") + config.label,
+		form: {
+			...item
 		},
-		[setFocus()]
-	);
+		on: {
+			submit(data, { close, done }) {
+				config.service[item ? "update" : "add"](data)
+					.then(() => {
+						ElMessage.success("保存成功");
+
+						if (item) {
+							Object.assign(item, data);
+						} else {
+							refresh();
+						}
+
+						close();
+					})
+					.catch((err) => {
+						ElMessage.error(err.message);
+						done();
+					});
+			}
+		},
+		...(config.onEdit?.(item) as any)
+	});
 }
 
 // 删除

@@ -141,7 +141,7 @@ export default defineComponent({
 
 		function open() {
 			if (!props.columns) {
-				return console.error("columns is required");
+				return console.error("<cl-export-btn /> columns is required");
 			}
 
 			// 表格列

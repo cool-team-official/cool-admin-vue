@@ -1,4 +1,4 @@
-import { PropType } from "vue";
+import { type PropType } from "vue";
 declare const _default: import("vue").DefineComponent<{
     modelValue: StringConstructor;
     field: {
@@ -18,7 +18,8 @@ declare const _default: import("vue").DefineComponent<{
         type: (NumberConstructor | StringConstructor)[];
         default: number;
     };
-}, () => JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("change" | "update:modelValue" | "field-change")[], "change" | "update:modelValue" | "field-change", import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+    refreshOnInput: BooleanConstructor;
+}, () => any, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("change" | "update:modelValue" | "field-change")[], "change" | "update:modelValue" | "field-change", import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: StringConstructor;
     field: {
         type: StringConstructor;
@@ -37,6 +38,7 @@ declare const _default: import("vue").DefineComponent<{
         type: (NumberConstructor | StringConstructor)[];
         default: number;
     };
+    refreshOnInput: BooleanConstructor;
 }>> & {
     onChange?: ((...args: any[]) => any) | undefined;
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
@@ -48,5 +50,6 @@ declare const _default: import("vue").DefineComponent<{
         label: string;
         value: string;
     }[];
+    refreshOnInput: boolean;
 }, {}>;
 export default _default;

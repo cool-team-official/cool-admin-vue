@@ -9,7 +9,7 @@
 
 				<cl-flex1 />
 
-				<cl-search-key v-model="v1" @change="onChange" refreshOnInput></cl-search-key>
+				<cl-search-key refreshOnInput></cl-search-key>
 			</cl-row>
 
 			<cl-row>
@@ -30,18 +30,11 @@
 <script setup lang="tsx">
 import { useTable, useForm, useUpsert, useCrud } from "./hooks";
 import { EditPen } from "@element-plus/icons-vue";
-import { ref } from "vue";
 
 interface Data {
 	name?: string;
 	age?: number;
 	[key: string]: any;
-}
-
-const v1 = ref();
-
-function onChange() {
-	console.log(1111);
 }
 
 const Upsert = useUpsert<Data>({

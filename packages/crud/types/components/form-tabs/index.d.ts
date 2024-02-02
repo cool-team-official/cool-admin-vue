@@ -6,21 +6,21 @@ declare const _default: import("vue").DefineComponent<{
         default: () => never[];
     };
     justify: {
-        type: PropType<"center" | "justify" | "left" | "right" | "end" | "start" | "match-parent">;
+        type: PropType<"center" | "justify" | "left" | "right" | "start" | "end" | "match-parent">;
         default: string;
     };
     type: {
         type: PropType<"default" | "card">;
         default: string;
     };
-}, () => JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("change" | "update:modelValue")[], "change" | "update:modelValue", import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, () => any, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("change" | "update:modelValue")[], "change" | "update:modelValue", import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     modelValue: (NumberConstructor | StringConstructor)[];
     labels: {
         type: ArrayConstructor;
         default: () => never[];
     };
     justify: {
-        type: PropType<"center" | "justify" | "left" | "right" | "end" | "start" | "match-parent">;
+        type: PropType<"center" | "justify" | "left" | "right" | "start" | "end" | "match-parent">;
         default: string;
     };
     type: {
@@ -33,6 +33,6 @@ declare const _default: import("vue").DefineComponent<{
 }, {
     type: "default" | "card";
     labels: unknown[];
-    justify: "center" | "justify" | "left" | "right" | "end" | "start" | "match-parent";
+    justify: "center" | "justify" | "left" | "right" | "start" | "end" | "match-parent";
 }, {}>;
 export default _default;

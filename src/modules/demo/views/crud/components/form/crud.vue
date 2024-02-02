@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useForm, useTable, useUpsert, setFocus } from "@cool-vue/crud";
+import { useCrud, useForm, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 
 const { service } = useCool();
@@ -72,8 +72,7 @@ const Upsert = useUpsert({
 				name: "el-date-picker"
 			}
 		}
-	],
-	plugins: [setFocus()]
+	]
 });
 
 // cl-table

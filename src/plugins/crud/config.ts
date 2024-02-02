@@ -1,15 +1,22 @@
 import { Merge, ModuleConfig } from "/@/cool";
 
 // npm
-// import Crud, { locale } from "@cool-vue/crud";
-// import "@cool-vue/crud/dist/index.css";
+import Crud, { locale, setFocus } from "@cool-vue/crud";
+import "@cool-vue/crud/dist/index.css";
 
 // 调试、自定义crud
-import Crud, { locale } from "../../../packages/crud/src";
-import "../../../packages/crud/src/static/index.scss";
+// import Crud, { locale } from "../../../packages/crud/src";
+// import "../../../packages/crud/src/static/index.scss";
 
 export default (): Merge<ModuleConfig, CrudOptions> => {
 	return {
+		label: "CRUD",
+		description: "快速增删改查及一系列辅助组件",
+		author: "COOL",
+		version: "7.1.11",
+		updateTime: "2024-02-01",
+		demo: "/demo/crud",
+
 		// 组件全注册
 		components: Object.values(import.meta.glob("./components/**/*.{vue,tsx}")),
 
@@ -17,7 +24,16 @@ export default (): Merge<ModuleConfig, CrudOptions> => {
 		options: {
 			style: {
 				table: {
+					// 插件列表
+					plugins: []
 					// contextMenu: [], 是否关闭表格右键菜单
+				},
+				form: {
+					// 插件列表
+					plugins: [
+						// 自动聚焦插件
+						setFocus()
+					]
 				}
 			},
 			dict: {

@@ -1,5 +1,42 @@
 export default () => {
 	return {
+		label: "文件上传",
+		description: "基于 el-upload 封装的文件上传组件",
+		author: "COOL",
+		version: "1.0.0",
+		updateTime: "2024-02-01",
+		demo: [
+			{
+				name: "基础用法",
+				component: () => import("./demo/base.vue")
+			},
+			{
+				name: "多图上传",
+				component: () => import("./demo/multiple.vue")
+			},
+			{
+				name: "文件上传",
+				component: () => import("./demo/file.vue")
+			},
+			{
+				name: "可拖拽",
+				component: () => import("./demo/drag.vue")
+			},
+			{
+				name: "自定义内容",
+				component: () => import("./demo/custom.vue")
+			},
+			{
+				name: "上传校验",
+				component: () => import("./demo/check.vue")
+			},
+			{
+				name: "文件空间",
+				component: () => import("./demo/space.vue")
+			}
+		],
+
+		// 参数
 		options: {
 			// 尺寸
 			size: 120,

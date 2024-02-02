@@ -120,13 +120,11 @@
 </template>
 
 <script lang="tsx" name="demo-crud" setup>
-import { useCrud, useUpsert, useTable, useAdvSearch, setFocus, useSearch } from "@cool-vue/crud";
+import { useCrud, useUpsert, useTable, useAdvSearch, useSearch } from "@cool-vue/crud";
 import { useDict } from "/$/dict";
 import { reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { useCool } from "/@/cool";
-
-const v = ref();
 
 // 基础
 const { service, refs, setRefs } = useCool();
@@ -313,12 +311,6 @@ const Upsert = useUpsert<Eps.UserInfoEntity>({
 				}
 			}
 		}
-	],
-
-	// 插件
-	plugins: [
-		// 自动聚焦
-		setFocus("account")
 	],
 
 	// 详情钩子

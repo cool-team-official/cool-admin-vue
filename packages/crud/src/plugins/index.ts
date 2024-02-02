@@ -27,7 +27,7 @@ export function setFocus(prop?: string): ClForm.Plugin {
 			deep(exposed.config.items);
 
 			onOpen(() => {
-				refs[name]?.focus();
+				refs[name]?.focus?.();
 			});
 		}
 	};

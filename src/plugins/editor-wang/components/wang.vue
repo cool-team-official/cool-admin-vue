@@ -68,7 +68,7 @@ export default defineComponent({
 		// 高度
 		height: {
 			type: [String, Number],
-			default: 400
+			default: 500
 		},
 		// 禁用
 		disabled: Boolean,

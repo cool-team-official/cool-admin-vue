@@ -387,7 +387,7 @@ export default defineComponent({
 									scope: form,
 									render: "slot",
 									slots
-							  })
+								})
 							: e.label;
 					},
 					default() {
@@ -555,14 +555,15 @@ export default defineComponent({
 						return renderNode(e, {
 							scope: form,
 							slots,
-							custom({ scope }) {
+							custom() {
 								return (
 									<el-button
 										text
 										type={e.type}
 										bg
+										{...e.props}
 										onClick={() => {
-											e.onClick({ scope });
+											e.onClick({ scope: form });
 										}}>
 										{e.label}
 									</el-button>
@@ -584,6 +585,7 @@ export default defineComponent({
 		}
 
 		expose({
+			refs,
 			Form,
 			visible,
 			saving,

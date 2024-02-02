@@ -9,7 +9,7 @@ declare const ClContextMenu: import("vue").DefineComponent<{
         type: ObjectConstructor;
         default: () => {};
     };
-}, () => false | JSX.Element, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
+}, () => any, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     show: BooleanConstructor;
     options: {
         type: ObjectConstructor;

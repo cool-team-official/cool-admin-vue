@@ -16,6 +16,18 @@ registerFormHook("pca", (value, { method, form, prop }) => {
 
 export default (): ModuleConfig => {
 	return {
+		label: "省市区选择器",
+		description: "快速增删改查及一系列辅助组件",
+		author: "COOL",
+		version: "1.0.0",
+		updateTime: "2024-02-01",
+		demo: [
+			{
+				name: "基础用法",
+				component: () => import("./demo/base.vue")
+			}
+		],
+
 		components: [
 			// 省市区选择 https://github.com/modood/Administrative-divisions-of-China
 			() => import("./components/index")

@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" name="cloud-func-info" setup>
-import { setFocus, useCrud, useTable, useUpsert } from "@cool-vue/crud";
+import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import { Status, CodeSnippets } from "../../dict";
 import FuncLogs from "../../components/func-logs.vue";
@@ -89,8 +89,7 @@ const Upsert = useUpsert({
 			...data,
 			content
 		});
-	},
-	plugins: [setFocus("name")]
+	}
 });
 
 // cl-table

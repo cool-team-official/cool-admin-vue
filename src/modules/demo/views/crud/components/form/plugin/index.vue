@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { setFocus, useForm } from "@cool-vue/crud";
+import { useForm } from "@cool-vue/crud";
 import { setRole } from "./role";
 
 const Form = useForm();
@@ -101,9 +101,6 @@ function open(role: string) {
 			}
 		},
 		[
-			// 自动聚焦插件，不传参数则默认第一个item
-			setFocus(),
-
 			// 自定义插件，角色权限控制
 			setRole(role)
 		]

@@ -372,6 +372,7 @@
 		display: inline-flex;
 		white-space: nowrap;
 		margin: 0;
+		padding: 0;
 
 		li {
 			display: inline-flex;
@@ -479,6 +480,7 @@
 	display: flex;
 	flex-direction: column;
 	border-radius: 6px;
+	padding: 0;
 
 	.el-dialog {
 		&__header {

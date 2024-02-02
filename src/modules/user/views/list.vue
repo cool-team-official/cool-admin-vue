@@ -13,6 +13,10 @@
 			<cl-filter label="性别">
 				<cl-select :options="options.gender" prop="gender" :width="120" />
 			</cl-filter>
+			<!-- 状态 -->
+			<cl-filter label="状态">
+				<cl-select :options="options.status" prop="status" :width="120" />
+			</cl-filter>
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
 			<cl-search-key placeholder="搜索昵称、手机号" />
@@ -78,12 +82,19 @@ const options = reactive({
 	],
 	status: [
 		{
-			label: "启用",
-			value: 1
+			label: "禁用",
+			value: 0,
+			type: "danger"
 		},
 		{
-			label: "禁用",
-			value: 0
+			label: "正常",
+			value: 1,
+			type: "success"
+		},
+		{
+			label: "已注销",
+			value: 2,
+			type: "warning"
 		}
 	]
 });
@@ -128,10 +139,8 @@ const Table = useTable({
 		{
 			label: "状态",
 			prop: "status",
-			minWidth: 100,
-			component: {
-				name: "cl-switch"
-			}
+			minWidth: 120,
+			dict: options.status
 		},
 		{
 			label: "创建时间",
