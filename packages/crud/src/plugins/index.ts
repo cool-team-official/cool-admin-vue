@@ -10,13 +10,18 @@ export function setFocus(prop?: string): ClForm.Plugin {
 
 	return ({ exposed, onOpen }) => {
 		const name = prop || exposed.config.items[0].prop;
+		let _ref: any;
 
 		if (name) {
 			function deep(arr: ClForm.Item[]) {
 				arr.forEach((e) => {
 					if (e.prop == name && name) {
 						if (e.component) {
-							e.component.ref = setRefs(name);
+							if (e.component.ref) {
+								_ref = e.component.ref();
+							} else {
+								e.component.ref = setRefs(name);
+							}
 						}
 					} else {
 						deep(e.children || []);
@@ -27,6 +32,10 @@ export function setFocus(prop?: string): ClForm.Plugin {
 			deep(exposed.config.items);
 
 			onOpen(() => {
+				if (_ref) {
+					refs[name] = _ref();
+				}
+
 				refs[name]?.focus?.();
 			});
 		}
