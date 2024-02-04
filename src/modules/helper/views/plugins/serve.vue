@@ -74,7 +74,22 @@
 		</cl-editor-preview>
 
 		<!-- 设置 -->
-		<cl-form ref="Form" />
+		<cl-form ref="Form">
+			<template #slot-upload>
+				<cl-row>
+					<cl-upload-space
+						:show-list="false"
+						:multiple="false"
+						text="选择文件"
+						@confirm="onFileConfirm"
+					/>
+
+					<el-text type="warning" :style="{ marginLeft: '10px' }"
+						>选择后会在光标后插入文件链接</el-text
+					>
+				</cl-row>
+			</template>
+		</cl-form>
 	</div>
 </template>
 
@@ -134,8 +149,16 @@ function toSet(item: Eps.PluginInfoEntity) {
 				component: {
 					name: "cl-editor",
 					props: {
-						name: "cl-editor-monaco"
+						name: "cl-editor-monaco",
+						ref: setRefs("editor")
 					}
+				}
+			},
+			{
+				label: " ",
+				flex: false,
+				component: {
+					name: "slot-upload"
 				}
 			},
 			{
@@ -190,6 +213,11 @@ function toDel(item: Eps.PluginInfoEntity, index: number) {
 				});
 		})
 		.catch(() => null);
+}
+
+// 文件选择
+function onFileConfirm(arr: any[]) {
+	refs.editor.appendContent(arr[0]?.url);
 }
 
 // 状态修改

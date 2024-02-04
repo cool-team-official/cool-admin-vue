@@ -4,7 +4,7 @@
 			<template v-if="showBtn">
 				<el-button @click="open">{{ text }}</el-button>
 
-				<div class="cl-upload-space__wrap-list" v-show="urls.length > 0">
+				<div class="cl-upload-space__wrap-list" v-show="urls.length > 0 && showList">
 					<cl-upload v-model="urls" disabled deletable draggable :multiple="multiple" />
 				</div>
 			</template>

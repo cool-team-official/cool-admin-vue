@@ -73,6 +73,31 @@ function setContent(value: string = "") {
 	}
 }
 
+// 光标后追加内容
+function appendContent(text: string = "") {
+	const position = editor?.getPosition();
+
+	if (position) {
+		editor?.executeEdits("", [
+			{
+				range: new monaco.Range(
+					position.lineNumber,
+					position.column,
+					position.lineNumber,
+					position.column
+				),
+				text
+			}
+		]);
+
+		editor?.setPosition({
+			lineNumber: position.lineNumber,
+			column: position.column + text.length
+		});
+		editor?.focus();
+	}
+}
+
 // 格式化内容
 async function formatCode() {
 	await editor?.getAction("editor.action.formatDocument")?.run();
@@ -164,6 +189,7 @@ onUnmounted(() => {
 defineExpose({
 	editor,
 	setContent,
+	appendContent,
 	formatCode
 });
 </script>
