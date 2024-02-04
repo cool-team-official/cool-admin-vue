@@ -1,7 +1,7 @@
 import { last } from "lodash-es";
 import { filename, extname } from "/@/cool/utils";
 import { module } from "/@/cool";
-import { Upload } from "../types";
+import type { Upload } from "../types";
 
 // 模块参数
 const { options } = module.get("upload");
@@ -73,4 +73,15 @@ export function pathJoin(...parts: string[]): string {
 		// 如果是相对路径，使用平台特定的分隔符连接部分
 		return normalizedParts.join("/");
 	}
+}
+
+// 下载
+export function download(url: string) {
+	const a = document.createElement("a");
+	a.href = url;
+	a.download = url;
+	a.target = "_blank";
+	a.style.display = "none";
+	document.body.appendChild(a);
+	a.click();
 }

@@ -282,10 +282,10 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
-"@cool-vue/crud@^7.1.11":
-  version "7.1.11"
-  resolved "https://registry.yarnpkg.com/@cool-vue/crud/-/crud-7.1.11.tgz#28f72d6c69b36603f49b91ebff0280c57525f593"
-  integrity sha512-Lq0C42mlPuTG5n+nOkU6rZ5XBumHQ18OvPlHTIjgnbB5o1dnuPNnFupDvtZQtZPrG9Q+1uZ/4+XD2oHxA4L0/Q==
+"@cool-vue/crud@^7.1.12":
+  version "7.1.12"
+  resolved "https://registry.yarnpkg.com/@cool-vue/crud/-/crud-7.1.12.tgz#e1b703da12f3f4519ffdde73538d1d7a642fdb56"
+  integrity sha512-a5+9uBCQWUnibtpZU+q+gQDyZCAvjx2/bC1aFDM6XQ3+3C/4A0jxeZessBlXh3DaleYbLu8Kp2dBty8mVuy//g==
   dependencies:
     array.prototype.flat "^1.2.4"
     core-js "^3.21.1"
@@ -763,6 +763,11 @@
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/@types/event-emitter/-/event-emitter-0.3.5.tgz#ce9b513f72c50dcf0443a12165a93a79ba7a7092"
   integrity sha512-zx2/Gg0Eg7gwEiOIIh5w9TrhKKTeQh7CPCOPNc0el4pLSwzebA8SmnHwZs2dWlLONvyulykSwGSQxQHLhjGLvQ==
+
+"@types/file-saver@^2.0.7":
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-2.0.7.tgz#8dbb2f24bdc7486c54aa854eb414940bbd056f7d"
+  integrity sha512-dNKVfHd/jk0SkR/exKGj2ggkB45MAkzvWCaqLUUgkyjITkGNzH8H+yUwr+BLJUBjZOe9w8X3wgmXhZDRg1ED6A==
 
 "@types/glob@~7.2.0":
   version "7.2.0"
@@ -3530,6 +3535,7 @@ stream-shift@^1.0.0:
   integrity sha512-76ORR0DO1o1hlKwTbi/DM3EXWGf3ZJYO8cXX5RJwnul2DEg2oyoZyjLNoQM8WsvZiFKCRfC1O0J7iCvie3RZmQ==
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
+  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -3934,6 +3940,7 @@ word@~0.3.0:
   integrity sha512-OELeY0Q61OXpdUfTp+oweA/vtLVg5VDOXh+3he3PNzLGG/y0oylSOC1xRVj0+l4vQ3tj/bB1HVHv1ocXkQceFA==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
