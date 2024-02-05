@@ -15,4 +15,10 @@ export declare namespace Upload {
 		isPlay?: boolean;
 		[key: string]: any;
 	}
+
+	interface Options {
+		prefixPath?: string;
+		onProgress?(progress: number): void;
+		[key: string]: any;
+	}
 }

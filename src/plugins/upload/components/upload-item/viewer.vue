@@ -11,34 +11,18 @@
 	</div>
 
 	<!-- 文档 -->
-	<cl-dialog
-		v-model="doc.visible"
-		title="文档预览"
-		height="70vh"
-		width="80%"
-		:scrollbar="false"
-		:controls="['slot-download', 'fullscreen', 'close']"
-	>
-		<template #slot-download>
-			<button type="button" class="cl-dialog__controls-icon" @click="download(doc.url)">
-				<el-icon>
-					<icon-download />
-				</el-icon>
-			</button>
-		</template>
-
+	<cl-dialog v-model="doc.visible" title="文档预览" height="70vh" width="80%" :scrollbar="false">
 		<div class="viewer-doc" v-loading="doc.loading">
-			<iframe :src="doc.previewUrl" :ref="setRefs('docIframe')" />
+			<iframe :src="doc.url" :ref="setRefs('docIframe')" />
 		</div>
 	</cl-dialog>
 </template>
 
 <script lang="ts" setup name="file-viewer">
 import { reactive, nextTick } from "vue";
-import { getType, download } from "../../utils";
+import { getType } from "../../utils";
 import type { Upload } from "../../types";
 import { useCool } from "/@/cool";
-import { Download as IconDownload } from "@element-plus/icons-vue";
 
 const { refs, setRefs } = useCool();
 
@@ -52,8 +36,7 @@ const img = reactive({
 const doc = reactive({
 	visible: false,
 	loading: false,
-	url: "",
-	previewUrl: ""
+	url: ""
 });
 
 // 打开
@@ -77,8 +60,7 @@ function open(item: Upload.Item) {
 		if (["word", "excel", "ppt", "pdf"].includes(type)) {
 			doc.visible = true;
 			doc.loading = true;
-			doc.previewUrl = `https://view.officeapps.live.com/op/view.aspx?src=${decodeURIComponent(url)}`;
-			doc.url = url;
+			doc.url = `https://view.officeapps.live.com/op/view.aspx?src=${decodeURIComponent(url)}`;
 
 			nextTick(() => {
 				refs.docIframe.onload = () => {

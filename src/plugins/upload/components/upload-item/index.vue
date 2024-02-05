@@ -111,7 +111,7 @@ import { ZoomIn, Delete, VideoPause, VideoPlay } from "@element-plus/icons-vue";
 import { ContextMenu } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import { extname } from "/@/cool/utils";
-import { download, fileName, getRule } from "../../utils";
+import { fileName, getRule } from "../../utils";
 import { ElMessage } from "element-plus";
 import { useClipboard } from "@vueuse/core";
 import Viewer from "./viewer.vue";
@@ -169,16 +169,6 @@ function onContextMenu(e: any) {
 				label: "预览",
 				callback(done) {
 					preview();
-					done();
-				}
-			},
-			{
-				label: "下载",
-				callback(done) {
-					if (props.item.url) {
-						download(props.item.url);
-					}
-
 					done();
 				}
 			},

@@ -22,7 +22,7 @@
 						:http-request="httpRequest"
 						:headers="headers"
 						:multiple="multiple"
-						:disabled="uploadDisabled"
+						:disabled="disabled"
 					>
 						<slot>
 							<el-button type="success">{{ text }}</el-button>
@@ -61,7 +61,7 @@
 							:http-request="httpRequest"
 							:headers="headers"
 							:multiple="multiple"
-							:disabled="uploadDisabled"
+							:disabled="disabled"
 						>
 							<slot>
 								<div class="cl-upload__demo is-dragger" v-if="drag">
@@ -103,7 +103,7 @@
 							}
 						"
 						:headers="headers"
-						:disabled="uploadDisabled"
+						:disabled="disabled"
 						v-if="showFileList"
 					>
 						<slot name="item" :item="item" :index="index">
@@ -127,15 +127,15 @@
 <script lang="ts" setup name="cl-upload">
 import { computed, ref, watch, type PropType, nextTick } from "vue";
 import { isArray, isNumber } from "lodash-es";
-import { type AxiosProgressEvent } from "axios";
 import Draggable from "vuedraggable";
 import { ElMessage } from "element-plus";
 import { PictureFilled, UploadFilled } from "@element-plus/icons-vue";
 import { useForm } from "@cool-vue/crud";
-import { useCool, module } from "/@/cool";
+import { useCool } from "/@/cool";
 import { useBase } from "/$/base";
 import { uuid, isPromise } from "/@/cool/utils";
-import { getUrls, getType, pathJoin } from "../utils";
+import { getUrls, getType } from "../utils";
+import { useUpload } from "../hooks";
 import UploadItem from "./upload-item/index.vue";
 import type { Upload } from "../types";
 
@@ -187,15 +187,7 @@ const props = defineProps({
 	// 上传前钩子
 	beforeUpload: Function,
 	// 云端上传路径前缀
-	prefixPath: {
-		type: String,
-		default: "app"
-	},
-	// 云端上传路径
-	menu: {
-		type: String,
-		default: "base"
-	},
+	prefixPath: String,
 
 	// CRUD穿透值
 	isEdit: Boolean,
@@ -206,12 +198,10 @@ const props = defineProps({
 
 const emit = defineEmits(["update:modelValue", "upload", "success", "error", "progress"]);
 
-const { service, refs, setRefs } = useCool();
+const { refs, setRefs } = useCool();
 const { user } = useBase();
 const Form = useForm();
-
-// 模块配置
-const { options } = module.get("upload");
+const { options, toUpload } = useUpload();
 
 // 元素尺寸
 const size = computed(() => {
@@ -222,11 +212,6 @@ const size = computed(() => {
 // 是否禁用
 const disabled = computed(() => {
 	return props.isDisabled || props.disabled;
-});
-
-// 上传禁用
-const uploadDisabled = computed(() => {
-	return disabled.value;
 });
 
 // 最大上传数量
@@ -357,7 +342,7 @@ function clear() {
 }
 
 // 文件上传请求
-async function httpRequest(req: any, item?: any) {
+async function httpRequest(req: any, item?: Upload.Item) {
 	if (!item) {
 		item = list.value.find((e) => e.uid == req.file.uid);
 	}
@@ -366,149 +351,23 @@ async function httpRequest(req: any, item?: any) {
 		return false;
 	}
 
-	// 文件id
-	const fileId = uuid("");
-
-	try {
-		// 上传模式、类型
-		const { mode, type } = await service.base.comm.uploadMode();
-
-		// 本地上传
-		const isLocal = mode == "local";
-
-		// 文件名
-		const fileName = fileId + "_" + req.file.name;
-
-		// Key
-		const key = isLocal ? fileName : pathJoin(props.prefixPath, props.menu, fileName);
-
-		// 多种上传请求
-		return new Promise((resolve, reject) => {
-			// 上传到云端
-			async function next({
-				host,
-				preview,
-				data
-			}: {
-				host: string;
-				preview?: string;
-				data?: any;
-			}) {
-				const fd = new FormData();
-
-				// key
-				fd.append("key", key);
-
-				// 签名数据
-				for (const i in data) {
-					if (!fd.has(i)) {
-						fd.append(i, data[i]);
-					}
-				}
-
-				// 文件
-				fd.append("file", req.file);
-
-				// 上传
-				await service
-					.request({
-						url: host,
-						method: "POST",
-						headers: {
-							"Content-Type": "multipart/form-data",
-							Authorization: isLocal ? user.token : null
-						},
-						timeout: 600000,
-						data: fd,
-						onUploadProgress(e: AxiosProgressEvent) {
-							item.progress = e.total ? Math.floor((e.loaded / e.total) * 100) : 0;
-							emit("progress", item);
-						},
-						proxy: isLocal,
-						NProgress: false
-					})
-					.then((res) => {
-						item.key = encodeURIComponent(key);
-
-						if (isLocal) {
-							item.url = res;
-						} else {
-							item.url = pathJoin(preview || host, item.key);
-						}
-
-						item.fileId = fileId;
-
-						emit("success", item);
-						resolve(item.url);
-						update();
-					})
-					.catch((err) => {
-						ElMessage.error(err.message);
-						item.error = err.message;
-						emit("error", item);
-						reject(err);
-					});
-			}
-
-			if (isLocal) {
-				next({
-					host: "/admin/base/comm/upload"
-				});
-			} else {
-				service.base.comm
-					.upload(
-						type == "aws"
-							? {
-									key
-								}
-							: {}
-					)
-					.then((res) => {
-						switch (type) {
-							// 腾讯
-							case "cos":
-								next({
-									host: res.url,
-									data: res.credentials
-								});
-								break;
-							// 阿里
-							case "oss":
-								next({
-									host: res.host,
-									preview: res.publicDomain,
-									data: {
-										OSSAccessKeyId: res.OSSAccessKeyId,
-										policy: res.policy,
-										signature: res.signature
-									}
-								});
-								break;
-							// 七牛
-							case "qiniu":
-								next({
-									host: res.uploadUrl,
-									preview: res.publicDomain,
-									data: {
-										token: res.token
-									}
-								});
-								break;
-							// aws
-							case "aws":
-								next({
-									host: res.url,
-									data: res.fields
-								});
-								break;
-						}
-					})
-					.catch(reject);
-			}
+	// 上传请求
+	toUpload(req.file, {
+		prefixPath: props.prefixPath,
+		onProgress(progress) {
+			item.progress = progress;
+			emit("progress", item);
+		}
+	})
+		.then((res) => {
+			Object.assign(item, res);
+			emit("success", item);
+			update();
+		})
+		.catch((err) => {
+			item.error = err.message;
+			emit("error", item);
 		});
-	} catch (err) {
-		ElMessage.error("上传配置错误");
-	}
 }
 
 // 检测是否还有未上传的文件

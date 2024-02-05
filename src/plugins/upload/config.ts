@@ -3,8 +3,8 @@ export default () => {
 		label: "文件上传",
 		description: "基于 el-upload 封装的文件上传组件",
 		author: "COOL",
-		version: "1.0.0",
-		updateTime: "2024-02-01",
+		version: "1.1.0",
+		updateTime: "2024-02-05",
 		demo: [
 			{
 				name: "基础用法",
@@ -46,6 +46,11 @@ export default () => {
 				upload: 9,
 				// 上传大小限制
 				size: 100
+			},
+			// 云端上传路径前缀
+			prefixPath: {
+				type: String,
+				default: "app/base"
 			},
 			// 规则
 			rules: [
