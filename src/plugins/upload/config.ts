@@ -48,10 +48,7 @@ export default () => {
 				size: 100
 			},
 			// 云端上传路径前缀
-			prefixPath: {
-				type: String,
-				default: "app/base"
-			},
+			prefixPath: "app/base",
 			// 规则
 			rules: [
 				{
