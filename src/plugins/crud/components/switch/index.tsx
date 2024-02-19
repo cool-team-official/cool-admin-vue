@@ -1,6 +1,6 @@
 import { useCrud } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
-import { defineComponent, ref, watch } from "vue";
+import { defineComponent, nextTick, ref, watch } from "vue";
 import { isBoolean, isFunction } from "lodash-es";
 
 export default defineComponent({
@@ -30,14 +30,20 @@ export default defineComponent({
 		// 状态
 		const status = ref<boolean | number | string>();
 
+		const activeValue = ref();
+		const inactiveValue = ref();
+
 		watch(
 			() => props.modelValue,
-			(val: any) => {
-				if (isBoolean(props.activeValue)) {
-					status.value = Boolean(val);
-				} else {
-					status.value = val;
+			(val) => {
+				if (isBoolean(props.modelValue)) {
+					activeValue.value = true;
+					inactiveValue.value = false;
 				}
+
+				nextTick(() => {
+					status.value = val;
+				});
 			},
 			{
 				immediate: true
@@ -82,8 +88,8 @@ export default defineComponent({
 			return (
 				<el-switch
 					v-model={status.value}
-					active-value={props.activeValue}
-					inactive-value={props.inactiveValue}
+					active-value={activeValue.value}
+					inactive-value={inactiveValue.value}
 					onChange={onChange}
 					onClick={onClick}
 				/>

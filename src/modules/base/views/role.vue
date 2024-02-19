@@ -21,11 +21,7 @@
 			<template #slot-relevance="{ scope }">
 				<div>
 					<el-row>
-						<el-switch
-							v-model="scope.relevance"
-							:active-value="1"
-							:inactive-value="0"
-						/>
+						<cl-switch v-model="scope.relevance" />
 
 						<span
 							:style="{

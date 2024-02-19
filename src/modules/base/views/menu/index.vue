@@ -33,8 +33,6 @@
 				<template #column-isShow="{ scope }">
 					<cl-switch
 						v-model="scope.row.isShow"
-						:active-value="true"
-						:inactive-value="false"
 						:scope="scope.row"
 						:column="scope.column"
 						v-if="scope.row.type != 2"
@@ -47,8 +45,6 @@
 				<template #column-keepAlive="{ scope }">
 					<cl-switch
 						v-model="scope.row.keepAlive"
-						:active-value="true"
-						:inactive-value="false"
 						:scope="scope.row"
 						:column="scope.column"
 						v-if="scope.row.type == 1"

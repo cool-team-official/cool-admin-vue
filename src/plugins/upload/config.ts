@@ -3,8 +3,8 @@ export default () => {
 		label: "文件上传",
 		description: "基于 el-upload 封装的文件上传组件",
 		author: "COOL",
-		version: "1.1.0",
-		updateTime: "2024-02-05",
+		version: "1.1.1",
+		updateTime: "2024-02-19",
 		demo: [
 			{
 				name: "基础用法",
@@ -48,10 +48,7 @@ export default () => {
 				size: 100
 			},
 			// 云端上传路径前缀
-			prefixPath: {
-				type: String,
-				default: "app/base"
-			},
+			prefixPath: "app/base",
 			// 规则
 			rules: [
 				{
