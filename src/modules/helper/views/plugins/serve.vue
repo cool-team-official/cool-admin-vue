@@ -1,114 +1,110 @@
 <template>
-	<div class="plugins__wrapper">
-		<el-scrollbar>
-			<div class="plugins" @dragover="onDragover" @drop="onDrop">
-				<el-tabs v-model="tab.active" type="card" @tab-change="tab.onChange">
-					<el-tab-pane label="已安装插件" name="installed"> </el-tab-pane>
-					<el-tab-pane label="插件市场" name="shop"> </el-tab-pane>
-				</el-tabs>
+	<el-scrollbar class="plugins__wrapper">
+		<div class="plugins" @dragover="onDragover" @drop="onDrop">
+			<el-tabs v-model="tab.active" type="card" @tab-change="tab.onChange">
+				<el-tab-pane label="已安装插件" name="installed"> </el-tab-pane>
+				<el-tab-pane label="插件市场" name="shop"> </el-tab-pane>
+			</el-tabs>
 
-				<el-row :gutter="10">
-					<el-col
-						v-for="(item, index) in list"
-						:key="index"
-						:xs="24"
-						:sm="12"
-						:md="8"
-						:lg="6"
-					>
-						<div class="scope">
-							<div class="c">
-								<el-icon class="set" @click="toSet(item)">
-									<setting />
-								</el-icon>
+			<el-row :gutter="10">
+				<el-col
+					v-for="(item, index) in list"
+					:key="index"
+					:xs="24"
+					:sm="12"
+					:md="8"
+					:lg="6"
+				>
+					<div class="scope">
+						<div class="c">
+							<el-icon class="set" @click="toSet(item)">
+								<setting />
+							</el-icon>
 
-								<img class="logo" :src="'data:image/jpg;base64,' + item.logo" />
+							<img class="logo" :src="'data:image/jpg;base64,' + item.logo" />
 
-								<div class="det">
-									<div class="tag">
-										<el-tag size="small" effect="dark">{{
-											item.keyName
-										}}</el-tag>
-										<el-tag size="small" effect="dark" type="success"
-											>v{{ item.version }}</el-tag
-										>
-									</div>
+							<div class="det">
+								<div class="tag">
+									<el-tag size="small" effect="dark">{{ item.keyName }}</el-tag>
+									<el-tag size="small" effect="dark" type="success"
+										>v{{ item.version }}</el-tag
+									>
+								</div>
 
-									<p class="title">
-										{{ item.name || "未知" }}
-									</p>
+								<p class="title">
+									{{ item.name || "未知" }}
+								</p>
 
-									<p class="desc">{{ item.description || "暂无描述" }}</p>
+								<p class="desc">{{ item.description || "暂无描述" }}</p>
 
-									<div class="author">
-										<span>{{ item.author }}：</span>
-										<span>{{ item.updateTime }}</span>
-									</div>
+								<div class="author">
+									<span>{{ item.author }}：</span>
+									<span>{{ item.updateTime }}</span>
 								</div>
 							</div>
-
-							<div class="f">
-								<el-button round @click="toDetail(item)">详情</el-button>
-								<el-button type="danger" round @click="toDel(item, index)"
-									>卸载</el-button
-								>
-
-								<cl-flex1 />
-
-								<cl-switch
-									v-model="item.status"
-									@change="onStatusChange(item)"
-								></cl-switch>
-							</div>
 						</div>
-					</el-col>
 
-					<el-col :xs="24" :sm="12" :md="8" :lg="6">
-						<cl-upload :before-upload="onBeforeUpload" accept=".cool">
-							<div class="scope is-add">
-								<el-icon>
-									<plus />
-								</el-icon>
-							</div>
-						</cl-upload>
-					</el-col>
-				</el-row>
-
-				<!-- 详情预览 -->
-				<cl-editor-preview
-					:ref="setRefs('editorPreview')"
-					name="wang"
-					:show-btn="false"
-					:title="`${info?.name} v${info?.version} 说明文档`"
-				>
-					<template #prepend>
-						<div class="info-header">
-							<span>作者：{{ info?.author }}</span>
-							<span>更新时间：{{ info?.updateTime }}</span>
-						</div>
-					</template>
-				</cl-editor-preview>
-
-				<!-- 设置 -->
-				<cl-form ref="Form">
-					<template #slot-upload>
-						<cl-row>
-							<cl-upload-space
-								:show-list="false"
-								:multiple="false"
-								text="选择文件"
-								@confirm="onFileConfirm"
-							/>
-
-							<el-text type="warning" :style="{ marginLeft: '10px' }"
-								>选择后会在光标后插入文件链接</el-text
+						<div class="f">
+							<el-button round @click="toDetail(item)">详情</el-button>
+							<el-button type="danger" round @click="toDel(item, index)"
+								>卸载</el-button
 							>
-						</cl-row>
-					</template>
-				</cl-form>
-			</div>
-		</el-scrollbar>
-	</div>
+
+							<cl-flex1 />
+
+							<cl-switch
+								v-model="item.status"
+								@change="onStatusChange(item)"
+							></cl-switch>
+						</div>
+					</div>
+				</el-col>
+
+				<el-col :xs="24" :sm="12" :md="8" :lg="6">
+					<cl-upload :before-upload="onBeforeUpload" accept=".cool">
+						<div class="scope is-add">
+							<el-icon>
+								<plus />
+							</el-icon>
+						</div>
+					</cl-upload>
+				</el-col>
+			</el-row>
+
+			<!-- 详情预览 -->
+			<cl-editor-preview
+				:ref="setRefs('editorPreview')"
+				name="wang"
+				:show-btn="false"
+				:title="`${info?.name} v${info?.version} 说明文档`"
+			>
+				<template #prepend>
+					<div class="info-header">
+						<span>作者：{{ info?.author }}</span>
+						<span>更新时间：{{ info?.updateTime }}</span>
+					</div>
+				</template>
+			</cl-editor-preview>
+
+			<!-- 设置 -->
+			<cl-form ref="Form">
+				<template #slot-upload>
+					<cl-row>
+						<cl-upload-space
+							:show-list="false"
+							:multiple="false"
+							text="选择文件"
+							@confirm="onFileConfirm"
+						/>
+
+						<el-text type="warning" :style="{ marginLeft: '10px' }"
+							>选择后会在光标后插入文件链接</el-text
+						>
+					</cl-row>
+				</template>
+			</cl-form>
+		</div>
+	</el-scrollbar>
 </template>
 
 <script lang="ts" setup name="helper-plugins-serve">

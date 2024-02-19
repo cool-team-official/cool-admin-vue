@@ -1,30 +1,32 @@
 <template>
-	<div class="crud-demo">
-		<el-tabs type="card" v-model="active" @tab-change="onTabChange">
-			<el-tab-pane v-for="(a, ai) in list" :key="ai" :label="a.title" :name="a.title">
-				<div class="group" v-for="(b, bi) in a.children" :key="bi">
-					<p class="label"># {{ b.label }}</p>
+	<el-scrollbar>
+		<div class="crud-demo">
+			<el-tabs type="card" v-model="active" @tab-change="onTabChange">
+				<el-tab-pane v-for="(a, ai) in list" :key="ai" :label="a.title" :name="a.title">
+					<div class="group" v-for="(b, bi) in a.children" :key="bi">
+						<p class="label"># {{ b.label }}</p>
 
-					<el-row :gutter="10">
-						<el-col
-							v-for="(c, ci) in b.children"
-							:key="ci"
-							:xs="24"
-							:sm="12"
-							:md="8"
-							:lg="6"
-						>
-							<component :is="c" />
-						</el-col>
-					</el-row>
-				</div>
-			</el-tab-pane>
-		</el-tabs>
-	</div>
+						<el-row :gutter="10">
+							<el-col
+								v-for="(c, ci) in b.children"
+								:key="ci"
+								:xs="24"
+								:sm="12"
+								:md="8"
+								:lg="6"
+							>
+								<component :is="c" />
+							</el-col>
+						</el-row>
+					</div>
+				</el-tab-pane>
+			</el-tabs>
+		</div>
+	</el-scrollbar>
 </template>
 
 <script lang="ts" setup name="demo-crud">
-import { ref, onActivated, getCurrentScope, toValue } from "vue";
+import { ref, onActivated } from "vue";
 
 import CrudBase from "./components/crud/base.vue";
 import CrudAll from "./components/crud/all.vue";
@@ -202,12 +204,12 @@ onActivated(() => {
 </script>
 
 <style lang="scss" scoped>
-.crud-demo {
-	overflow-x: hidden;
+.el-scrollbar {
 	background-color: var(--el-bg-color);
+}
+
+.crud-demo {
 	padding: 10px;
-	height: 100%;
-	box-sizing: border-box;
 
 	:deep(.scope) {
 		border-radius: 8px;
