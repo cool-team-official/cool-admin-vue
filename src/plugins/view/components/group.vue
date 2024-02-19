@@ -306,7 +306,7 @@ const reqParams = {
 	order: "createTime",
 	sort: "asc",
 	page: 1,
-	size: 20
+	size: 50 // 每页条数
 };
 
 // 是否加载完
