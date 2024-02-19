@@ -1,13 +1,11 @@
 <template>
 	<div class="app-views">
 		<router-view v-slot="{ Component }">
-			<el-scrollbar :ref="setRefs('scrollbar')" :key="key">
-				<transition :name="app.info.router.transition || 'none'">
-					<keep-alive :include="caches">
-						<component :is="Component" />
-					</keep-alive>
-				</transition>
-			</el-scrollbar>
+			<transition :name="app.info.router.transition || 'none'">
+				<keep-alive :include="caches" :key="key">
+					<component :is="Component" />
+				</keep-alive>
+			</transition>
 		</router-view>
 	</div>
 </template>
@@ -17,7 +15,7 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useBase } from "/$/base";
 import { useCool } from "/@/cool";
 
-const { refs, setRefs, mitt } = useCool();
+const { mitt } = useCool();
 const { process, app } = useBase();
 
 // 缓存数
@@ -37,27 +35,11 @@ function refresh() {
 	key.value += 1;
 }
 
-// 滚动到
-function scrollTo({ el, top }: { el?: string; top?: number }) {
-	const scrollbar = refs.scrollbar.wrapRef;
-
-	if (el) {
-		top = scrollbar.querySelector(el).offsetTop;
-	}
-
-	scrollbar.scrollTo({
-		top,
-		behavior: "smooth"
-	});
-}
-
 onMounted(() => {
-	mitt.on("view.scrollTo", scrollTo);
 	mitt.on("view.refresh", refresh);
 });
 
 onUnmounted(() => {
-	mitt.off("view.scrollTo");
 	mitt.off("view.refresh");
 });
 </script>
@@ -71,10 +53,6 @@ onUnmounted(() => {
 	box-sizing: border-box;
 	border-radius: 4px;
 	position: relative;
-
-	:deep(.el-scrollbar__view) {
-		height: 100%;
-	}
 
 	.none-enter-active {
 		position: absolute;

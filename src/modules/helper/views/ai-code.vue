@@ -1,176 +1,180 @@
 <template>
-	<div class="ai-code">
-		<div class="container">
-			<div class="head">
-				<text2 model-value="Cool Ai 极速编码" />
-			</div>
-
-			<div class="form">
-				<el-form :disabled="temp.disabled" size="large">
-					<div class="label required">CRUD</div>
-
-					<el-row :gutter="10">
-						<el-col :lg="6" :xs="24" :sm="12">
-							<cl-select
-								class="module"
-								placeholder="请选择模块"
-								v-model="form.module"
-								:options="module.dirs"
-								label-key="name"
-								value-key="name"
-								allow-create
-							/>
-						</el-col>
-
-						<el-col :lg="6" :xs="24" :sm="12">
-							<el-input
-								class="name"
-								v-model="form.name"
-								placeholder="实体名称，如：收货地址"
-							/>
-						</el-col>
-
-						<el-col :lg="12" :xs="24" :sm="24">
-							<el-input
-								class="columns"
-								v-model="form.columns"
-								placeholder="请填写字段，如：姓名、年龄、状态"
-							/>
-						</el-col>
-					</el-row>
-
-					<div class="label">其他你想做的事？</div>
-
-					<el-input
-						type="textarea"
-						v-model="form.other"
-						:rows="5"
-						placeholder="如：分页查询时姓名、手机号字段设置成可模糊搜索"
-					/>
-				</el-form>
-			</div>
-
-			<div class="btns">
-				<el-button
-					round
-					size="large"
-					type="primary"
-					:icon="Promotion"
-					:disabled="temp.disabled"
-					:loading="temp.disabled"
-					@click="next"
-				>
-					{{ temp.disabled ? "思考中" : codes.entity.length ? "重新生成" : "下一步" }}
-				</el-button>
-			</div>
-
-			<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
-
-			<!-- 代码 -->
-			<div class="codes">
-				<div class="item is-entity" v-show="codes.entity">
-					<div class="label">
-						<div class="name">
-							<span>Entity（实体类）</span>
-							<el-icon class="is-loading" v-show="temp.coding == 'entity'">
-								<loading />
-							</el-icon>
-						</div>
-
-						<template v-if="!temp.disabled">
-							<el-button round size="small" @click="copyCode('entity')"
-								>Copy</el-button
-							>
-							<el-button
-								round
-								type="success"
-								size="small"
-								:loading="!codes.vue"
-								@click="createVue()"
-							>
-								生成Vue代码
-							</el-button>
-						</template>
-					</div>
-
-					<cl-editor
-						name="cl-editor-monaco"
-						:ref="setRefs('codeEntity')"
-						:options="editor.options"
-						height="auto"
-						autofocus
-						autosize
-						language="typescript"
-						v-model="codes.entity"
-					/>
+	<el-scrollbar :ref="setRefs('scrollbar')">
+		<div class="ai-code">
+			<div class="container">
+				<div class="head">
+					<text2 model-value="Cool Ai 极速编码" />
 				</div>
 
-				<div class="item is-controller" v-show="codes.controller">
-					<div class="label">
-						<div class="name">
-							<span>Controller（控制层）</span>
-							<el-icon class="is-loading" v-show="temp.coding == 'controller'">
-								<loading />
-							</el-icon>
-						</div>
+				<div class="form">
+					<el-form :disabled="temp.disabled" size="large">
+						<div class="label required">CRUD</div>
 
-						<template v-if="!temp.disabled">
-							<el-button round size="small" @click="copyCode('controller')"
-								>Copy</el-button
-							>
-						</template>
-					</div>
+						<el-row :gutter="10">
+							<el-col :lg="6" :xs="24" :sm="12">
+								<cl-select
+									class="module"
+									placeholder="请选择模块"
+									v-model="form.module"
+									:options="module.dirs"
+									label-key="name"
+									value-key="name"
+									allow-create
+								/>
+							</el-col>
 
-					<cl-editor
-						name="cl-editor-monaco"
-						:ref="setRefs('codeController')"
-						:options="editor.options"
-						height="auto"
-						autosize
-						language="typescript"
-						v-model="codes.controller"
-					/>
+							<el-col :lg="6" :xs="24" :sm="12">
+								<el-input
+									class="name"
+									v-model="form.name"
+									placeholder="实体名称，如：收货地址"
+								/>
+							</el-col>
+
+							<el-col :lg="12" :xs="24" :sm="24">
+								<el-input
+									class="columns"
+									v-model="form.columns"
+									placeholder="请填写字段，如：姓名、年龄、状态"
+								/>
+							</el-col>
+						</el-row>
+
+						<div class="label">其他你想做的事？</div>
+
+						<el-input
+							type="textarea"
+							v-model="form.other"
+							:rows="5"
+							placeholder="如：分页查询时姓名、手机号字段设置成可模糊搜索"
+						/>
+					</el-form>
 				</div>
 
-				<div class="item is-vue" v-show="codes.vue">
-					<div class="label">
-						<div class="name">
-							<span>Vue（页面）</span>
-							<el-icon class="is-loading" v-show="temp.coding == 'vue'">
-								<loading />
-							</el-icon>
+				<div class="btns">
+					<el-button
+						round
+						size="large"
+						type="primary"
+						:icon="Promotion"
+						:disabled="temp.disabled"
+						:loading="temp.disabled"
+						@click="next"
+					>
+						{{ temp.disabled ? "思考中" : codes.entity.length ? "重新生成" : "下一步" }}
+					</el-button>
+				</div>
+
+				<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
+
+				<!-- 代码 -->
+				<div class="codes">
+					<div class="item is-entity" v-show="codes.entity">
+						<div class="label">
+							<div class="name">
+								<span>Entity（实体类）</span>
+								<el-icon class="is-loading" v-show="temp.coding == 'entity'">
+									<loading />
+								</el-icon>
+							</div>
+
+							<template v-if="!temp.disabled">
+								<el-button round size="small" @click="copyCode('entity')"
+									>Copy</el-button
+								>
+								<el-button
+									round
+									type="success"
+									size="small"
+									:loading="!codes.vue"
+									@click="createVue()"
+								>
+									生成Vue代码
+								</el-button>
+							</template>
 						</div>
 
-						<template v-if="!temp.disabled">
-							<el-button round size="small" @click="copyCode('vue')">Copy</el-button>
-						</template>
+						<cl-editor
+							name="cl-editor-monaco"
+							:ref="setRefs('codeEntity')"
+							:options="editor.options"
+							height="auto"
+							autofocus
+							autosize
+							language="typescript"
+							v-model="codes.entity"
+						/>
 					</div>
 
-					<cl-editor
-						name="cl-editor-monaco"
-						:ref="setRefs('codeVue')"
-						:options="editor.options"
-						height="auto"
-						autosize
-						language="html"
-						v-model="codes.vue"
-					/>
+					<div class="item is-controller" v-show="codes.controller">
+						<div class="label">
+							<div class="name">
+								<span>Controller（控制层）</span>
+								<el-icon class="is-loading" v-show="temp.coding == 'controller'">
+									<loading />
+								</el-icon>
+							</div>
+
+							<template v-if="!temp.disabled">
+								<el-button round size="small" @click="copyCode('controller')"
+									>Copy</el-button
+								>
+							</template>
+						</div>
+
+						<cl-editor
+							name="cl-editor-monaco"
+							:ref="setRefs('codeController')"
+							:options="editor.options"
+							height="auto"
+							autosize
+							language="typescript"
+							v-model="codes.controller"
+						/>
+					</div>
+
+					<div class="item is-vue" v-show="codes.vue">
+						<div class="label">
+							<div class="name">
+								<span>Vue（页面）</span>
+								<el-icon class="is-loading" v-show="temp.coding == 'vue'">
+									<loading />
+								</el-icon>
+							</div>
+
+							<template v-if="!temp.disabled">
+								<el-button round size="small" @click="copyCode('vue')"
+									>Copy</el-button
+								>
+							</template>
+						</div>
+
+						<cl-editor
+							name="cl-editor-monaco"
+							:ref="setRefs('codeVue')"
+							:options="editor.options"
+							height="auto"
+							autosize
+							language="html"
+							v-model="codes.vue"
+						/>
+					</div>
 				</div>
+
+				<div class="op" v-show="!temp.disabled && codes.entity.length">
+					<el-button :icon="Close" round size="large" @click="reset"> 取消 </el-button>
+					<el-button :icon="Check" round size="large" type="success" @click="createFile">
+						创建文件
+					</el-button>
+				</div>
+
+				<div class="bottom"></div>
 			</div>
 
-			<div class="op" v-show="!temp.disabled && codes.entity.length">
-				<el-button :icon="Close" round size="large" @click="reset"> 取消 </el-button>
-				<el-button :icon="Check" round size="large" type="success" @click="createFile">
-					创建文件
-				</el-button>
-			</div>
-
-			<div class="bottom"></div>
+			<!-- 创建菜单 -->
+			<cl-form ref="Form" />
 		</div>
-
-		<!-- 创建菜单 -->
-		<cl-form ref="Form" />
-	</div>
+	</el-scrollbar>
 </template>
 
 <script lang="tsx" setup name="helper-ai-code">
@@ -180,18 +184,53 @@ import { Promotion, Loading, Close, Check } from "@element-plus/icons-vue";
 import { ElLoading, ElMessage, ElMessageBox } from "element-plus";
 import { debounce, isEmpty } from "lodash-es";
 import { useClipboard } from "@vueuse/core";
-import { useMenu, useAi, useScroll } from "../hooks";
+import { useMenu, useAi } from "../hooks";
 import { isDev } from "/@/config";
 import { useForm } from "@cool-vue/crud";
 import type { CodeType } from "../types";
 import Text2 from "../components/text.vue";
 
-const { service, mitt, refs, setRefs } = useCool();
+const { service, refs, setRefs } = useCool();
 const { copy } = useClipboard();
 const menu = useMenu();
 const ai = useAi();
-const scroll = useScroll();
 const Form = useForm();
+
+// 滚动条
+const scroller = {
+	timer: null as any,
+
+	scrollTo({ el, top }: { el?: string; top?: number }) {
+		const scrollbar = refs.scrollbar.wrapRef;
+
+		if (el) {
+			top = scrollbar.querySelector(el).offsetTop;
+		}
+
+		scrollbar.scrollTo({
+			top,
+			behavior: "smooth"
+		});
+	},
+
+	start() {
+		this.stop();
+
+		this.timer = setInterval(() => {
+			if (codes.entity) {
+				this.scrollTo({
+					top: Math.random() + 10000
+				});
+			}
+		}, 100);
+	},
+
+	stop() {
+		if (this.timer) {
+			clearInterval(this.timer);
+		}
+	}
+};
 
 // 编辑器
 const editor = reactive({
@@ -275,14 +314,14 @@ function send(type: CodeType = "entity", data: any) {
 	});
 
 	// 开始滚动
-	scroll.start();
+	scroller.start();
 }
 
 // 结束
 function stop() {
 	temp.disabled = false;
 	temp.coding = "";
-	scroll.stop();
+	scroller.stop();
 }
 
 // 重置
@@ -454,7 +493,7 @@ const createVue = debounce((auto?: boolean) => {
 			stop();
 
 			setTimeout(() => {
-				mitt.emit("view.scrollTo", { el: `.codes .is-vue` });
+				scroller.scrollTo({ el: `.codes .is-vue` });
 				refs.codeVue.formatCode();
 			}, 300);
 		}
@@ -629,7 +668,7 @@ onMounted(() => {
 	}
 
 	.bottom {
-		height: 100px;
+		height: 10vh;
 	}
 }
 </style>

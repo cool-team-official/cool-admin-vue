@@ -7,10 +7,11 @@
 		<div class="footer">
 			<el-button @click="clear">清空</el-button>
 			<el-button type="info" @click="save">保存草稿</el-button>
-			<el-button type="success" @click="create">生成代码</el-button>
-		</div>
 
-		<cl-editor-preview title="代码预览" name="monaco" :ref="setRefs('preview')" />
+			<cl-editor-preview title="代码预览" name="monaco" :ref="setRefs('preview')">
+				<el-button type="success" @click="create">生成代码</el-button>
+			</cl-editor-preview>
+		</div>
 	</div>
 </template>
 

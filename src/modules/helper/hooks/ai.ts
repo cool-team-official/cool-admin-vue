@@ -142,28 +142,3 @@ export function useAi() {
 		matchType
 	};
 }
-
-export function useScroll() {
-	const { mitt } = useCool();
-
-	let timer: any;
-
-	function start() {
-		stop();
-
-		timer = setInterval(() => {
-			mitt.emit("view.scrollTo", { top: Math.random() + 10000 });
-		}, 100);
-	}
-
-	function stop() {
-		if (timer) {
-			clearInterval(timer);
-		}
-	}
-
-	return {
-		start,
-		stop
-	};
-}

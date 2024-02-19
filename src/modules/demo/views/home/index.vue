@@ -1,54 +1,56 @@
 <template>
-	<div class="view-home">
-		<el-row :gutter="15">
-			<el-col :lg="6" :md="12" :xs="24">
-				<div class="card">
-					<count-user />
-				</div>
-			</el-col>
-			<el-col :lg="6" :md="12" :xs="24">
-				<div class="card">
-					<count-views />
-				</div>
-			</el-col>
-			<el-col :lg="6" :md="12" :xs="24">
-				<div class="card">
-					<count-paid />
-				</div>
-			</el-col>
-			<el-col :lg="6" :md="12" :xs="24">
-				<div class="card">
-					<count-effect />
-				</div>
-			</el-col>
-		</el-row>
+	<el-scrollbar>
+		<div class="view-home">
+			<el-row :gutter="15">
+				<el-col :lg="6" :md="12" :xs="24">
+					<div class="card">
+						<count-user />
+					</div>
+				</el-col>
+				<el-col :lg="6" :md="12" :xs="24">
+					<div class="card">
+						<count-views />
+					</div>
+				</el-col>
+				<el-col :lg="6" :md="12" :xs="24">
+					<div class="card">
+						<count-paid />
+					</div>
+				</el-col>
+				<el-col :lg="6" :md="12" :xs="24">
+					<div class="card">
+						<count-effect />
+					</div>
+				</el-col>
+			</el-row>
 
-		<el-row :gutter="15">
-			<el-col :lg="14" :xs="24">
-				<div class="card">
-					<tab-chart />
-				</div>
-			</el-col>
-			<el-col :lg="10" :xs="24">
-				<div class="card">
-					<sales-rank />
-				</div>
-			</el-col>
-		</el-row>
+			<el-row :gutter="15">
+				<el-col :lg="14" :xs="24">
+					<div class="card">
+						<tab-chart />
+					</div>
+				</el-col>
+				<el-col :lg="10" :xs="24">
+					<div class="card">
+						<sales-rank />
+					</div>
+				</el-col>
+			</el-row>
 
-		<el-row :gutter="15">
-			<el-col :lg="14" :sm="24">
-				<div class="card card--last">
-					<hot-search />
-				</div>
-			</el-col>
-			<el-col :lg="10" :sm="24">
-				<div class="card card--last">
-					<category-ratio />
-				</div>
-			</el-col>
-		</el-row>
-	</div>
+			<el-row :gutter="15">
+				<el-col :lg="14" :sm="24">
+					<div class="card card--last">
+						<hot-search />
+					</div>
+				</el-col>
+				<el-col :lg="10" :sm="24">
+					<div class="card card--last">
+						<category-ratio />
+					</div>
+				</el-col>
+			</el-row>
+		</div>
+	</el-scrollbar>
 </template>
 
 <script lang="ts" name="home" setup>
