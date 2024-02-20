@@ -36,14 +36,18 @@ export default defineComponent({
 		watch(
 			() => props.modelValue,
 			(val) => {
-				if (isBoolean(props.modelValue)) {
-					activeValue.value = true;
-					inactiveValue.value = false;
+				// 首次获取类型
+				if (activeValue.value === undefined) {
+					if (isBoolean(props.modelValue)) {
+						activeValue.value = true;
+						inactiveValue.value = false;
+					} else {
+						activeValue.value = props.activeValue;
+						inactiveValue.value = props.inactiveValue;
+					}
 				}
 
-				nextTick(() => {
-					status.value = val;
-				});
+				status.value = val;
 			},
 			{
 				immediate: true
