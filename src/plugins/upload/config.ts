@@ -3,8 +3,8 @@ export default () => {
 		label: "文件上传",
 		description: "基于 el-upload 封装的文件上传组件",
 		author: "COOL",
-		version: "1.1.1",
-		updateTime: "2024-02-19",
+		version: "1.1.2",
+		updateTime: "2024-02-21",
 		demo: [
 			{
 				name: "基础用法",

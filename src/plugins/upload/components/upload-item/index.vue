@@ -16,7 +16,6 @@
 						class="cl-upload-item__image-cover"
 						fit="contain"
 						:src="item.preload || url"
-						lazy
 						@error="item.error = '加载失败'"
 					/>
 				</template>

@@ -355,17 +355,17 @@ async function httpRequest(req: any, item?: Upload.Item) {
 	toUpload(req.file, {
 		prefixPath: props.prefixPath,
 		onProgress(progress) {
-			item.progress = progress;
+			item!.progress = progress;
 			emit("progress", item);
 		}
 	})
 		.then((res) => {
-			Object.assign(item, res);
+			Object.assign(item!, res);
 			emit("success", item);
 			update();
 		})
 		.catch((err) => {
-			item.error = err.message;
+			item!.error = err.message;
 			emit("error", item);
 		});
 }
@@ -418,14 +418,19 @@ watch(
 
 		list.value = urls
 			.map((url, index) => {
+				const old = list.value[index] || {};
+
 				return Object.assign(
 					{
 						type: getType(url),
 						progress: 100,
-						uid: uuid(),
-						url
+						uid: uuid()
 					},
-					list.value[index]
+					old,
+					{
+						url,
+						preload: old.url == url ? old.preload : url // 防止重复预览
+					}
 				);
 			})
 			.filter((_, i) => {
