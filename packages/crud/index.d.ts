@@ -40,8 +40,8 @@ declare type obj = {
 declare type DeepPartial<T> = T extends Function
 	? T
 	: T extends object
-	  ? { [P in keyof T]?: DeepPartial<T[P]> }
-	  : T;
+		? { [P in keyof T]?: DeepPartial<T[P]> }
+		: T;
 
 // 合并
 declare type Merge<A, B> = Omit<A, keyof B> & B;
@@ -650,8 +650,10 @@ declare namespace ClAdvSearch {
 
 declare namespace ClSearch {
 	interface Config<T = any> {
+		inline?: boolean;
 		items?: ClForm.Item[];
 		data?: T;
+		props?: ElementPlus.FormProps;
 		resetBtn?: boolean;
 		onLoad?(data: T): void;
 		onSearch?(data: T, options: { next: ClCrud.Service["api"]["page"] }): void;

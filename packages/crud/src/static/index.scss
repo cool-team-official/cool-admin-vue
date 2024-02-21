@@ -150,30 +150,24 @@
 	}
 
 	.el-select {
-		min-width: 100px;
+		min-width: 120px;
 	}
 }
 
 .cl-search {
 	margin-bottom: 0px !important;
 
-	.el-form--inline {
-		.el-form-item {
-			margin: 0 10px 10px 0;
-
-			.el-date-editor {
-				box-sizing: border-box;
-
-				.el-range-input {
-					&:nth-child(2) {
-						margin-left: 5px;
-					}
-				}
+	.el-form:not(.el-form--label-top) {
+		.cl-search__btns {
+			.el-form-item__label {
+				display: none;
 			}
+		}
+	}
 
-			&:last-child {
-				margin-right: 0;
-			}
+	.el-form:not(.el-form--inline) {
+		.cl-search__btns {
+			margin-left: 5px;
 		}
 	}
 }
@@ -254,39 +248,6 @@
 		min-height: 0;
 	}
 
-	.el-form-item {
-		.el-input-number {
-			&__decrease,
-			&__increase {
-				border: 0;
-				background-color: transparent;
-			}
-		}
-
-		&__label {
-			.el-tooltip {
-				i {
-					margin-left: 5px;
-				}
-			}
-		}
-
-		&__content {
-			min-width: 0px;
-
-			& > div {
-				width: 100%;
-			}
-		}
-
-		&.no-label {
-			& > .el-form-item__label {
-				padding: 0;
-				display: none;
-			}
-		}
-	}
-
 	&-item {
 		display: flex;
 
@@ -329,10 +290,6 @@
 			}
 		}
 
-		.el-form-item {
-			margin-bottom: 18px;
-		}
-
 		.el-table__header tr {
 			line-height: normal;
 		}
@@ -345,6 +302,78 @@
 
 	.cl-crud {
 		line-height: normal;
+	}
+
+	.el-form-item {
+		margin-bottom: 18px;
+
+		.el-input-number {
+			&__decrease,
+			&__increase {
+				border: 0;
+				background-color: transparent;
+			}
+		}
+
+		&__label {
+			.el-tooltip {
+				i {
+					margin-left: 5px;
+				}
+			}
+		}
+
+		&__content {
+			min-width: 0px;
+
+			& > div {
+				width: 100%;
+			}
+		}
+	}
+
+	&:not(.el-form--label-top) {
+		&.no-label {
+			& > .el-form-item__label {
+				padding: 0;
+				display: none;
+			}
+		}
+	}
+
+	.el-form--label-top {
+		.el-form-item__label {
+			min-height: 22px;
+		}
+	}
+
+	.el-form--inline {
+		.cl-form__items {
+			display: flex;
+			flex-wrap: wrap;
+		}
+
+		.el-form-item {
+			margin: 0 10px 10px 0;
+
+			.el-date-editor {
+				box-sizing: border-box;
+
+				.el-range-input {
+					&:nth-child(2) {
+						margin-left: 5px;
+					}
+				}
+			}
+
+			.el-select {
+				width: 173px;
+			}
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
 	}
 }
 

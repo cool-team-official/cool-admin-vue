@@ -451,11 +451,17 @@ export default defineComponent({
 				}
 			);
 
+			let span = e.span || style.form.span;
+
+			if (browser.isMini) {
+				span = 24;
+			}
+
 			// 是否行内
 			const Item = props.inline ? (
 				FormItem
 			) : (
-				<el-col span={e.span || style.form.span} {...e.col} v-show={inGroup && !e._hidden}>
+				<el-col span={span} {...e.col} v-show={inGroup && !e._hidden}>
 					{FormItem}
 				</el-col>
 			);
@@ -467,6 +473,12 @@ export default defineComponent({
 		function renderContainer() {
 			// 表单项列表
 			const children = config.items.map(renderFormItem);
+
+			// 表单标签位置
+			const labelPosition =
+				browser.isMini && !props.inline
+					? "top"
+					: config.props.labelPosition || style.form.labelPosition;
 
 			return (
 				<div class="cl-form__container" ref={setRefs("form")}>
@@ -486,29 +498,23 @@ export default defineComponent({
 						/>,
 						{
 							...config.props,
-							labelPosition:
-								browser.isMini && !props.inline
-									? "top"
-									: config.props.labelPosition || style.form.labelPosition
+							labelPosition
 						},
 						{
 							default: () => {
+								const items = [
+									slots.prepend && slots.prepend({ scope: form }),
+									children,
+									slots.append && slots.append({ scope: form })
+								];
+
 								return (
-									<div class="cl-form__items">
-										{/* 前 */}
-										{slots.prepend && slots.prepend({ scope: form })}
-
-										{/* 项 */}
+									<div class="cl-form__items" v-loading={loading.value}>
 										{props.inline ? (
-											children
+											items
 										) : (
-											<el-row gutter={10} v-loading={loading.value}>
-												{children}
-											</el-row>
+											<el-row gutter={10}>{items}</el-row>
 										)}
-
-										{/* 后 */}
-										{slots.append && slots.append({ scope: form })}
 									</div>
 								);
 							}

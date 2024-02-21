@@ -5,7 +5,7 @@ declare const _default: import("vue").DefineComponent<{
     inner: BooleanConstructor;
     inline: BooleanConstructor;
 }>>, {
-    inner: boolean;
     inline: boolean;
+    inner: boolean;
 }, {}>;
 export default _default;

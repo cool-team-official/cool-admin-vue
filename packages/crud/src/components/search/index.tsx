@@ -7,6 +7,15 @@ export default defineComponent({
 	name: "cl-search",
 
 	props: {
+		inline: {
+			type: Boolean,
+			default: true
+		},
+		props: {
+			type: Object,
+			default: () => {}
+		},
+
 		// 表单值
 		data: {
 			type: Object,
@@ -114,6 +123,7 @@ export default defineComponent({
 				op: {
 					hidden: true
 				},
+				props: config.props,
 				items: config.items,
 				form: config.data,
 				on: {
@@ -129,12 +139,12 @@ export default defineComponent({
 				isEmpty(config.items) || (
 					<div class="cl-search">
 						{h(
-							<cl-form ref={Form} inner inline />,
+							<cl-form ref={Form} inner inline={config.inline} />,
 							{},
 							{
 								append() {
 									return (
-										<el-form-item>
+										<el-form-item label=" " class="cl-search__btns">
 											{/* 搜索按钮 */}
 											<el-button
 												type="primary"

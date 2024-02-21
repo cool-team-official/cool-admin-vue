@@ -71,6 +71,7 @@ import UpsertHook from "./components/upsert/hook/index.vue";
 
 import SearchBase from "./components/search/base.vue";
 import SearchCustom from "./components/search/custom.vue";
+import SearchLayout from "./components/search/layout.vue";
 
 import AdvSearchBase from "./components/adv-search/base.vue";
 import AdvSearchCustom from "./components/adv-search/custom.vue";
@@ -165,7 +166,7 @@ const list = [
 		children: [
 			{
 				label: "基础",
-				children: [SearchBase, SearchCustom]
+				children: [SearchBase, SearchCustom, SearchLayout]
 			}
 		]
 	},
