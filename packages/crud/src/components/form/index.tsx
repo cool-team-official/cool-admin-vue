@@ -12,7 +12,11 @@ export default defineComponent({
 
 	props: {
 		inner: Boolean,
-		inline: Boolean
+		inline: Boolean,
+		enablePlugin: {
+			type: Boolean,
+			default: true
+		}
 	},
 
 	setup(props, { expose, slots }) {
@@ -40,7 +44,7 @@ export default defineComponent({
 		);
 
 		// 插件
-		const plugin = usePlugins({ visible });
+		const plugin = usePlugins(props.enablePlugin, { visible });
 
 		// 显示加载中
 		function showLoading() {

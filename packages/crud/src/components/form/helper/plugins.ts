@@ -1,7 +1,7 @@
 import { Ref, WatchStopHandle, getCurrentInstance, watch } from "vue";
 import { useConfig } from "../../../hooks";
 
-export function usePlugins({ visible }: { visible: Ref<boolean> }) {
+export function usePlugins(enable: boolean, { visible }: { visible: Ref<boolean> }) {
 	const that: any = getCurrentInstance();
 	const { style } = useConfig();
 
@@ -24,6 +24,10 @@ export function usePlugins({ visible }: { visible: Ref<boolean> }) {
 
 	// 插件创建
 	function create(plugins: ClForm.Plugin[] = []) {
+		if (!enable) {
+			return false;
+		}
+
 		for (const i in ev) {
 			ev[i] = [];
 		}

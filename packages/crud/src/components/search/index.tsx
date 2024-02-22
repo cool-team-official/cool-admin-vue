@@ -139,7 +139,12 @@ export default defineComponent({
 				isEmpty(config.items) || (
 					<div class="cl-search">
 						{h(
-							<cl-form ref={Form} inner inline={config.inline} />,
+							<cl-form
+								ref={Form}
+								inner
+								inline={config.inline}
+								enable-plugin={false}
+							/>,
 							{},
 							{
 								append() {

@@ -113,7 +113,7 @@ export default defineComponent({
 
 		// 渲染表单
 		function renderForm() {
-			return h(<cl-form ref={Form} inner />, {}, slots);
+			return h(<cl-form ref={Form} inner enable-plugin={false} />, {}, slots);
 		}
 
 		// 渲染底部
