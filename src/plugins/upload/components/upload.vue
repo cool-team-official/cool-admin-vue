@@ -428,12 +428,12 @@ watch(
 
 				return Object.assign(
 					{
-						type: getType(url),
 						progress: 100,
 						uid: uuid()
 					},
 					old,
 					{
+						type: getType(url),
 						url,
 						preload: old.url == url ? old.preload : url // 防止重复预览
 					}
