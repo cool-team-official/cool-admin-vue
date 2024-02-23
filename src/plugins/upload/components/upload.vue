@@ -222,7 +222,7 @@ const limitSize = props.limitSize || options.limit.size;
 
 // 文案
 const text = computed(() => {
-	if (props.text) {
+	if (props.text !== undefined) {
 		return props.text;
 	} else {
 		switch (props.type) {
@@ -498,7 +498,10 @@ defineExpose({
 
 		.el-icon {
 			font-size: 46px;
-			margin-bottom: 5px;
+		}
+
+		.text {
+			margin-top: 5px;
 		}
 
 		&.is-dragger {
