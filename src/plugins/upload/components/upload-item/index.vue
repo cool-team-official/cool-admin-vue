@@ -68,6 +68,7 @@
 					:style="{
 						backgroundColor: tag.color
 					}"
+					v-if="showTag"
 				>
 					{{ tag.name }}
 				</span>
@@ -125,8 +126,15 @@ const props = defineProps({
 		type: Array as PropType<Upload.Item[]>,
 		default: () => []
 	},
+	// 是否禁用
 	disabled: Boolean,
-	deletable: Boolean
+	// 是否可以删除
+	deletable: Boolean,
+	// 显示角标
+	showTag: {
+		type: Boolean,
+		default: true
+	}
 });
 
 const emit = defineEmits(["remove"]);

@@ -109,6 +109,7 @@
 						<slot name="item" :item="item" :index="index">
 							<div class="cl-upload__item">
 								<upload-item
+									:show-tag="showTag"
 									:item="item"
 									:list="list"
 									:disabled="disabled"
@@ -169,6 +170,11 @@ const props = defineProps({
 	icon: null,
 	// 显示文案
 	text: String,
+	// 显示角标
+	showTag: {
+		type: Boolean,
+		default: true
+	},
 	// 是否显示上传列表
 	showFileList: {
 		type: Boolean,
