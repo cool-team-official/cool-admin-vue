@@ -5,8 +5,8 @@ export default (): ModuleConfig => {
 		label: "视图组件",
 		description: "左右侧布局、顶部详情等",
 		author: "COOL",
-		version: "1.0.1",
-		updateTime: "2024-02-19",
+		version: "1.0.2",
+		updateTime: "2024-02-26",
 		demo: [
 			{
 				name: "左右侧布局",

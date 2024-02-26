@@ -129,7 +129,7 @@
 					</slot>
 				</div>
 
-				<div class="content" v-if="selected">
+				<div class="content" v-if="selected || config.custom">
 					<slot name="right"></slot>
 				</div>
 
@@ -173,7 +173,8 @@ const config = reactive(
 			service: {},
 			enableContextMenu: true,
 			enableRefresh: true,
-			enableAdd: true
+			enableAdd: true,
+			custom: false
 		},
 		inject("useViewGroup__options")
 	)
@@ -418,13 +419,15 @@ onMounted(() => {
 });
 
 defineExpose({
+	list,
 	selected,
 	isExpand,
 	expand,
 	select,
 	browser,
 	edit,
-	remove
+	remove,
+	refresh
 });
 </script>
 
