@@ -15,6 +15,7 @@ export declare namespace ClViewGroup {
 		expand(value?: boolean): void;
 		edit(item?: Item): void;
 		remove(item: Item): void;
+		refresh(params?: any): void;
 	}
 
 	interface Options {
@@ -55,6 +56,7 @@ export declare namespace ClViewGroup {
 		enableContextMenu?: boolean;
 		enableAdd?: boolean;
 		enableRefresh?: boolean;
+		custom?: boolean;
 		onSelect?(item: Item): void;
 		onEdit?(item?: Item): DeepPartial<ClForm.Options>;
 		onContextMenu?(item: Item): ClContextMenu.Options;
