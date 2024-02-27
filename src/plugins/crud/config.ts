@@ -13,8 +13,8 @@ export default (): Merge<ModuleConfig, CrudOptions> => {
 		label: "CRUD",
 		description: "快速增删改查及一系列辅助组件",
 		author: "COOL",
-		version: "1.0.3",
-		updateTime: "2024-02-20",
+		version: "1.0.4",
+		updateTime: "2024-02-27",
 		demo: "/demo/crud",
 
 		// 组件全注册
@@ -44,11 +44,6 @@ export default (): Merge<ModuleConfig, CrudOptions> => {
 				},
 				// 按钮及提示文案
 				label: locale.zhCn
-			},
-			render: {
-				functionSlots: {
-					exclude: ["el-date-picker", "el-cascader", "el-time-select", "el-transfer"]
-				}
 			}
 		},
 

@@ -31,9 +31,6 @@ const regs: Map<string, any> = new Map();
 // 解析节点
 export function parseNode(vnode: any, options: Options): VNode {
 	const { scope, prop, slots, children, _data } = options || [];
-	const {
-		render: { functionSlots }
-	} = useConfig();
 
 	// 渲染后组件
 	let comp: VNode | null = null;
@@ -85,17 +82,13 @@ export function parseNode(vnode: any, options: Options): VNode {
 	if (vnode.vm) {
 		comp = h(regs.get(vnode.name), props);
 	} else {
-		// 是否函数式插槽
-		const isFunctionSlot =
-			!functionSlots.exclude?.includes(vnode.name) &&
-			(vnode.functionSlot === undefined ? true : vnode.functionSlot);
-
 		// 渲染组件
-		comp = h(
-			toRaw(resolveComponent(vnode.name)),
-			props,
-			isFunctionSlot ? () => children : children
-		);
+		comp = h(toRaw(resolveComponent(vnode.name)), props, {
+			default() {
+				return children;
+			},
+			...vnode.slots
+		});
 	}
 
 	// 挂载到 refs 中

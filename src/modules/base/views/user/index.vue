@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts" name="sys-user" setup>
-import { useTable, useUpsert, useCrud } from "@cool-vue/crud";
+import { useTable, useUpsert, useCrud, setFocus } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import DeptList from "./components/dept-list.vue";
 import UserMove from "./components/user-move.vue";
@@ -296,7 +296,9 @@ const Upsert = useUpsert({
 				})
 			);
 		});
-	}
+	},
+
+	plugins: [setFocus("name")]
 });
 
 // 刷新列表

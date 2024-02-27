@@ -272,7 +272,6 @@ onMounted(() => {
 	background-color: var(--el-fill-color-light);
 	border: 1px solid var(--el-fill-color-light);
 	box-sizing: border-box;
-	margin-bottom: 10px;
 	position: relative;
 
 	audio {

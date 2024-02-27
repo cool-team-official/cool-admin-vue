@@ -104,7 +104,9 @@ declare namespace Render {
 		options?: DictOptions | Vue.Ref<DictOptions>;
 		props?: Props | Vue.Ref<Props>;
 		style?: obj;
-		functionSlot?: boolean;
+		slots?: {
+			[key: string]: (data?: any) => any;
+		};
 		vm?: any;
 		[key: string]: any;
 	}
@@ -717,11 +719,6 @@ declare interface Config {
 	permission: ClCrud.Permission;
 	events: {
 		[key: string]: (...args: any[]) => any;
-	};
-	render: {
-		functionSlots: {
-			exclude: string[];
-		};
 	};
 	style: {
 		size: ElementPlus.Size;

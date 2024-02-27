@@ -6,7 +6,7 @@
 				`cl-upload--${type}`,
 				{
 					'is-disabled': disabled,
-					'is-drag': drag
+					'is-multiple': multiple
 				}
 			]"
 		>
@@ -32,19 +32,14 @@
 			</template>
 
 			<!-- 列表 -->
-			<draggable
+			<vue-draggable
 				class="cl-upload__list"
 				tag="div"
 				v-model="list"
 				ghost-class="Ghost"
 				drag-class="Drag"
-				:options="{
-					group: 'Upload',
-					animation: 300,
-					draggable: '.is-drag',
-					disabled: !draggable
-				}"
 				item-key="uid"
+				:disabled="!draggable"
 				@end="update"
 				v-if="showFileList"
 			>
@@ -78,7 +73,7 @@
 										<component :is="icon" v-if="icon" />
 										<picture-filled v-else />
 									</el-icon>
-									<span v-if="text">{{ text }}</span>
+									<span class="text" v-if="text">{{ text }}</span>
 								</div>
 							</slot>
 						</el-upload>
@@ -88,7 +83,6 @@
 				<!-- 列表 -->
 				<template #item="{ element: item, index }">
 					<el-upload
-						class="is-drag"
 						action=""
 						:accept="accept"
 						:show-file-list="false"
@@ -104,7 +98,6 @@
 						"
 						:headers="headers"
 						:disabled="disabled"
-						v-if="showFileList"
 					>
 						<slot name="item" :item="item" :index="index">
 							<div class="cl-upload__item">
@@ -120,7 +113,7 @@
 						</slot>
 					</el-upload>
 				</template>
-			</draggable>
+			</vue-draggable>
 		</div>
 	</div>
 </template>
@@ -128,7 +121,7 @@
 <script lang="ts" setup name="cl-upload">
 import { computed, ref, watch, type PropType, nextTick } from "vue";
 import { isArray, isNumber } from "lodash-es";
-import Draggable from "vuedraggable";
+import VueDraggable from "vuedraggable";
 import { ElMessage } from "element-plus";
 import { PictureFilled, UploadFilled } from "@element-plus/icons-vue";
 import { useForm } from "@cool-vue/crud";
@@ -495,10 +488,6 @@ defineExpose({
 		user-select: none;
 	}
 
-	&__item {
-		margin: 0 5px 5px 0;
-	}
-
 	&__demo {
 		font-size: 13px;
 
@@ -515,31 +504,32 @@ defineExpose({
 		}
 	}
 
+	&__file-btn {
+		margin-bottom: 10px;
+	}
+
 	:deep(.el-upload) {
-		&.is-drag {
-			.el-upload-dragger {
-				padding: 0;
-				border: 0;
-				background-color: transparent !important;
-				position: relative;
-				background-color: red;
+		display: block;
 
-				$color: var(--el-color-primary);
+		.el-upload-dragger {
+			padding: 0;
+			border: 0;
+			background-color: transparent !important;
+			position: relative;
 
-				&.is-dragover {
-					&::after {
-						display: block;
-						content: "";
-						position: absolute;
-						left: 0;
-						top: 0;
-						height: 100%;
-						width: 100%;
-						pointer-events: none;
-						border-radius: 8px;
-						box-sizing: border-box;
-						border: 1px dashed var(--color-primary);
-					}
+			&.is-dragover {
+				&::after {
+					display: block;
+					content: "";
+					position: absolute;
+					left: 0;
+					top: 0;
+					height: 100%;
+					width: 100%;
+					pointer-events: none;
+					border-radius: 8px;
+					box-sizing: border-box;
+					border: 1px dashed var(--el-color-primary);
 				}
 			}
 		}
@@ -556,18 +546,16 @@ defineExpose({
 		}
 	}
 
+	&.is-multiple {
+		.cl-upload__item {
+			margin: 0 5px 5px 0;
+		}
+	}
+
 	&:not(.is-disabled) {
 		.cl-upload__demo {
 			&:hover {
 				color: var(--el-color-primary);
-			}
-		}
-	}
-
-	&--file {
-		&:not(.is-drag) {
-			.cl-upload__list {
-				margin-top: 10px;
 			}
 		}
 	}

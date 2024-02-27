@@ -68,12 +68,7 @@ function setConfig(app: App, options: Options = {}) {
 					}
 				}
 			},
-			events: {},
-			render: {
-				functionSlots: {
-					exclude: ["el-date-picker", "el-cascader", "el-time-select"]
-				}
-			}
+			events: {}
 		},
 		options || {}
 	);

@@ -9,8 +9,8 @@
 		"lint:eslint": "eslint \"./src/**/*.{vue,ts,tsx}\" --fix"
 	},
 	"dependencies": {
-		"@cool-vue/crud": "^7.1.14",
-		"@element-plus/icons-vue": "^2.1.0",
+		"@cool-vue/crud": "^7.1.15",
+		"@element-plus/icons-vue": "^2.3.1",
 		"@vueuse/core": "^10.4.0",
 		"@wangeditor/editor": "^5.1.23",
 		"@wangeditor/editor-for-vue": "^5.1.12",
@@ -19,7 +19,7 @@
 		"core-js": "^3.32.1",
 		"dayjs": "^1.11.10",
 		"echarts": "^5.4.3",
-		"element-plus": "^2.5.4",
+		"element-plus": "^2.5.6",
 		"file-saver": "^2.0.5",
 		"lodash-es": "^4.17.21",
 		"marked": "^11.1.1",

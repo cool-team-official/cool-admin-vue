@@ -97,7 +97,9 @@ export declare function useForm(): {
                     };
                 } | undefined;
                 style?: obj | undefined;
-                functionSlot?: boolean | undefined;
+                slots?: {
+                    [key: string]: (data?: any) => any;
+                } | undefined;
                 vm?: any;
             } | undefined;
             component?: {
@@ -128,7 +130,9 @@ export declare function useForm(): {
                     };
                 } | undefined;
                 style?: obj | undefined;
-                functionSlot?: boolean | undefined;
+                slots?: {
+                    [key: string]: (data?: any) => any;
+                } | undefined;
                 vm?: any;
             } | undefined;
             append?: {
@@ -159,7 +163,9 @@ export declare function useForm(): {
                     };
                 } | undefined;
                 style?: obj | undefined;
-                functionSlot?: boolean | undefined;
+                slots?: {
+                    [key: string]: (data?: any) => any;
+                } | undefined;
                 vm?: any;
             } | undefined;
             rules?: {

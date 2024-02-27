@@ -98,7 +98,7 @@ function refresh(params?: any) {
 
 // 数据恢复
 function restore(id?: string) {
-	const ids = id ? [id] : Table.value?.selection;
+	const ids = id ? [id] : Table.value?.selection.map((e) => e.id);
 
 	ElMessageBox.confirm("此操作将恢复被删除的数据，是否继续？", "提示", {
 		type: "warning"

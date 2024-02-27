@@ -12,7 +12,10 @@ export default defineComponent({
 			default: UserFilled
 		},
 		size: [String, Number] as PropType<"large" | "default" | "small" | number>,
-		shape: String as PropType<"circle" | "square">,
+		shape: {
+			type: String as PropType<"circle" | "square">,
+			default: "square"
+		},
 		fit: {
 			type: String as PropType<"fill" | "contain" | "cover" | "none" | "scale-down">,
 			default: "cover"
@@ -24,6 +27,8 @@ export default defineComponent({
 			return (
 				<el-avatar
 					style={{
+						display: "block",
+						margin: "auto",
 						height: props.size + "px",
 						width: props.size + "px"
 					}}

@@ -36,7 +36,9 @@ export declare function useTable(props: any): {
                     };
                 } | undefined;
                 style?: obj | undefined;
-                functionSlot?: boolean | undefined;
+                slots?: {
+                    [key: string]: (data?: any) => any;
+                } | undefined;
                 vm?: any;
             };
             search: {
@@ -73,7 +75,9 @@ export declare function useTable(props: any): {
                         };
                     } | undefined;
                     style?: obj | undefined;
-                    functionSlot?: boolean | undefined;
+                    slots?: {
+                        [key: string]: (data?: any) => any;
+                    } | undefined;
                     vm?: any;
                 };
             };

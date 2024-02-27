@@ -58,6 +58,20 @@ function open() {
 				}
 			},
 			{
+				label: "手机号",
+				prop: "phone",
+				value: "13255022000",
+				component: {
+					name: "el-input",
+					// 自定义插槽
+					slots: {
+						prepend() {
+							return "+86";
+						}
+					}
+				}
+			},
+			{
 				label: "年龄",
 				prop: "age",
 				// 组件配置方式2：插槽（万能，就是代码多写点）
