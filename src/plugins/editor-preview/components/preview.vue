@@ -50,9 +50,8 @@
 import { useClipboard } from "@vueuse/core";
 import { ElMessage } from "element-plus";
 import { isObject, isString } from "lodash-es";
-import { nextTick, type PropType, ref, computed } from "vue";
+import { nextTick, ref, computed, type PropType } from "vue";
 import { useCool } from "/@/cool";
-import "@wangeditor/editor/dist/css/style.css";
 
 interface TabItem {
 	name: string;
@@ -64,7 +63,7 @@ const props = defineProps({
 	modelValue: String,
 	title: String,
 	name: {
-		type: String as PropType<"monaco" | "wang">,
+		type: String,
 		required: true
 	},
 	text: {
@@ -109,20 +108,16 @@ const active = ref(0);
 // 列表
 const list = ref<TabItem[]>([]);
 
-// 标题
-const title = computed(() => {
-	return props.title || (props.name == "monaco" ? "代码预览" : "文本预览");
+// 是否代码预览
+const isCode = computed(() => {
+	return props.name == "monaco";
 });
 
 // 是否可以滚动
-const isScroll = computed(() => {
-	return props.name == "wang";
-});
+const isScroll = computed(() => !isCode.value);
 
 // 是否可以复制
-const isCopy = computed(() => {
-	return props.name == "monaco";
-});
+const isCopy = computed(() => isCode);
 
 // 编辑器配置
 const editConfig = computed(() => {
@@ -130,6 +125,11 @@ const editConfig = computed(() => {
 		language: language.value,
 		...props.props
 	};
+});
+
+// 标题
+const title = computed(() => {
+	return props.title || (isCode.value ? "代码预览" : "文本预览");
 });
 
 // 打开
@@ -169,7 +169,8 @@ async function onTabChange(index: any) {
 
 	await nextTick();
 
-	if (props.name == "monaco") {
+	// 格式化代码
+	if (isCode.value) {
 		refs.editor?.formatCode?.();
 	}
 }
