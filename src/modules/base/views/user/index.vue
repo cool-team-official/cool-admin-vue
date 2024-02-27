@@ -313,10 +313,10 @@ function onUserAdd({ id }: Eps.BaseSysDepartmentEntity) {
 
 // 移动成员
 async function toMove(item?: Eps.BaseSysDepartmentEntity) {
-	let ids = [];
+	let ids: number[] = [];
 
 	if (item) {
-		ids = [item.id];
+		ids = [item.id!];
 	} else {
 		ids = Table.value?.selection.map((e) => e.id) || [];
 	}
