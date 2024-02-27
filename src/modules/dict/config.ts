@@ -1,4 +1,4 @@
-import { ModuleConfig } from "/@/cool";
+import type { ModuleConfig } from "/@/cool";
 import { useDict } from "./index";
 
 export default (): ModuleConfig => {

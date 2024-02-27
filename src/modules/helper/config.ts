@@ -1,4 +1,4 @@
-import { ModuleConfig } from "/@/cool";
+import type { ModuleConfig } from "/@/cool";
 import { getRules } from "./utils";
 
 export default (): ModuleConfig => {

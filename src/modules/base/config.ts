@@ -2,7 +2,7 @@ import VueECharts from "vue-echarts";
 import ElementPlus from "element-plus";
 import { useStore } from "./store";
 import { config } from "/@/config";
-import { ModuleConfig } from "/@/cool";
+import type { ModuleConfig } from "/@/cool";
 import "element-plus/theme-chalk/src/index.scss";
 import "./static/css/index.scss";
 

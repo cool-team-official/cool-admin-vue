@@ -1,4 +1,6 @@
-export default () => {
+import type { ModuleConfig } from "/@/cool";
+
+export default (): ModuleConfig => {
 	return {
 		components: [
 			() => import("./components/space.vue"),

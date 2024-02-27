@@ -1,4 +1,4 @@
-import { ModuleConfig } from "/@/cool";
+import type { ModuleConfig } from "/@/cool";
 import { CodeDeclare } from "./dict";
 import { addDeclare } from "/@/plugins/editor-monaco";
 

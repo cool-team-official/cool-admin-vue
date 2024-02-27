@@ -1,4 +1,4 @@
-import { PropType, defineComponent } from "vue";
+import { type PropType, defineComponent } from "vue";
 import data from "../data/pca.json";
 
 export default defineComponent({

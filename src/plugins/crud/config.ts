@@ -1,4 +1,4 @@
-import { Merge, ModuleConfig } from "/@/cool";
+import type { Merge, ModuleConfig } from "/@/cool";
 
 // npm
 import Crud, { locale, setFocus } from "@cool-vue/crud";

@@ -1,7 +1,6 @@
 import { setTheme } from "./utils";
-import { storage } from "/@/cool";
-import { ModuleConfig } from "../../cool/types";
 import { config } from "/@/config";
+import { storage, type ModuleConfig } from "/@/cool";
 
 import "element-plus/theme-chalk/dark/css-vars.css";
 import "./static/css/index.scss";

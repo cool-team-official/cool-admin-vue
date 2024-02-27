@@ -1,4 +1,6 @@
-export default () => {
+import type { ModuleConfig } from "/@/cool";
+
+export default (): ModuleConfig => {
 	return {
 		label: "文件上传",
 		description: "基于 el-upload 封装的文件上传组件",

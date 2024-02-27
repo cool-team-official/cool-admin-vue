@@ -1,4 +1,4 @@
-import { ModuleConfig } from "/@/cool";
+import type { ModuleConfig } from "/@/cool";
 import { registerFormHook } from "@cool-vue/crud";
 
 // 注册hook
