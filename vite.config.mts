@@ -48,7 +48,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 			alias: {
 				"/@": resolve("src"),
 				"/$": resolve("src/modules"),
-				"/#": resolve("types"),
+				"/#": resolve("src/plugins"),
 				"/~": resolve("packages")
 			}
 		},
