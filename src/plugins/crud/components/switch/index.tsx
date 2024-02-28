@@ -60,7 +60,10 @@ export default defineComponent({
 		function onChange(val: boolean | string | number) {
 			if (props.column && props.scope) {
 				if (val !== undefined) {
-					if (val === activeValue.value || val === inactiveValue.value) {
+					if (
+						status.value === activeValue.value ||
+						status.value === inactiveValue.value
+					) {
 						const params = {
 							id: props.scope.id,
 							[props.column.property]: val
@@ -95,7 +98,7 @@ export default defineComponent({
 		return () => {
 			return (
 				<el-switch
-					v-model={status.value}
+					model-value={status.value}
 					active-value={activeValue.value}
 					inactive-value={inactiveValue.value}
 					onChange={onChange}
