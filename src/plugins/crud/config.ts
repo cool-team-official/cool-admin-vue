@@ -13,8 +13,8 @@ export default (): Merge<ModuleConfig, CrudOptions> => {
 		label: "CRUD",
 		description: "快速增删改查及一系列辅助组件",
 		author: "COOL",
-		version: "1.0.4",
-		updateTime: "2024-02-27",
+		version: "1.0.5",
+		updateTime: "2024-02-28",
 		demo: "/demo/crud",
 
 		// 组件全注册

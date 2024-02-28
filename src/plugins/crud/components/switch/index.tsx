@@ -1,6 +1,6 @@
 import { useCrud } from "@cool-vue/crud";
 import { ElMessage } from "element-plus";
-import { defineComponent, nextTick, ref, watch } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { isBoolean, isFunction } from "lodash-es";
 
 export default defineComponent({
@@ -10,7 +10,6 @@ export default defineComponent({
 		scope: null,
 		column: null,
 		modelValue: [Number, String, Boolean],
-		api: Function,
 		activeValue: {
 			type: [Number, String, Boolean],
 			default: 1
@@ -18,7 +17,8 @@ export default defineComponent({
 		inactiveValue: {
 			type: [Number, String, Boolean],
 			default: 0
-		}
+		},
+		api: Function
 	},
 
 	emits: ["update:modelValue", "change"],
@@ -30,15 +30,19 @@ export default defineComponent({
 		// 状态
 		const status = ref<boolean | number | string>();
 
+		// 选中值类型
 		const activeValue = ref();
 		const inactiveValue = ref();
 
+		// 监听值
 		watch(
 			() => props.modelValue,
 			(val) => {
-				// 首次获取类型
-				if (activeValue.value === undefined) {
-					if (isBoolean(props.modelValue)) {
+				status.value = val;
+
+				if (val !== undefined) {
+					// 调整值类型
+					if (isBoolean(val)) {
 						activeValue.value = true;
 						inactiveValue.value = false;
 					} else {
@@ -46,8 +50,6 @@ export default defineComponent({
 						inactiveValue.value = props.inactiveValue;
 					}
 				}
-
-				status.value = val;
 			},
 			{
 				immediate: true

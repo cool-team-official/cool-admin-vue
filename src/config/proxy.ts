@@ -1,6 +1,7 @@
 export const proxy = {
 	"/dev/": {
-		target: "http://127.0.0.1:8001",
+		target: "https://test-admin.cool-js.cloud",
+		// target: "http://127.0.0.1:8001",
 		changeOrigin: true,
 		rewrite: (path: string) => path.replace(/^\/dev/, "")
 	},
