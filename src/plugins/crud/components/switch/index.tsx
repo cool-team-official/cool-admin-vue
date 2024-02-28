@@ -60,23 +60,25 @@ export default defineComponent({
 		function onChange(val: boolean | string | number) {
 			if (props.column && props.scope) {
 				if (val !== undefined) {
-					const params = {
-						id: props.scope.id,
-						[props.column.property]: val
-					};
+					if (val === activeValue.value || val === inactiveValue.value) {
+						const params = {
+							id: props.scope.id,
+							[props.column.property]: val
+						};
 
-					const req: Promise<any> = isFunction(props.api)
-						? props.api(params)
-						: Crud.value?.service.update(params);
+						const req: Promise<any> = isFunction(props.api)
+							? props.api(params)
+							: Crud.value?.service.update(params);
 
-					if (req) {
-						req.then(() => {
-							emit("update:modelValue", val);
-							emit("change", val);
-							ElMessage.success("更新成功");
-						}).catch((err) => {
-							ElMessage.error(err.message);
-						});
+						if (req) {
+							req.then(() => {
+								emit("update:modelValue", val);
+								emit("change", val);
+								ElMessage.success("更新成功");
+							}).catch((err) => {
+								ElMessage.error(err.message);
+							});
+						}
 					}
 				}
 			} else {
