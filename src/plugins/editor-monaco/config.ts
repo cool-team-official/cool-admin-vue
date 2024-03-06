@@ -14,6 +14,7 @@ export default (): ModuleConfig => {
 			}
 		],
 
+		// 组件依赖过大，如不需求请注释以下代码
 		components: [() => import("./components/monaco.vue")]
 	};
 };

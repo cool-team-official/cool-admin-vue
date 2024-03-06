@@ -41,7 +41,7 @@
 				item-key="uid"
 				:disabled="!draggable"
 				@end="update"
-				v-if="showFileList"
+				v-if="showList"
 			>
 				<!-- 触发器 -->
 				<template #footer>
@@ -120,7 +120,7 @@
 
 <script lang="ts" setup name="cl-upload">
 import { computed, ref, watch, type PropType, nextTick } from "vue";
-import { isArray, isNumber } from "lodash-es";
+import { isArray, isEmpty, isNumber } from "lodash-es";
 import VueDraggable from "vuedraggable";
 import { ElMessage } from "element-plus";
 import { PictureFilled, UploadFilled } from "@element-plus/icons-vue";
@@ -246,6 +246,15 @@ const headers = computed(() => {
 
 // 列表
 const list = ref<Upload.Item[]>([]);
+
+// 显示上传列表
+const showList = computed(() => {
+	if (props.type == "file") {
+		return !isEmpty(list.value);
+	} else {
+		return true;
+	}
+});
 
 // 文件格式
 const accept = computed(() => {
@@ -505,7 +514,9 @@ defineExpose({
 	}
 
 	&__file-btn {
-		margin-bottom: 10px;
+		& + .cl-upload__list {
+			margin-top: 10px;
+		}
 	}
 
 	:deep(.el-upload) {
