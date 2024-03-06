@@ -11,7 +11,10 @@ export default defineComponent({
 			type: null,
 			default: UserFilled
 		},
-		size: [String, Number] as PropType<"large" | "default" | "small" | number>,
+		size: {
+			type: [String, Number] as PropType<"large" | "default" | "small" | number>,
+			default: 40
+		},
 		shape: {
 			type: String as PropType<"circle" | "square">,
 			default: "square"
@@ -24,19 +27,26 @@ export default defineComponent({
 
 	setup(props) {
 		return () => {
+			const height = props.size + "px";
+
 			return (
-				<el-avatar
+				<div
+					class="cl-avatar"
 					style={{
-						display: "block",
-						margin: "auto",
-						height: props.size + "px",
-						width: props.size + "px"
+						height
 					}}
-					{...{
-						...props,
-						src: props.modelValue || props.src
-					}}
-				/>
+				>
+					<el-avatar
+						style={{
+							height,
+							width: props.size + "px"
+						}}
+						{...{
+							...props,
+							src: props.modelValue || props.src
+						}}
+					/>
+				</div>
 			);
 		};
 	}

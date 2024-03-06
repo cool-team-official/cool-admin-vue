@@ -26,7 +26,6 @@
 		"mitt": "^3.0.1",
 		"mockjs": "^1.1.0",
 		"monaco-editor": "0.36.0",
-		"mqtt": "^4.3.7",
 		"nprogress": "^0.2.0",
 		"pinia": "^2.1.7",
 		"socket.io-client": "^4.7.2",

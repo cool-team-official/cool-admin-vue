@@ -2,7 +2,6 @@
 	<div
 		class="cl-image"
 		:style="{
-			justifyContent: justify,
 			height: style.h
 		}"
 	>
@@ -50,10 +49,6 @@ export default defineComponent({
 		fit: {
 			type: String as PropType<"" | "contain" | "cover" | "none" | "fill" | "scale-down">,
 			default: "cover"
-		},
-		justify: {
-			type: String,
-			default: "center"
 		}
 	},
 
