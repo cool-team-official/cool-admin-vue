@@ -250,7 +250,7 @@ const list = ref<Upload.Item[]>([]);
 // 显示上传列表
 const showList = computed(() => {
 	if (props.type == "file") {
-		return !isEmpty(list.value);
+		return props.showFileList ? !isEmpty(list.value) : false;
 	} else {
 		return true;
 	}

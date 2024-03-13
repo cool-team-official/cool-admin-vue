@@ -6,7 +6,7 @@ export default (): ModuleConfig => {
 		description: "基于 el-upload 封装的文件上传组件",
 		author: "COOL",
 		version: "1.1.3",
-		updateTime: "2024-02-23",
+		updateTime: "2024-03-13",
 		demo: [
 			{
 				name: "基础用法",
