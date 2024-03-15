@@ -333,10 +333,12 @@
 	}
 
 	&:not(.el-form--label-top) {
-		&.no-label {
-			& > .el-form-item__label {
-				padding: 0;
-				display: none;
+		.el-form-item {
+			&.no-label {
+				& > .el-form-item__label {
+					padding: 0;
+					display: none;
+				}
 			}
 		}
 	}

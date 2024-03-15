@@ -476,7 +476,7 @@ defineExpose({
 	}
 
 	&__list {
-		display: flex;
+		display: inline-flex;
 		flex-wrap: wrap;
 	}
 
