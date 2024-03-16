@@ -18,7 +18,7 @@ import { Upload } from "@element-plus/icons-vue";
 		border: 1px solid var(--el-border-color);
 		border-radius: 4px;
 		padding: 5px 10px;
-		margin-bottom: 10px;
+		margin-bottom: 5px;
 		font-size: 12px;
 		width: 100%;
 		box-sizing: border-box;

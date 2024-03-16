@@ -6,7 +6,8 @@
 				`cl-upload--${type}`,
 				{
 					'is-disabled': disabled,
-					'is-multiple': multiple
+					'is-multiple': multiple,
+					'is-small': small
 				}
 			]"
 		>
@@ -59,6 +60,7 @@
 							:disabled="disabled"
 						>
 							<slot>
+								<!-- 拖拽方式 -->
 								<div class="cl-upload__demo is-dragger" v-if="drag">
 									<el-icon :size="46">
 										<upload-filled />
@@ -68,6 +70,7 @@
 									</div>
 								</div>
 
+								<!-- 点击方式 -->
 								<div class="cl-upload__demo" v-else>
 									<el-icon :size="36">
 										<component :is="icon" v-if="icon" />
@@ -109,6 +112,15 @@
 									:deletable="deletable"
 									@remove="remove(index)"
 								/>
+
+								<!-- 小图模式 -->
+								<el-icon
+									class="cl-upload__item-remove"
+									v-if="small"
+									@click="remove(index)"
+								>
+									<circle-close-filled />
+								</el-icon>
 							</div>
 						</slot>
 					</el-upload>
@@ -123,7 +135,7 @@ import { computed, ref, watch, type PropType, nextTick } from "vue";
 import { isArray, isEmpty, isNumber } from "lodash-es";
 import VueDraggable from "vuedraggable";
 import { ElMessage } from "element-plus";
-import { PictureFilled, UploadFilled } from "@element-plus/icons-vue";
+import { PictureFilled, UploadFilled, CircleCloseFilled } from "@element-plus/icons-vue";
 import { useForm } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import { useBase } from "/$/base";
@@ -159,6 +171,8 @@ const props = defineProps({
 	},
 	// 元素大小
 	size: [String, Number, Array],
+	// 小图模式
+	small: Boolean,
 	// 显示图标
 	icon: null,
 	// 显示文案
@@ -476,7 +490,7 @@ defineExpose({
 	}
 
 	&__list {
-		display: inline-flex;
+		display: flex;
 		flex-wrap: wrap;
 	}
 
@@ -558,8 +572,49 @@ defineExpose({
 	}
 
 	&.is-multiple {
+		.cl-upload__list {
+			margin-bottom: -5px;
+		}
+
 		.cl-upload__item {
 			margin: 0 5px 5px 0;
+		}
+
+		.cl-upload__footer {
+			margin-bottom: 5px;
+		}
+	}
+
+	&.is-small {
+		.cl-upload__demo {
+			.el-icon {
+				font-size: 20px !important;
+			}
+
+			.text {
+				display: none;
+			}
+		}
+
+		.cl-upload__item-remove {
+			position: absolute;
+			right: 0px;
+			top: 0px;
+			color: var(--el-color-danger);
+			background-color: #fff;
+			border-radius: 100%;
+		}
+
+		:deep(.cl-upload-item) {
+			.cl-upload-item__progress-bar,
+			.cl-upload-item__actions,
+			.cl-upload-item__tag {
+				display: none;
+			}
+
+			.cl-upload-item__progress-value {
+				font-size: 12px;
+			}
 		}
 	}
 

@@ -77,22 +77,30 @@
 					<!-- 工具 -->
 					<div class="cl-upload-item__actions">
 						<template v-if="media.isMedia">
-							<el-icon @click.stop="media.pause()" v-if="item.isPlay">
+							<el-icon
+								class="action-pause"
+								@click.stop="media.pause()"
+								v-if="item.isPlay"
+							>
 								<video-pause />
 							</el-icon>
 
-							<el-icon @click.stop="media.play()" v-else>
+							<el-icon class="action-play" @click.stop="media.play()" v-else>
 								<video-play />
 							</el-icon>
 						</template>
 
 						<template v-else>
-							<el-icon @click.stop="preview">
+							<el-icon class="action-preview" @click.stop="preview">
 								<zoom-in />
 							</el-icon>
 						</template>
 
-						<el-icon @click.stop="remove" v-if="!disabled || deletable">
+						<el-icon
+							class="action-delete"
+							@click.stop="remove"
+							v-if="!disabled || deletable"
+						>
 							<delete />
 						</el-icon>
 					</div>
