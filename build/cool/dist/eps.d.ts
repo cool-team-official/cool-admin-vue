@@ -110,41 +110,6 @@ declare namespace Eps {
 		 */
 		[key: string]: any;
 	}
-
-	interface ChatMessageEntity {
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface ChatSessionEntity {
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface TestEntity {
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface DemoUserFollowEntity {
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
-
-	interface DemoUserInfoEntity {
-		/**
-		 * 任意键值
-		 */
-		[key: string]: any;
-	}
 	interface BaseComm {
 		/**
 		 * personUpdate
@@ -648,138 +613,6 @@ declare namespace Eps {
 		request: Service["request"];
 	}
 
-	interface DemoUserFollow {
-		/**
-		 * page
-		 */
-		"page"(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: DemoUserFollowEntity[];
-			[key: string]: any;
-		}>;
-		/**
-		 * list
-		 */
-		"list"(data?: any): Promise<DemoUserFollowEntity[]>;
-		/**
-		 * info
-		 */
-		"info"(data?: any): Promise<DemoUserFollowEntity>;
-		/**
-		 * delete
-		 */
-		"delete"(data?: any): Promise<any>;
-		/**
-		 * update
-		 */
-		"update"(data?: any): Promise<any>;
-		/**
-		 * add
-		 */
-		"add"(data?: any): Promise<any>;
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			page: string;
-			list: string;
-			info: string;
-			delete: string;
-			update: string;
-			add: string;
-		};
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			page: boolean;
-			list: boolean;
-			info: boolean;
-			delete: boolean;
-			update: boolean;
-			add: boolean;
-		};
-		/**
-		 * 请求
-		 */
-		request: Service["request"];
-	}
-
-	interface DemoUserInfo {
-		/**
-		 * t1
-		 */
-		"t1"(data?: any): Promise<any>;
-		/**
-		 * t2
-		 */
-		"t2"(data?: any): Promise<any>;
-		/**
-		 * t3
-		 */
-		"t3"(data?: any): Promise<any>;
-		/**
-		 * page
-		 */
-		"page"(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: DemoUserInfoEntity[];
-			[key: string]: any;
-		}>;
-		/**
-		 * list
-		 */
-		"list"(data?: any): Promise<DemoUserInfoEntity[]>;
-		/**
-		 * info
-		 */
-		"info"(data?: any): Promise<DemoUserInfoEntity>;
-		/**
-		 * delete
-		 */
-		"delete"(data?: any): Promise<any>;
-		/**
-		 * update
-		 */
-		"update"(data?: any): Promise<any>;
-		/**
-		 * add
-		 */
-		"add"(data?: any): Promise<any>;
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			t1: string;
-			t2: string;
-			t3: string;
-			page: string;
-			list: string;
-			info: string;
-			delete: string;
-			update: string;
-			add: string;
-		};
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			t1: boolean;
-			t2: boolean;
-			t3: boolean;
-			page: boolean;
-			list: boolean;
-			info: boolean;
-			delete: boolean;
-			update: boolean;
-			add: boolean;
-		};
-		/**
-		 * 请求
-		 */
-		request: Service["request"];
-	}
-
 	interface DictInfo {
 		/**
 		 * delete
@@ -868,6 +701,10 @@ declare namespace Eps {
 			list: DictTypeEntity[];
 			[key: string]: any;
 		}>;
+		/**
+		 * add
+		 */
+		"add"(data?: any): Promise<any>;
 		/**
 		 * add
 		 */
@@ -1296,201 +1133,38 @@ declare namespace Eps {
 		 */
 		"add"(data?: any): Promise<any>;
 		/**
-		 * add
+		 * list
 		 */
-		"add"(data?: any): Promise<any>;
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			delete: string;
-			update: string;
-			info: string;
-			list: string;
-			page: string;
-			add: string;
-		};
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			delete: boolean;
-			update: boolean;
-			info: boolean;
-			list: boolean;
-			page: boolean;
-			add: boolean;
-		};
-		/**
-		 * 请求
-		 */
-		request: Service["request"];
-	}
-
-	interface ChatMessage {
+		"list"(data?: any): Promise<UserInfoEntity[]>;
 		/**
 		 * page
 		 */
 		"page"(data?: any): Promise<{
 			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: ChatMessageEntity[];
+			list: UserInfoEntity[];
 			[key: string]: any;
 		}>;
-		/**
-		 * list
-		 */
-		"list"(data?: any): Promise<ChatMessageEntity[]>;
-		/**
-		 * info
-		 */
-		"info"(data?: any): Promise<ChatMessageEntity>;
-		/**
-		 * delete
-		 */
-		"delete"(data?: any): Promise<any>;
-		/**
-		 * update
-		 */
-		"update"(data?: any): Promise<any>;
-		/**
-		 * add
-		 */
-		"add"(data?: any): Promise<any>;
 		/**
 		 * 权限标识
 		 */
 		permission: {
-			page: string;
-			list: string;
-			info: string;
 			delete: string;
 			update: string;
+			info: string;
+			list: string;
+			page: string;
 			add: string;
 		};
 		/**
 		 * 权限状态
 		 */
 		_permission: {
-			page: boolean;
-			list: boolean;
-			info: boolean;
 			delete: boolean;
 			update: boolean;
-			add: boolean;
-		};
-		/**
-		 * 请求
-		 */
-		request: Service["request"];
-	}
-
-	interface ChatSession {
-		/**
-		 * page
-		 */
-		"page"(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: ChatSessionEntity[];
-			[key: string]: any;
-		}>;
-		/**
-		 * list
-		 */
-		"list"(data?: any): Promise<ChatSessionEntity[]>;
-		/**
-		 * info
-		 */
-		"info"(data?: any): Promise<ChatSessionEntity>;
-		/**
-		 * delete
-		 */
-		"delete"(data?: any): Promise<any>;
-		/**
-		 * update
-		 */
-		"update"(data?: any): Promise<any>;
-		/**
-		 * add
-		 */
-		"add"(data?: any): Promise<any>;
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			page: string;
-			list: string;
-			info: string;
-			delete: string;
-			update: string;
-			add: string;
-		};
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			page: boolean;
-			list: boolean;
 			info: boolean;
-			delete: boolean;
-			update: boolean;
-			add: boolean;
-		};
-		/**
-		 * 请求
-		 */
-		request: Service["request"];
-	}
-
-	interface Test {
-		/**
-		 * page
-		 */
-		"page"(data?: any): Promise<{
-			pagination: { size: number; page: number; total: number; [key: string]: any };
-			list: TestEntity[];
-			[key: string]: any;
-		}>;
-		/**
-		 * update
-		 */
-		"update"(data?: any): Promise<any>;
-		/**
-		 * add
-		 */
-		"add"(data?: any): Promise<any>;
-		/**
-		 * info
-		 */
-		"info"(data?: any): Promise<TestEntity>;
-		/**
-		 * delete
-		 */
-		"delete"(data?: any): Promise<any>;
-		/**
-		 * list
-		 */
-		"list"(data?: any): Promise<TestEntity[]>;
-		/**
-		 * 权限标识
-		 */
-		permission: {
-			page: string;
-			update: string;
-			add: string;
-			info: string;
-			delete: string;
-			list: string;
-		};
-		/**
-		 * 权限状态
-		 */
-		_permission: {
-			page: boolean;
-			update: boolean;
-			add: boolean;
-			info: boolean;
-			delete: boolean;
 			list: boolean;
+			page: boolean;
+			add: boolean;
 		};
 		/**
 		 * 请求
@@ -1525,14 +1199,12 @@ declare namespace Eps {
 				user: BaseSysUser;
 			};
 		};
-		demo: { goods: DemoGoods; user: { follow: DemoUserFollow; info: DemoUserInfo } };
+		demo: { goods: DemoGoods };
 		dict: { info: DictInfo; type: DictType };
 		plugin: { info: PluginInfo };
 		recycle: { data: RecycleData };
 		space: { info: SpaceInfo; type: SpaceType };
 		task: { info: TaskInfo };
 		user: { address: UserAddress; info: UserInfo };
-		chat: { message: ChatMessage; session: ChatSession };
-		test: Test;
 	};
 }

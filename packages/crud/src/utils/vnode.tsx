@@ -82,13 +82,16 @@ export function parseNode(vnode: any, options: Options): VNode {
 	if (vnode.vm) {
 		comp = h(regs.get(vnode.name), props);
 	} else {
-		// 渲染组件
-		comp = h(toRaw(resolveComponent(vnode.name)), props, {
-			default() {
-				return children;
-			},
+		const slots = {
 			...vnode.slots
-		});
+		};
+
+		if (children) {
+			slots.default = () => children;
+		}
+
+		// 渲染组件
+		comp = h(toRaw(resolveComponent(vnode.name)), props, slots);
 	}
 
 	// 挂载到 refs 中
