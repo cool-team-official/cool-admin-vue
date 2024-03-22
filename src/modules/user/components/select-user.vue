@@ -1,25 +1,45 @@
 <template>
 	<div class="select-user__inner">
-		<div class="btns">
-			<el-button type="success" @click="open">添加</el-button>
-			<el-button type="danger" :disabled="refs.table?.selection.length == 0" @click="remove"
-				>移除</el-button
-			>
-		</div>
+		<template v-if="multiple">
+			<div class="btns">
+				<el-button type="success" @click="open">添加</el-button>
+				<el-button
+					type="danger"
+					:disabled="refs.table?.selection.length == 0"
+					@click="remove"
+					>移除</el-button
+				>
+			</div>
 
-		<cl-crud padding="0">
-			<cl-table :data="data" :ref="setRefs('table')" :auto-height="false" />
+			<cl-crud padding="0">
+				<cl-table :data="data" :ref="setRefs('table')" :auto-height="false" />
 
-			<cl-row type="flex" align="middle" justify="end" :style="{ marginTop: '10px' }">
-				<el-pagination
-					v-model:current-page="pager.page"
-					:page-size="pager.size"
-					:total="list.length"
-					background
-					layout="total, prev, pager, next, jumper"
-				/>
-			</cl-row>
-		</cl-crud>
+				<cl-row type="flex" align="middle" justify="end" :style="{ marginTop: '10px' }">
+					<el-pagination
+						v-model:current-page="pager.page"
+						:page-size="pager.size"
+						:total="list.length"
+						background
+						layout="total, prev, pager, next, jumper"
+					/>
+				</cl-row>
+			</cl-crud>
+		</template>
+
+		<template v-else>
+			<div class="user" @click="open">
+				<template v-if="data[0]">
+					<cl-avatar :size="24" :src="data[0].avatarUrl"></cl-avatar>
+					<span>{{ data[0].nickName }}</span>
+
+					<el-icon @click.stop="remove">
+						<circle-close />
+					</el-icon>
+				</template>
+
+				<span class="placeholder" v-else>请选择用户</span>
+			</div>
+		</template>
 	</div>
 
 	<cl-dialog v-model="visible" width="1200px" title="选择用户">
@@ -29,7 +49,7 @@
 				<cl-refresh-btn />
 
 				<!-- 全选 -->
-				<el-button type="primary" @click="selectAll">全选</el-button>
+				<el-button type="primary" @click="selectAll" v-if="multiple">全选</el-button>
 
 				<cl-filter label="状态">
 					<cl-select :options="options.status" prop="status" :width="120" />
@@ -37,16 +57,23 @@
 
 				<cl-flex1 />
 				<!-- 关键字搜索 -->
-				<cl-search-key placeholder="搜索昵称" />
+				<cl-search-key placeholder="搜索昵称、手机号" />
 			</cl-row>
 
 			<cl-row>
 				<!-- 数据表格 -->
-				<cl-table ref="Table" :auto-height="false" @selection-change="onSelectionChange" />
+				<cl-table ref="Table" :auto-height="false" @selection-change="onSelectionChange">
+					<template #column-check="{ scope }">
+						<el-button type="success" disabled v-if="selection[0]?.id == scope.row.id"
+							>已选</el-button
+						>
+						<el-button @click="select(scope.row)" v-else>选择</el-button>
+					</template>
+				</cl-table>
 			</cl-row>
 
 			<cl-row>
-				<span>已选 {{ selection.length }} 人</span>
+				<span v-if="multiple">已选 {{ selection.length }} 人</span>
 				<cl-flex1 />
 				<!-- 分页控件 -->
 				<cl-pagination />
@@ -55,7 +82,13 @@
 
 		<template #footer>
 			<el-button @click="close">取消</el-button>
-			<el-button type="success" @click="select">选择</el-button>
+			<el-button
+				type="success"
+				:disabled="isEmpty(selection)"
+				@click="select()"
+				v-if="multiple"
+				>选择</el-button
+			>
 		</template>
 	</cl-dialog>
 </template>
@@ -64,10 +97,11 @@
 import { useCrud, useForm, useTable } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import { type PropType, computed, nextTick, reactive, ref, watch } from "vue";
-import { cloneDeep } from "lodash-es";
+import { cloneDeep, isEmpty } from "lodash-es";
+import { CircleClose } from "@element-plus/icons-vue";
 
 // 替换你的类型
-type Item = Eps.BaseSysUserEntity;
+type Item = Eps.UserInfoEntity;
 
 const props = defineProps({
 	modelValue: {
@@ -77,7 +111,13 @@ const props = defineProps({
 	isDisabled: Boolean,
 	prop: String,
 	scope: null,
-	disabled: Boolean
+	disabled: Boolean,
+
+	// 是否多选
+	multiple: {
+		type: Boolean,
+		default: true
+	}
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -107,13 +147,19 @@ const options = reactive({
 const Table = useTable({
 	contextMenu: [],
 	columns: [
+		props.multiple
+			? {
+					type: "selection",
+					width: 60,
+					reserveSelection: true
+				}
+			: {
+					label: "操作",
+					prop: "check",
+					width: 100
+				},
 		{
-			type: "selection",
-			width: 60,
-			reserveSelection: true
-		},
-		{
-			prop: "headImg",
+			prop: "avatarUrl",
 			label: "头像",
 			component: {
 				name: "cl-avatar"
@@ -121,18 +167,13 @@ const Table = useTable({
 			minWidth: 100
 		},
 		{
-			prop: "username",
+			prop: "phone",
 			label: "手机号",
 			minWidth: 120
 		},
 		{
-			prop: "name",
+			prop: "nickName",
 			label: "姓名",
-			minWidth: 150
-		},
-		{
-			prop: "departmentName",
-			label: "部门名称",
 			minWidth: 150
 		},
 		{
@@ -152,7 +193,7 @@ const Table = useTable({
 
 // cl-crud
 const Crud = useCrud({
-	service: service.base.sys.user,
+	service: service.user.info,
 	async onRefresh(params, { next }) {
 		const res = await next(params);
 
@@ -231,8 +272,14 @@ function close() {
 }
 
 // 选择
-function select() {
+function select(item?: Item) {
+	// 单选不触发 onSelectionChange 手动设置
+	if (item) {
+		selection.value = [item];
+	}
+
 	list.value = cloneDeep(selection.value || []);
+
 	close();
 }
 
@@ -251,37 +298,76 @@ async function selectAll() {
 
 // 移除
 function remove() {
-	const ids = (refs.table.selection as any[]).map((e) => e.id);
+	const ids = selection.value.map((e) => e.id);
 
 	list.value = list.value.filter((e) => {
 		// 清空选择状态
-		refs.table.toggleRowSelection(e, false);
+		refs.table?.toggleRowSelection(e, false);
 
 		// 移除已选的
 		return !ids.find((id) => id == e.id);
 	});
 }
 
-// 监听已选列表，返回 ids
+// 监听已选列表，返回 ids/id
 watch(
 	list,
 	(arr = []) => {
-		emit(
-			"update:modelValue",
-			arr.map((e) => e.id)
-		);
+		const ids = arr.map((e) => e.id);
+
+		if (props.multiple) {
+			emit("update:modelValue", ids);
+		} else {
+			emit("update:modelValue", ids[0]);
+		}
+
 		Form.value?.validateField(props.prop);
 	},
 	{
 		deep: true
 	}
 );
+
+defineExpose({
+	remove,
+	select,
+	selectAll
+});
 </script>
 
 <style lang="scss" scoped>
 .select-user__inner {
 	.btns {
 		margin-bottom: 10px;
+	}
+
+	.user {
+		display: flex;
+		align-items: center;
+		border: 1px solid var(--el-border-color);
+		border-radius: var(--el-border-radius-base);
+		padding: 0 10px;
+		height: 32px;
+		cursor: pointer;
+		position: relative;
+
+		.cl-avatar {
+			margin-right: 6px;
+		}
+
+		.el-icon,
+		.placeholder {
+			color: var(--el-text-color-placeholder);
+		}
+
+		.el-icon {
+			position: absolute;
+			right: 10px;
+		}
+
+		&:hover {
+			border-color: var(--el-color-primary);
+		}
 	}
 }
 </style>
