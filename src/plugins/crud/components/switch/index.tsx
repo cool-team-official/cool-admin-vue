@@ -41,15 +41,16 @@ export default defineComponent({
 				status.value = val;
 
 				if (val !== undefined) {
-					// 调整值类型
 					if (isBoolean(val)) {
 						activeValue.value = true;
 						inactiveValue.value = false;
-					} else {
-						activeValue.value = props.activeValue;
-						inactiveValue.value = props.inactiveValue;
+
+						return true;
 					}
 				}
+
+				activeValue.value = props.activeValue;
+				inactiveValue.value = props.inactiveValue;
 			},
 			{
 				immediate: true
