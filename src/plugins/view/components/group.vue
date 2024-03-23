@@ -258,10 +258,9 @@ function edit(item?: ClViewGroup.Item) {
 
 						if (item) {
 							Object.assign(item, data);
-						} else {
-							refresh();
 						}
 
+						refresh();
 						close();
 					})
 					.catch((err) => {
