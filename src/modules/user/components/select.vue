@@ -1,5 +1,5 @@
 <template>
-	<div class="select-user__inner">
+	<div class="user-select__inner">
 		<template v-if="multiple">
 			<div class="btns">
 				<el-button type="success" @click="open">添加</el-button>
@@ -93,7 +93,7 @@
 	</cl-dialog>
 </template>
 
-<script lang="ts" setup name="select-user">
+<script lang="ts" setup name="user-select">
 import { useCrud, useForm, useTable } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import { type PropType, computed, nextTick, reactive, ref, watch } from "vue";
@@ -336,7 +336,7 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-.select-user__inner {
+.user-select__inner {
 	.btns {
 		margin-bottom: 10px;
 	}
