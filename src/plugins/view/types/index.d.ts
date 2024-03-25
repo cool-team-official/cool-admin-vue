@@ -5,20 +5,23 @@ export declare namespace ClViewGroup {
 	interface Item {
 		id: any;
 		name: string;
+		children: Item[];
 		[key: string]: any;
 	}
 
-	interface Ref {
-		selected: Item | undefined;
+	type M<T> = T & Item;
+
+	interface Ref<T = Item> {
+		selected: M<T> | undefined;
 		isExpand: boolean;
 		select(data?: any): void;
 		expand(value?: boolean): void;
-		edit(item?: Item): void;
-		remove(item: Item): void;
+		edit(item?: M<T>): void;
+		remove(item: M<T>): void;
 		refresh(params?: any): void;
 	}
 
-	interface Options {
+	interface Options<T = Item> {
 		label: string;
 		title: string;
 		leftWidth: string;
@@ -57,9 +60,10 @@ export declare namespace ClViewGroup {
 		enableAdd?: boolean;
 		enableRefresh?: boolean;
 		custom?: boolean;
-		onSelect?(item: Item): void;
-		onEdit?(item?: Item): DeepPartial<ClForm.Options>;
-		onContextMenu?(item: Item): ClContextMenu.Options;
-		onData?(list: any[]): any[];
+		onSelect?(item: M<T>): void;
+		onEdit?(item?: M<T>): DeepPartial<ClForm.Options>;
+		onContextMenu?(item: M<T>): ClContextMenu.Options;
+		onData?(list: M<T>[]): any[];
+		onDelete?(item: M<T>, { next }: { next(params: any): void }): Promise<void> | void;
 	}
 }

@@ -279,24 +279,31 @@ function remove(item: ClViewGroup.Item) {
 		type: "warning"
 	})
 		.then(() => {
-			config.service
-				.delete({
-					ids: [item.id]
-				})
-				.then(async () => {
-					ElMessage.success("删除成功");
+			function next(params: any) {
+				config.service
+					.delete(params)
+					.then(async () => {
+						ElMessage.success("删除成功");
 
-					// 刷新列表
-					await refresh();
+						// 刷新列表
+						await refresh();
 
-					// 删除当前
-					if (selected.value?.id == item.id) {
-						select();
-					}
-				})
-				.catch((err) => {
-					ElMessage.error(err.message);
-				});
+						// 删除当前
+						if (selected.value?.id == item.id) {
+							select();
+						}
+					})
+					.catch((err) => {
+						ElMessage.error(err.message);
+					});
+			}
+
+			// 删除事件
+			if (config.onDelete) {
+				config.onDelete(item, { next });
+			} else {
+				next({ ids: [item.id] });
+			}
 		})
 		.catch(() => null);
 }
