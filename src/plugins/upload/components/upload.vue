@@ -117,7 +117,7 @@
 								<el-icon
 									class="cl-upload__item-remove"
 									v-if="small"
-									@click="remove(index)"
+									@click.stop="remove(index)"
 								>
 									<circle-close-filled />
 								</el-icon>
