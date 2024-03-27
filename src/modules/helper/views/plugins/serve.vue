@@ -114,7 +114,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { Plus, Setting } from "@element-plus/icons-vue";
 import { marked } from "marked";
 import { useForm } from "@cool-vue/crud";
-import { merge, template } from "lodash-es";
+import { isString, merge, template } from "lodash-es";
 
 const { service, refs, setRefs } = useCool();
 const Form = useForm();
@@ -190,17 +190,27 @@ function toSet(item: Eps.PluginInfoEntity) {
 
 		on: {
 			submit(data, { done, close }) {
-				service.plugin.info
-					.update(data)
-					.then(() => {
-						ElMessage.success("修改成功");
-						merge(item, data);
-						close();
-					})
-					.catch((err) => {
-						ElMessage.error(err.message);
-						done();
-					});
+				try {
+					const config = JSON.parse(data.config);
+
+					service.plugin.info
+						.update({
+							...data,
+							config
+						})
+						.then(() => {
+							ElMessage.success("修改成功");
+							merge(item, data);
+							close();
+						})
+						.catch((err) => {
+							ElMessage.error(err.message);
+							done();
+						});
+				} catch (e) {
+					ElMessage.error("参数格式错误，请检查");
+					done();
+				}
 			}
 		}
 	});
