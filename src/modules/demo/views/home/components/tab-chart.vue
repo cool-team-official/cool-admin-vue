@@ -62,9 +62,6 @@ const chartOption = reactive<any>({
 			show: true,
 			status: "shadow",
 			z: -1,
-			shadowStyle: {
-				color: "#E6F7FF"
-			},
 			type: "shadow"
 		},
 		extraCssText: "width:120px; white-space:pre-wrap"

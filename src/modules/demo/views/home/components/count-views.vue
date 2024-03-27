@@ -25,12 +25,16 @@ import * as echarts from "echarts";
 const chartOption = reactive({
 	grid: {
 		left: 0,
-		top: 0,
+		top: 1,
 		right: 0,
-		bottom: 0
+		bottom: 1
 	},
 	xAxis: {
 		type: "category",
+		boundaryGap: false,
+		axisLine: {
+			show: false
+		},
 		data: [
 			"00:00",
 			"2:00",
@@ -44,8 +48,7 @@ const chartOption = reactive({
 			"18:00",
 			"20:00",
 			"22:00"
-		],
-		boundaryGap: false
+		]
 	},
 	yAxis: {
 		type: "value",
@@ -64,7 +67,6 @@ const chartOption = reactive({
 	},
 	series: [
 		{
-			name: "总访问量",
 			type: "line",
 			smooth: true,
 			showSymbol: false,

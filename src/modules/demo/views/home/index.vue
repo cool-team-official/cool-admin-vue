@@ -75,6 +75,7 @@ import HotSearch from "./components/hot-search.vue";
 		font-size: 12px;
 		letter-spacing: 0.5px;
 		color: #000;
+		line-height: 1;
 
 		&__header {
 			display: flex;

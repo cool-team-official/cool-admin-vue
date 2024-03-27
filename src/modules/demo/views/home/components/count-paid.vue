@@ -2,7 +2,7 @@
 	<div class="count-paid">
 		<div class="card">
 			<div class="card__header">
-				<span class="label">支付笔数</span>
+				<span class="label">付款笔数</span>
 				<span class="value">6560</span>
 			</div>
 

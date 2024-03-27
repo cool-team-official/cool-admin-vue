@@ -12,7 +12,10 @@
 						<span>周同比</span>
 
 						<div class="fall">
-							<i class="el-icon-bottom-right"></i>
+							<el-icon>
+								<bottom-right />
+							</el-icon>
+
 							<span>-6%</span>
 						</div>
 					</li>
@@ -21,7 +24,10 @@
 						<span>日同比</span>
 
 						<div class="rise">
-							<i class="el-icon-top-right"></i>
+							<el-icon>
+								<top-right />
+							</el-icon>
+
 							<span>+12%</span>
 						</div>
 					</li>
@@ -36,7 +42,9 @@
 	</div>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { BottomRight, TopRight } from "@element-plus/icons-vue";
+</script>
 
 <style lang="scss" scoped>
 .count-sales {

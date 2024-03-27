@@ -42,10 +42,8 @@
 			</el-row>
 
 			<div class="hot-search__table">
-				<cl-crud ref="Crud" padding="0">
-					<cl-row>
-						<cl-table ref="Table" :border="false" />
-					</cl-row>
+				<cl-crud ref="Crud">
+					<cl-table ref="Table" :border="false" />
 				</cl-crud>
 			</div>
 		</div>
@@ -261,10 +259,7 @@ function chartOption() {
 	}
 
 	&__table {
-		padding: 10px;
 		margin: 0 10px;
-		border-radius: 6px;
-		background-color: var(--el-bg-color);
 	}
 }
 </style>

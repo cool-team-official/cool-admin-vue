@@ -16,7 +16,10 @@
 						<span>周同比</span>
 
 						<div class="fall">
-							<i class="el-icon-bottom-right"></i>
+							<el-icon>
+								<bottom-right />
+							</el-icon>
+
 							<span>-4%</span>
 						</div>
 					</li>
@@ -25,7 +28,10 @@
 						<span>日同比</span>
 
 						<div class="rise">
-							<i class="el-icon-top-right"></i>
+							<el-icon>
+								<top-right />
+							</el-icon>
+
 							<span>+7%</span>
 						</div>
 					</li>
@@ -37,6 +43,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import { BottomRight, TopRight } from "@element-plus/icons-vue";
 
 const value = ref(0);
 
