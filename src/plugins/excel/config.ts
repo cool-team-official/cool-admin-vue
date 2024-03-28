@@ -5,8 +5,8 @@ export default (): ModuleConfig => {
 		label: "Excel",
 		description: "表格的导入、导出组件",
 		author: "COOL",
-		version: "1.0.0",
-		updateTime: "2024-02-01",
+		version: "1.0.1",
+		updateTime: "2024-03-28",
 		demo: [
 			{
 				name: "基础用法",

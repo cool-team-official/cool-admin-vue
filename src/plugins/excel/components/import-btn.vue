@@ -12,7 +12,6 @@
 				<div class="inner">
 					<cl-upload
 						drag
-						type="file"
 						:limit-size="limitSize"
 						:accept="accept"
 						:disabled="disabled"

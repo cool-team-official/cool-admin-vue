@@ -25,7 +25,6 @@ const chartOption = reactive({
 	},
 	series: [
 		{
-			name: "销售额类别占比",
 			type: "pie",
 			radius: ["50%", "60%"],
 			center: ["50%", "40%"],
