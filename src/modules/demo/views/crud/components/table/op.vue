@@ -7,7 +7,7 @@
 
 		<div class="c">
 			<el-button @click="open">预览</el-button>
-			<demo-code :files="['table/base.vue']" />
+			<demo-code :files="['table/op.vue']" />
 
 			<!-- 自定义表格组件 -->
 			<cl-dialog v-model="visible" title="操作栏" width="80%">
