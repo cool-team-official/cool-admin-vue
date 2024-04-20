@@ -1,4 +1,4 @@
-import { hmr } from "../hook";
+import { hmr } from "../hooks";
 import { BaseService } from "./base";
 
 // service 数据集合

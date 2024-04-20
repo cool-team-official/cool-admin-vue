@@ -4,7 +4,7 @@ import { Module } from "../types";
 import { path2Obj } from "../utils";
 import { config, isDev } from "/@/config";
 import { eps } from "virtual:eps";
-import { hmr } from "../hook";
+import { hmr } from "../hooks";
 import { module } from "../module";
 
 // 更新事件

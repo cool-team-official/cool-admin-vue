@@ -2,7 +2,7 @@ import { App } from "vue";
 import { isFunction, orderBy, chain } from "lodash-es";
 import { filename } from "../utils";
 import { module } from "../module";
-import { hmr } from "../hook";
+import { hmr } from "../hooks";
 
 // 扫描文件
 const files: any = import.meta.glob(

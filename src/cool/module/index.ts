@@ -1,5 +1,5 @@
-import { Module } from "../types";
-import { hmr } from "../hook";
+import { type Module } from "../types";
+import { hmr } from "../hooks";
 import { dirs } from "virtual:module";
 
 // 模块列表
