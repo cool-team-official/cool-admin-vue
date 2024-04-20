@@ -34,7 +34,7 @@ async function getData(temps?: Eps.Entity[]) {
 	try {
 		list = JSON.parse(readFile(join(DistPath, "eps.json")) || "[]");
 	} catch (err: any) {
-		error(`[eps] ${join(DistPath, "eps.json")} 文件异常, ${err.message}`);
+		error(`[cool-eps] ${join(DistPath, "eps.json")} 文件异常, ${err.message}`);
 	}
 
 	// 远程地址
@@ -55,7 +55,7 @@ async function getData(temps?: Eps.Entity[]) {
 			}
 		})
 		.catch(() => {
-			error(`[eps] 后端未启动 ➜  ${url}`);
+			error(`[cool-eps] 后端未启动 ➜  ${url}`);
 		});
 
 	// 合并本地数据
