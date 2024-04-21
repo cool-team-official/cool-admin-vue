@@ -30,16 +30,14 @@ export function virtual(): Plugin {
 		},
 		async handleHotUpdate({ file, server }) {
 			// 代码保存时触发
-			if (!file.includes("build/cool/dist")) {
-				const { service } = await createEps();
-
-				// 通知客户端刷新
-				server.ws.send({
-					type: "custom",
-					event: "eps-update",
-					data: {
-						service
-					}
+			if (!["dist"].some((e) => file.includes(e))) {
+				createEps().then((data) => {
+					// 通知客户端刷新
+					server.ws.send({
+						type: "custom",
+						event: "eps-update",
+						data
+					});
 				});
 			}
 		},
