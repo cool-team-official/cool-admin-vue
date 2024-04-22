@@ -1,10 +1,14 @@
 <template>
-	<div class="cl-view-head">
+	<div class="cl-view-head" :class="{ 'is-border': border }">
 		<el-icon class="cl-view-head__back" @click="router.back()">
 			<arrow-left />
 		</el-icon>
 
 		<span class="cl-view-head__title">{{ title }}</span>
+
+		<div class="op">
+			<slot name="op"></slot>
+		</div>
 	</div>
 </template>
 
@@ -14,7 +18,8 @@ import { useCool } from "/@/cool";
 import { ArrowLeft } from "@element-plus/icons-vue";
 
 const props = defineProps({
-	title: String
+	title: String,
+	border: Boolean
 });
 
 const { route, router } = useCool();
@@ -47,6 +52,12 @@ const title = computed(() => props.title || route.query.title);
 	&__title {
 		font-size: 14px;
 		line-height: 1;
+		margin-right: auto;
+	}
+
+	&.is-border {
+		border-bottom: 1px solid var(--el-border-color-light);
+		padding-bottom: 10px;
 	}
 }
 </style>

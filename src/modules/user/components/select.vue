@@ -97,7 +97,7 @@
 import { useCrud, useForm, useTable } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import { type PropType, computed, nextTick, reactive, ref, watch } from "vue";
-import { cloneDeep, isEmpty } from "lodash-es";
+import { cloneDeep, isArray, isEmpty } from "lodash-es";
 import { CircleClose } from "@element-plus/icons-vue";
 
 // 替换你的类型
@@ -271,6 +271,11 @@ function close() {
 	visible.value = false;
 }
 
+// 设置值
+function set(data: Item[] | Item) {
+	list.value = cloneDeep(isArray(data) ? data : [data]);
+}
+
 // 选择
 function select(item?: Item) {
 	// 单选不触发 onSelectionChange 手动设置
@@ -329,6 +334,7 @@ watch(
 );
 
 defineExpose({
+	set,
 	remove,
 	select,
 	selectAll
