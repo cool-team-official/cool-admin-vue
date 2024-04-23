@@ -1,5 +1,5 @@
 /// <reference types="@cool-vue/crud/index.d.ts" />
-/// <reference types="../build/cool/dist/eps.d.ts" />
+/// <reference types="@cool-vue/vite-plugin/eps.d.ts" />
 
 interface ImportMetaEnv {
 	readonly VITE_NAME: string;

@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"rootDir": "./",
+		"types": ["node"],
+		"target": "ESNext",
+		"module": "CommonJS",
+		"declaration": true,
+		"outDir": "types",
+		"strict": true,
+		"esModuleInterop": true,
+		"pretty": true,
+		"resolveJsonModule": true,
+		"typeRoots": ["./node_modules/@types/", "./src/types/"]
+	},
+	"include": ["src", "types.d.ts"],
+	"exclude": ["dist"]
+}

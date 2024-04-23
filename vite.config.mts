@@ -5,7 +5,7 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import compression from "vite-plugin-compression";
 import { visualizer } from "rollup-plugin-visualizer";
 import { proxy } from "./src/config/proxy";
-import { cool } from "./build/cool";
+import { cool } from "@cool-vue/vite-plugin";
 
 function resolve(dir: string) {
 	return path.resolve(__dirname, ".", dir);
@@ -22,7 +22,11 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 			vue(),
 			compression(),
 			vueJsx(),
-			cool(false), // 是否测试模式
+			cool({
+				type: "admin",
+				proxy,
+				demo: false // 是否测试模式
+			}),
 			visualizer({
 				open: false,
 				gzipSize: true,
