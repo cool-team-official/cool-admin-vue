@@ -5,8 +5,41 @@
 })(this, (function (exports, fs, path, axios, lodash, prettier, compilerSfc, magicString, glob) { 'use strict';
 
     const config = {
-        type: "",
+        type: "admin",
         reqUrl: "",
+        demo: false,
+        eps: {
+            dist: "./build/cool",
+            mapping: [
+                {
+                    // 自定义匹配
+                    custom: ({ propertyName, type }) => {
+                        // 如果没有，返回null或者不返回，则继续遍历其他匹配规则
+                        return null;
+                    },
+                },
+                {
+                    type: "string",
+                    test: ["varchar", "text", "simple-json"],
+                },
+                {
+                    type: "string[]",
+                    test: ["simple-array"],
+                },
+                {
+                    type: "Date",
+                    test: ["datetime", "date"],
+                },
+                {
+                    type: "number",
+                    test: ["tinyint", "int", "decimal"],
+                },
+                {
+                    type: "BigInt",
+                    test: ["bigint"],
+                },
+            ],
+        },
     };
 
     // 根目录
@@ -31,9 +64,12 @@
         });
     }
     // 创建目录
-    function createDir(path) {
-        if (!fs.existsSync(path))
-            fs.mkdirSync(path);
+    function createDir(path, recursive) {
+        try {
+            if (!fs.existsSync(path))
+                fs.mkdirSync(path, { recursive });
+        }
+        catch (err) { }
     }
     // 读取文件
     function readFile(path, json) {
@@ -69,73 +105,17 @@
             });
         });
     }
-    // 深度创建目录
-    function mkdirs(path$1) {
-        const arr = path$1.split("/");
-        let p = "";
-        arr.forEach((e) => {
-            const t = path.join(p, e);
-            try {
-                fs.statSync(t);
-            }
-            catch (err) {
-                try {
-                    fs.mkdirSync(t);
-                }
-                catch (error) {
-                    console.error(error);
-                }
-            }
-            p = t;
-        });
-        return p;
-    }
     function error(message) {
         console.log("\x1B[31m%s\x1B[0m", message);
     }
 
-    // 打包目录
-    const DistDir = path.join(__dirname, "../");
-    // 实体描述
-    const Entity = {
-        mapping: [
-            // {
-            // 	// 自定义匹配
-            // 	custom: ({ propertyName, type }) => {
-            // 		// 如果没有，返回null或者不返回，则继续遍历其他匹配规则
-            // 		return null;
-            // 	},
-            // },
-            {
-                type: "string",
-                test: ["varchar", "text", "simple-json"],
-            },
-            {
-                type: "string[]",
-                test: ["simple-array"],
-            },
-            {
-                type: "Date",
-                test: ["datetime", "date"],
-            },
-            {
-                type: "number",
-                test: ["tinyint", "int", "decimal"],
-            },
-            {
-                type: "BigInt",
-                test: ["bigint"],
-            },
-        ],
-    };
-
-    // eps 数据文件路径
-    const epsJsonPath = path.join(DistDir, "eps.json");
-    // eps 描述文件路径
-    const epsDtsPath = path.join(DistDir, "eps.d.ts");
     let service = {};
     let list = [];
     let customList = [];
+    // 获取路径
+    function getEpsPath(filename) {
+        return path.join(config.type == "admin" ? config.eps.dist : rootDir(config.eps.dist), filename || "");
+    }
     // 获取方法名
     function getNames(v) {
         return Object.keys(v).filter((e) => !["namespace", "permission"].includes(e));
@@ -152,11 +132,12 @@
             });
         }
         // 本地文件
+        const epsPath = getEpsPath("eps.json");
         try {
-            list = readFile(epsJsonPath, true) || [];
+            list = readFile(epsPath, true) || [];
         }
         catch (err) {
-            error(`[cool-eps] ${epsJsonPath} 文件异常, ${err.message}`);
+            error(`[cool-eps] ${epsPath} 文件异常, ${err.message}`);
         }
         // 请求地址
         let url = config.reqUrl;
@@ -224,7 +205,7 @@
                 }),
             };
         });
-        fs.createWriteStream(epsJsonPath, {
+        fs.createWriteStream(getEpsPath("eps.json"), {
             flags: "w",
         }).write(JSON.stringify(d));
     }
@@ -232,11 +213,12 @@
     async function createDescribe({ list, service }) {
         // 获取类型
         function getType({ propertyName, type }) {
-            for (const map of Entity.mapping) {
-                // if (map.custom) {
-                // 	const resType = map.custom({ propertyName, type });
-                // 	if (resType) return resType;
-                // }
+            for (const map of config.eps.mapping) {
+                if (map.custom) {
+                    const resType = map.custom({ propertyName, type });
+                    if (resType)
+                        return resType;
+                }
                 if (map.test) {
                     if (map.test.includes(type))
                         return map.type;
@@ -430,7 +412,7 @@
             trailingComma: "none",
         });
         // 创建 eps 描述文件
-        fs.createWriteStream(epsDtsPath, {
+        fs.createWriteStream(getEpsPath("eps.d.ts"), {
             flags: "w",
         }).write(content);
     }
@@ -488,8 +470,8 @@
         await getData(query?.list || []);
         // 创建 service
         createService();
-        // 创建临时目录
-        createDir(DistDir);
+        // 创建目录
+        createDir(getEpsPath(), true);
         // 创建 json 文件
         createJson();
         // 创建描述文件
@@ -587,10 +569,12 @@
         const dir = (options.viewPath || "").split("/");
         // 文件名
         const fname = dir.pop();
+        // 源码路径
+        const srcPath = `./src/${dir.join("/")}`;
         // 创建目录
-        const path$1 = mkdirs(rootDir(`./src/${dir.join("/")}`));
+        createDir(srcPath, true);
         // 创建文件
-        fs.createWriteStream(path.join(path$1, fname || "demo"), {
+        fs.createWriteStream(path.join(srcPath, fname || "demo"), {
             flags: "w",
         }).write(content);
     }
@@ -746,7 +730,7 @@
             name: "vite-cool-virtual",
             enforce: "pre",
             handleHotUpdate({ file, server }) {
-                if (!["pages.json", "dist"].some((e) => file.includes(e))) {
+                if (!["pages.json", "dist", "eps.json"].some((e) => file.includes(e))) {
                     createCtx();
                     createEps().then((data) => {
                         // 通知客户端刷新
@@ -779,8 +763,20 @@
     }
 
     function cool(options) {
+        // 应用类型，admin | app
         config.type = options.type;
+        // 请求地址
         config.reqUrl = options.proxy["/dev/"].target;
+        // Eps
+        if (options.eps) {
+            const { dist, mapping } = options.eps;
+            if (dist) {
+                config.eps.dist = dist;
+            }
+            if (mapping) {
+                config.eps.mapping.unshift(...mapping);
+            }
+        }
         return [base(), virtual(), demo(options.demo)];
     }
 

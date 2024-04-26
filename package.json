@@ -37,7 +37,7 @@
 		"xlsx": "^0.18.5"
 	},
 	"devDependencies": {
-		"@cool-vue/vite-plugin": "^7.0.1",
+		"@cool-vue/vite-plugin": "^7.1.0",
 		"@types/file-saver": "^2.0.7",
 		"@types/lodash-es": "^4.17.8",
 		"@types/mockjs": "^1.0.7",

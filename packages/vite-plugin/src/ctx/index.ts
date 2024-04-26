@@ -2,7 +2,7 @@ import { join } from "path";
 import { readFile, rootDir, writeFile } from "../utils";
 import { glob } from "glob";
 import { assign, cloneDeep, isEqual } from "lodash";
-import type { Ctx } from "../types";
+import type { Ctx } from "../../types";
 import { config } from "../config";
 import fs from "fs";
 

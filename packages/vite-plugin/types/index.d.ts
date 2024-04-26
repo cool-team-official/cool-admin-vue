@@ -45,15 +45,43 @@ export namespace Ctx {
 
 	type SubPackages = {
 		root?: string;
-		pages?: Pages;
+		pages?: Ctx.Pages;
 		[key: string]: any;
 	}[];
 
 	interface Data {
 		appid?: string;
-		pages?: Pages;
-		subPackages?: SubPackages;
+		pages?: Ctx.Pages;
+		subPackages?: Ctx.SubPackages;
 		modules?: string[];
+		[key: string]: any;
+	}
+}
+
+export namespace Config {
+	type Type = "app" | "admin";
+	interface Eps {
+		dist: string;
+		mapping: {
+			type?: string;
+			test?: string[];
+			custom?(data: { propertyName: string; type: string }): any;
+		}[];
+	}
+	interface Options {
+		type: Config.Type;
+		proxy: any;
+		eps?: {
+			dist?: string;
+			mapping?: Config.Eps["mapping"];
+		};
+		demo?: boolean;
+	}
+	interface Data {
+		type: Config.Type;
+		reqUrl: string;
+		eps: Config.Eps;
+		demo: boolean;
 		[key: string]: any;
 	}
 }

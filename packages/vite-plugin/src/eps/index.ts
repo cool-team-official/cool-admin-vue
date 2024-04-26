@@ -1,22 +1,23 @@
-import { createDir, error, firstUpperCase, readFile, toCamel } from "../utils";
+import { createDir, error, firstUpperCase, readFile, rootDir, toCamel } from "../utils";
 import { join } from "path";
-import { Entity, DistDir } from "./config";
 import axios from "axios";
 import { isArray, isEmpty, last, merge } from "lodash";
 import { createWriteStream } from "fs";
 import prettier from "prettier";
 import { config } from "../config";
-import type { Eps } from "../types";
-
-// eps 数据文件路径
-const epsJsonPath = join(DistDir, "eps.json");
-
-// eps 描述文件路径
-const epsDtsPath = join(DistDir, "eps.d.ts");
+import type { Eps } from "../../types";
 
 let service = {};
 let list: Eps.Entity[] = [];
 let customList: Eps.Entity[] = [];
+
+// 获取路径
+function getEpsPath(filename?: string) {
+	return join(
+		config.type == "admin" ? config.eps.dist : rootDir(config.eps.dist),
+		filename || "",
+	);
+}
 
 // 获取方法名
 function getNames(v: any) {
@@ -36,10 +37,12 @@ async function getData(data?: Eps.Entity[]) {
 	}
 
 	// 本地文件
+	const epsPath = getEpsPath("eps.json");
+
 	try {
-		list = readFile(epsJsonPath, true) || [];
+		list = readFile(epsPath, true) || [];
 	} catch (err: any) {
-		error(`[cool-eps] ${epsJsonPath} 文件异常, ${err.message}`);
+		error(`[cool-eps] ${epsPath} 文件异常, ${err.message}`);
 	}
 
 	// 请求地址
@@ -116,7 +119,7 @@ function createJson() {
 		};
 	});
 
-	createWriteStream(epsJsonPath, {
+	createWriteStream(getEpsPath("eps.json"), {
 		flags: "w",
 	}).write(JSON.stringify(d));
 }
@@ -125,11 +128,11 @@ function createJson() {
 async function createDescribe({ list, service }: { list: Eps.Entity[]; service: any }) {
 	// 获取类型
 	function getType({ propertyName, type }: any) {
-		for (const map of Entity.mapping) {
-			// if (map.custom) {
-			// 	const resType = map.custom({ propertyName, type });
-			// 	if (resType) return resType;
-			// }
+		for (const map of config.eps.mapping) {
+			if (map.custom) {
+				const resType = map.custom({ propertyName, type });
+				if (resType) return resType;
+			}
 			if (map.test) {
 				if (map.test.includes(type)) return map.type;
 			}
@@ -370,7 +373,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 	});
 
 	// 创建 eps 描述文件
-	createWriteStream(epsDtsPath, {
+	createWriteStream(getEpsPath("eps.d.ts"), {
 		flags: "w",
 	}).write(content);
 }
@@ -441,8 +444,8 @@ export async function createEps(query?: { list: any[] }) {
 	// 创建 service
 	createService();
 
-	// 创建临时目录
-	createDir(DistDir);
+	// 创建目录
+	createDir(getEpsPath(), true);
 
 	// 创建 json 文件
 	createJson();

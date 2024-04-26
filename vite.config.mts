@@ -24,8 +24,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 			vueJsx(),
 			cool({
 				type: "admin",
-				proxy,
-				demo: false // 是否测试模式
+				proxy
 			}),
 			visualizer({
 				open: false,

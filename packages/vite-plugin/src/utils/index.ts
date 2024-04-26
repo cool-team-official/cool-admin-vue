@@ -28,8 +28,10 @@ export function toCamel(str: string): string {
 }
 
 // 创建目录
-export function createDir(path: string) {
-	if (!fs.existsSync(path)) fs.mkdirSync(path);
+export function createDir(path: string, recursive?: boolean) {
+	try {
+		if (!fs.existsSync(path)) fs.mkdirSync(path, { recursive });
+	} catch (err) {}
 }
 
 // 读取文件
@@ -66,29 +68,6 @@ export function parseJson(req: any): Promise<any> {
 			}
 		});
 	});
-}
-
-// 深度创建目录
-export function mkdirs(path: string) {
-	const arr = path.split("/");
-	let p = "";
-
-	arr.forEach((e) => {
-		const t = join(p, e);
-
-		try {
-			fs.statSync(t);
-		} catch (err) {
-			try {
-				fs.mkdirSync(t);
-			} catch (error) {
-				console.error(error);
-			}
-		}
-		p = t;
-	});
-
-	return p;
 }
 
 export function error(message: string) {
