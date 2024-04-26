@@ -12,7 +12,7 @@ export async function virtual(): Promise<Plugin> {
 		name: "vite-cool-virtual",
 		enforce: "pre",
 		handleHotUpdate({ file, server }) {
-			if (!["pages.json", "dist", "eps.json"].some((e) => file.includes(e))) {
+			if (!["pages.json", "dist", "build/cool"].some((e) => file.includes(e))) {
 				createCtx();
 
 				createEps().then((data) => {

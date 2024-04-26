@@ -730,7 +730,7 @@
             name: "vite-cool-virtual",
             enforce: "pre",
             handleHotUpdate({ file, server }) {
-                if (!["pages.json", "dist", "eps.json"].some((e) => file.includes(e))) {
+                if (!["pages.json", "dist", "build/cool"].some((e) => file.includes(e))) {
                     createCtx();
                     createEps().then((data) => {
                         // 通知客户端刷新
