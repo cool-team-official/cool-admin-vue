@@ -86,8 +86,8 @@ dependencies:
 
 devDependencies:
   '@cool-vue/vite-plugin':
-    specifier: ^7.1.1
-    version: 7.1.1
+    specifier: ^7.1.2
+    version: 7.1.2
   '@types/file-saver':
     specifier: ^2.0.7
     version: 2.0.7
@@ -482,8 +482,8 @@ packages:
       - typescript
     dev: false
 
-  /@cool-vue/vite-plugin@7.1.1:
-    resolution: {integrity: sha512-bCf0+ICwjYWYdS3DOrgr74YulvQLVjzNKPiTeL32pTyTecmFSOqbiQ+PbVYxIPHtZjnNjupWOz5vYm1kmBscWQ==}
+  /@cool-vue/vite-plugin@7.1.2:
+    resolution: {integrity: sha512-VRkJWIJP3eMJod7gCqrSdpKUOHrJJYwW2jyuEo1LroFjgPqhf1qH2IvPFRreKDdiFfDlwwE4g67nP/VBI/CpOw==}
     dependencies:
       '@vue/compiler-sfc': 3.4.25
       axios: 1.6.8

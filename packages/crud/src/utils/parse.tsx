@@ -62,9 +62,11 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 				label: v,
 				value: v
 			};
-			delete d.children;
 
-			return d;
+			return {
+				...d,
+				children: []
+			};
 		});
 
 	// 格式化返回
