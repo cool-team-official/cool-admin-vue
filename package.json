@@ -32,7 +32,7 @@
 		"store": "^2.0.12",
 		"vue": "^3.4.15",
 		"vue-echarts": "^6.6.1",
-		"vue-router": "^4.2.5",
+		"vue-router": "^4.3.2",
 		"vuedraggable": "^4.1.0",
 		"xlsx": "^0.18.5"
 	},
