@@ -20,6 +20,10 @@
 
 -   [🌐 码云仓库地址](https://gitee.com/cool-team-official/cool-admin-vue)
 
+## 视频教程
+
+[官方 B 站视频教程](https://www.bilibili.com/video/BV1j1421R7aB)
+
 ## 演示
 
 [https://show.cool-admin.com](https://show.cool-admin.com)
