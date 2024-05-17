@@ -1,7 +1,7 @@
 import { join } from "path";
 import { readFile, rootDir, writeFile } from "../utils";
 import { glob } from "glob";
-import { assign, cloneDeep, isEqual } from "lodash";
+import { assign, cloneDeep, isEqual, orderBy } from "lodash";
 import type { Ctx } from "../../types";
 import { config } from "../config";
 import fs from "fs";
@@ -61,8 +61,16 @@ export async function createCtx() {
 			}
 		}
 
+		// 排序后检测，避免加载顺序问题
+		function order(d: Ctx.Data) {
+			return {
+				pages: orderBy(d.pages, "path"),
+				subPackages: orderBy(d.subPackages, "root"),
+			};
+		}
+
 		// 是否需要更新 pages.json
-		if (!isEqual(ctxData, ctx)) {
+		if (!isEqual(order(ctxData), order(ctx))) {
 			console.log("[cool-ctx] pages updated");
 			writeFile(ctxPath, JSON.stringify(ctx, null, 4));
 		}

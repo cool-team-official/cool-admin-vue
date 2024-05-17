@@ -4,4 +4,5 @@ export declare function createEps(query?: {
 }): Promise<{
     service: {};
     list: Eps.Entity[];
+    isUpdate: boolean;
 }>;

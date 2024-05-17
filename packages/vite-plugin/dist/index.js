@@ -192,7 +192,7 @@
     }
     // 创建 json 文件
     function createJson() {
-        const d = list.map((e) => {
+        const arr = list.map((e) => {
             return {
                 prefix: e.prefix,
                 name: e.name || "",
@@ -205,9 +205,16 @@
                 }),
             };
         });
-        fs.createWriteStream(getEpsPath("eps.json"), {
-            flags: "w",
-        }).write(JSON.stringify(d));
+        const content = JSON.stringify(arr);
+        const local_content = readFile(getEpsPath("eps.json"));
+        // 是否需要更新
+        const isUpdate = content != local_content;
+        if (isUpdate) {
+            fs.createWriteStream(getEpsPath("eps.json"), {
+                flags: "w",
+            }).write(content);
+        }
+        return isUpdate;
     }
     // 创建描述文件
     async function createDescribe({ list, service }) {
@@ -411,10 +418,14 @@
             printWidth: 100,
             trailingComma: "none",
         });
-        // 创建 eps 描述文件
-        fs.createWriteStream(getEpsPath("eps.d.ts"), {
-            flags: "w",
-        }).write(content);
+        const local_content = readFile(getEpsPath("eps.d.ts"));
+        // 是否需要更新
+        if (content != local_content) {
+            // 创建 eps 描述文件
+            fs.createWriteStream(getEpsPath("eps.d.ts"), {
+                flags: "w",
+            }).write(content);
+        }
     }
     // 创建 service
     function createService() {
@@ -473,12 +484,13 @@
         // 创建目录
         createDir(getEpsPath(), true);
         // 创建 json 文件
-        createJson();
+        const isUpdate = createJson();
         // 创建描述文件
         createDescribe({ service, list });
         return {
             service,
             list,
+            isUpdate,
         };
     }
 
@@ -707,8 +719,15 @@
                     });
                 }
             }
+            // 排序后检测，避免加载顺序问题
+            function order(d) {
+                return {
+                    pages: lodash.orderBy(d.pages, "path"),
+                    subPackages: lodash.orderBy(d.subPackages, "root"),
+                };
+            }
             // 是否需要更新 pages.json
-            if (!lodash.isEqual(ctxData, ctx)) {
+            if (!lodash.isEqual(order(ctxData), order(ctx))) {
                 console.log("[cool-ctx] pages updated");
                 writeFile(ctxPath, JSON.stringify(ctx, null, 4));
             }
@@ -747,12 +766,14 @@
                 if (!["pages.json", "dist", "build/cool", "eps.json", "eps.d.ts"].some((e) => file.includes(e))) {
                     createCtx();
                     createEps().then((data) => {
-                        // 通知客户端刷新
-                        (server.hot || server.ws).send({
-                            type: "custom",
-                            event: "eps-update",
-                            data,
-                        });
+                        if (data.isUpdate) {
+                            // 通知客户端刷新
+                            (server.hot || server.ws).send({
+                                type: "custom",
+                                event: "eps-update",
+                                data,
+                            });
+                        }
                     });
                 }
             },

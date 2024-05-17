@@ -105,7 +105,7 @@ async function getData(data?: Eps.Entity[]) {
 
 // 创建 json 文件
 function createJson() {
-	const d = list.map((e) => {
+	const arr = list.map((e) => {
 		return {
 			prefix: e.prefix,
 			name: e.name || "",
@@ -119,9 +119,19 @@ function createJson() {
 		};
 	});
 
-	createWriteStream(getEpsPath("eps.json"), {
-		flags: "w",
-	}).write(JSON.stringify(d));
+	const content = JSON.stringify(arr);
+	const local_content = readFile(getEpsPath("eps.json"));
+
+	// 是否需要更新
+	const isUpdate = content != local_content;
+
+	if (isUpdate) {
+		createWriteStream(getEpsPath("eps.json"), {
+			flags: "w",
+		}).write(content);
+	}
+
+	return isUpdate;
 }
 
 // 创建描述文件
@@ -372,10 +382,15 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 		trailingComma: "none",
 	});
 
-	// 创建 eps 描述文件
-	createWriteStream(getEpsPath("eps.d.ts"), {
-		flags: "w",
-	}).write(content);
+	const local_content = readFile(getEpsPath("eps.d.ts"));
+
+	// 是否需要更新
+	if (content != local_content) {
+		// 创建 eps 描述文件
+		createWriteStream(getEpsPath("eps.d.ts"), {
+			flags: "w",
+		}).write(content);
+	}
 }
 
 // 创建 service
@@ -448,7 +463,7 @@ export async function createEps(query?: { list: any[] }) {
 	createDir(getEpsPath(), true);
 
 	// 创建 json 文件
-	createJson();
+	const isUpdate = createJson();
 
 	// 创建描述文件
 	createDescribe({ service, list });
@@ -456,5 +471,6 @@ export async function createEps(query?: { list: any[] }) {
 	return {
 		service,
 		list,
+		isUpdate,
 	};
 }

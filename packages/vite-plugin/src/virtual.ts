@@ -33,14 +33,15 @@ export async function virtual(): Promise<Plugin> {
 				)
 			) {
 				createCtx();
-
 				createEps().then((data) => {
-					// 通知客户端刷新
-					(server.hot || server.ws).send({
-						type: "custom",
-						event: "eps-update",
-						data,
-					});
+					if (data.isUpdate) {
+						// 通知客户端刷新
+						(server.hot || server.ws).send({
+							type: "custom",
+							event: "eps-update",
+							data,
+						});
+					}
 				});
 			}
 		},
