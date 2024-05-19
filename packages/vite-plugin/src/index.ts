@@ -3,6 +3,7 @@ import { config } from "./config";
 import { demo } from "./demo";
 import { virtual } from "./virtual";
 import type { Config } from "../types";
+import { merge } from "lodash";
 
 export function cool(options: Config.Options) {
 	// 应用类型，admin | app
@@ -13,14 +14,21 @@ export function cool(options: Config.Options) {
 
 	// Eps
 	if (options.eps) {
-		const { dist, mapping } = options.eps;
+		const { dist, mapping, api } = options.eps;
 
+		// 类型
+		if (api) {
+			config.eps.api = api;
+		}
+
+		// 输出目录
 		if (dist) {
 			config.eps.dist = dist;
 		}
 
+		// 匹配规则
 		if (mapping) {
-			config.eps.mapping.unshift(...mapping);
+			merge(config.eps.mapping, mapping);
 		}
 	}
 

@@ -11,6 +11,27 @@ let service = {};
 let list: Eps.Entity[] = [];
 let customList: Eps.Entity[] = [];
 
+// 获取请求地址
+function getEpsUrl() {
+	let url = config.eps.api;
+
+	if (!url) {
+		url = config.type;
+	}
+
+	switch (url) {
+		case "app":
+			url = "/app/base/comm/eps";
+			break;
+
+		case "admin":
+			url = "/admin/base/open/eps";
+			break;
+	}
+
+	return url;
+}
+
 // 获取路径
 function getEpsPath(filename?: string) {
 	return join(
@@ -46,17 +67,7 @@ async function getData(data?: Eps.Entity[]) {
 	}
 
 	// 请求地址
-	let url = config.reqUrl;
-
-	switch (config.type) {
-		case "app":
-			url += "/app/base/comm/eps";
-			break;
-
-		case "admin":
-			url += "/admin/base/open/eps";
-			break;
-	}
+	const url = config.reqUrl + getEpsUrl();
 
 	// 请求数据
 	await axios
@@ -395,14 +406,15 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 
 // 创建 service
 function createService() {
+	// 路径第一层作为 id 标识
+	const id = getEpsUrl().split("/")[1];
+
 	list.forEach((e) => {
+		// 请求地址
+		const path = e.prefix[0] == "/" ? e.prefix.substring(1, e.prefix.length) : e.prefix;
+
 		// 分隔路径
-		const arr = e.prefix
-			.replace(/\//, "")
-			.replace(config.type, "")
-			.split("/")
-			.filter(Boolean)
-			.map(toCamel);
+		const arr = path.replace(id, "").split("/").filter(Boolean).map(toCamel);
 
 		// 遍历
 		function deep(d: any, i: number) {
@@ -420,7 +432,7 @@ function createService() {
 					// 不存在则创建
 					if (!d[k]) {
 						d[k] = {
-							namespace: e.prefix.substring(1, e.prefix.length),
+							namespace: path,
 							permission: {},
 						};
 					}
@@ -436,12 +448,11 @@ function createService() {
 					});
 
 					// 创建权限
-					getNames(d[k]).forEach((e) => {
-						d[k].permission[e] =
-							`${d[k].namespace.replace(`${config.type}/`, "")}/${e}`.replace(
-								/\//g,
-								":",
-							);
+					getNames(d[k]).forEach((i) => {
+						d[k].permission[i] = `${d[k].namespace.replace(`${id}/`, "")}/${i}`.replace(
+							/\//g,
+							":",
+						);
 					});
 				}
 			}

@@ -61,6 +61,7 @@ export namespace Ctx {
 export namespace Config {
 	type Type = "app" | "admin";
 	interface Eps {
+		api: "app" | "admin" | (string & {});
 		dist: string;
 		mapping: {
 			type?: string;
@@ -71,10 +72,7 @@ export namespace Config {
 	interface Options {
 		type: Config.Type;
 		proxy: any;
-		eps?: {
-			dist?: string;
-			mapping?: Config.Eps["mapping"];
-		};
+		eps?: Partial<Config.Eps>;
 		demo?: boolean;
 	}
 	interface Data {
@@ -85,3 +83,5 @@ export namespace Config {
 		[key: string]: any;
 	}
 }
+
+// ts范型，Config.EPS的类型改成全部可选
