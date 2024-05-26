@@ -26,6 +26,6 @@ declare const ClContextMenu: import("vue").DefineComponent<{
     event: ClContextMenu.Event;
 }, {}>;
 export declare const ContextMenu: {
-    open(event: ClContextMenu.Event, options: ClContextMenu.Options): Record<string, any> | null | undefined;
+    open(event: ClContextMenu.Event, options: ClContextMenu.Options): ClContextMenu.Exposed;
 };
 export default ClContextMenu;

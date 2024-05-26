@@ -267,7 +267,7 @@ export const ContextMenu = {
 
 		render(vm, event.target.ownerDocument.createElement("div"));
 
-		return vm.component?.exposed;
+		return vm.component?.exposed as ClContextMenu.Exposed;
 	}
 };
 

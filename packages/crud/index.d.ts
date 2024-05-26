@@ -40,8 +40,8 @@ declare type obj = {
 declare type DeepPartial<T> = T extends Function
 	? T
 	: T extends object
-		? { [P in keyof T]?: DeepPartial<T[P]> }
-		: T;
+	  ? { [P in keyof T]?: DeepPartial<T[P]> }
+	  : T;
 
 // 合并
 declare type Merge<A, B> = Omit<A, keyof B> & B;
@@ -703,7 +703,11 @@ declare namespace ClContextMenu {
 	}
 
 	interface Ref {
-		open(event: Event, options: Options): { close: () => void };
+		open(event: Event, options: Options): Exposed;
+		close(): void;
+	}
+
+	interface Exposed {
 		close(): void;
 	}
 }
