@@ -1,6 +1,6 @@
 {
 	"name": "@cool-vue/crud",
-	"version": "7.1.16",
+	"version": "7.1.18",
 	"private": false,
 	"main": "./dist/index.umd.min.js",
 	"typings": "types/index.d.ts",
@@ -11,6 +11,7 @@
 		"dist": "tsc && yarn build --target lib --name index ./src/index.ts"
 	},
 	"dependencies": {
+		"@element-plus/icons-vue": "^2.3.1",
 		"array.prototype.flat": "^1.2.4",
 		"core-js": "^3.21.1",
 		"element-plus": "^2.6.1",
@@ -21,6 +22,7 @@
 	"devDependencies": {
 		"@types/array.prototype.flat": "^1.2.1",
 		"@types/clone-deep": "^4.0.1",
+		"@types/lodash-es": "^4.17.12",
 		"@vue/cli-plugin-babel": "^5.0.1",
 		"@vue/cli-plugin-typescript": "^5.0.3",
 		"@vue/cli-service": "^5.0.3",

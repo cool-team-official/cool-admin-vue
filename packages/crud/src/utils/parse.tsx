@@ -76,10 +76,18 @@ export function parseTableDict(value: any, item: ClTable.Column) {
 		// tag 返回
 		return result.map((e) => {
 			return h(
-				<el-tag disable-transitions effect="dark" style="margin: 2px; border: 0" />,
-				e,
+				<el-tag disable-transitions style="margin: 2px; border: 0" />,
 				{
-					default: () => e.label
+					type: e.type,
+					closable: e.closable,
+					hit: e.hit,
+					color: e.color,
+					size: e.size,
+					effect: e.effect || "dark",
+					round: e.round
+				},
+				{
+					default: () => <span>{e.label}</span>
 				}
 			);
 		});

@@ -692,17 +692,18 @@ declare namespace ClContextMenu {
 	}
 
 	interface Options {
+		class?: string;
 		hover?:
 			| boolean
 			| {
 					target?: string;
 					className?: string;
 			  };
-		list: Item[];
+		list?: Item[];
 	}
 
 	interface Ref {
-		open(event: Event, options: Options): Ref;
+		open(event: Event, options: Options): { close: () => void };
 		close(): void;
 	}
 }

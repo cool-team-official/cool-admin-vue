@@ -1,11 +1,11 @@
 import type { Merge, ModuleConfig } from "/@/cool";
 
 // npm
-import Crud, { locale, setFocus } from "@cool-vue/crud";
+// import Crud, { locale, setFocus } from "@cool-vue/crud";
 import "@cool-vue/crud/dist/index.css";
 
 // 调试、自定义crud
-// import Crud, { locale, setFocus } from "/~/crud/src";
+import Crud, { locale, setFocus } from "/~/crud/src";
 // import "/~/crud/src/static/index.scss";
 
 export default (): Merge<ModuleConfig, CrudOptions> => {
@@ -13,8 +13,8 @@ export default (): Merge<ModuleConfig, CrudOptions> => {
 		label: "CRUD",
 		description: "快速增删改查及一系列辅助组件",
 		author: "COOL",
-		version: "1.0.6",
-		updateTime: "2024-03-19",
+		version: "1.0.7",
+		updateTime: "2024-05-26",
 		demo: "/demo/crud",
 
 		// 组件全注册
