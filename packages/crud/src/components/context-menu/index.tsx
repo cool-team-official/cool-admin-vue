@@ -25,7 +25,7 @@ const ClContextMenu = defineComponent({
 			default: () => ({})
 		},
 		event: {
-			type: Object as PropType<ClContextMenu.Event>,
+			type: Object,
 			default: () => ({})
 		}
 	},
@@ -90,36 +90,7 @@ const ClContextMenu = defineComponent({
 		}
 
 		// 打开
-		function open(event: ClContextMenu.Event, options: ClContextMenu.Options = {}) {
-			// 点击样式
-			if (options?.hover) {
-				const d = options.hover === true ? {} : options.hover;
-				targetEl = event.target;
-
-				if (targetEl && isString(targetEl.className)) {
-					if (d.target) {
-						while (!targetEl.className.includes(d.target)) {
-							targetEl = targetEl.parentNode;
-						}
-					}
-
-					addClass(targetEl, d.className || "cl-context-menu__target");
-				}
-			}
-
-			// 自定义样式
-			if (options?.class) {
-				addClass(
-					refs["context-menu"].querySelector(".cl-context-menu__box"),
-					options.class
-				);
-			}
-
-			// 菜单列表
-			if (options?.list) {
-				list.value = parseList(options.list);
-			}
-
+		function open(event: any, options: ClContextMenu.Options = {}) {
 			// 阻止默认事件
 			stopDefault(event);
 
@@ -127,12 +98,20 @@ const ClContextMenu = defineComponent({
 			visible.value = true;
 
 			nextTick(() => {
+				const el = refs["context-menu"].querySelector(".cl-context-menu__box");
+
+				// 计算位置
 				let left = event.pageX;
 				let top = event.pageY;
 
+				// 组件方式用 offset 计算
+				if (!props.show) {
+					left = event.offsetX;
+					top = event.offsetY;
+				}
+
 				const { clientHeight: h1, clientWidth: w1 } = event.target?.ownerDocument.body;
-				const { clientHeight: h2, clientWidth: w2 } =
-					refs["context-menu"].querySelector(".cl-context-menu__box");
+				const { clientHeight: h2, clientWidth: w2 } = el;
 
 				if (top + h2 > h1) {
 					top = h1 - h2 - 5;
@@ -144,6 +123,32 @@ const ClContextMenu = defineComponent({
 
 				style.left = left + "px";
 				style.top = top + "px";
+
+				// 点击样式
+				if (options?.hover) {
+					const d = options.hover === true ? {} : options.hover;
+					targetEl = event.target;
+
+					if (targetEl && isString(targetEl.className)) {
+						if (d.target) {
+							while (!targetEl.className.includes(d.target)) {
+								targetEl = targetEl.parentNode;
+							}
+						}
+
+						addClass(targetEl, d.className || "cl-context-menu__target");
+					}
+				}
+
+				// 自定义样式
+				if (options?.class) {
+					addClass(el, options.class);
+				}
+
+				// 菜单列表
+				if (options?.list) {
+					list.value = parseList(options.list);
+				}
 			});
 
 			return {
@@ -258,7 +263,7 @@ const ClContextMenu = defineComponent({
 });
 
 export const ContextMenu = {
-	open(event: ClContextMenu.Event, options: ClContextMenu.Options) {
+	open(event: any, options: ClContextMenu.Options) {
 		const vm = h(ClContextMenu, {
 			show: true,
 			event,

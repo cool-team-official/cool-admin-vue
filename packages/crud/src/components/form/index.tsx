@@ -113,6 +113,39 @@ export default defineComponent({
 			}
 		}
 
+		// 转换表单值，处理多层级等数据
+		function invokeData(d: any) {
+			for (const i in d) {
+				if (i.includes("-")) {
+					// 结构参数
+					const [a, ...arr] = i.split("-");
+
+					// 关键值的key
+					const k: string = arr.pop() || "";
+
+					if (!d[a]) {
+						d[a] = {};
+					}
+
+					let f: any = d[a];
+
+					// 设置默认值
+					arr.forEach((e) => {
+						if (!f[e]) {
+							f[e] = {};
+						}
+
+						f = f[e];
+					});
+
+					// 设置关键值
+					f[k] = d[i];
+
+					delete d[i];
+				}
+			}
+		}
+
 		// 表单提交
 		function submit(callback?: fn) {
 			// 验证表单
@@ -151,36 +184,8 @@ export default defineComponent({
 						deep(e);
 					});
 
-					// 处理 "-" 多层级
-					for (const i in d) {
-						if (i.includes("-")) {
-							// 结构参数
-							const [a, ...arr] = i.split("-");
-
-							// 关键值的key
-							const k: string = arr.pop() || "";
-
-							if (!d[a]) {
-								d[a] = {};
-							}
-
-							let f: any = d[a];
-
-							// 设置默认值
-							arr.forEach((e) => {
-								if (!f[e]) {
-									f[e] = {};
-								}
-
-								f = f[e];
-							});
-
-							// 设置关键值
-							f[k] = d[i];
-
-							delete d[i];
-						}
-					}
+					// 处理数据
+					invokeData(d);
 
 					const submit = callback || config.on?.submit;
 
@@ -386,13 +391,15 @@ export default defineComponent({
 				e.props,
 				{
 					label() {
-						return e.renderLabel
-							? renderNode(e.renderLabel, {
-									scope: form,
-									render: "slot",
-									slots
-								})
-							: e.label;
+						if (e.renderLabel) {
+							return renderNode(e.renderLabel, {
+								scope: form,
+								render: "slot",
+								slots
+							});
+						} else {
+							return e.label;
+						}
 					},
 					default() {
 						return (
@@ -609,6 +616,7 @@ export default defineComponent({
 			clear,
 			reset,
 			submit,
+			invokeData,
 			bindForm,
 			showLoading,
 			hideLoading,

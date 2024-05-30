@@ -7,7 +7,7 @@ declare const ClContextMenu: import("vue").DefineComponent<{
         default: () => {};
     };
     event: {
-        type: PropType<ClContextMenu.Event>;
+        type: ObjectConstructor;
         default: () => {};
     };
 }, () => any, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
@@ -17,15 +17,15 @@ declare const ClContextMenu: import("vue").DefineComponent<{
         default: () => {};
     };
     event: {
-        type: PropType<ClContextMenu.Event>;
+        type: ObjectConstructor;
         default: () => {};
     };
 }>>, {
     options: ClContextMenu.Options;
     show: boolean;
-    event: ClContextMenu.Event;
+    event: Record<string, any>;
 }, {}>;
 export declare const ContextMenu: {
-    open(event: ClContextMenu.Event, options: ClContextMenu.Options): ClContextMenu.Exposed;
+    open(event: any, options: ClContextMenu.Options): ClContextMenu.Exposed;
 };
 export default ClContextMenu;

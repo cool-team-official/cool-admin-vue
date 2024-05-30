@@ -16,6 +16,7 @@ export function useApi({ Form }: { Form: Vue.Ref<any> }) {
 			"collapseItem",
 			"getForm",
 			"setForm",
+			"invokeData",
 			"setData",
 			"setConfig",
 			"setOptions",

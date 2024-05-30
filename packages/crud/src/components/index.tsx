@@ -18,6 +18,7 @@ import Filter from "./filter";
 import Search from "./search";
 import ErrorMessage from "./error-message";
 import Row from "./row";
+import ContextMenu from "./context-menu";
 
 export const components: { [key: string]: any } = {
 	Crud,
@@ -38,7 +39,8 @@ export const components: { [key: string]: any } = {
 	Filter,
 	Search,
 	ErrorMessage,
-	Row
+	Row,
+	ContextMenu
 };
 
 export function useComponent(app: App) {

@@ -575,6 +575,7 @@ declare namespace ClForm {
 		showLoading(): void;
 		hideLoading(): void;
 		setDisabled(flag?: boolean): void;
+		invokeData(data: any): void;
 		setData(prop: string, value: any): void;
 		bindForm(data: obj): void;
 		getForm(prop?: string): any;

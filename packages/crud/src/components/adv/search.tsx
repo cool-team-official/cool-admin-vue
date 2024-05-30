@@ -149,8 +149,8 @@ export default defineComponent({
 			open,
 			close,
 			clear,
-			reset,
-			...useApi({ Form })
+			...useApi({ Form }),
+			reset
 		});
 
 		return () => {
