@@ -118,7 +118,7 @@ const Table = useTable({
 		{
 			label: "创建时间",
 			prop: "createTime",
-			minWidth: 160,
+			minWidth: 170,
 			sortable: "desc",
 
 			//【很重要】搜索参数配置

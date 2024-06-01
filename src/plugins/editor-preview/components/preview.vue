@@ -10,6 +10,7 @@
 		:scrollbar="isScroll"
 		append-to-body
 		v-model="visible"
+		v-bind="$attrs"
 	>
 		<div class="cl-editor-preview">
 			<el-tabs v-model="active" type="card" v-if="list.length > 1" @tab-change="onTabChange">

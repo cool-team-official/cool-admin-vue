@@ -142,7 +142,7 @@ const Table = useTable({
 			prop: "createTime",
 			label: "创建时间",
 			sortable: "desc",
-			minWidth: 160
+			minWidth: 170
 		},
 		{
 			type: "op",

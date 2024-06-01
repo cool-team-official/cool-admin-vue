@@ -76,7 +76,7 @@ const Table = useTable({
 		{
 			label: "执行时间",
 			prop: "createTime",
-			minWidth: 160
+			minWidth: 170
 		}
 	]
 });

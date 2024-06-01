@@ -68,7 +68,7 @@ const Table = useTable({
 			}
 		},
 		{ label: "删除条数", prop: "count", minWidth: 120, sortable: "custom" },
-		{ label: "创建时间", prop: "createTime", minWidth: 160, sortable: "desc" },
+		{ label: "创建时间", prop: "createTime", minWidth: 170, sortable: "desc" },
 		{
 			type: "op",
 			width: 120,

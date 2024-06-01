@@ -22,7 +22,7 @@ export function useUpload() {
 	}> {
 		return new Promise(async (resolve, reject) => {
 			// 合并配置
-			const { prefixPath, onProgress } = merge(opts, options);
+			const { prefixPath, onProgress } = merge(options, opts);
 
 			// 文件id
 			const fileId = uuid("");
@@ -120,7 +120,7 @@ export function useUpload() {
 							type == "aws"
 								? {
 										key
-									}
+								  }
 								: {}
 						)
 						.then((res) => {

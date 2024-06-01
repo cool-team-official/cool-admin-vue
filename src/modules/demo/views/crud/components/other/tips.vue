@@ -99,7 +99,7 @@ const Table = useTable<Eps.DemoGoodsEntity>({
 		{
 			label: "创建时间",
 			prop: "createTime",
-			minWidth: 160,
+			minWidth: 170,
 			sortable: "desc"
 		},
 		{

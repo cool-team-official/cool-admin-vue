@@ -111,7 +111,7 @@ const Table = useTable({
 		{
 			prop: "createTime",
 			label: "请求时间",
-			minWidth: 160,
+			minWidth: 170,
 			sortable: "desc"
 		}
 	]

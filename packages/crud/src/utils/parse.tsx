@@ -199,7 +199,7 @@ export function parseExtensionComponent(vnode: any) {
 							return <el-option key={i} label={label} value={value} {...e.props} />;
 						case "el-radio-group":
 							return (
-								<el-radio key={i} label={value} {...e.props}>
+								<el-radio key={i} value={value} {...e.props}>
 									{label}
 								</el-radio>
 							);
