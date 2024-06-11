@@ -24,6 +24,19 @@
 							</el-tooltip>
 						</div>
 
+						<div class="search" v-if="config.enableKeySearch">
+							<el-input
+								placeholder="搜索关键字"
+								v-model="keyWord"
+								clearable
+								@change="
+									refresh({
+										page: 1
+									})
+								"
+							/>
+						</div>
+
 						<div class="data" v-loading="loading">
 							<el-scrollbar>
 								<!-- 树类型 -->
@@ -173,6 +186,7 @@ const config = reactive(
 			service: {},
 			enableContextMenu: true,
 			enableRefresh: true,
+			enableKeySearch: true,
 			enableAdd: true,
 			custom: false
 		},
@@ -189,6 +203,9 @@ if (isEmpty(config.service) && !isCustom) {
 
 // 加载中
 const loading = ref(false);
+
+// 搜索关键字
+const keyWord = ref("");
 
 // 列表
 const list = ref<ClViewGroup.Item[]>([]);
@@ -331,10 +348,11 @@ async function refresh(params?: any) {
 
 	const data = {
 		...reqParams,
-		...config.data
+		...config.data,
+		keyWord: keyWord.value
 	};
 
-	let req;
+	let req: Promise<void>;
 
 	if (tree.visible) {
 		// 树形数据
@@ -478,6 +496,8 @@ defineExpose({
 		}
 
 		.scope {
+			display: flex;
+			flex-direction: column;
 			height: 100%;
 			width: 100%;
 			box-sizing: border-box;
@@ -509,8 +529,14 @@ defineExpose({
 				}
 			}
 
+			.search {
+				height: 40px;
+				padding: 0 10px;
+			}
+
 			.data {
-				height: calc(100% - 40px);
+				flex: 1;
+				overflow: hidden;
 				box-sizing: border-box;
 
 				:deep(.el-tree-node__content) {

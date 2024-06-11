@@ -59,6 +59,7 @@ export declare namespace ClViewGroup {
 		enableContextMenu?: boolean;
 		enableAdd?: boolean;
 		enableRefresh?: boolean;
+		enableKeySearch?: boolean;
 		custom?: boolean;
 		onSelect?(item: M<T>): void;
 		onEdit?(item?: M<T>): DeepPartial<ClForm.Options>;
