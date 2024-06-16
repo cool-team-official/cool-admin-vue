@@ -42,9 +42,7 @@ export function useFormat() {
 							singleQuote: true,
 							trailingComma: "none"
 						});
-					} catch (e) {
-						console.error("代码格式化失败", e);
-					}
+					} catch (err) {}
 
 					return [
 						{
