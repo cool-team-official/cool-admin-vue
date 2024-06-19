@@ -1,11 +1,11 @@
 import type { Merge, ModuleConfig } from "/@/cool";
 
 // npm
-// import Crud, { locale, setFocus } from "@cool-vue/crud";
+import Crud, { locale, setFocus } from "@cool-vue/crud";
 import "@cool-vue/crud/dist/index.css";
 
 // 调试、自定义crud
-import Crud, { locale, setFocus } from "/~/crud/src";
+// import Crud, { locale, setFocus } from "/~/crud/src";
 // import "/~/crud/src/static/index.scss";
 
 export default (): Merge<ModuleConfig, CrudOptions> => {
