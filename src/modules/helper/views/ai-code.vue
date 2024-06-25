@@ -1,174 +1,123 @@
 <template>
 	<el-scrollbar :ref="setRefs('scrollbar')">
 		<div class="ai-code">
-			<div class="container">
-				<div class="head">
-					<text2 model-value="Cool Ai 极速编码" />
+			<div class="bg">
+				<div class="a"></div>
+				<div class="b"></div>
+			</div>
+
+			<div class="panels" :class="[`is-${step.value}`]">
+				<div class="panel-free">
+					<div class="head">
+						<p class="title">Cool Ai 极速编码</p>
+						<p class="tag">让软件开发<span>再</span>快一点</p>
+						<p class="desc">
+							{{ desc.text }}
+						</p>
+					</div>
+
+					<div class="editor">
+						<div class="topbar">
+							<div class="dots">
+								<span></span>
+								<span></span>
+								<span></span>
+							</div>
+						</div>
+
+						<div class="content">
+							<div class="form">
+								<div
+									class="form-item"
+									v-for="(item, index) in form.list"
+									:key="index"
+								>
+									<p class="label">{{ item.label }}</p>
+
+									<el-input resize="none" :placeholder="item.desc">
+										<template #prefix>
+											<el-icon>
+												<arrow-right />
+											</el-icon>
+										</template>
+									</el-input>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="btns">
+						<el-button
+							size="large"
+							color="#41d1ff"
+							:icon="Promotion"
+							:disabled="temp.disabled"
+							:loading="temp.disabled"
+							@click="next"
+						>
+							{{
+								temp.disabled
+									? "思考中"
+									: codes.entity.length
+									  ? "重新生成"
+									  : "下一步"
+							}}
+						</el-button>
+					</div>
+
+					<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
 				</div>
 
-				<div class="form">
-					<el-form :disabled="temp.disabled" size="large">
-						<div class="label required">CRUD</div>
-
-						<el-row :gutter="10">
-							<el-col :lg="6" :xs="24" :sm="12">
-								<cl-select
-									class="module"
-									placeholder="请选择模块"
-									v-model="form.module"
-									:options="module.dirs"
-									label-key="name"
-									value-key="name"
-									allow-create
-								/>
-							</el-col>
-
-							<el-col :lg="6" :xs="24" :sm="12">
-								<el-input
-									class="name"
-									v-model="form.name"
-									placeholder="实体名称，如：收货地址"
-								/>
-							</el-col>
-
-							<el-col :lg="12" :xs="24" :sm="24">
-								<el-input
-									class="columns"
-									v-model="form.columns"
-									placeholder="请填写字段，如：姓名、年龄、状态"
-								/>
-							</el-col>
-						</el-row>
-
-						<div class="label">其他你想做的事？</div>
-
-						<el-input
-							type="textarea"
-							v-model="form.other"
-							:rows="5"
-							placeholder="如：分页查询时姓名、手机号字段设置成可模糊搜索"
-						/>
-					</el-form>
-				</div>
-
-				<div class="btns">
-					<el-button
-						round
-						size="large"
-						type="primary"
-						:icon="Promotion"
-						:disabled="temp.disabled"
-						:loading="temp.disabled"
-						@click="next"
-					>
-						{{ temp.disabled ? "思考中" : codes.entity.length ? "重新生成" : "下一步" }}
-					</el-button>
-				</div>
-
-				<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
-
-				<!-- 代码 -->
-				<div class="codes">
-					<div class="item is-entity" v-show="codes.entity">
-						<div class="label">
-							<div class="name">
-								<span>Entity（实体类）</span>
-								<el-icon class="is-loading" v-show="temp.coding == 'entity'">
-									<loading />
-								</el-icon>
+				<div class="panel-code">
+					<div class="editor">
+						<div class="topbar">
+							<div class="dots">
+								<span @click="step.prev"></span>
+								<span></span>
+								<span></span>
 							</div>
 
-							<template v-if="!temp.disabled">
-								<el-button round size="small" @click="copyCode('entity')"
-									>Copy</el-button
-								>
-								<el-button
-									round
-									type="success"
-									size="small"
-									:loading="!codes.vue"
-									@click="createVue()"
-								>
-									生成Vue代码
+							<div class="print">
+								<el-icon class="is-loading">
+									<refresh />
+								</el-icon>
+								<span>生成 vue 代码中</span>
+							</div>
+						</div>
+
+						<div class="content">
+							<div class="tabs">
+								<div class="item">Entity 实体数据</div>
+								<div class="item active">Service 服务层</div>
+								<div class="item">Controll 控制器</div>
+								<div class="item">Vue 前端页面</div>
+
+								<div class="op">
+									<el-icon>
+										<download />
+									</el-icon>
+								</div>
+							</div>
+
+							<div class="code">
+								<cl-editor-monaco
+									height="100%"
+									:border="false"
+									:options="{
+										theme: 'ai-code--dark'
+									}"
+								/>
+							</div>
+
+							<!-- <div class="op">
+								<el-button :icon="CloseBold" @click="reset"> 取消 </el-button>
+								<el-button color="#41d1ff" @click="createFile">
+									创建文件
 								</el-button>
-							</template>
+							</div> -->
 						</div>
-
-						<cl-editor
-							name="cl-editor-monaco"
-							:ref="setRefs('codeEntity')"
-							:options="editor.options"
-							height="auto"
-							autofocus
-							autosize
-							language="typescript"
-							v-model="codes.entity"
-						/>
-					</div>
-
-					<div class="item is-controller" v-show="codes.controller">
-						<div class="label">
-							<div class="name">
-								<span>Controller（控制层）</span>
-								<el-icon class="is-loading" v-show="temp.coding == 'controller'">
-									<loading />
-								</el-icon>
-							</div>
-
-							<template v-if="!temp.disabled">
-								<el-button round size="small" @click="copyCode('controller')"
-									>Copy</el-button
-								>
-							</template>
-						</div>
-
-						<cl-editor
-							name="cl-editor-monaco"
-							:ref="setRefs('codeController')"
-							:options="editor.options"
-							height="auto"
-							autosize
-							language="typescript"
-							v-model="codes.controller"
-						/>
-					</div>
-
-					<div class="item is-vue" v-show="codes.vue">
-						<div class="label">
-							<div class="name">
-								<span>Vue（页面）</span>
-								<el-icon class="is-loading" v-show="temp.coding == 'vue'">
-									<loading />
-								</el-icon>
-							</div>
-
-							<template v-if="!temp.disabled">
-								<el-button round size="small" @click="copyCode('vue')"
-									>Copy</el-button
-								>
-							</template>
-						</div>
-
-						<cl-editor
-							name="cl-editor-monaco"
-							:ref="setRefs('codeVue')"
-							:options="editor.options"
-							height="auto"
-							autosize
-							language="html"
-							v-model="codes.vue"
-						/>
 					</div>
 				</div>
-
-				<div class="op" v-show="!temp.disabled && codes.entity.length">
-					<el-button :icon="Close" round size="large" @click="reset"> 取消 </el-button>
-					<el-button :icon="Check" round size="large" type="success" @click="createFile">
-						创建文件
-					</el-button>
-				</div>
-
-				<div class="bottom"></div>
 			</div>
 
 			<!-- 创建菜单 -->
@@ -179,8 +128,8 @@
 
 <script lang="tsx" setup name="helper-ai-code">
 import { onMounted, reactive, watch } from "vue";
-import { module, useCool, storage } from "/@/cool";
-import { Promotion, Loading, Close, Check } from "@element-plus/icons-vue";
+import { useCool, storage } from "/@/cool";
+import { Promotion, Refresh, Download, ArrowRight } from "@element-plus/icons-vue";
 import { ElLoading, ElMessage, ElMessageBox } from "element-plus";
 import { debounce, isEmpty } from "lodash-es";
 import { useClipboard } from "@vueuse/core";
@@ -188,13 +137,89 @@ import { useMenu, useAi } from "../hooks";
 import { isDev } from "/@/config";
 import { useForm } from "@cool-vue/crud";
 import type { CodeType } from "../types";
-import Text2 from "../components/text.vue";
+import * as monaco from "monaco-editor";
 
 const { service, refs, setRefs } = useCool();
 const { copy } = useClipboard();
 const menu = useMenu();
 const ai = useAi();
 const Form = useForm();
+
+// 编辑器样式
+monaco.editor.defineTheme("ai-code--dark", {
+	base: "vs-dark",
+	inherit: true,
+	rules: [],
+	colors: {
+		"editor.background": "#0f151e",
+		"editor.inactiveSelectionBackground": "#0f151e"
+	}
+});
+
+// 执行步骤
+const step = reactive({
+	value: "none",
+
+	list: ["none", "coding"],
+
+	next() {
+		const i = step.list.indexOf(step.value);
+
+		if (i < step.list.length - 1) {
+			step.value = step.list[i + 1];
+		}
+	},
+
+	prev() {
+		const i = step.list.indexOf(step.value);
+
+		if (i > 0) {
+			step.value = step.list[i - 1];
+		}
+	}
+});
+
+// 滚动文案
+const desc = reactive({
+	list: ["为开发者生成优质编程代码", "只需少量的口语提示就能完成特定的功能，大大节省开发时间"],
+	text: "",
+
+	init() {
+		function next(n: number) {
+			const val = desc.list[n];
+
+			if (val) {
+				function next2(n2: number) {
+					const v = val[n2];
+
+					if (v) {
+						setTimeout(() => {
+							desc.text += v;
+							next2(n2 + 1);
+						}, 60);
+					} else {
+						setTimeout(() => {
+							const timer = setInterval(() => {
+								desc.text = desc.text.slice(0, -1);
+
+								if (!desc.text) {
+									clearInterval(timer);
+									next(n + 1);
+								}
+							}, 50);
+						}, 1500);
+					}
+				}
+
+				next2(0);
+			} else {
+				next(0);
+			}
+		}
+
+		next(0);
+	}
+});
 
 // 滚动条
 const scroller = {
@@ -240,14 +265,21 @@ const editor = reactive({
 });
 
 // 表单
-const form = reactive(
-	storage.get("ai-create.form") || {
-		name: "收货地址",
-		module: "user",
-		other: "",
-		columns: "用户ID、联系人、手机号、省市区、地址、是否默认"
-	}
-);
+const form = reactive({
+	list: [
+		{
+			label: "请填写功能名称",
+			desc: "如：收货地址、商品列表、订单列表",
+			loading: false,
+			next() {}
+		},
+		{
+			desc: "请填写功能名称，如：收货地址、商品列表、订单列表",
+			loading: false,
+			next() {}
+		}
+	]
+});
 
 // 临时数据
 const temp = reactive({
@@ -334,6 +366,10 @@ function reset() {
 
 // 下一步，生成代码
 function next() {
+	step.next();
+
+	return;
+
 	if (!form.module) {
 		return ElMessage.warning("请选择模块");
 	}
@@ -543,6 +579,8 @@ watch(
 );
 
 onMounted(() => {
+	desc.init();
+
 	ai.connect({
 		onMessage(content) {
 			codes[temp.coding] = content;
@@ -564,111 +602,328 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+$color: #41d1ff;
+
 .ai-code {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	position: relative;
+	height: 100vh;
+	overflow: hidden;
 
-	.head {
-		margin: 5vh 0 50px 0;
-	}
+	.bg {
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
+		background-color: #090c13;
+		display: flex;
+		justify-content: center;
 
-	.container {
-		width: 1040px;
-		max-width: 100%;
-	}
+		.a {
+			background-color: $color;
+			transform: rotate(20deg);
+			right: -10px;
+		}
 
-	.form {
-		margin-bottom: 50px;
+		.b {
+			background-color: #4165d7;
+			transform: rotate(-20deg);
+			right: 10px;
+		}
 
-		.label {
-			margin-bottom: 10px;
-			font: 15px;
-			color: var(--el-text-fill-color);
+		.a,
+		.b {
+			height: 300px;
+			width: 420px;
+			position: relative;
+			opacity: 0.4;
+			border-radius: 100%;
+			filter: blur(60px);
+			top: 120px;
+			animation: fb 5s ease-in-out infinite;
+		}
 
-			&.required {
-				&::after {
-					content: "*";
-					margin-left: 2px;
-				}
+		@keyframes fb {
+			0% {
+				filter: blur(60px);
+			}
+
+			40% {
+				filter: blur(150px);
+			}
+
+			80% {
+				filter: blur(60px);
+			}
+
+			100% {
+				filter: blur(60px);
 			}
 		}
-
-		.el-col {
-			margin-bottom: 10px;
-		}
 	}
 
-	.codes {
-		margin: 50px 0 0 0;
+	.panels {
+		position: relative;
+		z-index: 2;
 
-		.item {
-			margin-bottom: 20px;
+		.editor {
+			border-radius: 6px;
+			overflow: hidden;
+			background-color: #080e14;
+			margin-bottom: 60px;
 
-			.label {
+			.topbar {
 				display: flex;
 				align-items: center;
-				margin-bottom: 10px;
-				padding-left: 2px;
+				height: 36px;
+				padding: 0 12px;
 
-				.name {
+				.dots {
+					display: flex;
+
+					span {
+						display: inline-block;
+						height: 12px;
+						width: 12px;
+						border-radius: 12px;
+						background-color: #2f3447;
+						margin-right: 8px;
+					}
+				}
+			}
+
+			.content {
+				background-color: #0f151e;
+
+				:deep(.el-input__wrapper) {
+					background-color: transparent;
+					box-shadow: none;
+					padding: 10px;
+
+					.el-input__inner {
+						color: #fff;
+					}
+				}
+			}
+		}
+
+		.panel-free {
+			height: 100vh;
+			width: 1040px;
+			max-width: 100%;
+			flex-shrink: 0;
+
+			.editor {
+				box-shadow: 0 0 1px 1px rgba($color, 0.7);
+
+				.form {
+					height: 300px;
+
+					&-item {
+						.label {
+							color: #fff;
+						}
+					}
+				}
+			}
+
+			.head {
+				padding: 260px 0 50px 0;
+				text-align: center;
+				color: #fff;
+				line-height: 1;
+				letter-spacing: 2px;
+				user-select: none;
+
+				.title {
+					display: inline-block;
+					font-size: 40px;
+					background-clip: text;
+					font-weight: bold;
+					text-shadow: 0 5px 10px #333;
+					transition: all 0.3s;
+					transition-delay: 0.2s;
+				}
+
+				.tag {
+					margin-top: 30px;
+					font-size: 22px;
+
+					span {
+						color: $color;
+						padding: 0 2px;
+					}
+				}
+
+				.desc {
 					display: flex;
 					align-items: center;
-					font-size: 18px;
-					font-weight: bold;
-					flex: 1;
-					line-height: 1;
+					justify-content: center;
+					height: 35px;
+					padding: 0 1px;
+					color: #fff;
+					font-size: 22px;
+					margin-top: 60px;
+
+					&::after {
+						content: "";
+						display: inline-block;
+						margin-left: 4px;
+						height: 22px;
+						width: 3px;
+						background-color: #fff;
+						border-radius: 3px;
+						animation: shan 1s ease infinite;
+					}
+
+					@keyframes shan {
+						0% {
+							opacity: 0;
+						}
+
+						50% {
+							opacity: 1;
+						}
+
+						100% {
+							opacity: 0;
+						}
+					}
 				}
+			}
+
+			.btns {
+				display: flex;
+				justify-content: center;
 
 				.el-button {
-					margin-left: 10px;
+					padding: 0 40px;
+					font-size: 15px;
+				}
+			}
+
+			.tips {
+				color: var(--el-text-color-secondary);
+				text-align: center;
+				font-size: 14px;
+				margin: 30px 0;
+				user-select: none;
+			}
+		}
+
+		.panel-code {
+			position: absolute;
+			bottom: 0;
+			left: -100px;
+			height: 0;
+			width: calc(100% + 200px);
+			background-color: #090c13;
+			border-radius: 12px 12px 0 0;
+			border: 5px solid rgba(255, 255, 255, 0.1);
+			border-bottom: 0;
+			box-sizing: border-box;
+			transition: height 0.5s ease-in-out;
+			overflow: hidden;
+
+			.editor {
+				height: 100%;
+				overflow: hidden;
+
+				.topbar {
+					.dots {
+						span {
+							cursor: pointer;
+
+							&:first-child {
+								&:hover {
+									background-color: var(--el-color-danger);
+								}
+							}
+						}
+					}
+
+					.print {
+						display: flex;
+						align-items: center;
+						margin-left: auto;
+						color: #fff;
+
+						.el-icon {
+							margin-right: 5px;
+							font-size: 15px;
+						}
+					}
+				}
+
+				.content {
+					height: calc(100% - 36px);
+
+					.tabs {
+						display: flex;
+						height: 40px;
+						background-color: #080e14;
+
+						.item {
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							padding: 0 15px;
+							font-size: 12px;
+							cursor: pointer;
+							color: var(--el-color-info);
+
+							&.active {
+								background-color: #0f151e;
+								color: #fff;
+							}
+
+							&:hover {
+								color: #eee;
+							}
+						}
+
+						.op {
+							display: flex;
+							align-items: center;
+							margin-left: auto;
+							margin-right: 5px;
+
+							.el-icon {
+								height: 30px;
+								width: 30px;
+								color: #fff;
+								font-size: 18px;
+								cursor: pointer;
+								border-radius: 5px;
+
+								&:hover {
+									background-color: #0f151e;
+								}
+							}
+						}
+					}
+
+					.code {
+						height: calc(100% - 40px);
+					}
 				}
 			}
 		}
 
-		.row {
-			display: flex;
-			margin: 0 -10px 30px -10px;
+		&.is-coding {
+			.panel-free {
+				.title {
+					transform: translateY(-130px);
+				}
+			}
 
-			.item {
-				flex: 1;
-				margin: 0 10px;
+			.panel-code {
+				height: calc(100% - 230px);
 			}
 		}
-	}
-
-	.btns {
-		display: flex;
-		justify-content: center;
-
-		.el-button {
-			padding: 0 40px;
-			font-size: 15px;
-		}
-	}
-
-	.op {
-		display: flex;
-		justify-content: center;
-		position: sticky;
-		bottom: 10px;
-		z-index: 9;
-
-		.el-button {
-			padding: 0 20px;
-		}
-	}
-
-	.tips {
-		color: var(--el-text-color-secondary);
-		text-align: center;
-		font-size: 14px;
-		margin: 30px 0;
-	}
-
-	.bottom {
-		height: 10vh;
 	}
 }
 </style>

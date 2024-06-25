@@ -10,7 +10,7 @@ export default (): ModuleConfig => {
 			order: 1,
 			component: import("./components/auto-menu/btn.vue")
 		},
-		views: [
+		pages: [
 			{
 				path: "/helper/ai-code",
 				meta: {
