@@ -16,56 +16,68 @@
 						</p>
 					</div>
 
-					<div class="editor">
-						<div class="topbar">
-							<div class="dots">
-								<span></span>
-								<span></span>
-								<span></span>
+					<div class="enter" v-if="step.value == 'none'">
+						<el-input
+							v-model="form.name"
+							placeholder="如：收货地址、商品列表"
+							@focus="desc.change('name')"
+							@keydown.enter="step.next"
+						/>
+						<cl-svg name="enter" class="icon" />
+					</div>
+
+					<template v-if="step.value == 'form'">
+						<div class="editor">
+							<div class="topbar">
+								<div class="dots">
+									<span></span>
+									<span></span>
+									<span></span>
+								</div>
 							</div>
-						</div>
 
-						<div class="content">
-							<div class="form">
-								<div
-									class="form-item"
-									v-for="(item, index) in form.list"
-									:key="index"
-								>
-									<p class="label">{{ item.label }}</p>
+							<div class="content">
+								<div class="form">
+									<div
+										class="form-item"
+										v-for="(item, index) in form.list"
+										:key="index"
+									>
+										<p class="label">{{ item.label }}</p>
 
-									<el-input resize="none" :placeholder="item.desc">
-										<template #prefix>
-											<el-icon>
-												<arrow-right />
-											</el-icon>
-										</template>
-									</el-input>
+										<el-input resize="none" :placeholder="item.desc">
+											<template #prefix>
+												<el-icon>
+													<arrow-right />
+												</el-icon>
+											</template>
+										</el-input>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 
-					<div class="btns">
-						<el-button
-							size="large"
-							color="#41d1ff"
-							:icon="Promotion"
-							:disabled="temp.disabled"
-							:loading="temp.disabled"
-							@click="next"
-						>
-							{{
-								temp.disabled
-									? "思考中"
-									: codes.entity.length
-									  ? "重新生成"
-									  : "下一步"
-							}}
-						</el-button>
-					</div>
+						<div class="btns">
+							<el-button
+								size="large"
+								color="#41d1ff"
+								:icon="Promotion"
+								:disabled="temp.disabled"
+								:loading="temp.disabled"
+								@click="next"
+							>
+								{{
+									temp.disabled
+										? "思考中"
+										: codes.entity.length
+										  ? "重新生成"
+										  : "下一步"
+								}}
+							</el-button>
+						</div>
 
-					<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
+						<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
+					</template>
 				</div>
 
 				<div class="panel-code">
@@ -160,7 +172,7 @@ monaco.editor.defineTheme("ai-code--dark", {
 const step = reactive({
 	value: "none",
 
-	list: ["none", "coding"],
+	list: ["none", "form", "coding"],
 
 	next() {
 		const i = step.list.indexOf(step.value);
@@ -181,10 +193,27 @@ const step = reactive({
 
 // 滚动文案
 const desc = reactive({
-	list: ["为开发者生成优质编程代码", "只需少量的口语提示就能完成特定的功能，大大节省开发时间"],
+	list: [] as string[],
 	text: "",
 
-	init() {
+	change(action?: string) {
+		if (action == "name") {
+			desc.list = ["请简要描述您的功能，AI帮你写代码"];
+		} else {
+			desc.list = [
+				"为开发者生成优质编程代码",
+				"只需少量的口语提示就能完成特定的功能，大大节省开发时间"
+			];
+		}
+
+		desc.start();
+	},
+
+	t1: null as any,
+	t2: null as any,
+	start() {
+		desc.stop();
+
 		function next(n: number) {
 			const val = desc.list[n];
 
@@ -193,20 +222,22 @@ const desc = reactive({
 					const v = val[n2];
 
 					if (v) {
-						setTimeout(() => {
+						desc.t2 = setTimeout(() => {
 							desc.text += v;
 							next2(n2 + 1);
 						}, 60);
 					} else {
 						setTimeout(() => {
-							const timer = setInterval(() => {
-								desc.text = desc.text.slice(0, -1);
+							if (desc.list.length > 1) {
+								desc.t1 = setInterval(() => {
+									desc.text = desc.text.slice(0, -1);
 
-								if (!desc.text) {
-									clearInterval(timer);
-									next(n + 1);
-								}
-							}, 50);
+									if (!desc.text) {
+										clearInterval(desc.t1);
+										next(n + 1);
+									}
+								}, 50);
+							}
 						}, 1500);
 					}
 				}
@@ -217,7 +248,25 @@ const desc = reactive({
 			}
 		}
 
-		next(0);
+		if (!isEmpty(desc.list)) {
+			next(0);
+		}
+	},
+
+	stop() {
+		if (desc.t1) {
+			clearInterval(desc.t1);
+		}
+
+		if (desc.t2) {
+			clearTimeout(desc.t2);
+		}
+
+		desc.text = "";
+	},
+
+	init() {
+		desc.change();
 	}
 });
 
@@ -266,6 +315,8 @@ const editor = reactive({
 
 // 表单
 const form = reactive({
+	name: "",
+	columns: [],
 	list: [
 		{
 			label: "请填写功能名称",
@@ -711,6 +762,9 @@ $color: #41d1ff;
 		}
 
 		.panel-free {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
 			height: 100vh;
 			width: 1040px;
 			max-width: 100%;
@@ -730,8 +784,37 @@ $color: #41d1ff;
 				}
 			}
 
+			.enter {
+				display: flex;
+				align-items: center;
+				margin: 0 auto;
+				width: 360px;
+				position: relative;
+
+				:deep(.el-input__wrapper) {
+					background-color: rgba(0, 0, 0, 0.3);
+					padding: 10px;
+					border-radius: 12px;
+					box-shadow: 0 0 10px 1px #4165d719;
+
+					.el-input__inner {
+						color: #fff;
+						text-align: center;
+						font-size: 16px;
+						letter-spacing: 2px;
+					}
+				}
+
+				.icon {
+					position: absolute;
+					right: 18px;
+					color: #666;
+					font-size: 18px;
+				}
+			}
+
 			.head {
-				padding: 260px 0 50px 0;
+				padding: 0 0 50px 0;
 				text-align: center;
 				color: #fff;
 				line-height: 1;
@@ -916,12 +999,12 @@ $color: #41d1ff;
 		&.is-coding {
 			.panel-free {
 				.title {
-					transform: translateY(-130px);
+					transform: translateY(-5vh);
 				}
 			}
 
 			.panel-code {
-				height: calc(100% - 230px);
+				height: calc(100% - 20vh);
 			}
 		}
 	}
