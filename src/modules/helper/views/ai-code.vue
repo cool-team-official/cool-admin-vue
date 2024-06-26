@@ -80,7 +80,11 @@
 										</el-tooltip>
 									</div>
 
-									<el-input v-model="form.entity" placeholder="请输入">
+									<el-input
+										v-model="form.entity"
+										maxlength="20"
+										placeholder="请输入"
+									>
 										<template #prefix>
 											<el-icon>
 												<arrow-right-bold />
@@ -103,7 +107,11 @@
 										</el-tooltip>
 									</div>
 
-									<el-input v-model="form.module" placeholder="请输入">
+									<el-input
+										v-model="form.module"
+										maxlength="20"
+										placeholder="请输入"
+									>
 										<template #prefix>
 											<el-popover
 												:ref="setRefs('modulePopover')"
@@ -116,7 +124,7 @@
 											>
 												<template #reference>
 													<el-icon class="add">
-														<circle-plus />
+														<circle-plus-filled />
 													</el-icon>
 												</template>
 
@@ -154,7 +162,11 @@
 										</el-tooltip>
 									</div>
 
-									<el-input v-model="form.column" placeholder="请输入">
+									<el-input
+										v-model="form.column"
+										maxlength="200"
+										placeholder="请输入"
+									>
 										<template #prefix>
 											<el-icon class="icon">
 												<arrow-right-bold />
@@ -177,7 +189,11 @@
 										</el-tooltip>
 									</div>
 
-									<el-input v-model="form.other" placeholder="请输入">
+									<el-input
+										v-model="form.other"
+										maxlength="200"
+										placeholder="请输入"
+									>
 										<template #prefix>
 											<el-icon>
 												<arrow-right-bold />
@@ -220,7 +236,7 @@
 								<el-icon class="is-loading">
 									<refresh />
 								</el-icon>
-								<span>生成 {{ last(code.tabs)?.label }} 代码中</span>
+								<span>生成 {{ codeData?.label }}代码中</span>
 							</div>
 						</div>
 
@@ -231,7 +247,7 @@
 									v-for="(item, index) in code.tabs"
 									:key="index"
 									:class="{
-										active: index == code.tabs.length - 1
+										active: code.active == item.value
 									}"
 								>
 									{{ item.label }}
@@ -251,9 +267,9 @@
 									:options="{
 										theme: 'ai-code--dark'
 									}"
-									v-model="code.tabs[code.tabs.length - 1].content"
+									v-model="codeData.content"
 									language="typescript"
-									v-if="last(code.tabs)"
+									v-if="codeData"
 								/>
 							</div>
 						</div>
@@ -268,7 +284,7 @@
 </template>
 
 <script lang="tsx" setup name="helper-ai-code">
-import { onMounted, reactive, watch, nextTick } from "vue";
+import { onMounted, reactive, watch, nextTick, computed } from "vue";
 import { useCool, storage, module } from "/@/cool";
 import {
 	Refresh,
@@ -276,7 +292,7 @@ import {
 	Back,
 	ArrowRightBold,
 	Loading,
-	CirclePlus,
+	CirclePlusFilled,
 	QuestionFilled
 } from "@element-plus/icons-vue";
 import { ElLoading, ElMessage, ElMessageBox } from "element-plus";
@@ -366,6 +382,7 @@ const step = reactive({
 // 代码
 const code = reactive({
 	tabs: [] as { label: string; value: string; content: string }[],
+	active: "",
 
 	// 生成中
 	loading: false,
@@ -446,25 +463,22 @@ const code = reactive({
 				content: ""
 			};
 
+			code.active = flow;
 			code.tabs.push(item);
 
-			if (item) {
-				let content = "";
+			let content = "";
 
-				ai.invokeFlow(flow, { ...form, ...data }, (res) => {
-					if (res.isEnd) {
-						resolve(item.content);
-					} else {
-						content += res.content;
+			ai.invokeFlow(flow, { ...form, ...data }, (res) => {
+				if (res.isEnd) {
+					resolve(item.content);
+				} else {
+					content += res.content;
 
-						if (content.indexOf("```typescript\n") == 0) {
-							item.content = content
-								.replace(/^```typescript\n/g, "")
-								.replace(/```$/, "");
-						}
+					if (content.indexOf("```typescript\n") == 0) {
+						item.content = content.replace(/^```typescript\n/g, "").replace(/```$/, "");
 					}
-				});
-			}
+				}
+			});
 		});
 	},
 
@@ -475,14 +489,16 @@ const code = reactive({
 	}
 });
 
+const codeData = computed(() => {
+	return code.tabs.find((e) => e.value == code.active);
+});
+
 // 滚动文案
 const desc = reactive({
 	list: [] as string[],
 	text: "",
 
 	change() {
-		console.log(111);
-
 		switch (step.value) {
 			case "enter":
 				desc.list = ["请简要描述您的功能，AI帮你写代码"];
@@ -830,14 +846,6 @@ function toDoc() {
 	window.open("https://cool-js.com/");
 }
 
-// 监听表单
-watch(
-	() => form,
-	(val) => {
-		storage.set("ai-create.form", val);
-	}
-);
-
 onMounted(() => {
 	desc.init();
 });
@@ -920,6 +928,7 @@ $color: #41d1ff;
 		padding: 6px 13px 6px 10px;
 		cursor: pointer;
 		transition: all 0.2s;
+		font-size: 14px;
 
 		.el-icon {
 			font-size: 16px;
@@ -932,13 +941,18 @@ $color: #41d1ff;
 	}
 
 	.panel {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
 		position: relative;
 		height: 100%;
 		width: 1040px;
+		max-width: calc(100% - 40px);
 
 		.editor {
 			background-color: #080e14;
-			margin-bottom: 60px;
+			width: 100%;
 
 			.topbar {
 				display: flex;
@@ -990,7 +1004,7 @@ $color: #41d1ff;
 		}
 
 		.head {
-			padding: 25vh 0 50px 0;
+			padding: 50px 0;
 			text-align: center;
 			color: #fff;
 			line-height: 1;
@@ -1027,7 +1041,7 @@ $color: #41d1ff;
 				padding: 0 1px;
 				color: #fff;
 				font-size: 22px;
-				margin-top: 100px;
+				margin-top: 50px;
 
 				&::after {
 					content: "";
@@ -1121,8 +1135,8 @@ $color: #41d1ff;
 		}
 
 		.form {
-			transform: translateY(40vh);
-			width: 1000px;
+			transform: translateY(50vh);
+			width: calc(100% - 40px);
 			transition: all 0.3s ease;
 			margin: 0 auto;
 
@@ -1137,7 +1151,7 @@ $color: #41d1ff;
 					padding: 10px 0;
 
 					.row {
-						font-size: 14px;
+						font-size: 12px;
 						margin-bottom: 10px;
 
 						&:last-child {
@@ -1148,12 +1162,10 @@ $color: #41d1ff;
 							display: flex;
 							align-items: center;
 							padding: 5px 15px;
-							color: #999;
 
 							.el-icon {
 								margin-left: 4px;
 								cursor: pointer;
-								font-size: 12px;
 							}
 						}
 
@@ -1201,8 +1213,8 @@ $color: #41d1ff;
 				color: #eee;
 				text-align: center;
 				font-size: 14px;
-				margin: 50px 0 0 0;
 				user-select: none;
+				margin-top: 30px;
 			}
 
 			.module-list {
@@ -1224,20 +1236,23 @@ $color: #41d1ff;
 
 			&.show {
 				transform: translateY(0);
+
+				.btns {
+					margin-top: 60px;
+				}
 			}
 		}
 
 		.coding {
 			position: absolute;
-			bottom: 0;
+			bottom: 20px;
 			left: 0;
 			transition: all 0.3s ease;
 			height: 0;
 			width: 100%;
 			animation: coding 0.3s forwards;
 			border: 5px solid rgba(255, 255, 255, 0.1);
-			border-radius: 10px 10px 0 0;
-			border-bottom: 0;
+			box-sizing: border-box;
 
 			.editor {
 				height: 100%;
@@ -1262,6 +1277,7 @@ $color: #41d1ff;
 					align-items: center;
 					margin-left: auto;
 					color: #fff;
+					font-size: 12px;
 
 					.el-icon {
 						margin-right: 5px;
@@ -1336,7 +1352,7 @@ $color: #41d1ff;
 
 		&.is-coding {
 			.head {
-				transform: translateY(-120px);
+				transform: translateY(-180px);
 			}
 		}
 	}
