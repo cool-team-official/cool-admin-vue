@@ -10,7 +10,7 @@ export async function request(options: any): Promise<any> {
 	return new Promise((resolve, reject) => {
 		axios({
 			...options,
-			url: host + "/api" + options.url
+			url: host + options.url
 		})
 			.then((res) => {
 				const { code, data, message } = res.data;

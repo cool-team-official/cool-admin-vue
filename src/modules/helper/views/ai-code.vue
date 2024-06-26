@@ -6,85 +6,212 @@
 				<div class="b"></div>
 			</div>
 
-			<div class="panels" :class="[`is-${step.value}`]">
-				<div class="panel-free">
-					<div class="head">
-						<p class="title">Cool Ai 极速编码</p>
-						<p class="tag">让软件开发<span>再</span>快一点</p>
-						<p class="desc">
-							{{ desc.text }}
-						</p>
-					</div>
+			<div class="back" @click="router.back">
+				<el-icon>
+					<back />
+				</el-icon>
+				返回
+			</div>
 
-					<div class="enter" v-if="step.value == 'none'">
-						<el-input
-							v-model="form.name"
-							placeholder="如：收货地址、商品列表"
-							@focus="desc.change('name')"
-							@keydown.enter="step.next"
-						/>
-						<cl-svg name="enter" class="icon" />
-					</div>
-
-					<template v-if="step.value == 'form'">
-						<div class="editor">
-							<div class="topbar">
-								<div class="dots">
-									<span></span>
-									<span></span>
-									<span></span>
-								</div>
-							</div>
-
-							<div class="content">
-								<div class="form">
-									<div
-										class="form-item"
-										v-for="(item, index) in form.list"
-										:key="index"
-									>
-										<p class="label">{{ item.label }}</p>
-
-										<el-input resize="none" :placeholder="item.desc">
-											<template #prefix>
-												<el-icon>
-													<arrow-right />
-												</el-icon>
-											</template>
-										</el-input>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="btns">
-							<el-button
-								size="large"
-								color="#41d1ff"
-								:icon="Promotion"
-								:disabled="temp.disabled"
-								:loading="temp.disabled"
-								@click="next"
-							>
-								{{
-									temp.disabled
-										? "思考中"
-										: codes.entity.length
-										  ? "重新生成"
-										  : "下一步"
-								}}
-							</el-button>
-						</div>
-
-						<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
-					</template>
+			<div class="panel" :class="[`is-${step.value}`]">
+				<div class="head">
+					<p class="title">Cool Ai 极速编码</p>
+					<p class="tag">让软件开发<span>再</span>快一点</p>
+					<p class="desc">
+						{{ desc.text }}
+					</p>
 				</div>
 
-				<div class="panel-code">
+				<div class="start" v-if="step.value == 'start'">
+					<el-button class="go btn-primary" @click="step.next">
+						快速开始
+
+						<el-icon>
+							<arrow-right-bold />
+						</el-icon>
+					</el-button>
+
+					<el-button class="doc" @click="toDoc"> 文档 </el-button>
+				</div>
+
+				<div class="enter" v-if="step.value == 'enter'">
+					<el-input
+						:ref="setRefs('inputEntity')"
+						v-model="form.entity"
+						placeholder="如：收货地址、商品列表"
+						@keydown.enter="step.next"
+					/>
+
+					<el-icon class="icon is-loading" v-if="step.loading">
+						<loading />
+					</el-icon>
+
+					<cl-svg class="icon" name="enter" v-else />
+				</div>
+
+				<div
+					class="form"
+					:class="{
+						show: ['form', 'coding'].includes(step.value)
+					}"
+				>
 					<div class="editor">
 						<div class="topbar">
 							<div class="dots">
-								<span @click="step.prev"></span>
+								<span></span>
+								<span></span>
+								<span></span>
+							</div>
+						</div>
+
+						<div class="content">
+							<template v-if="step.value == 'form'">
+								<div class="row">
+									<div class="label">
+										实体名称
+
+										<el-tooltip
+											placement="top"
+											content="指某类事物的集合名称，如：收货地址、商品列表"
+										>
+											<el-icon>
+												<question-filled />
+											</el-icon>
+										</el-tooltip>
+									</div>
+
+									<el-input v-model="form.entity" placeholder="请输入">
+										<template #prefix>
+											<el-icon>
+												<arrow-right-bold />
+											</el-icon>
+										</template>
+									</el-input>
+								</div>
+
+								<div class="row module">
+									<div class="label">
+										模块
+
+										<el-tooltip
+											placement="top"
+											content="前、后端模块的标识，如：user、goods、demo"
+										>
+											<el-icon>
+												<question-filled />
+											</el-icon>
+										</el-tooltip>
+									</div>
+
+									<el-input v-model="form.module" placeholder="请输入">
+										<template #prefix>
+											<el-popover
+												:ref="setRefs('modulePopover')"
+												:teleported="false"
+												:popper-style="{
+													padding: '5px',
+													borderRadius: '6px'
+												}"
+												placement="left"
+											>
+												<template #reference>
+													<el-icon class="add">
+														<circle-plus />
+													</el-icon>
+												</template>
+
+												<div class="module-list">
+													<div
+														class="item"
+														v-for="(item, index) in module.dirs"
+														:key="index"
+														@click="
+															() => {
+																form.module = item;
+																refs.modulePopover?.hide();
+															}
+														"
+													>
+														{{ item }}
+													</div>
+												</div>
+											</el-popover>
+										</template>
+									</el-input>
+								</div>
+
+								<div class="row">
+									<div class="label">
+										字段
+
+										<el-tooltip
+											placement="top"
+											content="实体数据的字段名称，如：ID、姓名、手机号"
+										>
+											<el-icon>
+												<question-filled />
+											</el-icon>
+										</el-tooltip>
+									</div>
+
+									<el-input v-model="form.column" placeholder="请输入">
+										<template #prefix>
+											<el-icon class="icon">
+												<arrow-right-bold />
+											</el-icon>
+										</template>
+									</el-input>
+								</div>
+
+								<div class="row">
+									<div class="label">
+										其他你想做的事
+
+										<el-tooltip
+											placement="top"
+											content="功能的扩展，如：分页查询时姓名、手机号字段设置成可模糊搜索"
+										>
+											<el-icon>
+												<question-filled />
+											</el-icon>
+										</el-tooltip>
+									</div>
+
+									<el-input v-model="form.other" placeholder="请输入">
+										<template #prefix>
+											<el-icon>
+												<arrow-right-bold />
+											</el-icon>
+										</template>
+									</el-input>
+								</div>
+							</template>
+						</div>
+					</div>
+
+					<div class="btns">
+						<el-button class="btn-primary" @click="code.create()">
+							生成代码
+							<cl-svg name="code" />
+						</el-button>
+					</div>
+
+					<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
+				</div>
+
+				<div class="coding" v-if="step.value == 'coding'">
+					<div class="editor">
+						<div class="topbar">
+							<div class="dots">
+								<span
+									@click="
+										() => {
+											if (!code.loading) {
+												step.prev();
+											}
+										}
+									"
+								></span>
 								<span></span>
 								<span></span>
 							</div>
@@ -93,16 +220,22 @@
 								<el-icon class="is-loading">
 									<refresh />
 								</el-icon>
-								<span>生成 vue 代码中</span>
+								<span>生成 {{ last(code.tabs)?.label }} 代码中</span>
 							</div>
 						</div>
 
 						<div class="content">
 							<div class="tabs">
-								<div class="item">Entity 实体数据</div>
-								<div class="item active">Service 服务层</div>
-								<div class="item">Controll 控制器</div>
-								<div class="item">Vue 前端页面</div>
+								<div
+									class="item"
+									v-for="(item, index) in code.tabs"
+									:key="index"
+									:class="{
+										active: index == code.tabs.length - 1
+									}"
+								>
+									{{ item.label }}
+								</div>
 
 								<div class="op">
 									<el-icon>
@@ -118,15 +251,11 @@
 									:options="{
 										theme: 'ai-code--dark'
 									}"
+									v-model="code.tabs[code.tabs.length - 1].content"
+									language="typescript"
+									v-if="last(code.tabs)"
 								/>
 							</div>
-
-							<!-- <div class="op">
-								<el-button :icon="CloseBold" @click="reset"> 取消 </el-button>
-								<el-button color="#41d1ff" @click="createFile">
-									创建文件
-								</el-button>
-							</div> -->
 						</div>
 					</div>
 				</div>
@@ -139,19 +268,28 @@
 </template>
 
 <script lang="tsx" setup name="helper-ai-code">
-import { onMounted, reactive, watch } from "vue";
-import { useCool, storage } from "/@/cool";
-import { Promotion, Refresh, Download, ArrowRight } from "@element-plus/icons-vue";
+import { onMounted, reactive, watch, nextTick } from "vue";
+import { useCool, storage, module } from "/@/cool";
+import {
+	Refresh,
+	Download,
+	Back,
+	ArrowRightBold,
+	Loading,
+	CirclePlus,
+	QuestionFilled
+} from "@element-plus/icons-vue";
 import { ElLoading, ElMessage, ElMessageBox } from "element-plus";
-import { debounce, isEmpty } from "lodash-es";
+import { debounce, isEmpty, last } from "lodash-es";
 import { useClipboard } from "@vueuse/core";
 import { useMenu, useAi } from "../hooks";
 import { isDev } from "/@/config";
 import { useForm } from "@cool-vue/crud";
 import type { CodeType } from "../types";
 import * as monaco from "monaco-editor";
+import { sleep } from "/@/cool/utils";
 
-const { service, refs, setRefs } = useCool();
+const { service, refs, setRefs, router } = useCool();
 const { copy } = useClipboard();
 const menu = useMenu();
 const ai = useAi();
@@ -168,18 +306,52 @@ monaco.editor.defineTheme("ai-code--dark", {
 	}
 });
 
+// 表单
+const form = reactive({
+	entity: "收货地址",
+	module: "user",
+	other: "",
+	column: "用户ID、用户名、收货人、手机号、收货地址、是否默认"
+});
+
 // 执行步骤
 const step = reactive({
-	value: "none",
+	loading: false,
+	value: "form",
+	list: ["start", "enter", "form", "coding"],
 
-	list: ["none", "form", "coding"],
+	async next() {
+		if (step.loading) {
+			return false;
+		}
 
-	next() {
-		const i = step.list.indexOf(step.value);
+		step.loading = true;
+
+		let active = step.value;
+
+		const i = step.list.indexOf(active);
 
 		if (i < step.list.length - 1) {
-			step.value = step.list[i + 1];
+			active = step.list[i + 1];
 		}
+
+		switch (active) {
+			case "enter":
+				setTimeout(() => {
+					refs.inputEntity.focus();
+				}, 300);
+				break;
+
+			case "form":
+				await code.getColumns();
+				break;
+		}
+
+		step.loading = false;
+		step.value = active;
+
+		// 切换文案
+		desc.change();
 	},
 
 	prev() {
@@ -191,19 +363,140 @@ const step = reactive({
 	}
 });
 
+// 代码
+const code = reactive({
+	tabs: [] as { label: string; value: string; content: string }[],
+
+	// 生成中
+	loading: false,
+
+	// 获取字段
+	async getColumns() {
+		return ai
+			.invokeFlow("comm-column", {
+				name: form.entity
+			})
+			.then((res) => {
+				form.column = res.columns;
+			});
+	},
+
+	// 清空
+	clear() {
+		code.tabs = [];
+	},
+
+	// 生成代码
+	async create() {
+		if (!form.entity) {
+			return ElMessage.warning("请填写实体名称");
+		}
+
+		if (!form.module) {
+			return ElMessage.warning("请填写模块");
+		}
+
+		if (!form.column) {
+			return ElMessage.warning("请填写字段");
+		}
+
+		code.loading = true;
+
+		// 清空
+		code.clear();
+
+		// 下一步
+		step.next();
+
+		await sleep(300);
+
+		// entity 代码
+		const entity = await code.setContent("Entity 实体", "node-entity");
+
+		// entity 关键数据
+		const entityData = await ai.invokeFlow("comm-parse-entity", {
+			entity
+		});
+
+		// service 代码
+		const service = await code.setContent("Service 服务层", "node-service", {
+			...entityData
+		});
+
+		// service 关键数据
+		const serviceData = await ai.invokeFlow("comm-parse-service", {
+			service
+		});
+
+		// controller 代码
+		await code.setContent("Controller 控制器", "node-controller", {
+			...serviceData,
+			...entityData
+		});
+
+		code.loading = false;
+	},
+
+	// 设置内容
+	async setContent(label: string, flow: string, data?: any) {
+		return new Promise((resolve) => {
+			const item = {
+				label,
+				value: flow,
+				content: ""
+			};
+
+			code.tabs.push(item);
+
+			if (item) {
+				let content = "";
+
+				ai.invokeFlow(flow, { ...form, ...data }, (res) => {
+					if (res.isEnd) {
+						resolve(item.content);
+					} else {
+						content += res.content;
+
+						if (content.indexOf("```typescript\n") == 0) {
+							item.content = content
+								.replace(/^```typescript\n/g, "")
+								.replace(/```$/, "");
+						}
+					}
+				});
+			}
+		});
+	},
+
+	// 复制代码
+	copy(k: CodeType) {
+		copy(codes[k]);
+		ElMessage.success("复制成功");
+	}
+});
+
 // 滚动文案
 const desc = reactive({
 	list: [] as string[],
 	text: "",
 
-	change(action?: string) {
-		if (action == "name") {
-			desc.list = ["请简要描述您的功能，AI帮你写代码"];
-		} else {
-			desc.list = [
-				"为开发者生成优质编程代码",
-				"只需少量的口语提示就能完成特定的功能，大大节省开发时间"
-			];
+	change() {
+		console.log(111);
+
+		switch (step.value) {
+			case "enter":
+				desc.list = ["请简要描述您的功能，AI帮你写代码"];
+				break;
+
+			case "form":
+				desc.list = ["准备就绪，配置预设参数"];
+				break;
+
+			default:
+				desc.list = [
+					"为开发者生成优质编程代码",
+					"只需少量的口语提示就能完成特定的功能，大大节省开发时间"
+				];
 		}
 
 		desc.start();
@@ -227,7 +520,7 @@ const desc = reactive({
 							next2(n2 + 1);
 						}, 60);
 					} else {
-						setTimeout(() => {
+						desc.t2 = setTimeout(() => {
 							if (desc.list.length > 1) {
 								desc.t1 = setInterval(() => {
 									desc.text = desc.text.slice(0, -1);
@@ -306,32 +599,6 @@ const scroller = {
 	}
 };
 
-// 编辑器
-const editor = reactive({
-	options: {
-		fontSize: 15
-	}
-});
-
-// 表单
-const form = reactive({
-	name: "",
-	columns: [],
-	list: [
-		{
-			label: "请填写功能名称",
-			desc: "如：收货地址、商品列表、订单列表",
-			loading: false,
-			next() {}
-		},
-		{
-			desc: "请填写功能名称，如：收货地址、商品列表、订单列表",
-			loading: false,
-			next() {}
-		}
-	]
-});
-
 // 临时数据
 const temp = reactive({
 	disabled: false,
@@ -382,24 +649,6 @@ const codes = reactive<{ [key: string]: string }>({
 	vue: ""
 });
 
-function send(type: CodeType = "entity", data: any) {
-	// 禁用
-	temp.disabled = true;
-
-	// 设置
-	temp.coding = type;
-
-	// 发送请求
-	ai.send({
-		...data,
-		type,
-		isAll: false
-	});
-
-	// 开始滚动
-	scroller.start();
-}
-
 // 结束
 function stop() {
 	temp.disabled = false;
@@ -413,51 +662,6 @@ function reset() {
 	codes.entity = "";
 	codes.controller = "";
 	codes.vue = "";
-}
-
-// 下一步，生成代码
-function next() {
-	step.next();
-
-	return;
-
-	if (!form.module) {
-		return ElMessage.warning("请选择模块");
-	}
-
-	if (!form.name) {
-		return ElMessage.warning("请填写实体名称");
-	}
-
-	if (isEmpty(form.columns)) {
-		return ElMessage.warning("请填写字段");
-	}
-
-	function done() {
-		reset();
-		send("entity", {
-			...form,
-			columns: form.columns.split("、")
-		});
-	}
-
-	if (codes.entity) {
-		ElMessageBox.confirm("此操作将重新生成代码，是否继续？", "提示", {
-			type: "warning"
-		})
-			.then(() => {
-				done();
-			})
-			.catch(() => null);
-	} else {
-		done();
-	}
-}
-
-// 复制代码
-function copyCode(k: CodeType) {
-	copy(codes[k]);
-	ElMessage.success("复制成功");
 }
 
 // 创建文件
@@ -572,7 +776,7 @@ const createVue = debounce((auto?: boolean) => {
 	async function next() {
 		if (codes.entity) {
 			// ai分析
-			await ai.matchType({ columns: temp.data.columns, name: form.name });
+			await ai.matchType({ columns: temp.data.columns, name: form.entity });
 
 			// 生成代码
 			codes.vue = menu.createVue(temp.data);
@@ -621,6 +825,11 @@ async function parseEntity() {
 		});
 }
 
+// 文档
+function toDoc() {
+	window.open("https://cool-js.com/");
+}
+
 // 监听表单
 watch(
 	() => form,
@@ -631,24 +840,6 @@ watch(
 
 onMounted(() => {
 	desc.init();
-
-	ai.connect({
-		onMessage(content) {
-			codes[temp.coding] = content;
-		},
-		async onComplete() {
-			switch (temp.coding) {
-				case "entity":
-					await parseEntity();
-					send("controller", temp.data);
-					break;
-
-				case "controller":
-					createVue(true);
-					break;
-			}
-		}
-	});
 });
 </script>
 
@@ -693,7 +884,7 @@ $color: #41d1ff;
 			opacity: 0.4;
 			border-radius: 100%;
 			filter: blur(60px);
-			top: 120px;
+			top: 30vh;
 			animation: fb 5s ease-in-out infinite;
 		}
 
@@ -716,13 +907,36 @@ $color: #41d1ff;
 		}
 	}
 
-	.panels {
+	.back {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: fixed;
+		left: 20px;
+		top: 20px;
+		color: #fff;
+		border: 1px solid rgba(255, 255, 255, 0.8);
+		border-radius: 30px;
+		padding: 6px 13px 6px 10px;
+		cursor: pointer;
+		transition: all 0.2s;
+
+		.el-icon {
+			font-size: 16px;
+			margin-right: 8px;
+		}
+
+		&:hover {
+			background-color: rgba(255, 255, 255, 0.1);
+		}
+	}
+
+	.panel {
 		position: relative;
-		z-index: 2;
+		height: 100%;
+		width: 1040px;
 
 		.editor {
-			border-radius: 6px;
-			overflow: hidden;
 			background-color: #080e14;
 			margin-bottom: 60px;
 
@@ -748,131 +962,219 @@ $color: #41d1ff;
 
 			.content {
 				background-color: #0f151e;
+			}
+		}
 
-				:deep(.el-input__wrapper) {
-					background-color: transparent;
-					box-shadow: none;
-					padding: 10px;
+		.btn-primary {
+			border: 0;
+			background-size: 300% 100%;
+			background-image: linear-gradient(-60deg, $color, rgba($color, 0.5), $color);
+			background-position: 100% 0px;
+			box-shadow: 0 0 10px 1px rgba(255, 255, 255, 0.2);
+			border-radius: 8px;
+			letter-spacing: 1px;
+			color: #111;
+			transition: all 0.3s ease;
 
-					.el-input__inner {
-						color: #fff;
+			.el-icon {
+				transition: transform 0.1s;
+			}
+
+			&:hover {
+				background-position: 0% 0px;
+
+				.el-icon {
+					transform: translateX(5px);
+				}
+			}
+		}
+
+		.head {
+			padding: 25vh 0 50px 0;
+			text-align: center;
+			color: #fff;
+			line-height: 1;
+			letter-spacing: 2px;
+			user-select: none;
+			transition: all 0.2s ease 0.1s;
+
+			.title {
+				display: inline-block;
+				font-size: 40px;
+				background-clip: text;
+				font-weight: bold;
+				text-shadow: 0 5px 10px #333;
+				transition: all 0.3s;
+				transition-delay: 0.2s;
+			}
+
+			.tag {
+				margin-top: 30px;
+				font-size: 18px;
+				color: #eee;
+
+				span {
+					color: $color;
+					padding: 0 2px;
+				}
+			}
+
+			.desc {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				height: 35px;
+				padding: 0 1px;
+				color: #fff;
+				font-size: 22px;
+				margin-top: 100px;
+
+				&::after {
+					content: "";
+					display: inline-block;
+					margin-left: 4px;
+					height: 22px;
+					width: 3px;
+					background-color: #fff;
+					border-radius: 3px;
+					animation: shan 1s ease infinite;
+				}
+
+				@keyframes shan {
+					0% {
+						opacity: 0;
+					}
+
+					50% {
+						opacity: 1;
+					}
+
+					100% {
+						opacity: 0;
 					}
 				}
 			}
 		}
 
-		.panel-free {
+		.start {
+			height: 50px;
+			text-align: center;
+			margin: 0 auto;
+
+			.el-button {
+				height: 40px;
+				background-color: #fff;
+			}
+
+			.go {
+				width: 140px;
+			}
+
+			.doc {
+				background-color: transparent;
+				width: 100px;
+				color: #fff;
+				border-width: 2px;
+				border-color: rgba(255, 255, 255, 0.7);
+			}
+		}
+
+		.enter {
 			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			height: 100vh;
-			width: 1040px;
-			max-width: 100%;
-			flex-shrink: 0;
+			align-items: center;
+			margin: 0 auto;
+			position: relative;
+			animation: enter 0.3s forwards;
+			overflow: hidden;
+			width: 10px;
+
+			:deep(.el-input__wrapper) {
+				background-color: rgba(0, 0, 0, 0.3);
+				padding: 10px 20px;
+				border-radius: 12px;
+				box-shadow: 0 0 10px 1px #4165d719;
+
+				.el-input__inner {
+					color: #fff;
+					font-size: 16px;
+					text-align: center;
+					letter-spacing: 2px;
+				}
+			}
+
+			.icon {
+				position: absolute;
+				right: 18px;
+				color: #fff;
+				font-size: 18px;
+			}
+		}
+
+		@keyframes enter {
+			from {
+				width: 10px;
+			}
+
+			to {
+				width: 320px;
+			}
+		}
+
+		.form {
+			transform: translateY(40vh);
+			width: 1000px;
+			transition: all 0.3s ease;
+			margin: 0 auto;
 
 			.editor {
 				box-shadow: 0 0 1px 1px rgba($color, 0.7);
+				border-radius: 8px;
 
-				.form {
-					height: 300px;
-
-					&-item {
-						.label {
-							color: #fff;
-						}
-					}
-				}
-			}
-
-			.enter {
-				display: flex;
-				align-items: center;
-				margin: 0 auto;
-				width: 360px;
-				position: relative;
-
-				:deep(.el-input__wrapper) {
-					background-color: rgba(0, 0, 0, 0.3);
-					padding: 10px;
-					border-radius: 12px;
-					box-shadow: 0 0 10px 1px #4165d719;
-
-					.el-input__inner {
-						color: #fff;
-						text-align: center;
-						font-size: 16px;
-						letter-spacing: 2px;
-					}
-				}
-
-				.icon {
-					position: absolute;
-					right: 18px;
-					color: #666;
-					font-size: 18px;
-				}
-			}
-
-			.head {
-				padding: 0 0 50px 0;
-				text-align: center;
-				color: #fff;
-				line-height: 1;
-				letter-spacing: 2px;
-				user-select: none;
-
-				.title {
-					display: inline-block;
-					font-size: 40px;
-					background-clip: text;
-					font-weight: bold;
-					text-shadow: 0 5px 10px #333;
-					transition: all 0.3s;
-					transition-delay: 0.2s;
-				}
-
-				.tag {
-					margin-top: 30px;
-					font-size: 22px;
-
-					span {
-						color: $color;
-						padding: 0 2px;
-					}
-				}
-
-				.desc {
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					height: 35px;
-					padding: 0 1px;
+				.content {
 					color: #fff;
-					font-size: 22px;
-					margin-top: 60px;
+					box-sizing: border-box;
+					border-radius: 0 0 8px 8px;
+					padding: 10px 0;
 
-					&::after {
-						content: "";
-						display: inline-block;
-						margin-left: 4px;
-						height: 22px;
-						width: 3px;
-						background-color: #fff;
-						border-radius: 3px;
-						animation: shan 1s ease infinite;
-					}
+					.row {
+						font-size: 14px;
+						margin-bottom: 10px;
 
-					@keyframes shan {
-						0% {
-							opacity: 0;
+						&:last-child {
+							margin-bottom: 0;
 						}
 
-						50% {
-							opacity: 1;
+						.label {
+							display: flex;
+							align-items: center;
+							padding: 5px 15px;
+							color: #999;
+
+							.el-icon {
+								margin-left: 4px;
+								cursor: pointer;
+								font-size: 12px;
+							}
 						}
 
-						100% {
-							opacity: 0;
+						:deep(.el-input__wrapper) {
+							background-color: transparent;
+							box-shadow: none;
+
+							.el-input__inner {
+								color: #fff;
+							}
+
+							.el-icon {
+								margin-left: 2px;
+							}
+						}
+
+						&.module {
+							.add {
+								cursor: pointer;
+								margin-right: 8px;
+							}
 						}
 					}
 				}
@@ -883,128 +1185,158 @@ $color: #41d1ff;
 				justify-content: center;
 
 				.el-button {
-					padding: 0 40px;
-					font-size: 15px;
+					height: 50px;
+					width: 200px;
+					font-size: 16px;
+				}
+
+				.cl-svg {
+					font-size: 18px;
+					margin-left: 5px;
+					color: #333;
 				}
 			}
 
 			.tips {
-				color: var(--el-text-color-secondary);
+				color: #eee;
 				text-align: center;
 				font-size: 14px;
-				margin: 30px 0;
+				margin: 50px 0 0 0;
 				user-select: none;
+			}
+
+			.module-list {
+				.item {
+					border-radius: 6px;
+					display: flex;
+					align-items: center;
+					height: 30px;
+					padding: 0 10px;
+					cursor: pointer;
+					border-radius: 6px;
+					font-size: 12px;
+
+					&:hover {
+						background-color: var(--el-fill-color-light);
+					}
+				}
+			}
+
+			&.show {
+				transform: translateY(0);
 			}
 		}
 
-		.panel-code {
+		.coding {
 			position: absolute;
 			bottom: 0;
-			left: -100px;
+			left: 0;
+			transition: all 0.3s ease;
 			height: 0;
-			width: calc(100% + 200px);
-			background-color: #090c13;
-			border-radius: 12px 12px 0 0;
+			width: 100%;
+			animation: coding 0.3s forwards;
 			border: 5px solid rgba(255, 255, 255, 0.1);
+			border-radius: 10px 10px 0 0;
 			border-bottom: 0;
-			box-sizing: border-box;
-			transition: height 0.5s ease-in-out;
-			overflow: hidden;
 
 			.editor {
 				height: 100%;
-				overflow: hidden;
+				border-radius: 10px 10px 0 0;
+			}
 
-				.topbar {
-					.dots {
-						span {
-							cursor: pointer;
+			.topbar {
+				.dots {
+					span {
+						cursor: pointer;
 
-							&:first-child {
-								&:hover {
-									background-color: var(--el-color-danger);
-								}
+						&:first-child {
+							&:hover {
+								background-color: var(--el-color-danger);
 							}
 						}
 					}
+				}
 
-					.print {
+				.print {
+					display: flex;
+					align-items: center;
+					margin-left: auto;
+					color: #fff;
+
+					.el-icon {
+						margin-right: 5px;
+						font-size: 15px;
+					}
+				}
+			}
+
+			.content {
+				height: calc(100% - 36px);
+
+				.tabs {
+					display: flex;
+					height: 40px;
+					background-color: #080e14;
+
+					.item {
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						padding: 0 15px;
+						font-size: 12px;
+						cursor: pointer;
+						color: var(--el-color-info);
+
+						&.active {
+							background-color: #0f151e;
+							color: #fff;
+						}
+
+						&:hover {
+							color: #eee;
+						}
+					}
+
+					.op {
 						display: flex;
 						align-items: center;
 						margin-left: auto;
-						color: #fff;
+						margin-right: 5px;
 
 						.el-icon {
-							margin-right: 5px;
-							font-size: 15px;
-						}
-					}
-				}
-
-				.content {
-					height: calc(100% - 36px);
-
-					.tabs {
-						display: flex;
-						height: 40px;
-						background-color: #080e14;
-
-						.item {
-							display: flex;
-							align-items: center;
-							justify-content: center;
-							padding: 0 15px;
-							font-size: 12px;
+							height: 30px;
+							width: 30px;
+							color: #fff;
+							font-size: 18px;
 							cursor: pointer;
-							color: var(--el-color-info);
-
-							&.active {
-								background-color: #0f151e;
-								color: #fff;
-							}
+							border-radius: 5px;
 
 							&:hover {
-								color: #eee;
+								background-color: #0f151e;
 							}
 						}
-
-						.op {
-							display: flex;
-							align-items: center;
-							margin-left: auto;
-							margin-right: 5px;
-
-							.el-icon {
-								height: 30px;
-								width: 30px;
-								color: #fff;
-								font-size: 18px;
-								cursor: pointer;
-								border-radius: 5px;
-
-								&:hover {
-									background-color: #0f151e;
-								}
-							}
-						}
-					}
-
-					.code {
-						height: calc(100% - 40px);
 					}
 				}
+
+				.code {
+					height: calc(100% - 40px);
+				}
+			}
+		}
+
+		@keyframes coding {
+			from {
+				height: 0;
+			}
+
+			to {
+				height: 75vh;
 			}
 		}
 
 		&.is-coding {
-			.panel-free {
-				.title {
-					transform: translateY(-5vh);
-				}
-			}
-
-			.panel-code {
-				height: calc(100% - 20vh);
+			.head {
+				transform: translateY(-120px);
 			}
 		}
 	}

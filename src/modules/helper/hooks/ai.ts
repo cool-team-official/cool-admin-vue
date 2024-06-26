@@ -1,109 +1,105 @@
-import { ElNotification } from "element-plus";
-import { io, Socket } from "socket.io-client";
-import { module, useCool } from "/@/cool";
 import { request } from "../utils";
 import type { EpsColumn } from "../types";
+import { module } from "/@/cool";
+import { useBase } from "/$/base";
 
 export function useAi() {
-	const { route, router } = useCool();
 	const { host } = module.config("helper");
+	const { user } = useBase();
 
-	let socket: Socket | null;
+	// 调用流程
+	async function invokeFlow(
+		label: string,
+		params: any,
+		streamCb?: ({ isEnd, content }: { isEnd: boolean; content: string }) => void
+	): Promise<any> {
+		const stream = !!streamCb;
 
-	// 连接
-	function connect(cb: { onMessage?(content: string): void; onComplete?(): void }) {
-		if (!socket) {
-			socket = io(`${host}/code`, {
-				transports: ["websocket"]
-			});
+		let cacheText = "";
 
-			if (socket) {
-				// 连接
-				socket.on("connect", () => {
-					console.log("connect");
+		return new Promise((resolve, reject) => {
+			fetch(host + "/open/code/gen/data", {
+				method: "POST",
+				headers: {
+					Authorization: user.token,
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({
+					params,
+					label,
+					stream
+				})
+			})
+				.then((res) => {
+					if (res.body) {
+						if (stream) {
+							const reader = res.body.getReader();
+							const decoder = new TextDecoder("utf-8");
+							const stream = new ReadableStream({
+								start(controller) {
+									function push() {
+										reader.read().then(({ done, value }) => {
+											if (done) {
+												controller.close();
+												return;
+											}
 
-					let content = "";
-					let code = "";
-					let isEnd = false;
-					let timer: any;
+											let text = decoder.decode(value, { stream: true });
 
-					// 消息
-					socket?.on("data", (msg: { isEnd: boolean; content: string }) => {
-						isEnd = msg.isEnd;
+											if (streamCb) {
+												if (cacheText) {
+													text = cacheText + text;
+												}
 
-						if (msg.isEnd) {
-							if (route.path != "/helper/ai-code") {
-								const notify = ElNotification({
-									title: "提示",
-									message: "Ai自动生成代码完成，点击查看",
-									duration: 0,
-									onClick() {
-										router.push("/helper/ai-code");
-										notify.close();
+												if (text.indexOf("data:") == 0) {
+													text = "\n\n" + text;
+												}
+
+												try {
+													const arr = text
+														.split(/\n\ndata:/g)
+														.filter(Boolean)
+														.map((e) => JSON.parse(e));
+
+													arr.forEach(streamCb);
+
+													cacheText = "";
+												} catch (err) {
+													cacheText = text;
+												}
+											}
+
+											controller.enqueue(text);
+											push();
+										});
 									}
-								});
-							}
+									push();
+								}
+							});
+
+							return new Response(stream);
 						} else {
-							try {
-								// 首行去掉 \n
-								if (msg.content.includes("\n") && !content) {
-									msg.content = msg.content.replace(/\n/, "");
-								}
-
-								// 去掉描述
-								msg.content = msg.content
-									.replace(/```/g, "")
-									.replace(/typescript/g, "");
-
-								// 拼接内容
-								content += msg.content || "";
-							} catch (err) {
-								console.error(err);
-							}
+							return res.json();
 						}
+					}
+				})
+				.then((res) => {
+					if (stream) {
+						return res;
+					}
 
-						if (!timer) {
-							// 逐字输出
-							timer = setInterval(() => {
-								const v = content[code.length] || "";
-
-								if (!v && isEnd) {
-									content = "";
-									code = "";
-									isEnd = false;
-
-									// 清除事件
-									clearInterval(timer);
-									timer = null;
-
-									// 完成事件
-									cb.onComplete?.();
-								} else {
-									code += v;
-
-									// 消息事件
-									cb?.onMessage?.(code);
-								}
-							}, 10);
-						}
-					});
-				});
-
-				// 断开
-				socket.on("disconnect", (err) => {
-					console.error(err);
-				});
-			}
-		}
-	}
-
-	// 发送
-	function send(data: { name: string; columns: string[]; module: string }) {
-		socket?.emit("instruct", data);
+					if (res.code == 1000) {
+						resolve(res.data.result);
+					} else {
+						reject(res);
+					}
+				})
+				.catch(reject);
+		});
 	}
 
 	// 匹配组件类型
-	function matchType({ columns, name }: { columns: EpsColumn[]; name: string }) {
+	async function matchType({ columns, name }: { columns: EpsColumn[]; name: string }) {
 		return new Promise((resolve, reject) => {
 			const fields = columns.filter((e) => {
 				return !["id", "crateTime", "updateTime"].includes(e.propertyName);
@@ -137,8 +133,7 @@ export function useAi() {
 	}
 
 	return {
-		connect,
-		send,
-		matchType
+		matchType,
+		invokeFlow
 	};
 }

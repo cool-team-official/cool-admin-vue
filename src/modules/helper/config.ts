@@ -4,7 +4,8 @@ import { getRules } from "./utils";
 export default (): ModuleConfig => {
 	return {
 		options: {
-			host: "https://service.cool-js.com"
+			host: "/dev"
+			// host: "https://service.cool-js.com"
 		},
 		toolbar: {
 			order: 1,
