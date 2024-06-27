@@ -101,6 +101,11 @@ function appendContent(text: string = "") {
 	}
 }
 
+// 滚动行
+function revealLine(val: number) {
+	editor?.revealLine(val);
+}
+
 // 格式化内容
 async function formatCode() {
 	await editor?.getAction("editor.action.formatDocument")?.run();
@@ -190,7 +195,8 @@ defineExpose({
 	editor,
 	setContent,
 	appendContent,
-	formatCode
+	formatCode,
+	revealLine
 });
 </script>
 

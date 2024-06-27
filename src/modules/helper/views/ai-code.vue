@@ -1,293 +1,293 @@
 <template>
-	<el-scrollbar :ref="setRefs('scrollbar')">
-		<div class="ai-code">
-			<div class="bg">
-				<div class="a"></div>
-				<div class="b"></div>
+	<div class="ai-code">
+		<div class="bg">
+			<div class="a"></div>
+			<div class="b"></div>
+		</div>
+
+		<div class="back" @click="router.back">
+			<el-icon>
+				<back />
+			</el-icon>
+			返回
+		</div>
+
+		<div class="panel" :class="[`is-${step.value}`]">
+			<div class="head">
+				<p class="title">Cool Ai 极速编码</p>
+				<p class="tag">让软件开发<span>再</span>快一点</p>
+				<p class="desc">
+					{{ desc.text }}
+				</p>
 			</div>
 
-			<div class="back" @click="router.back">
-				<el-icon>
-					<back />
-				</el-icon>
-				返回
-			</div>
+			<div class="start" v-if="step.value == 'start'">
+				<el-button class="go btn-primary" @click="step.next">
+					快速开始
 
-			<div class="panel" :class="[`is-${step.value}`]">
-				<div class="head">
-					<p class="title">Cool Ai 极速编码</p>
-					<p class="tag">让软件开发<span>再</span>快一点</p>
-					<p class="desc">
-						{{ desc.text }}
-					</p>
-				</div>
-
-				<div class="start" v-if="step.value == 'start'">
-					<el-button class="go btn-primary" @click="step.next">
-						快速开始
-
-						<el-icon>
-							<arrow-right-bold />
-						</el-icon>
-					</el-button>
-
-					<el-button class="doc" @click="toDoc"> 文档 </el-button>
-				</div>
-
-				<div class="enter" v-if="step.value == 'enter'">
-					<el-input
-						:ref="setRefs('inputEntity')"
-						v-model="form.entity"
-						placeholder="如：收货地址、商品列表"
-						@keydown.enter="step.next"
-					/>
-
-					<el-icon class="icon is-loading" v-if="step.loading">
-						<loading />
+					<el-icon>
+						<arrow-right-bold />
 					</el-icon>
+				</el-button>
 
-					<cl-svg class="icon" name="enter" v-else />
-				</div>
+				<el-button class="doc" @click="toDoc"> 文档 </el-button>
+			</div>
 
-				<div
-					class="form"
-					:class="{
-						show: ['form', 'coding'].includes(step.value)
-					}"
-				>
-					<div class="editor">
-						<div class="topbar">
-							<div class="dots">
-								<span></span>
-								<span></span>
-								<span></span>
-							</div>
-						</div>
+			<div class="enter" v-if="step.value == 'enter'">
+				<el-input
+					:ref="setRefs('inputEntity')"
+					v-model="form.entity"
+					placeholder="如：收货地址、商品列表"
+					@keydown.enter="step.next"
+				/>
 
-						<div class="content">
-							<template v-if="step.value == 'form'">
-								<div class="row">
-									<div class="label">
-										实体名称
+				<el-icon class="icon is-loading" v-if="step.loading">
+					<loading />
+				</el-icon>
 
-										<el-tooltip
-											placement="top"
-											content="指某类事物的集合名称，如：收货地址、商品列表"
-										>
-											<el-icon>
-												<question-filled />
-											</el-icon>
-										</el-tooltip>
-									</div>
+				<cl-svg class="icon" name="enter" v-else />
+			</div>
 
-									<el-input
-										v-model="form.entity"
-										maxlength="20"
-										placeholder="请输入"
-									>
-										<template #prefix>
-											<el-icon>
-												<arrow-right-bold />
-											</el-icon>
-										</template>
-									</el-input>
-								</div>
-
-								<div class="row module">
-									<div class="label">
-										模块
-
-										<el-tooltip
-											placement="top"
-											content="前、后端模块的标识，如：user、goods、demo"
-										>
-											<el-icon>
-												<question-filled />
-											</el-icon>
-										</el-tooltip>
-									</div>
-
-									<el-input
-										v-model="form.module"
-										maxlength="20"
-										placeholder="请输入"
-									>
-										<template #prefix>
-											<el-popover
-												:ref="setRefs('modulePopover')"
-												:teleported="false"
-												:popper-style="{
-													padding: '5px',
-													borderRadius: '6px'
-												}"
-												placement="left"
-											>
-												<template #reference>
-													<el-icon class="add">
-														<circle-plus-filled />
-													</el-icon>
-												</template>
-
-												<div class="module-list">
-													<div
-														class="item"
-														v-for="(item, index) in module.dirs"
-														:key="index"
-														@click="
-															() => {
-																form.module = item;
-																refs.modulePopover?.hide();
-															}
-														"
-													>
-														{{ item }}
-													</div>
-												</div>
-											</el-popover>
-										</template>
-									</el-input>
-								</div>
-
-								<div class="row">
-									<div class="label">
-										字段
-
-										<el-tooltip
-											placement="top"
-											content="实体数据的字段名称，如：ID、姓名、手机号"
-										>
-											<el-icon>
-												<question-filled />
-											</el-icon>
-										</el-tooltip>
-									</div>
-
-									<el-input
-										v-model="form.column"
-										maxlength="200"
-										placeholder="请输入"
-									>
-										<template #prefix>
-											<el-icon class="icon">
-												<arrow-right-bold />
-											</el-icon>
-										</template>
-									</el-input>
-								</div>
-
-								<div class="row">
-									<div class="label">
-										其他你想做的事
-
-										<el-tooltip
-											placement="top"
-											content="功能的扩展，如：分页查询时姓名、手机号字段设置成可模糊搜索"
-										>
-											<el-icon>
-												<question-filled />
-											</el-icon>
-										</el-tooltip>
-									</div>
-
-									<el-input
-										v-model="form.other"
-										maxlength="200"
-										placeholder="请输入"
-									>
-										<template #prefix>
-											<el-icon>
-												<arrow-right-bold />
-											</el-icon>
-										</template>
-									</el-input>
-								</div>
-							</template>
+			<div
+				class="form"
+				:class="{
+					show: ['form', 'coding'].includes(step.value)
+				}"
+			>
+				<div class="editor">
+					<div class="topbar">
+						<div class="dots">
+							<span></span>
+							<span></span>
+							<span></span>
 						</div>
 					</div>
 
-					<div class="btns">
-						<el-button class="btn-primary" @click="code.create()">
-							生成代码
-							<cl-svg name="code" />
-						</el-button>
-					</div>
+					<div class="content">
+						<div class="row">
+							<div class="label">
+								实体名称
 
-					<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
-				</div>
-
-				<div class="coding" v-if="step.value == 'coding'">
-					<div class="editor">
-						<div class="topbar">
-							<div class="dots">
-								<span
-									@click="
-										() => {
-											if (!code.loading) {
-												step.prev();
-											}
-										}
-									"
-								></span>
-								<span></span>
-								<span></span>
-							</div>
-
-							<div class="print">
-								<el-icon class="is-loading">
-									<refresh />
-								</el-icon>
-								<span>生成 {{ codeData?.label }}代码中</span>
-							</div>
-						</div>
-
-						<div class="content">
-							<div class="tabs">
-								<div
-									class="item"
-									v-for="(item, index) in code.tabs"
-									:key="index"
-									:class="{
-										active: code.active == item.value
-									}"
+								<el-tooltip
+									placement="top"
+									content="指某类事物的集合名称，如：收货地址、商品列表"
 								>
-									{{ item.label }}
-								</div>
-
-								<div class="op">
 									<el-icon>
+										<question-filled />
+									</el-icon>
+								</el-tooltip>
+							</div>
+
+							<el-input v-model="form.entity" maxlength="20" placeholder="请输入">
+								<template #prefix>
+									<el-icon>
+										<arrow-right-bold />
+									</el-icon>
+								</template>
+							</el-input>
+						</div>
+
+						<div class="row module">
+							<div class="label">
+								模块
+
+								<el-tooltip
+									placement="top"
+									content="前、后端模块的标识，如：user、goods、demo"
+								>
+									<el-icon>
+										<question-filled />
+									</el-icon>
+								</el-tooltip>
+							</div>
+
+							<el-input v-model="form.module" maxlength="20" placeholder="请输入">
+								<template #prefix>
+									<el-popover
+										:ref="setRefs('modulePopover')"
+										:teleported="false"
+										:popper-style="{
+											padding: '5px',
+											borderRadius: '6px'
+										}"
+										placement="left"
+									>
+										<template #reference>
+											<el-icon class="add">
+												<circle-plus-filled />
+											</el-icon>
+										</template>
+
+										<div class="module-list">
+											<div
+												class="item"
+												v-for="(item, index) in module.dirs"
+												:key="index"
+												@click="
+													() => {
+														form.module = item;
+														refs.modulePopover?.hide();
+													}
+												"
+											>
+												{{ item }}
+											</div>
+										</div>
+									</el-popover>
+								</template>
+							</el-input>
+						</div>
+
+						<div class="row">
+							<div class="label">
+								字段
+
+								<el-tooltip
+									placement="top"
+									content="实体数据的字段名称，如：ID、姓名、手机号"
+								>
+									<el-icon>
+										<question-filled />
+									</el-icon>
+								</el-tooltip>
+							</div>
+
+							<el-input v-model="form.column" maxlength="200" placeholder="请输入">
+								<template #prefix>
+									<el-icon class="icon">
+										<arrow-right-bold />
+									</el-icon>
+								</template>
+							</el-input>
+						</div>
+
+						<div class="row">
+							<div class="label">
+								其他你想做的事
+
+								<el-tooltip
+									placement="top"
+									content="功能的扩展，如：分页查询时姓名、手机号字段设置成可模糊搜索"
+								>
+									<el-icon>
+										<question-filled />
+									</el-icon>
+								</el-tooltip>
+							</div>
+
+							<el-input v-model="form.other" maxlength="200" placeholder="请输入">
+								<template #prefix>
+									<el-icon>
+										<arrow-right-bold />
+									</el-icon>
+								</template>
+							</el-input>
+						</div>
+					</div>
+				</div>
+
+				<div class="btns">
+					<el-button class="btn-primary" @click="code.create()">
+						生成代码
+						<cl-svg name="code" />
+					</el-button>
+				</div>
+
+				<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
+			</div>
+
+			<div class="coding" v-if="step.value == 'coding'">
+				<div class="editor">
+					<div class="topbar">
+						<div class="dots">
+							<span
+								@click="
+									() => {
+										if (!code.loading) {
+											step.prev();
+										}
+									}
+								"
+							></span>
+							<span></span>
+							<span></span>
+						</div>
+					</div>
+
+					<div class="content">
+						<div class="tabs">
+							<div
+								class="item"
+								v-for="(item, index) in code.tabs"
+								:key="index"
+								:class="{
+									active: code.active == item.value
+								}"
+								@click="
+									() => {
+										code.active = item.value;
+									}
+								"
+							>
+								{{ item.label }}
+							</div>
+
+							<div class="op" v-if="!isEmpty(code.tabs) && !code.loading">
+								<el-tooltip content="创建文件">
+									<el-icon @click="createFile">
 										<download />
 									</el-icon>
-								</div>
+								</el-tooltip>
 							</div>
+						</div>
 
-							<div class="code">
-								<cl-editor-monaco
-									height="100%"
-									:border="false"
-									:options="{
-										theme: 'ai-code--dark'
-									}"
-									v-model="codeData.content"
-									language="typescript"
-									v-if="codeData"
-								/>
-							</div>
+						<div class="code">
+							<cl-editor-monaco
+								:ref="setRefs('editor')"
+								v-model="codeData.content"
+								height="100%"
+								:border="false"
+								:options="{
+									theme: 'ai-code--dark'
+								}"
+								:key="codeData.value"
+								:language="codeData.value == 'vue' ? 'html' : 'typescript'"
+								v-if="codeData"
+							/>
+						</div>
+
+						<div class="console">
+							<el-scrollbar :ref="setRefs('console.scrollbar')">
+								<div class="item" v-for="(item, index) in code.logs" :key="index">
+									<span class="date"> {{ item.date }} </span>
+
+									<span class="text">
+										{{ item.text }}
+									</span>
+
+									<el-icon
+										class="is-loading"
+										v-if="code.loading ? index == code.logs.length - 1 : false"
+									>
+										<loading />
+									</el-icon>
+								</div>
+							</el-scrollbar>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<!-- 创建菜单 -->
-			<cl-form ref="Form" />
 		</div>
-	</el-scrollbar>
+
+		<!-- 创建菜单 -->
+		<cl-form ref="Form" />
+	</div>
 </template>
 
 <script lang="tsx" setup name="helper-ai-code">
-import { onMounted, reactive, watch, nextTick, computed } from "vue";
-import { useCool, storage, module } from "/@/cool";
+import { onMounted, reactive, computed } from "vue";
+import { useCool, module } from "/@/cool";
 import {
-	Refresh,
 	Download,
 	Back,
 	ArrowRightBold,
@@ -295,18 +295,17 @@ import {
 	CirclePlusFilled,
 	QuestionFilled
 } from "@element-plus/icons-vue";
-import { ElLoading, ElMessage, ElMessageBox } from "element-plus";
-import { debounce, isEmpty, last } from "lodash-es";
-import { useClipboard } from "@vueuse/core";
+import { ElLoading, ElMessage } from "element-plus";
+import { assign, isEmpty } from "lodash-es";
 import { useMenu, useAi } from "../hooks";
 import { isDev } from "/@/config";
 import { useForm } from "@cool-vue/crud";
-import type { CodeType } from "../types";
 import * as monaco from "monaco-editor";
 import { sleep } from "/@/cool/utils";
+import dayjs from "dayjs";
+import { nextTick } from "vue";
 
 const { service, refs, setRefs, router } = useCool();
-const { copy } = useClipboard();
 const menu = useMenu();
 const ai = useAi();
 const Form = useForm();
@@ -333,7 +332,7 @@ const form = reactive({
 // 执行步骤
 const step = reactive({
 	loading: false,
-	value: "form",
+	value: "start",
 	list: ["start", "enter", "form", "coding"],
 
 	async next() {
@@ -384,6 +383,9 @@ const code = reactive({
 	tabs: [] as { label: string; value: string; content: string }[],
 	active: "",
 
+	// 日志
+	logs: [] as any[],
+
 	// 生成中
 	loading: false,
 
@@ -401,6 +403,23 @@ const code = reactive({
 	// 清空
 	clear() {
 		code.tabs = [];
+		code.logs = [];
+	},
+
+	// 提示
+	tips(val?: string) {
+		code.logs.push({
+			date: dayjs().format("HH:mm:ss"),
+			text: val
+		});
+
+		// 日志滚动
+		nextTick(() => {
+			refs["console.scrollbar"]?.wrapRef?.scrollTo({
+				top: Math.random() + 10000,
+				behavior: "smooth"
+			});
+		});
 	},
 
 	// 生成代码
@@ -427,23 +446,37 @@ const code = reactive({
 
 		await sleep(300);
 
+		code.tips("Entity 代码生成中");
+
 		// entity 代码
 		const entity = await code.setContent("Entity 实体", "node-entity");
+
+		code.tips("Entity 生成成功，开始解析");
 
 		// entity 关键数据
 		const entityData = await ai.invokeFlow("comm-parse-entity", {
 			entity
 		});
 
+		code.tips(`Entity 解析成功，${JSON.stringify(entityData)}`);
+
+		code.tips("Service 代码生成中");
+
 		// service 代码
 		const service = await code.setContent("Service 服务层", "node-service", {
 			...entityData
 		});
 
+		code.tips("Service 生成成功，开始解析");
+
 		// service 关键数据
 		const serviceData = await ai.invokeFlow("comm-parse-service", {
 			service
 		});
+
+		code.tips(`Service 解析成功，${JSON.stringify(serviceData)}`);
+
+		code.tips("Controller 代码生成中");
 
 		// controller 代码
 		await code.setContent("Controller 控制器", "node-controller", {
@@ -451,41 +484,152 @@ const code = reactive({
 			...entityData
 		});
 
+		code.tips("Controller 生成成功");
+
+		await code.createVue();
+
+		code.tips("编码完成");
+
 		code.loading = false;
+	},
+
+	// 创建vue
+	async createVue() {
+		const data = {
+			...form,
+			router: "",
+			prefix: "",
+			path: "",
+			module: "",
+			fileName: "",
+			className: "",
+			other: "",
+			columns: [],
+			api: [
+				{
+					path: "/add",
+					summary: "新增"
+				},
+				{
+					path: "/info",
+					summary: "单个信息"
+				},
+				{
+					path: "/update",
+					summary: "修改"
+				},
+				{
+					path: "/delete",
+					summary: "删除"
+				},
+				{
+					path: "/page",
+					summary: "分页查询"
+				},
+				{
+					path: "/list",
+					summary: "列表查询"
+				}
+			]
+		};
+
+		const item = code.add("Vue 页面", "vue");
+
+		code.tips("Vue 代码生成中");
+
+		// 解析
+		await service.base.sys.menu
+			.parse({
+				module: form.module,
+				entity: code.getContent("node-entity")
+			})
+			.then((res) => {
+				assign(data, res);
+
+				data.router = res.path.replace("/admin", "");
+				data.prefix = res.path;
+			});
+
+		code.tips("AI 字段分析中");
+
+		// ai分析
+		await ai.matchType({ columns: data.columns, name: form.entity });
+
+		// 生成内容
+		item.content = menu.createVue(data);
+
+		code.tips("Vue 生成成功");
+
+		await sleep(300);
+
+		// 格式化
+		refs.editor.formatCode();
+	},
+
+	// 添加 tab
+	add(label: string, flow: string) {
+		const item = reactive({
+			label,
+			value: flow,
+			content: "",
+			_content: ""
+		});
+
+		code.active = flow;
+		code.tabs.push(item);
+
+		return item;
+	},
+
+	// 获取内容
+	getContent(value: string) {
+		return code.tabs.find((e) => e.value == value)?.content;
 	},
 
 	// 设置内容
 	async setContent(label: string, flow: string, data?: any) {
 		return new Promise((resolve) => {
-			const item = {
-				label,
-				value: flow,
-				content: ""
-			};
+			const item = code.add(label, flow);
 
-			code.active = flow;
-			code.tabs.push(item);
+			// 是否结束
+			let isEnd = false;
 
+			// 所有内容
 			let content = "";
 
 			ai.invokeFlow(flow, { ...form, ...data }, (res) => {
-				if (res.isEnd) {
-					resolve(item.content);
-				} else {
+				isEnd = res.isEnd;
+
+				if (!res.isEnd) {
 					content += res.content;
 
 					if (content.indexOf("```typescript\n") == 0) {
-						item.content = content.replace(/^```typescript\n/g, "").replace(/```$/, "");
+						item._content = content
+							.replace(/^```typescript\n/g, "")
+							.replace(/```$/, "");
 					}
 				}
 			});
-		});
-	},
 
-	// 复制代码
-	copy(k: CodeType) {
-		copy(codes[k]);
-		ElMessage.success("复制成功");
+			const timer = setInterval(() => {
+				const v = item._content[item.content.length] || "";
+
+				if (isEnd) {
+					if (!v) {
+						clearInterval(timer);
+						resolve(item.content);
+						return false;
+					}
+				}
+
+				item.content += v;
+
+				// 滚动到底
+				if (flow == code.active) {
+					refs.editor.revealLine(99999);
+				}
+			}, 10);
+		});
 	}
 });
 
@@ -578,107 +722,6 @@ const desc = reactive({
 		desc.change();
 	}
 });
-
-// 滚动条
-const scroller = {
-	timer: null as any,
-
-	scrollTo({ el, top }: { el?: string; top?: number }) {
-		const scrollbar = refs.scrollbar.wrapRef;
-
-		if (el) {
-			top = scrollbar.querySelector(el).offsetTop;
-		}
-
-		scrollbar.scrollTo({
-			top,
-			behavior: "smooth"
-		});
-	},
-
-	start() {
-		this.stop();
-
-		this.timer = setInterval(() => {
-			if (codes.entity) {
-				this.scrollTo({
-					top: Math.random() + 10000
-				});
-			}
-		}, 100);
-	},
-
-	stop() {
-		if (this.timer) {
-			clearInterval(this.timer);
-		}
-	}
-};
-
-// 临时数据
-const temp = reactive({
-	disabled: false,
-	coding: "" as "" | CodeType,
-	data: {
-		router: "",
-		prefix: "",
-		path: "",
-		module: "",
-		fileName: "",
-		className: "",
-		other: "",
-		columns: [],
-		api: []
-	},
-	api: [
-		{
-			path: "/add",
-			summary: "新增"
-		},
-		{
-			path: "/info",
-			summary: "单个信息"
-		},
-		{
-			path: "/update",
-			summary: "修改"
-		},
-		{
-			path: "/delete",
-			summary: "删除"
-		},
-		{
-			path: "/page",
-			summary: "分页查询"
-		},
-		{
-			path: "/list",
-			summary: "列表查询"
-		}
-	]
-});
-
-// 代码
-const codes = reactive<{ [key: string]: string }>({
-	entity: "",
-	controller: "",
-	vue: ""
-});
-
-// 结束
-function stop() {
-	temp.disabled = false;
-	temp.coding = "";
-	scroller.stop();
-}
-
-// 重置
-function reset() {
-	stop();
-	codes.entity = "";
-	codes.controller = "";
-	codes.vue = "";
-}
 
 // 创建文件
 function createFile() {
@@ -787,60 +830,6 @@ function createFile() {
 	});
 }
 
-// 创建vue
-const createVue = debounce((auto?: boolean) => {
-	async function next() {
-		if (codes.entity) {
-			// ai分析
-			await ai.matchType({ columns: temp.data.columns, name: form.entity });
-
-			// 生成代码
-			codes.vue = menu.createVue(temp.data);
-
-			stop();
-
-			setTimeout(() => {
-				scroller.scrollTo({ el: `.codes .is-vue` });
-				refs.codeVue.formatCode();
-			}, 300);
-		}
-	}
-
-	if (auto) {
-		next();
-	} else {
-		ElMessageBox.confirm("此操作将会重新生成vue代码，是否继续？", "提示", {
-			type: "warning"
-		})
-			.then(async () => {
-				temp.coding = "vue";
-				codes.vue = "";
-
-				await parseEntity();
-				next();
-			})
-			.catch(() => null);
-	}
-}, 300);
-
-// 解析实体
-async function parseEntity() {
-	await service.base.sys.menu
-		.parse({
-			entity: codes.entity,
-			module: form.module
-		})
-		.then((res) => {
-			temp.data = {
-				...form,
-				...res,
-				router: res.path.replace("/admin", ""),
-				prefix: res.path,
-				api: temp.api
-			};
-		});
-}
-
 // 文档
 function toDoc() {
 	window.open("https://cool-js.com/");
@@ -857,6 +846,7 @@ $color: #41d1ff;
 .ai-code {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	align-items: center;
 	position: relative;
 	height: 100vh;
@@ -948,7 +938,7 @@ $color: #41d1ff;
 		position: relative;
 		height: 100%;
 		width: 1040px;
-		max-width: calc(100% - 40px);
+		max-width: 100%;
 
 		.editor {
 			background-color: #080e14;
@@ -1074,6 +1064,7 @@ $color: #41d1ff;
 			height: 50px;
 			text-align: center;
 			margin: 0 auto;
+			flex-shrink: 0;
 
 			.el-button {
 				height: 40px;
@@ -1099,7 +1090,6 @@ $color: #41d1ff;
 			margin: 0 auto;
 			position: relative;
 			animation: enter 0.3s forwards;
-			overflow: hidden;
 			width: 10px;
 
 			:deep(.el-input__wrapper) {
@@ -1244,15 +1234,16 @@ $color: #41d1ff;
 		}
 
 		.coding {
-			position: absolute;
-			bottom: 20px;
+			position: fixed;
+			bottom: 0;
 			left: 0;
-			transition: all 0.3s ease;
-			height: 0;
+			height: 100vh;
 			width: 100%;
 			animation: coding 0.3s forwards;
-			border: 5px solid rgba(255, 255, 255, 0.1);
+			border-top: 5px solid rgba(255, 255, 255, 0.1);
 			box-sizing: border-box;
+			opacity: 0;
+			transform: translateY(10vh);
 
 			.editor {
 				height: 100%;
@@ -1271,28 +1262,15 @@ $color: #41d1ff;
 						}
 					}
 				}
-
-				.print {
-					display: flex;
-					align-items: center;
-					margin-left: auto;
-					color: #fff;
-					font-size: 12px;
-
-					.el-icon {
-						margin-right: 5px;
-						font-size: 15px;
-					}
-				}
 			}
 
 			.content {
 				height: calc(100% - 36px);
+				background-color: #080e14;
 
 				.tabs {
 					display: flex;
 					height: 40px;
-					background-color: #080e14;
 
 					.item {
 						display: flex;
@@ -1335,24 +1313,44 @@ $color: #41d1ff;
 				}
 
 				.code {
-					height: calc(100% - 40px);
+					height: calc(100% - 190px);
+				}
+
+				.console {
+					height: 150px;
+					padding: 5px 0;
+					box-sizing: border-box;
+
+					.item {
+						font-size: 12px;
+						padding: 5px 10px;
+						color: #fff;
+
+						.date {
+							margin-right: 5px;
+							color: #ccc;
+						}
+
+						.el-icon {
+							margin: 0 5px;
+							font-size: 14px;
+							position: relative;
+							top: 3px;
+						}
+					}
 				}
 			}
 		}
 
 		@keyframes coding {
 			from {
-				height: 0;
+				opacity: 0;
+				transform: translateY(10vh);
 			}
 
 			to {
-				height: 75vh;
-			}
-		}
-
-		&.is-coding {
-			.head {
-				transform: translateY(-180px);
+				opacity: 1;
+				transform: translateY(0);
 			}
 		}
 	}
