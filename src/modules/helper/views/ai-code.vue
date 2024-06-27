@@ -953,6 +953,7 @@ $color: #41d1ff;
 		cursor: pointer;
 		transition: all 0.2s;
 		font-size: 12px;
+		z-index: 9;
 
 		.el-icon {
 			font-size: 16px;
@@ -1288,6 +1289,7 @@ $color: #41d1ff;
 			border-top: 5px solid rgba(255, 255, 255, 0.1);
 			box-sizing: border-box;
 			opacity: 0;
+			z-index: 10;
 			transform: translateY(10vh);
 
 			.editor {
