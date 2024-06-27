@@ -5,7 +5,7 @@
 			<div class="b"></div>
 		</div>
 
-		<div class="back" @click="router.back">
+		<div class="back" @click="toBack">
 			<el-icon>
 				<back />
 			</el-icon>
@@ -45,7 +45,7 @@
 					<loading />
 				</el-icon>
 
-				<cl-svg class="icon" name="enter" v-else />
+				<cl-svg class="icon" name="enter" v-else @click="step.next" />
 			</div>
 
 			<div
@@ -218,7 +218,7 @@
 						<div class="tabs">
 							<div
 								class="item"
-								v-for="(item, index) in code.tabs"
+								v-for="(item, index) in code.list"
 								:key="index"
 								:class="{
 									active: code.active == item.value
@@ -232,7 +232,7 @@
 								{{ item.label }}
 							</div>
 
-							<div class="op" v-if="!isEmpty(code.tabs) && !code.loading">
+							<div class="op" v-if="!isEmpty(code.list) && !code.loading">
 								<el-tooltip content="创建文件">
 									<el-icon @click="createFile">
 										<download />
@@ -244,15 +244,15 @@
 						<div class="code">
 							<cl-editor-monaco
 								:ref="setRefs('editor')"
-								v-model="codeData.content"
+								v-model="activeCode.content"
 								height="100%"
 								:border="false"
 								:options="{
 									theme: 'ai-code--dark'
 								}"
-								:key="codeData.value"
-								:language="codeData.value == 'vue' ? 'html' : 'typescript'"
-								v-if="codeData"
+								:key="activeCode.value"
+								:language="activeCode.value == 'vue' ? 'html' : 'typescript'"
+								v-if="activeCode"
 							/>
 						</div>
 
@@ -295,7 +295,7 @@ import {
 	CirclePlusFilled,
 	QuestionFilled
 } from "@element-plus/icons-vue";
-import { ElLoading, ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import { assign, isEmpty } from "lodash-es";
 import { useMenu, useAi } from "../hooks";
 import { isDev } from "/@/config";
@@ -323,7 +323,7 @@ monaco.editor.defineTheme("ai-code--dark", {
 
 // 表单
 const form = reactive({
-	entity: "收货地址",
+	entity: "",
 	module: "user",
 	other: "",
 	column: "用户ID、用户名、收货人、手机号、收货地址、是否默认"
@@ -358,6 +358,11 @@ const step = reactive({
 				break;
 
 			case "form":
+				if (!form.entity) {
+					step.loading = false;
+					return false;
+				}
+
 				await code.getColumns();
 				break;
 		}
@@ -378,10 +383,22 @@ const step = reactive({
 	}
 });
 
+interface CodeItem {
+	label: string;
+	value: string;
+	content: string;
+	[key: string]: any;
+}
+
 // 代码
 const code = reactive({
-	tabs: [] as { label: string; value: string; content: string }[],
 	active: "",
+
+	// 代码列表
+	list: [] as CodeItem[],
+
+	// 其他数据
+	data: {} as any,
 
 	// 日志
 	logs: [] as any[],
@@ -402,7 +419,7 @@ const code = reactive({
 
 	// 清空
 	clear() {
-		code.tabs = [];
+		code.list = [];
 		code.logs = [];
 	},
 
@@ -495,7 +512,9 @@ const code = reactive({
 
 	// 创建vue
 	async createVue() {
-		const data = {
+		const item = code.add("Vue 页面", "vue");
+
+		code.data = {
 			...form,
 			router: "",
 			prefix: "",
@@ -533,8 +552,6 @@ const code = reactive({
 			]
 		};
 
-		const item = code.add("Vue 页面", "vue");
-
 		code.tips("Vue 代码生成中");
 
 		// 解析
@@ -544,19 +561,19 @@ const code = reactive({
 				entity: code.getContent("node-entity")
 			})
 			.then((res) => {
-				assign(data, res);
+				assign(code.data, res);
 
-				data.router = res.path.replace("/admin", "");
-				data.prefix = res.path;
+				code.data.router = res.path.replace("/admin", "");
+				code.data.prefix = res.path;
 			});
 
 		code.tips("AI 字段分析中");
 
 		// ai分析
-		await ai.matchType({ columns: data.columns, name: form.entity });
+		await ai.matchType({ columns: code.data.columns, name: form.entity });
 
 		// 生成内容
-		item.content = menu.createVue(data);
+		item.content = menu.createVue(code.data);
 
 		code.tips("Vue 生成成功");
 
@@ -568,7 +585,7 @@ const code = reactive({
 
 	// 添加 tab
 	add(label: string, flow: string) {
-		const item = reactive({
+		const item = reactive<CodeItem>({
 			label,
 			value: flow,
 			content: "",
@@ -576,14 +593,19 @@ const code = reactive({
 		});
 
 		code.active = flow;
-		code.tabs.push(item);
+		code.list.push(item);
 
 		return item;
 	},
 
+	// 获取数据
+	get(value: string) {
+		return code.list.find((e) => e.value == value)!;
+	},
+
 	// 获取内容
 	getContent(value: string) {
-		return code.tabs.find((e) => e.value == value)?.content;
+		return code.list.find((e) => e.value == value)?.content;
 	},
 
 	// 设置内容
@@ -633,8 +655,8 @@ const code = reactive({
 	}
 });
 
-const codeData = computed(() => {
-	return code.tabs.find((e) => e.value == code.active);
+const activeCode = computed(() => {
+	return code.list.find((e) => e.value == code.active);
 });
 
 // 滚动文案
@@ -787,27 +809,30 @@ function createFile() {
 		},
 		on: {
 			submit(data, { close, done }) {
-				const loader = ElLoading.service({
-					text: "创建文件中，过程可能会发生页面及服务重启"
-				});
+				code.tips("创建 Vue 文件中，过程可能会发生页面及服务重启");
 
 				// 添加菜单、权限
 				menu.create({
-					code: codes.vue,
-					...temp.data,
+					code: code.getContent("vue"),
+					...code.data,
 					...data
 				})
 					.then((create) => {
+						code.tips("创建后端文件中");
+
 						// 创建后端文件
 						service.base.sys.menu.create({
 							...form,
-							...temp.data,
-							controller: codes.controller,
-							entity: codes.entity
+							...code.data,
+							controller: code.getContent("node-controller"),
+							entity: code.getContent("node-entity"),
+							service: code.getContent("node-service")
 						});
 
 						// 每3s检测服务状态
 						const timer = setInterval(() => {
+							code.tips("检测服务中");
+
 							service
 								.request({
 									url: "/"
@@ -815,14 +840,12 @@ function createFile() {
 								.then(() => {
 									ElMessage.success("文件创建成功");
 									clearInterval(timer);
-									loader.close();
 									close();
 									create();
 								});
 						}, 3000);
 					})
 					.catch(() => {
-						loader.close();
 						done();
 					});
 			}
@@ -833,6 +856,17 @@ function createFile() {
 // 文档
 function toDoc() {
 	window.open("https://cool-js.com/");
+}
+
+// 返回
+function toBack() {
+	ElMessageBox.confirm("确定要返回吗？", "提示", {
+		type: "warning"
+	})
+		.then(() => {
+			router.back();
+		})
+		.catch(() => {});
 }
 
 onMounted(() => {
@@ -918,7 +952,7 @@ $color: #41d1ff;
 		padding: 6px 13px 6px 10px;
 		cursor: pointer;
 		transition: all 0.2s;
-		font-size: 14px;
+		font-size: 12px;
 
 		.el-icon {
 			font-size: 16px;
@@ -1069,10 +1103,16 @@ $color: #41d1ff;
 			.el-button {
 				height: 40px;
 				background-color: #fff;
+				border-radius: 8px;
 			}
 
 			.go {
 				width: 140px;
+
+				.el-icon {
+					margin-left: 5px;
+					color: #444;
+				}
 			}
 
 			.doc {
@@ -1109,8 +1149,13 @@ $color: #41d1ff;
 			.icon {
 				position: absolute;
 				right: 18px;
-				color: #fff;
+				color: #ccc;
 				font-size: 18px;
+				cursor: pointer;
+
+				&:hover {
+					color: #fff;
+				}
 			}
 		}
 
