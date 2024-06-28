@@ -78,13 +78,7 @@
 								</el-tooltip>
 							</div>
 
-							<el-input v-model="form.entity" maxlength="20" placeholder="请输入">
-								<template #prefix>
-									<el-icon>
-										<arrow-right-bold />
-									</el-icon>
-								</template>
-							</el-input>
+							<el-input v-model="form.entity" maxlength="20" placeholder="请输入" />
 						</div>
 
 						<div class="row module">
@@ -101,41 +95,38 @@
 								</el-tooltip>
 							</div>
 
-							<el-input v-model="form.module" maxlength="20" placeholder="请输入">
-								<template #prefix>
-									<el-popover
-										:ref="setRefs('modulePopover')"
-										:teleported="false"
-										:popper-style="{
-											padding: '5px',
-											borderRadius: '6px'
-										}"
-										placement="left"
-									>
-										<template #reference>
-											<el-icon class="add">
-												<circle-plus-filled />
-											</el-icon>
-										</template>
+							<el-input v-model="form.module" maxlength="20" placeholder="请输入" />
 
-										<div class="module-list">
-											<div
-												class="item"
-												v-for="(item, index) in module.dirs"
-												:key="index"
-												@click="
-													() => {
-														form.module = item;
-														refs.modulePopover?.hide();
-													}
-												"
-											>
-												{{ item }}
-											</div>
-										</div>
-									</el-popover>
+							<el-popover
+								:ref="setRefs('modulePopover')"
+								:teleported="false"
+								:popper-style="{
+									padding: '5px',
+									borderRadius: '6px',
+									zIndex: 99
+								}"
+								placement="left"
+							>
+								<template #reference>
+									<cl-svg class="add" name="arrow-down" />
 								</template>
-							</el-input>
+
+								<div class="module-list">
+									<div
+										class="item"
+										v-for="(item, index) in module.dirs"
+										:key="index"
+										@click="
+											() => {
+												form.module = item;
+												refs.modulePopover?.hide();
+											}
+										"
+									>
+										{{ item }}
+									</div>
+								</div>
+							</el-popover>
 						</div>
 
 						<div class="row">
@@ -152,13 +143,7 @@
 								</el-tooltip>
 							</div>
 
-							<el-input v-model="form.column" maxlength="200" placeholder="请输入">
-								<template #prefix>
-									<el-icon class="icon">
-										<arrow-right-bold />
-									</el-icon>
-								</template>
-							</el-input>
+							<el-input v-model="form.column" maxlength="200" placeholder="请输入" />
 						</div>
 
 						<div class="row">
@@ -175,13 +160,7 @@
 								</el-tooltip>
 							</div>
 
-							<el-input v-model="form.other" maxlength="200" placeholder="请输入">
-								<template #prefix>
-									<el-icon>
-										<arrow-right-bold />
-									</el-icon>
-								</template>
-							</el-input>
+							<el-input v-model="form.other" maxlength="200" placeholder="请输入" />
 						</div>
 					</div>
 				</div>
@@ -304,6 +283,7 @@ import * as monaco from "monaco-editor";
 import { sleep } from "/@/cool/utils";
 import dayjs from "dayjs";
 import { nextTick } from "vue";
+import type { CodeItem } from "../types";
 
 const { service, refs, setRefs, router } = useCool();
 const menu = useMenu();
@@ -323,7 +303,7 @@ monaco.editor.defineTheme("ai-code--dark", {
 
 // 表单
 const form = reactive({
-	entity: "",
+	entity: "收货地址",
 	module: "user",
 	other: "",
 	column: "用户ID、用户名、收货人、手机号、收货地址、是否默认"
@@ -382,13 +362,6 @@ const step = reactive({
 		}
 	}
 });
-
-interface CodeItem {
-	label: string;
-	value: string;
-	content: string;
-	[key: string]: any;
-}
 
 // 代码
 const code = reactive({
@@ -1177,14 +1150,13 @@ $color: #41d1ff;
 			margin: 0 auto;
 
 			.editor {
-				box-shadow: 0 0 1px 1px rgba($color, 0.7);
 				border-radius: 8px;
 
 				.content {
 					color: #fff;
 					box-sizing: border-box;
 					border-radius: 0 0 8px 8px;
-					padding: 10px 0;
+					padding: 5px 0 10px 0;
 
 					.row {
 						font-size: 12px;
@@ -1198,6 +1170,9 @@ $color: #41d1ff;
 							display: flex;
 							align-items: center;
 							padding: 5px 15px;
+							font-size: 12px;
+							margin-bottom: 5px;
+							color: #999;
 
 							.el-icon {
 								margin-left: 4px;
@@ -1206,8 +1181,9 @@ $color: #41d1ff;
 						}
 
 						:deep(.el-input__wrapper) {
-							background-color: transparent;
+							background-color: #2f344722;
 							box-shadow: none;
+							padding: 0 15px;
 
 							.el-input__inner {
 								color: #fff;
@@ -1219,9 +1195,18 @@ $color: #41d1ff;
 						}
 
 						&.module {
+							position: relative;
+
+							:deep(.el-input__wrapper) {
+								padding-left: 35px;
+							}
+
 							.add {
 								cursor: pointer;
 								margin-right: 8px;
+								position: absolute;
+								left: 15px;
+								top: 40px;
 							}
 						}
 					}

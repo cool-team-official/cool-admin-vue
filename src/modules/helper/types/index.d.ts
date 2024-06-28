@@ -30,7 +30,14 @@ export declare interface EpsData {
 	[key: string]: EpsModule[];
 }
 
-export declare type CodeType = "entity" | "controller" | "vue";
+export declare type CodeType = "node-entity" | "node-controller" | "node-service" | "vue";
+
+export interface CodeItem {
+	label: string;
+	value: CodeType;
+	content: string;
+	[key: string]: any;
+}
 
 export declare interface PropRule {
 	value?: string;
