@@ -32,7 +32,12 @@ function useEvent(names: string[], { r, options, clear }: any) {
 		if (!r.__ev[k]) r.__ev[k] = [];
 
 		if (options[k]) {
-			r.__ev[k].push(options[k]);
+			const funIndex = r.__ev[k].findIndex((f: any) => f.name === options[k].name);
+			if (funIndex !== -1) {
+				r.__ev[k][funIndex] = options[k];
+			} else {
+				r.__ev[k].push(options[k]);
+			}
 		}
 
 		d[k] = (...args: any[]) => {
