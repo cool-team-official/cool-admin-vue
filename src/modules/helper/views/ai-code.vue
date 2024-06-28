@@ -182,9 +182,7 @@
 							<span
 								@click="
 									() => {
-										if (!code.loading) {
-											step.prev();
-										}
+										step.prev();
 									}
 								"
 							></span>
@@ -212,9 +210,15 @@
 							</div>
 
 							<div class="op" v-if="!isEmpty(code.list) && !code.loading">
+								<el-tooltip content="重新生成" v-if="code.active == 'vue'">
+									<el-icon @click="code.refresh()">
+										<refresh />
+									</el-icon>
+								</el-tooltip>
+
 								<el-tooltip content="复制代码">
 									<el-icon @click="code.copy()">
-										<copy-document />
+										<document-copy />
 									</el-icon>
 								</el-tooltip>
 
@@ -277,8 +281,9 @@ import {
 	Back,
 	ArrowRightBold,
 	Loading,
-	CopyDocument,
-	QuestionFilled
+	DocumentCopy,
+	QuestionFilled,
+	Refresh
 } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import { assign, isEmpty } from "lodash-es";
@@ -320,7 +325,7 @@ const form = reactive({
 // 执行步骤
 const step = reactive({
 	loading: false,
-	value: "start",
+	value: "coding",
 	list: ["start", "enter", "form", "coding"],
 
 	async next() {
@@ -373,7 +378,7 @@ const step = reactive({
 
 // 代码
 const code = reactive({
-	active: "",
+	active: "node-entity",
 
 	// 代码列表
 	list: (storage.get("ai-code.list") || []) as CodeItem[],
@@ -464,7 +469,8 @@ const code = reactive({
 
 		// service 代码
 		const service = await code.setContent("Service 服务层", "node-service", {
-			...entityData
+			...entityData,
+			entity
 		});
 
 		code.tips("Service 生成成功，开始解析");
@@ -508,6 +514,8 @@ const code = reactive({
 	// 创建vue
 	async createVue() {
 		const item = code.add("Vue 页面", "vue");
+
+		item.content = "";
 
 		code.data = {
 			router: "",
@@ -555,13 +563,13 @@ const code = reactive({
 				entity: code.getContent("node-entity")
 			})
 			.then((res) => {
-				assign(code.data, res);
+				res.router = res.path.replace("/admin", "");
+				res.prefix = res.path;
 
-				code.data.router = res.path.replace("/admin", "");
-				code.data.prefix = res.path;
+				assign(code.data, res);
 			});
 
-		code.tips("AI 字段分析中");
+		code.tips("AI 分析字段中");
 
 		// ai分析
 		await ai.matchType({ columns: code.data.columns, name: form.entity });
@@ -569,25 +577,30 @@ const code = reactive({
 		// 生成内容
 		item.content = menu.createVue(code.data);
 
-		code.tips("Vue 生成成功");
-
 		await sleep(300);
 
 		// 格式化
 		refs.editor.formatCode();
+
+		code.tips("Vue 生成成功");
 	},
 
 	// 添加 tab
 	add(label: string, flow: string) {
-		const item = reactive<CodeItem>({
-			label,
-			value: flow,
-			content: "",
-			_content: ""
-		});
+		let item = code.list.find((e) => e.value == flow);
+
+		if (!item) {
+			item = reactive<CodeItem>({
+				label,
+				value: flow,
+				content: "",
+				_content: ""
+			});
+
+			code.list.push(item);
+		}
 
 		code.active = flow;
-		code.list.push(item);
 
 		return item;
 	},
@@ -628,6 +641,11 @@ const code = reactive({
 			});
 
 			const timer = setInterval(() => {
+				if (step.value != "coding") {
+					clearInterval(timer);
+					return;
+				}
+
 				const v = item._content[item.content.length] || "";
 
 				if (isEnd) {
@@ -642,18 +660,27 @@ const code = reactive({
 
 				// 滚动到底
 				if (flow == code.active) {
-					refs.editor.revealLine(99999);
+					refs.editor?.revealLine(99999);
 				}
 			}, 10);
 		});
 	},
 
+	// 复制
 	copy() {
 		copy(code.getContent(code.active)!);
 		code.save();
 		ElMessage.success("复制成功");
 	},
 
+	// 重新生成
+	async refresh() {
+		code.loading = true;
+		await code.createVue();
+		code.loading = false;
+	},
+
+	// 保存
 	save() {
 		storage.set("ai-code.list", code.list);
 		storage.set("ai-code.data", code.data);
@@ -1301,11 +1328,9 @@ $color: #41d1ff;
 			height: 100vh;
 			width: 100%;
 			animation: coding 0.3s forwards;
-			border-top: 5px solid rgba(255, 255, 255, 0.1);
 			box-sizing: border-box;
 			opacity: 0;
 			z-index: 10;
-			transform: translateY(10vh);
 
 			.editor {
 				height: 100%;
@@ -1363,7 +1388,7 @@ $color: #41d1ff;
 							height: 30px;
 							width: 30px;
 							color: #fff;
-							font-size: 18px;
+							font-size: 15px;
 							cursor: pointer;
 							border-radius: 5px;
 
@@ -1382,6 +1407,7 @@ $color: #41d1ff;
 					height: 150px;
 					padding: 5px 0;
 					box-sizing: border-box;
+					border-top: 1px solid #2f3447;
 
 					.item {
 						font-size: 12px;

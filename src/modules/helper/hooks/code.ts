@@ -308,61 +308,61 @@ export function useCode() {
 
 		// 代码模板
 		return `<template>
-            <cl-crud ref="Crud">
-                <cl-row>
-                    <!-- 刷新按钮 -->
-                    <cl-refresh-btn />
-                    ${perms.add ? "<!-- 新增按钮 -->\n<cl-add-btn />" : ""}
-                    ${perms.del ? "<!-- 删除按钮 -->\n<cl-multi-delete-btn />" : ""}
-					${clFilter}
-                    <cl-flex1 />
-                    <!-- 关键字搜索 -->
-                    <cl-search-key placeholder="搜索${clSearchKeyPlaceholder || "关键字"}" />
-                </cl-row>
-        
-                <cl-row>
-                    <!-- 数据表格 -->
-                    <cl-table ref="Table" />
-                </cl-row>
-        
-                <cl-row>
-                    <cl-flex1 />
-                    <!-- 分页控件 -->
-                    <cl-pagination />
-                </cl-row>
-        
-                <!-- 新增、编辑 -->
-                <cl-upsert ref="Upsert" />
-            </cl-crud>
-        </template>
-        
-        <script lang="ts" name="${router.replace(/^\//, "").replace(/\//g, "-")}" setup>
-        import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-        import { useCool } from "/@/cool";
-        
-        const { service } = useCool();
-        
-        // cl-upsert
-        const Upsert = useUpsert(${toCodeString(upsert)});
-        
-        // cl-table
-        const Table = useTable(${toCodeString(table)});
-        
-        // cl-crud
-        const Crud = useCrud(
-            {
-                service: ${service.join(".")}
-            },
-            (app) => {
-                app.refresh();
-            }
-        );
+	<cl-crud ref="Crud">
+		<cl-row>
+			<!-- 刷新按钮 -->
+			<cl-refresh-btn />
+			${perms.add ? "<!-- 新增按钮 -->\n			<cl-add-btn />" : ""}
+			${perms.del ? "<!-- 删除按钮 -->\n			<cl-multi-delete-btn />" : ""}
+			${clFilter}
+			<cl-flex1 />
+			<!-- 关键字搜索 -->
+			<cl-search-key placeholder="搜索${clSearchKeyPlaceholder || "关键字"}" />
+		</cl-row>
 
-		// 刷新
-		function refresh(params?: any) {
-			Crud.value?.refresh(params);
-		}
-        </script>`;
+		<cl-row>
+			<!-- 数据表格 -->
+			<cl-table ref="Table" />
+		</cl-row>
+
+		<cl-row>
+			<cl-flex1 />
+			<!-- 分页控件 -->
+			<cl-pagination />
+		</cl-row>
+
+		<!-- 新增、编辑 -->
+		<cl-upsert ref="Upsert" />
+	</cl-crud>
+</template>
+
+<script lang="ts" name="${router.replace(/^\//, "").replace(/\//g, "-")}" setup>
+import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
+import { useCool } from "/@/cool";
+
+const { service } = useCool();
+
+// cl-upsert
+const Upsert = useUpsert(${toCodeString(upsert)});
+
+// cl-table
+const Table = useTable(${toCodeString(table)});
+
+// cl-crud
+const Crud = useCrud(
+	{
+		service: ${service.join(".")}
+	},
+	(app) => {
+		app.refresh();
+	}
+);
+
+// 刷新
+function refresh(params?: any) {
+	Crud.value?.refresh(params);
+}
+</script>`;
 	}
 
 	// 转成代码字符串
