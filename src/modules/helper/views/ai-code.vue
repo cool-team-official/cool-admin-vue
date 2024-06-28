@@ -397,7 +397,7 @@ const code = reactive({
 		return ai
 			.invokeFlow("comm-column", {
 				name: form.entity,
-				modules: module.dirs
+				modules: module.dirs.join("、")
 			})
 			.then((res) => {
 				form.column = res.columns;
