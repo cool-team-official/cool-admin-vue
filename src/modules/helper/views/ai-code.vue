@@ -217,6 +217,12 @@
 										<download />
 									</el-icon>
 								</el-tooltip>
+
+								<el-tooltip content="复制代码">
+									<el-icon @click="code.copy()">
+										<copy-document />
+									</el-icon>
+								</el-tooltip>
 							</div>
 						</div>
 
@@ -271,7 +277,7 @@ import {
 	Back,
 	ArrowRightBold,
 	Loading,
-	CirclePlusFilled,
+	CopyDocument,
 	QuestionFilled
 } from "@element-plus/icons-vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -280,15 +286,17 @@ import { useMenu, useAi } from "../hooks";
 import { isDev } from "/@/config";
 import { useForm } from "@cool-vue/crud";
 import * as monaco from "monaco-editor";
-import { sleep } from "/@/cool/utils";
+import { sleep, storage } from "/@/cool/utils";
 import dayjs from "dayjs";
 import { nextTick } from "vue";
 import type { CodeItem } from "../types";
+import { useClipboard } from "@vueuse/core";
 
 const { service, refs, setRefs, router } = useCool();
 const menu = useMenu();
 const ai = useAi();
 const Form = useForm();
+const { copy } = useClipboard();
 
 // 编辑器样式
 monaco.editor.defineTheme("ai-code--dark", {
@@ -312,7 +320,7 @@ const form = reactive({
 // 执行步骤
 const step = reactive({
 	loading: false,
-	value: "start",
+	value: "coding",
 	list: ["start", "enter", "form", "coding"],
 
 	async next() {
@@ -368,10 +376,10 @@ const code = reactive({
 	active: "",
 
 	// 代码列表
-	list: [] as CodeItem[],
+	list: (storage.get("ai-code.list") || []) as CodeItem[],
 
 	// 其他数据
-	data: {} as any,
+	data: (storage.get("ai-code.data") || {}) as any,
 
 	// 日志
 	logs: [] as any[],
@@ -488,14 +496,11 @@ const code = reactive({
 		const item = code.add("Vue 页面", "vue");
 
 		code.data = {
-			...form,
 			router: "",
 			prefix: "",
 			path: "",
-			module: "",
 			fileName: "",
 			className: "",
-			other: "",
 			columns: [],
 			api: [
 				{
@@ -522,7 +527,9 @@ const code = reactive({
 					path: "/list",
 					summary: "列表查询"
 				}
-			]
+			],
+			...form,
+			name: form.entity
 		};
 
 		code.tips("Vue 代码生成中");
@@ -625,6 +632,17 @@ const code = reactive({
 				}
 			}, 10);
 		});
+	},
+
+	copy() {
+		copy(code.getContent(code.active)!);
+		code.save();
+		ElMessage.success("复制成功");
+	},
+
+	save() {
+		storage.set("ai-code.list", code.list);
+		storage.set("ai-code.data", code.data);
 	}
 });
 
@@ -781,8 +799,10 @@ function createFile() {
 			saveButtonText: "开始创建"
 		},
 		on: {
-			submit(data, { close, done }) {
+			submit(data, { close }) {
 				code.tips("创建 Vue 文件中，过程可能会发生页面及服务重启");
+
+				close();
 
 				// 添加菜单、权限
 				menu.create({
@@ -791,8 +811,6 @@ function createFile() {
 					...data
 				})
 					.then((create) => {
-						code.tips("创建后端文件中");
-
 						// 创建后端文件
 						service.base.sys.menu.create({
 							...form,
@@ -804,23 +822,21 @@ function createFile() {
 
 						// 每3s检测服务状态
 						const timer = setInterval(() => {
-							code.tips("检测服务中");
+							code.tips("检测后端服务是否启动");
 
 							service
 								.request({
 									url: "/"
 								})
 								.then(() => {
+									code.tips("文件创建成功");
 									ElMessage.success("文件创建成功");
 									clearInterval(timer);
-									close();
 									create();
 								});
 						}, 3000);
 					})
-					.catch(() => {
-						done();
-					});
+					.catch(() => null);
 			}
 		}
 	});
