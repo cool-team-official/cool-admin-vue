@@ -37,7 +37,7 @@
 				<el-input
 					:ref="setRefs('inputEntity')"
 					v-model="form.entity"
-					placeholder="如：收货地址、商品列表"
+					placeholder="如：学生信息、商品信息"
 					@keydown.enter="step.next"
 				/>
 
@@ -57,7 +57,9 @@
 				<div class="editor">
 					<div class="topbar">
 						<div class="dots">
-							<span></span>
+							<el-tooltip content="返回">
+								<span @click="step.prev()"></span>
+							</el-tooltip>
 							<span></span>
 							<span></span>
 						</div>
@@ -70,7 +72,7 @@
 
 								<el-tooltip
 									placement="top"
-									content="指某类事物的集合名称，如：收货地址、商品列表"
+									content="指某类事物的集合名称，如：学生信息、商品信息"
 								>
 									<el-icon>
 										<question-filled />
@@ -135,7 +137,7 @@
 
 								<el-tooltip
 									placement="top"
-									content="实体数据的字段名称，如：ID、姓名、手机号"
+									content="实体数据的字段名称，如：ID、姓名、手机号、状态"
 								>
 									<el-icon>
 										<question-filled />
@@ -179,13 +181,9 @@
 				<div class="editor">
 					<div class="topbar">
 						<div class="dots">
-							<span
-								@click="
-									() => {
-										step.prev();
-									}
-								"
-							></span>
+							<el-tooltip content="返回">
+								<span @click="step.prev()"></span>
+							</el-tooltip>
 							<span></span>
 							<span></span>
 						</div>
@@ -355,6 +353,8 @@ const step = reactive({
 					step.loading = false;
 					return false;
 				}
+
+				desc.set(["正在做初步分析，请稍等..."]);
 
 				await code.getColumns();
 				break;
@@ -710,11 +710,16 @@ const desc = reactive({
 
 			default:
 				desc.list = [
-					"为开发者生成优质编程代码",
+					"COOL为开发者而生",
 					"只需少量的口语提示就能完成特定的功能，大大节省开发时间"
 				];
 		}
 
+		desc.start();
+	},
+
+	set(arr: string[]) {
+		desc.list = arr;
 		desc.start();
 	},
 
@@ -1027,6 +1032,14 @@ $color: #41d1ff;
 						border-radius: 12px;
 						background-color: #2f3447;
 						margin-right: 8px;
+
+						&:first-child {
+							cursor: pointer;
+
+							&:hover {
+								background-color: var(--el-color-danger);
+							}
+						}
 					}
 				}
 			}
@@ -1337,20 +1350,6 @@ $color: #41d1ff;
 			.editor {
 				height: 100%;
 				border-radius: 10px 10px 0 0;
-			}
-
-			.topbar {
-				.dots {
-					span {
-						cursor: pointer;
-
-						&:first-child {
-							&:hover {
-								background-color: var(--el-color-danger);
-							}
-						}
-					}
-				}
 			}
 
 			.content {
