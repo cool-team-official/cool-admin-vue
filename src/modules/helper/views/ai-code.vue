@@ -396,7 +396,8 @@ const code = reactive({
 	async getColumns() {
 		return ai
 			.invokeFlow("comm-column", {
-				name: form.entity
+				name: form.entity,
+				modules: module.dirs
 			})
 			.then((res) => {
 				form.column = res.columns;
