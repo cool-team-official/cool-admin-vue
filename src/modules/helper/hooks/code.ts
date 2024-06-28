@@ -176,7 +176,14 @@ export function useCode() {
 	}
 
 	// 创建 vue 代码
-	function createVue({ router = "", columns = [], prefix = "", api = [] }: EpsModule) {
+	function createVue({
+		router = "",
+		columns = [],
+		prefix = "",
+		api = [],
+		fieldEq = [],
+		keyWordLikeFields = []
+	}: EpsModule) {
 		// 新增、编辑
 		const upsert = {
 			items: [] as DeepPartial<ClForm.Item>[]
@@ -282,6 +289,23 @@ export function useCode() {
 			});
 		}
 
+		// 筛选
+		const clFilter = fieldEq.map((field) => {
+			const item = table.columns.find((e) => e.propertyName == field);
+
+			return item
+				? `<!-- 筛选${item.label} -->\n<cl-filter label="${item.label}"><cl-select options="${item.dict}" prop="${field}" /></cl-filter>`
+				: "";
+		});
+
+		// 关键字搜索
+		const clSearchKeyPlaceholder = keyWordLikeFields
+			.map((field) => {
+				return table.columns.find((e) => e.propertyName == field)?.label;
+			})
+			.filter((e) => !!e)
+			.join("、");
+
 		// 代码模板
 		return `<template>
             <cl-crud ref="Crud">
@@ -290,9 +314,10 @@ export function useCode() {
                     <cl-refresh-btn />
                     ${perms.add ? "<!-- 新增按钮 -->\n<cl-add-btn />" : ""}
                     ${perms.del ? "<!-- 删除按钮 -->\n<cl-multi-delete-btn />" : ""}
+					${clFilter}
                     <cl-flex1 />
                     <!-- 关键字搜索 -->
-                    <cl-search-key />
+                    <cl-search-key placeholder="搜索${clSearchKeyPlaceholder || "关键字"}" />
                 </cl-row>
         
                 <cl-row>
@@ -332,6 +357,11 @@ export function useCode() {
                 app.refresh();
             }
         );
+
+		// 刷新
+		function refresh(params?: any) {
+			Crud.value?.refresh(params);
+		}
         </script>`;
 	}
 

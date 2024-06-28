@@ -23,6 +23,8 @@ export declare interface EpsModule {
 	prefix: string;
 	router: string;
 	module: string;
+	fieldEq?: string[];
+	keyWordLikeFields?: string[];
 	[key: string]: any;
 }
 

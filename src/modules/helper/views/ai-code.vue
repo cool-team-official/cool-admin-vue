@@ -212,15 +212,15 @@
 							</div>
 
 							<div class="op" v-if="!isEmpty(code.list) && !code.loading">
-								<el-tooltip content="创建文件">
-									<el-icon @click="createFile">
-										<download />
-									</el-icon>
-								</el-tooltip>
-
 								<el-tooltip content="复制代码">
 									<el-icon @click="code.copy()">
 										<copy-document />
+									</el-icon>
+								</el-tooltip>
+
+								<el-tooltip content="创建文件">
+									<el-icon @click="createFile">
+										<download />
 									</el-icon>
 								</el-tooltip>
 							</div>
@@ -442,6 +442,8 @@ const code = reactive({
 		// 下一步
 		step.next();
 
+		code.tips("AI 开始编码");
+
 		await sleep(300);
 
 		code.tips("Entity 代码生成中");
@@ -479,7 +481,8 @@ const code = reactive({
 		// controller 代码
 		await code.setContent("Controller 控制器", "node-controller", {
 			...serviceData,
-			...entityData
+			...entityData,
+			service
 		});
 
 		code.tips("Controller 生成成功");
@@ -489,6 +492,16 @@ const code = reactive({
 		code.tips("编码完成");
 
 		code.loading = false;
+
+		ElMessageBox.confirm("编码完成，是否创建文件？", "提示", {
+			type: "success",
+			confirmButtonText: "开始创建",
+			cancelButtonText: "稍后再看"
+		})
+			.then(() => {
+				createFile();
+			})
+			.catch(() => null);
 	},
 
 	// 创建vue
