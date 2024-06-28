@@ -401,7 +401,7 @@ const code = reactive({
 			})
 			.then((res) => {
 				form.column = res.columns;
-				form.entity = res.module;
+				form.module = res.module;
 			});
 	},
 
