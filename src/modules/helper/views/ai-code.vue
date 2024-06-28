@@ -288,7 +288,7 @@ import {
 import { ElMessage, ElMessageBox } from "element-plus";
 import { assign, isEmpty } from "lodash-es";
 import { useMenu, useAi } from "../hooks";
-import { isDev } from "/@/config";
+import { config, isDev } from "/@/config";
 import { useForm } from "@cool-vue/crud";
 import * as monaco from "monaco-editor";
 import { sleep, storage } from "/@/cool/utils";
@@ -316,16 +316,16 @@ monaco.editor.defineTheme("ai-code--dark", {
 
 // 表单
 const form = reactive({
-	entity: "收货地址",
-	module: "user",
+	entity: "",
+	module: "",
 	other: "",
-	column: "用户ID、用户名、收货人、手机号、收货地址、是否默认"
+	column: ""
 });
 
 // 执行步骤
 const step = reactive({
 	loading: false,
-	value: "coding",
+	value: "start",
 	list: ["start", "enter", "form", "coding"],
 
 	async next() {
@@ -400,6 +400,7 @@ const code = reactive({
 			})
 			.then((res) => {
 				form.column = res.columns;
+				form.entity = res.module;
 			});
 	},
 
@@ -890,7 +891,7 @@ function toDoc() {
 
 // 返回
 function toBack() {
-	ElMessageBox.confirm("确定要返回吗？", "提示", {
+	ElMessageBox.confirm(`确定要返回 ${config.app.name} 吗？`, "提示", {
 		type: "warning"
 	})
 		.then(() => {
