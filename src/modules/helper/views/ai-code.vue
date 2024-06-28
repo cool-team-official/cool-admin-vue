@@ -320,7 +320,7 @@ const form = reactive({
 // 执行步骤
 const step = reactive({
 	loading: false,
-	value: "coding",
+	value: "start",
 	list: ["start", "enter", "form", "coding"],
 
 	async next() {
@@ -482,7 +482,8 @@ const code = reactive({
 		await code.setContent("Controller 控制器", "node-controller", {
 			...serviceData,
 			...entityData,
-			service
+			service,
+			entity
 		});
 
 		code.tips("Controller 生成成功");
