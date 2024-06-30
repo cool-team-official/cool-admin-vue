@@ -289,19 +289,24 @@ export function useCode() {
 			});
 		}
 
+		console.log(table.columns);
 		// 筛选
-		const clFilter = fieldEq.map((field) => {
-			const item = table.columns.find((e) => e.propertyName == field);
+		const clFilter = fieldEq
+			.map((field) => {
+				const item = table.columns.find((e) => e.prop == field);
 
-			return item
-				? `<!-- 筛选${item.label} -->\n<cl-filter label="${item.label}"><cl-select options="${item.dict}" prop="${field}" /></cl-filter>`
-				: "";
-		});
+				return item
+					? `<!-- 筛选${item.label} -->\n<cl-filter label="${
+							item.label
+					  }">\n<cl-select options="${item.dict || []}" prop="${field}" />\n</cl-filter>`
+					: "";
+			})
+			.join("\n");
 
 		// 关键字搜索
 		const clSearchKeyPlaceholder = keyWordLikeFields
 			.map((field) => {
-				return table.columns.find((e) => e.propertyName == field)?.label;
+				return table.columns.find((e) => e.prop == field)?.label;
 			})
 			.filter((e) => !!e)
 			.join("、");

@@ -262,7 +262,7 @@ const Upsert = useUpsert({
 			label: "上级节点",
 			hook: {
 				submit(value) {
-					return value === "" ? null : value;
+					return value || null;
 				}
 			},
 			component: {

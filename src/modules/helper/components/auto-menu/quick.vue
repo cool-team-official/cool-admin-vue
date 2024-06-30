@@ -26,7 +26,7 @@ import type { EpsData } from "../../types";
 const { service, mitt } = useCool();
 const menu = useMenu();
 const Form = useForm();
-const { matchType } = useAi();
+const ai = useAi();
 
 // 实体列表
 const list: any[] = [];
@@ -193,7 +193,7 @@ function open() {
 
 				// 是否需要ai分析
 				if (data.isAi) {
-					await matchType({ columns, name: data.name });
+					await ai.matchType({ columns, name: data.name });
 				}
 
 				menu.create({

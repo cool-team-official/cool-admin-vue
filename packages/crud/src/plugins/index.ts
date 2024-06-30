@@ -9,7 +9,7 @@ export function setFocus(prop?: string): ClForm.Plugin {
 	const { refs, setRefs } = useRefs();
 
 	return ({ exposed, onOpen }) => {
-		const name = prop || exposed.config.items?.[0]?.prop;
+		const name = prop || exposed.config?.items?.[0]?.prop;
 		let _ref: any;
 
 		if (name) {
@@ -29,7 +29,7 @@ export function setFocus(prop?: string): ClForm.Plugin {
 				});
 			}
 
-			deep(exposed.config.items);
+			deep(exposed.config?.items || []);
 
 			onOpen(() => {
 				if (_ref) {

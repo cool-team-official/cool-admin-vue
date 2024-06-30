@@ -23,26 +23,35 @@ function useParent(name: string, r: Ref) {
 }
 
 // 多事件
-function useEvent(names: string[], { r, options, clear }: any) {
-	const d: any = {};
-
+function useEvent(
+	names: string[],
+	{ r, options, clear, isChild }: { r: any; options: any; clear?: string; isChild?: boolean }
+) {
 	if (!r.__ev) r.__ev = {};
 
+	const d: { [key: string]: (args: any[]) => void } = {};
+	const ev = r.__ev as { [key: string]: { fn: any; isChild?: boolean }[] };
+
 	names.forEach((k) => {
-		if (!r.__ev[k]) r.__ev[k] = [];
+		if (!ev[k]) ev[k] = [];
 
 		if (options[k]) {
-			r.__ev[k].push(options[k]);
+			ev[k].push({
+				fn: options[k],
+				isChild
+			});
 		}
 
 		d[k] = (...args: any[]) => {
-			r.__ev[k].filter(Boolean).forEach((e: any) => {
-				e(...args);
+			ev[k].forEach((e) => {
+				if (e.fn) {
+					e.fn(...args);
+				}
 			});
 
 			if (clear == k) {
-				for (const i in r.__ev) {
-					r.__ev[i].splice(1, 999);
+				for (const i in ev) {
+					ev[i] = ev[i].filter((e) => !e.isChild);
 				}
 			}
 		};
@@ -80,6 +89,7 @@ export function useCrud(options?: ClCrud.Options, cb?: (app: ClCrud.Ref) => void
 export function useUpsert<T = any>(options?: ClUpsert.Options<T>) {
 	const Upsert = ref<ClUpsert.Ref>();
 	useParent("cl-upsert", Upsert);
+	const isChild = !!Upsert.value;
 
 	if (options) {
 		provide("useUpsert__options", options);
@@ -93,7 +103,8 @@ export function useUpsert<T = any>(options?: ClUpsert.Options<T>) {
 					const event = useEvent(["onOpen", "onOpened", "onClosed"], {
 						r: val,
 						options,
-						clear: "onClosed"
+						clear: "onClosed",
+						isChild
 					});
 
 					Object.assign(val.config, event);

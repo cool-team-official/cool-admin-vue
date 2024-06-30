@@ -292,7 +292,7 @@ import * as monaco from "monaco-editor";
 import { sleep, storage } from "/@/cool/utils";
 import dayjs from "dayjs";
 import { nextTick } from "vue";
-import type { CodeItem } from "../types";
+import type { CodeItem, EpsColumn } from "../types";
 import { useClipboard } from "@vueuse/core";
 
 const { service, refs, setRefs, router } = useCool();
@@ -323,7 +323,7 @@ const form = reactive({
 // 执行步骤
 const step = reactive({
 	loading: false,
-	value: "start",
+	value: "coding",
 	list: ["start", "enter", "form", "coding"],
 
 	async next() {
@@ -381,10 +381,42 @@ const code = reactive({
 	active: "node-entity",
 
 	// 代码列表
-	list: (storage.get("ai-code.list") || []) as CodeItem[],
+	list: [] as CodeItem[],
 
 	// 其他数据
-	data: (storage.get("ai-code.data") || {}) as any,
+	data: {
+		router: "",
+		prefix: "",
+		columns: [] as EpsColumn[],
+		fieldEq: [],
+		keyWordLikeFields: [],
+		api: [
+			{
+				path: "/add",
+				summary: "新增"
+			},
+			{
+				path: "/info",
+				summary: "单个信息"
+			},
+			{
+				path: "/update",
+				summary: "修改"
+			},
+			{
+				path: "/delete",
+				summary: "删除"
+			},
+			{
+				path: "/page",
+				summary: "分页查询"
+			},
+			{
+				path: "/list",
+				summary: "列表查询"
+			}
+		]
+	},
 
 	// 日志
 	logs: [] as any[],
@@ -462,10 +494,15 @@ const code = reactive({
 
 		// entity 关键数据
 		const entityData = await ai.invokeFlow("comm-parse-entity", {
-			entity
+			entity,
+			module: form.module
 		});
 
 		code.tips(`Entity 解析成功，${JSON.stringify(entityData)}`);
+
+		code.data.router = entityData.path.replace("/admin", "");
+		code.data.prefix = entityData.path;
+		code.data.columns = entityData.columns || [];
 
 		code.tips("Service 代码生成中");
 
@@ -487,14 +524,24 @@ const code = reactive({
 		code.tips("Controller 代码生成中");
 
 		// controller 代码
-		await code.setContent("Controller 控制器", "node-controller", {
+		const controller = await code.setContent("Controller 控制器", "node-controller", {
 			...serviceData,
 			...entityData,
 			service,
 			entity
 		});
 
-		code.tips("Controller 生成成功");
+		code.tips("Controller 生成成功，开始解析");
+
+		// controller 关键数据
+		const controllerData = await ai.invokeFlow("comm-parse-controller", {
+			controller
+		});
+
+		code.tips(`Controller 解析成功，${JSON.stringify(controllerData)}`);
+
+		code.data.fieldEq = controllerData.fieldEq;
+		code.data.keyWordLikeFields = controllerData.keyWordLikeFields;
 
 		await code.createVue();
 
@@ -519,65 +566,26 @@ const code = reactive({
 
 		item.content = "";
 
-		code.data = {
-			router: "",
-			prefix: "",
-			path: "",
-			fileName: "",
-			className: "",
-			columns: [],
-			api: [
-				{
-					path: "/add",
-					summary: "新增"
-				},
-				{
-					path: "/info",
-					summary: "单个信息"
-				},
-				{
-					path: "/update",
-					summary: "修改"
-				},
-				{
-					path: "/delete",
-					summary: "删除"
-				},
-				{
-					path: "/page",
-					summary: "分页查询"
-				},
-				{
-					path: "/list",
-					summary: "列表查询"
-				}
-			],
-			...form,
-			name: form.entity
-		};
+		assign(code.data, form);
 
 		code.tips("Vue 代码生成中");
 
-		// 解析
-		await service.base.sys.menu
-			.parse({
-				module: form.module,
+		// ai分析
+		await ai
+			.invokeFlow("comm-parse-column", {
 				entity: code.getContent("node-entity")
 			})
 			.then((res) => {
-				res.router = res.path.replace("/admin", "");
-				res.prefix = res.path;
-
-				assign(code.data, res);
+				(code.data.columns as EpsColumn[]).forEach((e) => {
+					e.component = res[e.propertyName];
+				});
 			});
 
-		code.tips("AI 分析字段中");
-
-		// ai分析
-		await ai.matchType({ columns: code.data.columns, name: form.entity });
-
 		// 生成内容
-		item.content = menu.createVue(code.data);
+		item.content = menu.createVue({
+			...code.data,
+			module: form.module
+		});
 
 		await sleep(300);
 
@@ -664,15 +672,15 @@ const code = reactive({
 				if (flow == code.active) {
 					refs.editor?.revealLine(99999);
 				}
-			}, 10);
+			}, 5);
 		});
 	},
 
 	// 复制
 	copy() {
 		copy(code.getContent(code.active)!);
-		code.save();
 		ElMessage.success("复制成功");
+		code.save();
 	},
 
 	// 重新生成
@@ -686,6 +694,7 @@ const code = reactive({
 	save() {
 		storage.set("ai-code.list", code.list);
 		storage.set("ai-code.data", code.data);
+		storage.set("ai-code.form", form);
 	}
 });
 
@@ -908,6 +917,12 @@ function toBack() {
 
 onMounted(() => {
 	desc.init();
+
+	if (step.value == "coding") {
+		code.list = storage.get("ai-code.list") || [];
+		code.data = storage.get("ai-code.data") || [];
+		assign(form, storage.get("ai-code.form") || {});
+	}
 });
 </script>
 

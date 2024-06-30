@@ -27,6 +27,7 @@ function toCode() {
 	position: relative;
 	border-radius: 4px;
 	padding: 5px 10px;
+	white-space: nowrap;
 	letter-spacing: 1px;
 
 	span {
