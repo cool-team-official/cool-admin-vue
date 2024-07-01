@@ -272,7 +272,7 @@
 </template>
 
 <script lang="tsx" setup name="helper-ai-code">
-import { onMounted, reactive, computed } from "vue";
+import { onMounted, reactive, computed, nextTick } from "vue";
 import { useCool, module } from "/@/cool";
 import {
 	Download,
@@ -291,7 +291,6 @@ import { useForm } from "@cool-vue/crud";
 import * as monaco from "monaco-editor";
 import { sleep, storage } from "/@/cool/utils";
 import dayjs from "dayjs";
-import { nextTick } from "vue";
 import type { CodeItem, EpsColumn } from "../types";
 import { useClipboard } from "@vueuse/core";
 
