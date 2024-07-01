@@ -1,5 +1,3 @@
-import { request } from "../utils";
-import type { EpsColumn } from "../types";
 import { module } from "/@/cool";
 import { useBase } from "/$/base";
 
@@ -98,42 +96,7 @@ export function useAi() {
 		});
 	}
 
-	// 匹配组件类型
-	async function matchType({ columns, name }: { columns: EpsColumn[]; name: string }) {
-		return new Promise((resolve, reject) => {
-			const fields = columns.filter((e) => {
-				return !["id", "crateTime", "updateTime"].includes(e.propertyName);
-			});
-
-			request({
-				url: "/open/code/eps/matchType",
-				method: "POST",
-				data: {
-					fields: fields.map((e) => {
-						return {
-							type: e.type,
-							field: e.propertyName,
-							description: e.comment
-						};
-					}),
-					func: name
-				}
-			})
-				.then((res) => {
-					const names = res.split(",");
-
-					fields.forEach((e, i) => {
-						e.component = names[i];
-					});
-
-					resolve(fields);
-				})
-				.catch(reject);
-		});
-	}
-
 	return {
-		matchType,
 		invokeFlow
 	};
 }

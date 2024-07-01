@@ -31,14 +31,16 @@ export function useFormat() {
 				async provideDocumentFormattingEdits(model) {
 					let text = model.getValue();
 
+					const parser = options[i].parser;
+
 					try {
 						text = await prettier.format(text, {
-							parser: options[i].parser,
+							parser,
 							plugins: options[i].plugins,
 							semi: true,
 							printWidth: 100,
-							tabWidth: 4,
-							useTabs: true,
+							tabWidth: parser == "html" ? 4 : 2,
+							useTabs: parser == "html",
 							singleQuote: true,
 							trailingComma: "none"
 						});

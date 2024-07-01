@@ -323,7 +323,7 @@ const form = reactive({
 // 执行步骤
 const step = reactive({
 	loading: false,
-	value: "coding",
+	value: "start",
 	list: ["start", "enter", "form", "coding"],
 
 	async next() {
@@ -505,6 +505,8 @@ const code = reactive({
 		code.data.prefix = entityData.path;
 		code.data.fileName = entityData.fileName;
 
+		code.parseColumn();
+
 		code.tips("Service 代码生成中");
 
 		// service 代码
@@ -544,7 +546,7 @@ const code = reactive({
 		code.data.fieldEq = controllerData.fieldEq;
 		code.data.keyWordLikeFields = controllerData.keyWordLikeFields;
 
-		await code.createVue();
+		await code.createVue(false);
 
 		code.tips("编码完成");
 
@@ -563,8 +565,48 @@ const code = reactive({
 		}
 	},
 
+	// 解析字段
+	async parseColumn() {
+		const a = ai.invokeFlow("comm-parse-entity-column", {
+			entity: code.getContent("node-entity")
+		});
+
+		const b = ai.invokeFlow("comm-parse-column", {
+			entity: code.getContent("node-entity")
+		});
+
+		await Promise.all([a, b]).then((res) => {
+			if (res[0]?.columns) {
+				code.data.columns = res[0].columns.map((e: EpsColumn) => {
+					if (res[1]?.columns) {
+						e.component = res[1].columns[e.propertyName] || "input";
+					}
+					return e;
+				});
+
+				code.data.columns.push({
+					comment: "更新时间",
+					length: 0,
+					component: "datetime",
+					nullable: false,
+					propertyName: "updateTime",
+					type: "datetime"
+				});
+
+				code.data.columns.push({
+					comment: "创建时间",
+					length: 0,
+					component: "datetime",
+					nullable: false,
+					propertyName: "createTime",
+					type: "datetime"
+				});
+			}
+		});
+	},
+
 	// 创建vue
-	async createVue() {
+	async createVue(isParse: boolean = true) {
 		const item = code.add("Vue 页面", "vue");
 
 		item.content = "";
@@ -573,25 +615,10 @@ const code = reactive({
 
 		code.tips("Vue 代码开始生成");
 
-		code.tips("AI 分析中");
-
-		await ai
-			.invokeFlow("comm-parse-entity-column", {
-				entity: code.getContent("node-entity")
-			})
-			.then((res) => {
-				code.data.columns = res.columns || [];
-			});
-
-		await ai
-			.invokeFlow("comm-parse-column", {
-				entity: code.getContent("node-entity")
-			})
-			.then((res) => {
-				code.data.columns.forEach((e) => {
-					e.component = res[e.propertyName];
-				});
-			});
+		if (isParse) {
+			code.tips("AI 分析中");
+			await code.parseColumn();
+		}
 
 		// 生成内容
 		item.content = menu.createVue({
@@ -692,7 +719,11 @@ const code = reactive({
 	copy() {
 		copy(code.getContent(code.active)!);
 		ElMessage.success("复制成功");
-		code.save();
+
+		// 存本地，方便调试
+		storage.set("ai-code.list", code.list);
+		storage.set("ai-code.data", code.data);
+		storage.set("ai-code.form", form);
 	},
 
 	// 重新生成
@@ -700,14 +731,6 @@ const code = reactive({
 		code.loading = true;
 		await code.createVue();
 		code.loading = false;
-	},
-
-	// 保存
-	save() {
-		console.log(code);
-		storage.set("ai-code.list", code.list);
-		storage.set("ai-code.data", code.data);
-		storage.set("ai-code.form", form);
 	}
 });
 
@@ -932,6 +955,7 @@ function toBack() {
 onMounted(() => {
 	desc.init();
 
+	// 测试
 	if (step.value == "coding") {
 		code.list = storage.get("ai-code.list") || [];
 

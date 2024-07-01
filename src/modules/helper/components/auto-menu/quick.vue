@@ -21,7 +21,7 @@ import { useForm } from "@cool-vue/crud";
 import { deepPaths } from "/@/cool/utils";
 import { computed, onMounted } from "vue";
 import { useMenu, useAi } from "../../hooks";
-import type { EpsData } from "../../types";
+import type { EpsColumn, EpsData } from "../../types";
 
 const { service, mitt } = useCool();
 const menu = useMenu();
@@ -193,7 +193,15 @@ function open() {
 
 				// 是否需要ai分析
 				if (data.isAi) {
-					await ai.matchType({ columns, name: data.name });
+					await ai
+						.invokeFlow("comm-parse-column", {
+							entity: JSON.stringify(columns)
+						})
+						.then((res) => {
+							columns.forEach((e: EpsColumn) => {
+								e.component = res.columns[e.propertyName] || "input";
+							});
+						});
 				}
 
 				menu.create({
