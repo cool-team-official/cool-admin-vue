@@ -387,6 +387,7 @@ const code = reactive({
 	data: {
 		router: "",
 		prefix: "",
+		fileName: "",
 		columns: [] as EpsColumn[],
 		fieldEq: [],
 		keyWordLikeFields: [],
@@ -502,7 +503,7 @@ const code = reactive({
 
 		code.data.router = entityData.path.replace("/admin", "");
 		code.data.prefix = entityData.path;
-		code.data.columns = entityData.columns || [];
+		code.data.fileName = entityData.fileName;
 
 		code.tips("Service 代码生成中");
 
@@ -549,15 +550,17 @@ const code = reactive({
 
 		code.loading = false;
 
-		ElMessageBox.confirm("编码完成，是否创建文件？", "提示", {
-			type: "success",
-			confirmButtonText: "开始创建",
-			cancelButtonText: "稍后再看"
-		})
-			.then(() => {
-				createFile();
+		if (isDev) {
+			ElMessageBox.confirm("编码完成，是否创建文件？", "提示", {
+				type: "success",
+				confirmButtonText: "开始创建",
+				cancelButtonText: "稍后再看"
 			})
-			.catch(() => null);
+				.then(() => {
+					createFile();
+				})
+				.catch(() => null);
+		}
 	},
 
 	// 创建vue
@@ -568,15 +571,24 @@ const code = reactive({
 
 		assign(code.data, form);
 
-		code.tips("Vue 代码生成中");
+		code.tips("Vue 代码开始生成");
 
-		// ai分析
+		code.tips("AI 分析中");
+
+		await ai
+			.invokeFlow("comm-parse-entity-column", {
+				entity: code.getContent("node-entity")
+			})
+			.then((res) => {
+				code.data.columns = res.columns || [];
+			});
+
 		await ai
 			.invokeFlow("comm-parse-column", {
 				entity: code.getContent("node-entity")
 			})
 			.then((res) => {
-				(code.data.columns as EpsColumn[]).forEach((e) => {
+				code.data.columns.forEach((e) => {
 					e.component = res[e.propertyName];
 				});
 			});
@@ -692,6 +704,7 @@ const code = reactive({
 
 	// 保存
 	save() {
+		console.log(code);
 		storage.set("ai-code.list", code.list);
 		storage.set("ai-code.data", code.data);
 		storage.set("ai-code.form", form);
@@ -796,7 +809,7 @@ const desc = reactive({
 // 创建文件
 function createFile() {
 	if (!isDev) {
-		return ElMessage.error("只有在开发环境下才有效");
+		return ElMessage.error("只有在开发环境下才能创建文件");
 	}
 
 	Form.value?.open({
@@ -859,13 +872,12 @@ function createFile() {
 			submit(data, { close }) {
 				code.tips("创建 Vue 文件中，过程可能会发生页面及服务重启");
 
-				close();
-
 				// 添加菜单、权限
 				menu.create({
 					code: code.getContent("vue"),
 					...code.data,
-					...data
+					...data,
+					name: form.entity
 				})
 					.then((create) => {
 						// 创建后端文件
@@ -894,6 +906,8 @@ function createFile() {
 						}, 3000);
 					})
 					.catch(() => null);
+
+				close();
 			}
 		}
 	});
@@ -920,8 +934,14 @@ onMounted(() => {
 
 	if (step.value == "coding") {
 		code.list = storage.get("ai-code.list") || [];
-		code.data = storage.get("ai-code.data") || [];
-		assign(form, storage.get("ai-code.form") || {});
+
+		if (storage.get("ai-code.data")) {
+			code.data = storage.get("ai-code.data");
+		}
+
+		if (storage.get("ai-code.form")) {
+			assign(form, storage.get("ai-code.form"));
+		}
 	}
 });
 </script>

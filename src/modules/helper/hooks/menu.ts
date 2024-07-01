@@ -52,6 +52,8 @@ export function useMenu() {
 						};
 					});
 
+					console.log(data);
+
 					// 批量插入权限
 					service.base.sys.menu.add(perms).then(() => {
 						resolve(() => {

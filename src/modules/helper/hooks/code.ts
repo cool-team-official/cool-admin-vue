@@ -289,17 +289,31 @@ export function useCode() {
 			});
 		}
 
-		console.log(table.columns);
 		// 筛选
 		const clFilter = fieldEq
 			.map((field) => {
 				const item = table.columns.find((e) => e.prop == field);
 
-				return item
-					? `<!-- 筛选${item.label} -->\n<cl-filter label="${
-							item.label
-					  }">\n<cl-select options="${item.dict || []}" prop="${field}" />\n</cl-filter>`
-					: "";
+				if (item) {
+					if (!item.dict) {
+						item.dict = [];
+					}
+
+					if (item.component?.name == "cl-switch") {
+						item.dict = [
+							{ label: "是", value: 1 },
+							{ label: "否", value: 0 }
+						];
+					}
+
+					return `<!-- 筛选${item.label} -->\n<cl-filter label="${
+						item.label
+					}">\n<cl-select prop="${field}" :options='${toCodeString(
+						item.dict
+					)}' />\n</cl-filter>`;
+				} else {
+					return "";
+				}
 			})
 			.join("\n");
 
