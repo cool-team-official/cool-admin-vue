@@ -22,7 +22,7 @@
 			</cl-filter>
 
 			<cl-flex1 />
-			<cl-search-key placeholder="搜索用户昵称、ip" />
+			<cl-search-key placeholder="搜索请求地址、用户昵称、ip" />
 		</cl-row>
 
 		<cl-row>
