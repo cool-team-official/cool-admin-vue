@@ -22,7 +22,7 @@
 			</cl-filter>
 
 			<cl-flex1 />
-			<cl-search-key placeholder="搜索请求地址、参数、ip" />
+			<cl-search-key placeholder="搜索用户昵称、ip" />
 		</cl-row>
 
 		<cl-row>
@@ -96,16 +96,6 @@ const Table = useTable({
 			dictColor: true,
 			formatter(row) {
 				return row.ip.split(",");
-			}
-		},
-		{
-			prop: "ipAddr",
-			label: "ip地址",
-			minWidth: 180,
-			dict: [],
-			dictColor: true,
-			formatter(row) {
-				return row.ipAddr.split(",");
 			}
 		},
 		{
