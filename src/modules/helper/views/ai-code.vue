@@ -509,7 +509,7 @@ const code = reactive({
 		code.tips("Service 代码生成中");
 
 		// service 代码
-		const service = await code.setContent("Service 服务层", "node-service", {
+		const service = await code.setContent("Service 服务", "node-service", {
 			...entityData,
 			entity
 		});
