@@ -1,7 +1,7 @@
 import { last } from "lodash-es";
 import { filename, extname } from "/@/cool/utils";
 import { module } from "/@/cool";
-import { Upload } from "../types";
+import type { Upload } from "../types";
 
 // 模块参数
 const { options } = module.get("upload");

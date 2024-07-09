@@ -209,7 +209,7 @@ const props = defineProps({
 	isDisabled: Boolean
 });
 
-const emit = defineEmits(["update:modelValue", "upload", "success", "error", "progress"]);
+const emit = defineEmits(["update:modelValue", "change", "upload", "success", "error", "progress"]);
 
 const { refs, setRefs } = useCool();
 const { user } = useBase();
@@ -402,8 +402,11 @@ function update() {
 	if (!check()) {
 		const urls = getUrls(list.value);
 
+		const val = props.multiple ? getUrls(list.value) : urls[0] || "";
+
 		// 更新绑定值
-		emit("update:modelValue", props.multiple ? getUrls(list.value) : urls[0] || "");
+		emit("update:modelValue", val);
+		emit("change", val);
 
 		nextTick(() => {
 			if (props.prop) {
