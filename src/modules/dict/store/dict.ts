@@ -5,7 +5,7 @@ import { service } from "/@/cool";
 import { deepTree } from "/@/cool/utils";
 import { isDev } from "/@/config";
 import { isArray } from "lodash-es";
-import { deepFind } from "../utils";
+import { deepFind, isEmpty } from "../utils";
 
 const useDictStore = defineStore("dict", () => {
 	// 对象数据
@@ -26,7 +26,7 @@ const useDictStore = defineStore("dict", () => {
 	async function refresh(types?: string[]) {
 		return service.dict.info
 			.data({
-				types
+				types: types?.filter((e) => !isEmpty(e))
 			})
 			.then((res: Dict.Data) => {
 				const d = {};
@@ -35,7 +35,7 @@ const useDictStore = defineStore("dict", () => {
 					arr.forEach((e) => {
 						e.label = e.name;
 
-						if (e.value === undefined || e.value === "" || e.value === null) {
+						if (isEmpty(e.value)) {
 							e.value = e.id;
 						}
 					});

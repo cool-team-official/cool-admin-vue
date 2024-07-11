@@ -15,3 +15,7 @@ export function deepFind(value: any, list: any[]) {
 
 	return deep(list);
 }
+
+export function isEmpty(val: any) {
+	return val === "" || val === null || val === undefined;
+}
