@@ -235,7 +235,10 @@
 								height="100%"
 								:border="false"
 								:options="{
-									theme: 'ai-code--dark'
+									theme: 'ai-code--dark',
+									minimap: {
+										enabled: true
+									}
 								}"
 								:key="activeCode.value"
 								:language="activeCode.value == 'vue' ? 'html' : lang.tpl"
@@ -1036,13 +1039,15 @@ function createFile() {
 
 							service
 								.request({
-									url: "/"
+									url: "/admin/base/open/eps"
 								})
-								.then(() => {
-									code.tips("文件创建成功");
-									ElMessage.success("文件创建成功");
-									clearInterval(timer);
-									create();
+								.then((res) => {
+									if (res && !isEmpty(res)) {
+										code.tips("文件创建成功");
+										ElMessage.success("文件创建成功");
+										clearInterval(timer);
+										create();
+									}
 								});
 						}, 3000);
 					})
