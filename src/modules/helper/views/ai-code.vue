@@ -148,7 +148,7 @@
 							<el-input v-model="form.column" maxlength="200" placeholder="请输入" />
 						</div>
 
-						<div class="row">
+						<div class="row" v-if="lang.value == 'Node'">
 							<div class="label">
 								其他你想做的事
 
@@ -238,7 +238,7 @@
 									theme: 'ai-code--dark'
 								}"
 								:key="activeCode.value"
-								:language="activeCode.value == 'vue' ? 'html' : 'typescript'"
+								:language="activeCode.value == 'vue' ? 'html' : lang.tpl"
 								v-if="activeCode"
 							/>
 						</div>
@@ -375,9 +375,30 @@ const step = reactive({
 	}
 });
 
+// 语言
+const lang = reactive({
+	value: "Node" as "Node" | "Java" | "Go" | "Python",
+
+	async get() {
+		lang.value = await service.base.comm.program();
+		code.active = lang.value.toLocaleLowerCase() + "-entity";
+	},
+
+	get tpl() {
+		const d = {
+			Node: "typescript",
+			Java: "java",
+			Go: "go",
+			Python: "python"
+		};
+
+		return d[lang.value];
+	}
+});
+
 // 代码
 const code = reactive({
-	active: "node-entity",
+	active: "",
 
 	// 代码列表
 	list: [] as CodeItem[],
@@ -459,32 +480,8 @@ const code = reactive({
 		});
 	},
 
-	// 生成代码
-	async create() {
-		if (!form.entity) {
-			return ElMessage.warning("请填写实体名称");
-		}
-
-		if (!form.module) {
-			return ElMessage.warning("请填写模块");
-		}
-
-		if (!form.column) {
-			return ElMessage.warning("请填写字段");
-		}
-
-		code.loading = true;
-
-		// 清空
-		code.clear();
-
-		// 下一步
-		step.next();
-
-		code.tips("AI 开始编码");
-
-		await sleep(300);
-
+	// 生成 Node
+	async createNode() {
 		code.tips("Entity 代码生成中");
 
 		// entity 代码
@@ -537,6 +534,7 @@ const code = reactive({
 
 		// controller 关键数据
 		const controllerData = await ai.invokeFlow("comm-parse-controller", {
+			entity,
 			controller
 		});
 
@@ -544,6 +542,115 @@ const code = reactive({
 
 		code.data.fieldEq = controllerData.fieldEq;
 		code.data.keyWordLikeFields = controllerData.keyWordLikeFields;
+	},
+
+	// 生成 Java
+	async createJava() {
+		code.tips("Entity 代码生成中");
+
+		// entity 代码
+		const entity = await code.setContent("Entity 实体", "java-entity");
+
+		code.tips("Entity 生成成功，开始解析");
+
+		// entity 关键数据
+		const entityData = await ai.invokeFlow("comm-parse-entity", {
+			entity,
+			module: form.module
+		});
+
+		code.tips(`Entity 解析成功，${JSON.stringify(entityData)}`);
+
+		code.data.router = entityData.path.replace("/admin", "");
+		code.data.prefix = entityData.path;
+		code.data.fileName = entityData.fileName;
+
+		code.parseColumn();
+
+		code.tips("Mapper 代码生成中");
+
+		// mapper 代码
+		await code.setContent("Mapper 映射", "java-mapper", {
+			...entityData,
+			entity
+		});
+
+		code.tips("Mapper 生成成功");
+
+		code.tips("Service 代码生成中");
+
+		// service 接口类
+		const _service = await code.setContent("Service 接口类", "java-service", {
+			...entityData,
+			entity
+		});
+
+		// service 实现类
+		const service = await code.setContent("Service 实现类", "java-service-impl", {
+			...entityData,
+			entity,
+			service: _service
+		});
+
+		code.tips("Service 生成成功，开始解析");
+
+		// service 关键数据
+		const serviceData = await ai.invokeFlow("comm-parse-service", {
+			service
+		});
+
+		code.tips(`Service 解析成功，${JSON.stringify(serviceData)}`);
+
+		code.tips("Controller 代码生成中");
+
+		// controller 代码
+		const controller = await code.setContent("Controller 控制器", "java-controller", {
+			...serviceData,
+			...entityData,
+			service,
+			entity
+		});
+
+		code.tips("Controller 生成成功，开始解析");
+
+		// controller 关键数据
+		const controllerData = await ai.invokeFlow("comm-parse-controller", {
+			controller
+		});
+
+		code.tips(`Controller 解析成功，${JSON.stringify(controllerData)}`);
+
+		code.data.fieldEq = controllerData.fieldEq;
+		code.data.keyWordLikeFields = controllerData.keyWordLikeFields;
+	},
+
+	// 生成代码
+	async create() {
+		if (!form.entity) {
+			return ElMessage.warning("请填写实体名称");
+		}
+
+		if (!form.module) {
+			return ElMessage.warning("请填写模块");
+		}
+
+		if (!form.column) {
+			return ElMessage.warning("请填写字段");
+		}
+
+		code.loading = true;
+
+		// 清空
+		code.clear();
+
+		// 下一步
+		step.next();
+
+		code.tips("AI 开始编码");
+
+		await sleep(300);
+
+		await code[`create${lang.value}`]();
 
 		await code.createVue(false);
 
@@ -567,11 +674,11 @@ const code = reactive({
 	// 解析字段
 	async parseColumn() {
 		const a = ai.invokeFlow("comm-parse-entity-column", {
-			entity: code.getContent("node-entity")
+			entity: code.getContent(`${lang.value}-entity`)
 		});
 
 		const b = ai.invokeFlow("comm-parse-column", {
-			entity: code.getContent("node-entity")
+			entity: code.getContent(`${lang.value}-entity`)
 		});
 
 		await Promise.all([a, b]).then((res) => {
@@ -660,7 +767,9 @@ const code = reactive({
 
 	// 获取内容
 	getContent(value: string) {
-		return code.list.find((e) => e.value == value)?.content;
+		return code.list.find(
+			(e) => e.value == value || e.value.toLocaleLowerCase() == value.toLocaleLowerCase()
+		)?.content;
 	},
 
 	// 设置内容
@@ -680,9 +789,9 @@ const code = reactive({
 				if (!res.isEnd) {
 					content += res.content;
 
-					if (content.indexOf("```typescript\n") == 0) {
+					if (content.indexOf(`\`\`\`${lang.tpl}\n`) == 0) {
 						item._content = content
-							.replace(/^```typescript\n/g, "")
+							.replace(new RegExp(`^\\\`\\\`\\\`${lang.tpl}\\n`, "g"), "")
 							.replace(/```$/, "");
 					}
 				}
@@ -902,13 +1011,23 @@ function createFile() {
 					name: form.entity
 				})
 					.then((create) => {
+						const files = {};
+
+						// 文件内容
+						code.list.forEach((e) => {
+							const i = e.value.indexOf("-");
+							let k = e.value;
+							if (i >= 0) {
+								k = k.substring(i + 1, k.length);
+								files[k] = code.getContent(e.value);
+							}
+						});
+
 						// 创建后端文件
 						service.base.sys.menu.create({
 							...form,
 							...code.data,
-							controller: code.getContent("node-controller"),
-							entity: code.getContent("node-entity"),
-							service: code.getContent("node-service")
+							...files
 						});
 
 						// 每3s检测服务状态
@@ -952,6 +1071,7 @@ function toBack() {
 }
 
 onMounted(() => {
+	lang.get();
 	desc.init();
 
 	// 测试

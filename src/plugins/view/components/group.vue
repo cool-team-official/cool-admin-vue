@@ -29,6 +29,7 @@
 								placeholder="搜索关键字"
 								v-model="keyWord"
 								clearable
+								:prefix-icon="Search"
 								@change="
 									refresh({
 										page: 1
@@ -161,7 +162,8 @@ import {
 	ArrowRight,
 	ArrowRightBold,
 	Refresh as IconRefresh,
-	Plus
+	Plus,
+	Search
 } from "@element-plus/icons-vue";
 import { useBrowser, useCool } from "/@/cool";
 import { ContextMenu, useForm } from "@cool-vue/crud";
