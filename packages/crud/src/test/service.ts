@@ -3,92 +3,92 @@ import { uuid } from "../utils";
 
 const userList = [
 	{
-		id: "110000199206102819",
+		id: 1,
 		name: "楚行云",
 		createTime: "1996-09-14",
 		wages: 73026,
 		status: 1,
-		account: "ihknssft",
+		account: "chuxingyun",
 		occupation: 4,
 		phone: 13797353874
 	},
 	{
-		id: "410000199208224044",
+		id: 2,
 		name: "秦尘",
 		createTime: "1977-11-09",
 		wages: 74520,
 		status: 0,
-		account: "xlabchey",
+		account: "qincheng",
 		occupation: 3,
 		phone: 18593911044
 	},
 	{
-		id: "120000199708139664",
+		id: 3,
 		name: "叶凡",
 		createTime: "1982-11-28",
 		wages: 81420,
 		status: 0,
-		account: "xpqbtkul",
+		account: "yefan",
 		occupation: 1,
 		phone: 16234136338
 	},
 	{
-		id: "710000200203060278",
+		id: 4,
 		name: "白小纯",
 		createTime: "2012-12-17",
 		wages: 65197,
 		status: 1,
-		account: "kirukkje",
+		account: "baixiaochun",
 		occupation: 2,
 		phone: 16325661110
 	},
 	{
-		id: "210000201007157714",
+		id: 5,
 		name: "韩立",
 		createTime: "1982-07-10",
 		wages: 99107,
 		status: 1,
-		account: "rbrohvoj",
+		account: "hanli",
 		occupation: 2,
 		phone: 18486594866
 	},
 	{
-		id: "420000200901038044",
+		id: 6,
 		name: "唐三",
 		createTime: "2019-07-31",
 		wages: 80658,
 		status: 1,
-		account: "qtuwsfuh",
+		account: "tangsan",
 		occupation: 5,
 		phone: 15565014642
 	},
 	{
-		id: "150000197711136225",
+		id: 7,
 		name: "王林",
 		createTime: "2009-07-26",
 		wages: 57408,
 		status: 1,
-		account: "gxyhlwdq",
+		account: "wanglin",
 		occupation: 1,
 		phone: 13852767084
 	},
 	{
-		id: "710000198106232170",
+		id: 8,
 		name: "李强",
 		createTime: "2016-04-26",
 		wages: 71782,
 		status: 1,
-		account: "vruiimiy",
+		account: "liqiang",
 		occupation: 3,
 		phone: 18365332834
 	},
 	{
-		id: "530000199311309764",
+		id: 9,
 		name: "秦羽",
 		createTime: "1984-01-18",
 		wages: 87860,
 		status: 1,
-		account: "dtvkpyag",
+		account: "qinyu",
 		occupation: 0,
 		phone: 18149247129
 	}

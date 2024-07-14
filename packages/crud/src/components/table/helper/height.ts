@@ -39,7 +39,7 @@ export function useHeight({ config, Table }: { Table: Vue.Ref<any>; config: ClTa
 				let n = vm.$el.nextSibling;
 
 				// 集合
-				let arr = [vm.$el];
+				const arr = [vm.$el];
 
 				while (n) {
 					if (n.offsetHeight > 0) {

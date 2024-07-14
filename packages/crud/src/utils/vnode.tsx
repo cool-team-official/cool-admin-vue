@@ -1,7 +1,7 @@
 import { h, resolveComponent, toRaw, VNode } from "vue";
 import { isObject } from "./index";
 import { parseExtensionComponent } from "./parse";
-import temp from "./temp";
+import global from "./global";
 import { useConfig } from "../hooks";
 import { isFunction, isString } from "lodash-es";
 
@@ -48,7 +48,7 @@ export function parseNode(vnode: any, options: Options): VNode {
 
 	// 实例模式下，先注册到全局，再分解组件渲染
 	if (vnode.vm && !regs.get(vnode.name)) {
-		temp.vue.component(vnode.name, { ...vnode.vm });
+		global.vue.component(vnode.name, { ...vnode.vm });
 		regs.set(vnode.name, { ...vnode.vm });
 	}
 

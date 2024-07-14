@@ -8,7 +8,7 @@ declare class TestService {
     info(params: {
         id: any;
     }): Promise<{
-        id: string;
+        id: number;
         name: string;
         createTime: string;
         wages: number;
@@ -21,7 +21,7 @@ declare class TestService {
         ids: any[];
     }): Promise<void>;
     list(): Promise<{
-        id: string;
+        id: number;
         name: string;
         createTime: string;
         wages: number;

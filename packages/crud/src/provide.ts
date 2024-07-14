@@ -64,13 +64,14 @@ function setConfig(app: App, options: Options = {}) {
 					autoHeight: true,
 					contextMenu: ["refresh", "check", "edit", "delete", "order-asc", "order-desc"],
 					column: {
-						align: "center"
+						align: "center",
+						opWidth: 160
 					}
 				}
 			},
 			events: {}
-		},
-		options || {}
+		} as Options,
+		options
 	);
 
 	// 初始化事件

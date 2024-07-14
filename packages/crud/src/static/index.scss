@@ -508,10 +508,10 @@
 }
 
 .cl-dialog {
-	display: flex;
-	flex-direction: column;
-	border-radius: 6px;
-	padding: 0;
+	&.el-dialog {
+		border-radius: 6px;
+		padding: 0;
+	}
 
 	.el-dialog {
 		&__header {

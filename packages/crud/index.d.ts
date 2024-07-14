@@ -743,9 +743,10 @@ declare interface Config {
 			autoHeight: boolean;
 			contextMenu: ClTable.ContextMenu;
 			column: {
-				minWidth: number;
+				minWidth: number | string;
 				align: ElementPlus.Align;
 				headerAlign: ElementPlus.Align;
+				opWidth: number | string;
 			};
 			plugins: ClTable.Plugin[];
 		};

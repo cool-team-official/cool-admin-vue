@@ -46,7 +46,7 @@ export function useRender() {
 						ElTableColumn,
 						{
 							label: crud.dict.label.op,
-							width: "160px",
+							width: style.table.column.opWidth,
 							fixed: browser.isMini ? null : "right",
 							...item
 						},
