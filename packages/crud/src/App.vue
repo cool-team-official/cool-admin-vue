@@ -9,7 +9,20 @@
 
 				<cl-flex1 />
 
-				<cl-search-key refreshOnInput></cl-search-key>
+				<cl-search-key
+					field="name"
+					:field-list="[
+						{
+							label: '昵称',
+							value: 'name'
+						},
+						{
+							label: '手机号',
+							value: 'phone'
+						}
+					]"
+					refreshOnInput
+				></cl-search-key>
 			</cl-row>
 
 			<cl-row>

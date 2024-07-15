@@ -38,8 +38,8 @@
 	&__select {
 		margin-right: 10px;
 
-		.el-input__inner {
-			width: 60px;
+		&.el-select {
+			width: 100px;
 		}
 	}
 

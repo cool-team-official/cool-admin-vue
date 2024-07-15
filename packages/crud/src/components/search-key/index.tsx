@@ -26,7 +26,7 @@ export default defineComponent({
 		// 宽度
 		width: {
 			type: [String, Number],
-			default: 300
+			default: 260
 		},
 		// 是否实时刷新
 		refreshOnInput: Boolean
@@ -140,7 +140,6 @@ export default defineComponent({
 				<div class="cl-search-key">
 					<el-select
 						class="cl-search-key__select"
-						filterable
 						size={style.size}
 						v-model={selectField.value}
 						v-show={props.fieldList.length > 0}
