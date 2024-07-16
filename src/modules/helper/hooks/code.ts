@@ -81,7 +81,7 @@ export function useCode() {
 	// 创建组件
 	function createComponent(column: EpsColumn, columns: EpsColumn[]) {
 		const prop = column.propertyName;
-		let label = column.comment;
+		let label = column.comment || "";
 		let d: any;
 		let isHidden = false;
 
