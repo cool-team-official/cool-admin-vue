@@ -6,6 +6,7 @@ import compression from "vite-plugin-compression";
 import { visualizer } from "rollup-plugin-visualizer";
 import { proxy } from "./src/config/proxy";
 import { cool } from "@cool-vue/vite-plugin";
+import { constants } from "crypto";
 
 function resolve(dir: string) {
 	return path.resolve(__dirname, ".", dir);
@@ -58,6 +59,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 		esbuild: {
 			drop: isDev(mode) ? [] : ["console", "debugger"]
 		},
+
 		build: {
 			minify: "esbuild",
 			// terserOptions: {
@@ -75,13 +77,17 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 					manualChunks(id) {
 						if (id.includes("node_modules")) {
 							if (!["@cool-vue/crud"].find((e) => id.includes(e))) {
-								let str = id.toString().split("node_modules/")[1];
-
-								if (str[0] == "@") {
-									str = str.replace("/", ".");
+								if (id.includes("prettier")) {
+									return;
 								}
 
-								return str.split("/")[0].toString();
+								return id
+									.toString()
+									.split("node_modules/")[1]
+									.replace(".pnpm/", "")
+									.split("/")[0];
+							} else {
+								return "comm";
 							}
 						}
 					}
