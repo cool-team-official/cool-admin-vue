@@ -448,6 +448,9 @@ const code = reactive({
 	// 生成中
 	loading: false,
 
+	// 请求
+	req: null as Promise<any> | null,
+
 	// 获取字段
 	async getColumns() {
 		return ai
@@ -465,6 +468,8 @@ const code = reactive({
 	clear() {
 		code.list = [];
 		code.logs = [];
+		code.req = null;
+		code.loading = false;
 	},
 
 	// 提示
@@ -504,6 +509,7 @@ const code = reactive({
 		code.data.prefix = entityData.path;
 		code.data.fileName = entityData.fileName;
 
+		// 解析字段
 		code.parseColumn();
 
 		code.tips("Service 代码生成中");
@@ -568,6 +574,7 @@ const code = reactive({
 		code.data.prefix = entityData.path;
 		code.data.fileName = entityData.fileName;
 
+		// 解析字段
 		code.parseColumn();
 
 		code.tips("Mapper 代码生成中");
@@ -655,7 +662,7 @@ const code = reactive({
 
 		await code[`create${lang.value}`]();
 
-		await code.createVue(false);
+		await code.createVue();
 
 		code.tips("编码完成");
 
@@ -684,7 +691,7 @@ const code = reactive({
 			entity: code.getContent(`${lang.value}-entity`)
 		});
 
-		await Promise.all([a, b]).then((res) => {
+		code.req = Promise.all([a, b]).then((res) => {
 			if (res[0]?.columns) {
 				code.data.columns = res[0].columns.map((e: EpsColumn) => {
 					if (res[1]?.columns) {
@@ -715,7 +722,7 @@ const code = reactive({
 	},
 
 	// 创建vue
-	async createVue(isParse: boolean = true) {
+	async createVue() {
 		const item = code.add("Vue 页面", "vue");
 
 		item.content = "";
@@ -724,10 +731,13 @@ const code = reactive({
 
 		code.tips("Vue 代码开始生成");
 
-		if (isParse) {
-			code.tips("AI 分析中");
-			await code.parseColumn();
+		if (!code.req) {
+			code.parseColumn();
 		}
+
+		code.tips("AI 分析中");
+
+		await code.req;
 
 		// 生成内容
 		item.content = menu.createVue({
@@ -840,6 +850,7 @@ const code = reactive({
 	// 重新生成
 	async refresh() {
 		code.loading = true;
+		code.req = null;
 		await code.createVue();
 		code.loading = false;
 	}
