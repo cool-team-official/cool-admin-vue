@@ -66,6 +66,9 @@ export function useUpload() {
 					// 文件
 					fd.append("file", file);
 
+					// 上传进度
+					let progress = 0;
+
 					// 上传
 					await service
 						.request({
@@ -78,16 +81,17 @@ export function useUpload() {
 							timeout: 600000,
 							data: fd,
 							onUploadProgress(e: AxiosProgressEvent) {
-								const progress = e.total
-									? Math.floor((e.loaded / e.total) * 100)
-									: 0;
-
+								progress = e.total ? Math.floor((e.loaded / e.total) * 100) : 0;
 								onProgress?.(progress);
 							},
 							proxy: isLocal,
 							NProgress: false
 						})
 						.then((res) => {
+							if (progress != 100) {
+								onProgress?.(100);
+							}
+
 							key = encodeURIComponent(key);
 
 							let url = "";

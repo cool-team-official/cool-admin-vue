@@ -490,6 +490,10 @@ defineExpose({
 
 	&__file {
 		width: 100%;
+
+		&-btn {
+			width: fit-content;
+		}
 	}
 
 	&__list {
