@@ -6,7 +6,6 @@ import compression from "vite-plugin-compression";
 import { visualizer } from "rollup-plugin-visualizer";
 import { proxy } from "./src/config/proxy";
 import { cool } from "@cool-vue/vite-plugin";
-import { constants } from "crypto";
 
 function resolve(dir: string) {
 	return path.resolve(__dirname, ".", dir);

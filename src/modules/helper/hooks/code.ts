@@ -1,4 +1,4 @@
-import { isFunction, isRegExp, isString } from "lodash-es";
+import { isEmpty, isFunction, isRegExp, isString } from "lodash-es";
 import { PropRules } from "../dict";
 import type { EpsColumn, EpsModule } from "../types";
 
@@ -10,7 +10,7 @@ export function useCode() {
 			const [label, ...arr] = comment.split(" ");
 
 			// 选项列表
-			const list = arr.map((e) => {
+			const list: any[] = arr.map((e) => {
 				const [value, label] = e.split("-");
 
 				return {
@@ -18,6 +18,17 @@ export function useCode() {
 					value: isNaN(Number(value)) ? value : Number(value)
 				};
 			});
+
+			// boolean
+			if (list.length == 2) {
+				list.forEach((e) => {
+					if (e.value == 1) {
+						e.type = "success";
+					} else {
+						e.type = "danger";
+					}
+				});
+			}
 
 			const d = {
 				table: {
@@ -194,6 +205,9 @@ export function useCode() {
 			columns: [] as DeepPartial<ClTable.Column>[]
 		};
 
+		// 选项
+		const options = {};
+
 		// 遍历
 		columns.forEach((e) => {
 			// 创建组件
@@ -209,6 +223,21 @@ export function useCode() {
 				item.required = true;
 			}
 
+			// 字典
+			const dict = item.component?.options || column.dict;
+
+			if (dict) {
+				options[item.prop] = dict;
+
+				const str = `$$options.${item.prop}$$`;
+
+				if (!column.component) {
+					column.dict = str;
+				}
+
+				item.component.options = str;
+			}
+
 			// 表单忽略
 			if (!["createTime", "updateTime", "id", "endTime", "endDate"].includes(item.prop)) {
 				upsert.items.push(item);
@@ -216,6 +245,11 @@ export function useCode() {
 
 			// 表格忽略
 			if (!["id"].includes(item.prop)) {
+				// 默认排序
+				if (item.prop == "createTime") {
+					column.sortable = "desc";
+				}
+
 				table.columns.push(column);
 			}
 
@@ -292,29 +326,15 @@ export function useCode() {
 		// 筛选
 		const clFilter = fieldEq
 			.map((field) => {
-				const item = table.columns.find((e) => e.prop == field);
+				const item = upsert.items.find((e) => e.prop == field);
 
 				if (item) {
-					if (!item.dict) {
-						item.dict = [];
-					}
-
-					if (item.component?.name == "cl-switch") {
-						item.dict = [
-							{ label: "是", value: 1 },
-							{ label: "否", value: 0 }
-						];
-					}
-
-					return `<!-- 筛选${item.label} -->\n<cl-filter label="${
-						item.label
-					}">\n<cl-select prop="${field}" :options='${toCodeString(
-						item.dict
-					)}' />\n</cl-filter>`;
+					return `<!-- 筛选${item.label} -->\n<cl-filter label="${item.label}">\n<cl-select prop="${field}" :options="options.${field}" />\n</cl-filter>`;
 				} else {
 					return "";
 				}
 			})
+			.filter(Boolean)
 			.join("\n");
 
 		// 关键字搜索
@@ -325,8 +345,22 @@ export function useCode() {
 			.filter((e) => !!e)
 			.join("、");
 
+		// 选项
+		const ConstOptions = `${
+			isEmpty(options)
+				? ""
+				: "\n// 选项\nconst options = reactive(" + toCodeString(options) + ")\n"
+		}`;
+
+		// Vue 依赖
+		let ImportVue = "";
+
+		if (ConstOptions) {
+			ImportVue = "import { reactive } from 'vue';\n";
+		}
+
 		// 代码模板
-		return `<template>
+		const temp = `<template>
 	<cl-crud ref="Crud">
 		<cl-row>
 			<!-- 刷新按钮 -->
@@ -358,9 +392,9 @@ export function useCode() {
 <script lang="ts" name="${router.replace(/^\//, "").replace(/\//g, "-")}" setup>
 import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
-
+${ImportVue}
 const { service } = useCool();
-
+${ConstOptions}
 // cl-upsert
 const Upsert = useUpsert(${toCodeString(upsert)});
 
@@ -382,6 +416,8 @@ function refresh(params?: any) {
 	Crud.value?.refresh(params);
 }
 </script>`;
+
+		return temp.replace(/"\$\$|\$\$"/g, "");
 	}
 
 	// 转成代码字符串

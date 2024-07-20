@@ -1,4 +1,4 @@
-import { App } from "vue";
+import type { App } from "vue";
 import { useComponent } from "./components";
 import { useProvide } from "./provide";
 import global from "./utils/global";

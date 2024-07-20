@@ -1,4 +1,4 @@
-import { App, reactive } from "vue";
+import { type App, reactive } from "vue";
 import { mitt } from "./utils/mitt";
 import { emitter } from "./emitter";
 import { locale } from "./locale";
