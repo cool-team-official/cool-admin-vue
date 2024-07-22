@@ -245,6 +245,7 @@
         // 创建 Entity
         function createEntity() {
             const t0 = [];
+            const arr = [];
             for (const item of list) {
                 if (!item.name)
                     continue;
@@ -266,7 +267,10 @@
                 t.push(" */\n");
                 t.push(`[key: string]: any;`);
                 t.push("}");
-                t0.push(t);
+                if (!arr.includes(item.name)) {
+                    arr.push(item.name);
+                    t0.push(t);
+                }
             }
             return t0.map((e) => e.join("")).join("\n\n");
         }
@@ -364,7 +368,9 @@
                                         t.push(` * ${a.summary || n}\n`);
                                         t.push(" */\n");
                                         t.push(`${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")}): Promise<${res}>;`);
-                                        permission.push(n);
+                                        if (!permission.includes(n)) {
+                                            permission.push(n);
+                                        }
                                     }
                                 });
                                 // 权限标识

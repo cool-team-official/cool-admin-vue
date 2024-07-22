@@ -5,7 +5,10 @@ export const Loading = {
 	async set(list: Promise<any>[]) {
 		try {
 			await Promise.all(list);
-		} catch (e) {}
+		} catch (e) {
+			console.error("[Loading] Error: ", e);
+		}
+
 		if (this.resolve) {
 			this.resolve();
 		}

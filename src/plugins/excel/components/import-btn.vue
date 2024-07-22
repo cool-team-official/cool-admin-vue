@@ -122,6 +122,7 @@ import { reactive, type PropType, computed } from "vue";
 import * as XLSX from "xlsx";
 import chardet from "chardet";
 import { extname } from "/@/cool/utils";
+import { has } from "lodash-es";
 
 const props = defineProps({
 	onConfig: Function,
@@ -286,7 +287,7 @@ function onUpload(raw: File, _: any, { next }: any) {
 
 		let json: any[] = [];
 		for (const sheet in workbook.Sheets) {
-			if (workbook.Sheets.hasOwnProperty(sheet)) {
+			if (has(workbook.Sheets, sheet)) {
 				json = json.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]));
 			}
 		}

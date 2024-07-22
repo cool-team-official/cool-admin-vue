@@ -71,8 +71,9 @@
 							and: [service.base.sys.menu.permission.add, scope.row.type != 2]
 						}"
 						@click="append(scope.row)"
-						>新增</el-button
 					>
+						新增
+					</el-button>
 				</template>
 			</cl-table>
 		</cl-row>
@@ -209,7 +210,7 @@ const Table = useTable({
 			prop: "updateTime",
 			label: "更新时间",
 			sortable: "custom",
-			width: 160
+			width: 170
 		},
 		{
 			label: "操作",

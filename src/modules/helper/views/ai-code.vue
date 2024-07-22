@@ -899,7 +899,7 @@ const desc = reactive({
 			const val = desc.list[n];
 
 			if (val) {
-				function next2(n2: number) {
+				const next2 = (n2: number) => {
 					const v = val[n2];
 
 					if (v) {
@@ -921,7 +921,7 @@ const desc = reactive({
 							}
 						}, 1500);
 					}
-				}
+				};
 
 				next2(0);
 			} else {

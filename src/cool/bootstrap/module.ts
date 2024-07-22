@@ -1,16 +1,14 @@
-import { App } from "vue";
-import { isFunction, orderBy, chain } from "lodash-es";
+import { type App, type Directive } from "vue";
+import { assign, chain, isFunction } from "lodash-es";
 import { filename } from "../utils";
 import { module } from "../module";
 import { hmr } from "../hooks";
 
 // 扫描文件
-const files: any = import.meta.glob(
-	"/src/{modules,plugins}/*/{config.ts,service/**,directives/**}",
-	{
-		eager: true
-	}
-);
+const files = import.meta.glob("/src/{modules,plugins}/*/{config.ts,service/**,directives/**}", {
+	eager: true,
+	import: "default"
+});
 
 // 模块列表
 module.list = hmr.getData("modules", []);
@@ -21,10 +19,10 @@ for (const i in files) {
 	const [, , type, name, action] = i.split("/");
 
 	// 文件名
-	const fname = filename(i);
+	const n = filename(i);
 
 	// 文件内容
-	const v = files[i]?.default;
+	const v = files[i];
 
 	// 模块是否存在
 	const m = module.get(name);
@@ -38,28 +36,24 @@ for (const i in files) {
 		directives: []
 	};
 
-	switch (action) {
-		// 配置参数
-		case "config.ts":
-			d.value = v;
-			break;
+	// 配置
+	if (action == "config.ts") {
+		d.value = v;
+	}
+	// 服务
+	else if (action == "service") {
+		const s = new (v as any)();
 
-		// 请求服务
-		case "service":
-			const s = new v();
-
-			if (s) {
-				d.services?.push({
-					path: s.namespace,
-					value: s
-				});
-			}
-			break;
-
-		// 指令
-		case "directives":
-			d.directives?.push({ name: fname, value: v });
-			break;
+		if (s) {
+			d.services?.push({
+				path: s.namespace,
+				value: s
+			});
+		}
+	}
+	// 指令
+	else if (action == "directives") {
+		d.directives?.push({ name: n, value: v as Directive });
 	}
 
 	if (!m) {
@@ -69,34 +63,44 @@ for (const i in files) {
 
 // 创建
 export function createModule(app: App) {
-	// 模块加载
-	const list = orderBy(module.list, "order").map((e) => {
-		const d = isFunction(e.value) ? e.value(app) : e.value;
+	const list = chain(module.list)
+		.map((e) => {
+			const d = isFunction(e.value) ? e.value(app) : e.value;
 
-		if (d) {
-			Object.assign(e, d);
-		}
-
-		// 安装事件
-		e.install?.(app, d.options);
-
-		// 注册组件
-		e.components?.forEach(async (c: any) => {
-			const v = await (isFunction(c) ? c() : c);
-			const n = v.default || v;
-
-			if (n.name) {
-				app.component(n.name, n);
+			if (d) {
+				assign(e, d);
 			}
-		});
 
-		// 注册指令
-		e.directives?.forEach((v: any) => {
-			app.directive(v.name, v.value);
-		});
+			if (!d.order) {
+				e.order = 0;
+			}
 
-		return e;
-	});
+			return e;
+		})
+		.orderBy("order", "desc")
+		.map((e) => {
+			// 初始化
+			e.install?.(app, e.options);
+
+			// 注册组件
+			e.components?.forEach(async (c) => {
+				// @ts-ignore
+				const v = await (isFunction(c) ? c() : c);
+				const n = v.default || v;
+
+				if (n.name) {
+					app.component(n.name, n);
+				}
+			});
+
+			// 注册指令
+			e.directives?.forEach((v) => {
+				app.directive(v.name, v.value);
+			});
+
+			return e;
+		})
+		.value();
 
 	return {
 		// 模块列表
@@ -107,7 +111,7 @@ export function createModule(app: App) {
 
 			for (let i = 0; i < list.length; i++) {
 				if (list[i].onLoad) {
-					Object.assign(events, await list[i]?.onLoad?.(events));
+					assign(events, await list[i]?.onLoad?.(events));
 				}
 			}
 		}

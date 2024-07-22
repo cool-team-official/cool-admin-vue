@@ -140,9 +140,6 @@ export function getBrowser() {
 	// 是否 ios
 	const isIOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
-	// 浏览器版本
-	const version = (ua.match(/[\s\S]+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [])[1];
-
 	// 是否 PC 端
 	const isPC = tag === "pc";
 
@@ -155,7 +152,6 @@ export function getBrowser() {
 	return {
 		height: clientHeight,
 		width: clientWidth,
-		version,
 		type,
 		plat,
 		tag,

@@ -52,7 +52,7 @@ export default defineComponent({
 				const ids: any[] = [];
 
 				// 获取所有的值
-				function deep(arr: Dict.Item[], f: boolean) {
+				const deep = (arr: Dict.Item[], f: boolean) => {
 					arr.forEach((e) => {
 						const f2 = e[props.valueKey] == val;
 

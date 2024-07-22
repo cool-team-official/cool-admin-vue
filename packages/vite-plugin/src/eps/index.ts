@@ -164,6 +164,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 	// 创建 Entity
 	function createEntity() {
 		const t0: string[][] = [];
+		const arr: string[] = [];
 
 		for (const item of list) {
 			if (!item.name) continue;
@@ -187,7 +188,11 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 			t.push(" */\n");
 			t.push(`[key: string]: any;`);
 			t.push("}");
-			t0.push(t);
+
+			if (!arr.includes(item.name)) {
+				arr.push(item.name);
+				t0.push(t);
+			}
 		}
 
 		return t0.map((e) => e.join("")).join("\n\n");
@@ -316,7 +321,9 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 										)}): Promise<${res}>;`,
 									);
 
-									permission.push(n);
+									if (!permission.includes(n)) {
+										permission.push(n);
+									}
 								}
 							});
 

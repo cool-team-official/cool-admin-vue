@@ -49,7 +49,7 @@
 				<div
 					class="cl-upload-item__progress"
 					:class="{
-						'is-show': item.progress >= 0 && item.progress < 100,
+						'is-show': item.progress! >= 0 && item.progress! < 100,
 						'is-hide': item.progress == 100
 					}"
 				>

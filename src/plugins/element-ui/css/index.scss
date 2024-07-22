@@ -1,3 +1,9 @@
+@forward "element-plus/theme-chalk/src/common/var.scss" with (
+	$scrollbar: ()
+);
+
+@use "element-plus/theme-chalk/src/index.scss" as *;
+
 // Element-plus
 .el-input-number {
 	&__decrease,

@@ -144,7 +144,7 @@ watch(
 
 onMounted(() => {
 	// 添加滚轮事件监听器
-	refs.scroller.wrapRef.addEventListener("wheel", function (event: WheelEvent) {
+	refs.scroller.wrapRef?.addEventListener("wheel", function (event: WheelEvent) {
 		// 阻止默认滚动行为
 		event.preventDefault();
 

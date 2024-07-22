@@ -1,4 +1,4 @@
-import { defineComponent, h } from "vue";
+import { defineComponent, h, VNode } from "vue";
 import { useBase, Menu } from "/$/base";
 import { useCool } from "/@/cool";
 
@@ -27,8 +27,6 @@ export default defineComponent({
 				return list
 					.filter((e) => e.isShow)
 					.map((e) => {
-						let html = null;
-
 						const item = (e: Menu.Item) => {
 							return (
 								<div class="wrap">
@@ -39,7 +37,7 @@ export default defineComponent({
 						};
 
 						if (e.type == 0) {
-							html = h(
+							return h(
 								<el-sub-menu />,
 								{
 									index: String(e.id),
@@ -56,7 +54,7 @@ export default defineComponent({
 								}
 							);
 						} else {
-							html = h(
+							return h(
 								<el-menu-item />,
 								{
 									index:
@@ -75,7 +73,6 @@ export default defineComponent({
 							);
 						}
 
-						return html;
 					});
 			}
 

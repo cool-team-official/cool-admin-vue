@@ -44,7 +44,9 @@ export function useFormat() {
 							singleQuote: true,
 							trailingComma: "none"
 						});
-					} catch (err) {}
+					} catch (err) {
+						// ...
+					}
 
 					return [
 						{

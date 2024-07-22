@@ -1,9 +1,6 @@
-import VueECharts from "vue-echarts";
-import ElementPlus from "element-plus";
+import type { ModuleConfig } from "/@/cool";
 import { useStore } from "./store";
 import { config } from "/@/config";
-import type { ModuleConfig } from "/@/cool";
-import "element-plus/theme-chalk/src/index.scss";
 import "./static/css/index.scss";
 
 export default (): ModuleConfig => {
@@ -60,13 +57,7 @@ export default (): ModuleConfig => {
 				component: () => import("./pages/error/502.vue")
 			}
 		],
-		install(app) {
-			// element-plus
-			app.use(ElementPlus);
-
-			// charts
-			app.component("v-chart", VueECharts);
-
+		install() {
 			// 设置标题
 			document.title = config.app.name;
 		},

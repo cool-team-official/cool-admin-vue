@@ -152,12 +152,12 @@ const Table = useTable({
 					type: "selection",
 					width: 60,
 					reserveSelection: true
-			  }
+				}
 			: {
 					label: "操作",
 					prop: "check",
 					width: 100
-			  },
+				},
 		{
 			prop: "avatarUrl",
 			label: "头像",

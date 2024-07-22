@@ -88,7 +88,7 @@ const tab = reactive({
 		if (val == "shop") {
 			nextTick(() => {
 				tab.active = "installed";
-				window.open("https://cool-js.com/");
+				window.open("https://cool-js.com/plugin");
 			});
 		}
 	}

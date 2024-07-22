@@ -8,8 +8,8 @@ export declare namespace Upload {
 
 	interface Item {
 		url?: string;
-		uid: string;
-		progress: number;
+		uid?: string;
+		progress?: number;
 		preload?: string;
 		error?: string;
 		isPlay?: boolean;
@@ -20,5 +20,17 @@ export declare namespace Upload {
 		prefixPath?: string;
 		onProgress?(progress: number): void;
 		[key: string]: any;
+	}
+
+	type Respose = Promise<{
+		key: string;
+		url: string;
+		fileId: string;
+	}>;
+
+	interface Request {
+		host: string;
+		preview?: string;
+		data?: any;
 	}
 }
