@@ -229,7 +229,8 @@
 						</div>
 
 						<div class="code">
-							<cl-editor-monaco
+							<cl-editor
+								name="cl-editor-monaco"
 								:ref="setRefs('editor')"
 								v-model="activeCode.content"
 								height="100%"
@@ -291,7 +292,6 @@ import { assign, isEmpty } from "lodash-es";
 import { useMenu, useAi } from "../hooks";
 import { config, isDev } from "/@/config";
 import { useForm } from "@cool-vue/crud";
-import * as monaco from "monaco-editor";
 import { sleep, storage } from "/@/cool/utils";
 import dayjs from "dayjs";
 import type { CodeItem, EpsColumn } from "../types";
@@ -302,17 +302,6 @@ const menu = useMenu();
 const ai = useAi();
 const Form = useForm();
 const { copy } = useClipboard();
-
-// 编辑器样式
-monaco.editor.defineTheme("ai-code--dark", {
-	base: "vs-dark",
-	inherit: true,
-	rules: [],
-	colors: {
-		"editor.background": "#0f151e",
-		"editor.inactiveSelectionBackground": "#0f151e"
-	}
-});
 
 // 表单
 const form = reactive({

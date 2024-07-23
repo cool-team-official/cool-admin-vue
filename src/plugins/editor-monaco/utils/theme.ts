@@ -1,6 +1,6 @@
 import { editor } from "monaco-editor";
 
-editor.defineTheme("default", {
+defineTheme("default", {
 	base: "vs",
 	inherit: true,
 	rules: [
@@ -348,3 +348,17 @@ editor.defineTheme("default", {
 		"editor.selectionHighlightBorder": "#fafbfc"
 	}
 });
+
+defineTheme("ai-code--dark", {
+	base: "vs-dark",
+	inherit: true,
+	rules: [],
+	colors: {
+		"editor.background": "#0f151e",
+		"editor.inactiveSelectionBackground": "#0f151e"
+	}
+});
+
+export function defineTheme(name: string, data: editor.IStandaloneThemeData) {
+	editor.defineTheme(name, data);
+}
