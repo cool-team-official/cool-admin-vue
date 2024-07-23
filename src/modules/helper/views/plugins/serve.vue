@@ -114,7 +114,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 import { Plus, Setting } from "@element-plus/icons-vue";
 import { marked } from "marked";
 import { useForm } from "@cool-vue/crud";
-import { isString, merge, template } from "lodash-es";
+import { merge, template } from "lodash-es";
 
 const { service, refs, setRefs } = useCool();
 const Form = useForm();
@@ -195,8 +195,9 @@ function toSet(item: Eps.PluginInfoEntity) {
 
 					service.plugin.info
 						.update({
-							...data,
-							config
+							config,
+							id: data.id,
+							status: data.status
 						})
 						.then(() => {
 							ElMessage.success("修改成功");
