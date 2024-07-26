@@ -38,7 +38,7 @@
 	},
 	"devDependencies": {
 		"@rushstack/eslint-patch": "^1.8.0",
-		"@cool-vue/vite-plugin": "^7.1.5",
+		"@cool-vue/vite-plugin": "^7.1.6",
 		"@types/file-saver": "^2.0.7",
 		"@types/lodash-es": "^4.17.8",
 		"@types/mockjs": "^1.0.7",

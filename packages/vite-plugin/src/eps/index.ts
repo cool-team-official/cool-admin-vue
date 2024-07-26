@@ -1,7 +1,7 @@
 import { createDir, error, firstUpperCase, readFile, rootDir, toCamel } from "../utils";
 import { join } from "path";
 import axios from "axios";
-import { isArray, isEmpty, last, merge } from "lodash";
+import { isArray, isEmpty, last, merge, values } from "lodash";
 import { createWriteStream } from "fs";
 import prettier from "prettier";
 import { config } from "../config";
@@ -79,7 +79,7 @@ async function getData(data?: Eps.Entity[]) {
 
 			if (code === 1000) {
 				if (!isEmpty(data) && data) {
-					merge(list, Object.values(data).flat() as Eps.Entity[]);
+					list = values(data).flat();
 				}
 			} else {
 				error(`[cool-eps] ${message}`);
@@ -107,9 +107,11 @@ async function getData(data?: Eps.Entity[]) {
 		if (!e.namespace) {
 			e.namespace = "";
 		}
-
 		if (!e.api) {
 			e.api = [];
+		}
+		if (!e.columns) {
+			e.columns = [];
 		}
 	});
 }

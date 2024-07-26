@@ -167,7 +167,7 @@
             const { code, data, message } = res.data;
             if (code === 1000) {
                 if (!lodash.isEmpty(data) && data) {
-                    lodash.merge(list, Object.values(data).flat());
+                    list = lodash.values(data).flat();
                 }
             }
             else {
@@ -196,6 +196,9 @@
             }
             if (!e.api) {
                 e.api = [];
+            }
+            if (!e.columns) {
+                e.columns = [];
             }
         });
     }
