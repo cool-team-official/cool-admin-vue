@@ -694,7 +694,9 @@
     }
 
     async function createCtx() {
-        let ctx = {};
+        let ctx = {
+            serviceLang: "Node",
+        };
         if (config.type == "app") {
             const manifest = readFile(rootDir("manifest.json"), true);
             // 文件路径
@@ -753,6 +755,22 @@
         if (config.type == "admin") {
             const list = fs.readdirSync(rootDir("./src/modules"));
             ctx.modules = list.filter((e) => !e.includes("."));
+            await axios
+                .get(config.reqUrl + "/admin/base/comm/program", {
+                timeout: 5000,
+            })
+                .then((res) => {
+                const { code, data, message } = res.data;
+                if (code === 1000) {
+                    ctx.serviceLang = data || "Node";
+                }
+                else {
+                    error(`[cool-ctx] ${message}`);
+                }
+            })
+                .catch((err) => {
+                // console.error(['[cool-ctx] ', err.message])
+            });
         }
         return ctx;
     }

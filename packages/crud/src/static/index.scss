@@ -508,6 +508,9 @@
 }
 
 .cl-dialog {
+	display: flex;
+	flex-direction: column;
+
 	&.el-dialog {
 		border-radius: 6px;
 		padding: 0;

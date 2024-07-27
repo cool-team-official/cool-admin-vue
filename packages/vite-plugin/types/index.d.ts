@@ -54,6 +54,7 @@ export namespace Ctx {
 		pages?: Ctx.Pages;
 		subPackages?: Ctx.SubPackages;
 		modules?: string[];
+		serviceLang: "Node" | "Java" | "Go" | "Python";
 		[key: string]: any;
 	}
 }

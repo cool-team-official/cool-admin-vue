@@ -9,7 +9,7 @@
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .eslintignore"
 	},
 	"dependencies": {
-		"@cool-vue/crud": "^7.1.26",
+		"@cool-vue/crud": "^7.1.27",
 		"@element-plus/icons-vue": "^2.3.1",
 		"@vueuse/core": "^10.4.0",
 		"@wangeditor/editor": "^5.1.23",
@@ -38,7 +38,7 @@
 	},
 	"devDependencies": {
 		"@rushstack/eslint-patch": "^1.8.0",
-		"@cool-vue/vite-plugin": "^7.1.6",
+		"@cool-vue/vite-plugin": "^7.1.7",
 		"@types/file-saver": "^2.0.7",
 		"@types/lodash-es": "^4.17.8",
 		"@types/mockjs": "^1.0.7",

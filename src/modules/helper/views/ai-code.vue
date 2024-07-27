@@ -296,6 +296,7 @@ import { sleep, storage } from "/@/cool/utils";
 import dayjs from "dayjs";
 import type { CodeItem, EpsColumn } from "../types";
 import { useClipboard } from "@vueuse/core";
+import { ctx } from "virtual:ctx";
 
 const { service, refs, setRefs, router } = useCool();
 const menu = useMenu();
@@ -369,10 +370,10 @@ const step = reactive({
 
 // 语言
 const lang = reactive({
-	value: "Node" as "Node" | "Java" | "Go" | "Python",
+	value: "Node",
 
-	async get() {
-		lang.value = await service.base.comm.program();
+	get() {
+		lang.value = ctx.serviceLang;
 		code.active = lang.value.toLocaleLowerCase() + "-entity";
 	},
 

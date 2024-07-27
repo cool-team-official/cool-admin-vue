@@ -1,5 +1,5 @@
 /// <reference types="../index" />
-import { App } from "vue";
+import type { App } from "vue";
 import "./static/index.scss";
 declare const Crud: {
     install(app: App, options?: Options): {
