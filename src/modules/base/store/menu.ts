@@ -38,14 +38,18 @@ export const useMenuStore = defineStore("menu", function () {
 		function deep(d: any) {
 			if (typeof d == "object") {
 				if (d.permission) {
-					d._permission = {};
-					for (const i in d.permission) {
-						d._permission[i] =
-							list.findIndex((e: any) =>
-								e
-									.replace(/:/g, "/")
-									.includes(`${d.namespace.replace("admin/", "")}/${i}`)
-							) >= 0;
+					if (d.namespace) {
+						d._permission = {};
+						for (const i in d.permission) {
+							d._permission[i] =
+								list.findIndex((e) =>
+									e
+										.replace(/:/g, "/")
+										.includes(`${d.namespace.replace("admin/", "")}/${i}`)
+								) >= 0;
+						}
+					} else {
+						console.error("namespace is required", d);
 					}
 				} else {
 					for (const i in d) {
