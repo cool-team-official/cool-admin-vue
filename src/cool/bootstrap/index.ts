@@ -4,6 +4,7 @@ import { createModule } from "./module";
 import { router } from "../router";
 import { Loading } from "../utils";
 import { createEps } from "./eps";
+import "virtual:svg-register";
 
 export async function bootstrap(app: App) {
 	// pinia

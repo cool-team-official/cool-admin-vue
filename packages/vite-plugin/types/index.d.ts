@@ -84,5 +84,3 @@ export namespace Config {
 		[key: string]: any;
 	}
 }
-
-// ts范型，Config.EPS的类型改成全部可选

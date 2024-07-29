@@ -1,17 +1,22 @@
 import { readFileSync, readdirSync } from "fs";
-import { extname } from "path";
+import { basename, extname } from "path";
 import { rootDir } from "../utils";
+import svgo from "svgo";
 
-function findFiles(dir: string): string[] {
-	const res: string[] = [];
+let svgIcons: string[] = [];
+
+function findSvg(dir: string) {
+	const arr: string[] = [];
 	const dirs = readdirSync(dir, {
 		withFileTypes: true,
 	});
 	for (const d of dirs) {
 		if (d.isDirectory()) {
-			res.push(...findFiles(dir + d.name + "/"));
+			arr.push(...findSvg(dir + d.name + "/"));
 		} else {
 			if (extname(d.name) == ".svg") {
+				svgIcons.push(basename(d.name, ".svg"));
+
 				const svg = readFileSync(dir + d.name)
 					.toString()
 					.replace(/(\r)|(\n)/g, "")
@@ -35,21 +40,43 @@ function findFiles(dir: string): string[] {
 						return `<symbol id="icon-${d.name.replace(".svg", "")}" ${content}>`;
 					})
 					.replace("</svg>", "</symbol>");
-				res.push(svg);
+
+				arr.push(svg);
 			}
 		}
 	}
-	return res;
+	return arr;
 }
 
-export function createSvg(html: string) {
-	const res = findFiles(rootDir("./src/"));
+function compilerSvg() {
+	svgIcons = [];
 
-	return html.replace(
-		"<body>",
-		`<body>
-			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute; width: 0; height: 0">
-				${res.join("")}
-			</svg>`,
-	);
+	return findSvg(rootDir("./src/"))
+		.map((e) => {
+			return svgo.optimize(e)?.data || e;
+		})
+		.join("");
+}
+
+export async function createSvg() {
+	const html = compilerSvg();
+
+	const code = `
+if (typeof window !== 'undefined') {
+	function loadSvg() {
+		const svgDom = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		svgDom.style.position = 'absolute';
+		svgDom.style.width = '0';
+		svgDom.style.height = '0';
+		svgDom.setAttribute('xmlns','http://www.w3.org/2000/svg');
+		svgDom.setAttribute('xmlns:link','http://www.w3.org/1999/xlink');
+		svgDom.innerHTML = '${html}';
+		document.body.insertBefore(svgDom, document.body.firstChild);
+	}
+
+	loadSvg();
+}
+		`;
+
+	return { code, svgIcons };
 }

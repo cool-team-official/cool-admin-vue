@@ -6,6 +6,3 @@ declare module "*.vue" {
 }
 
 declare module "element-plus/dist/locale/zh-cn.mjs";
-declare module "virtual:ctx";
-declare module "virtual:eps";
-declare module "virtual:demo";

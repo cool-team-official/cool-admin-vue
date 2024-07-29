@@ -1,9 +1,15 @@
 import type { Plugin } from "vite";
 import { createEps } from "./eps";
 import { createCtx } from "./ctx";
+import { createSvg } from "./svg";
 
 export async function virtual(): Promise<Plugin> {
-	const virtualModuleIds: string[] = ["virtual:eps", "virtual:ctx"];
+	const virtualModuleIds: string[] = [
+		"virtual:eps",
+		"virtual:ctx",
+		"virtual:svg-register",
+		"virtual:svg-icons",
+	];
 
 	return {
 		name: "vite-cool-virtual",
@@ -63,6 +69,20 @@ export async function virtual(): Promise<Plugin> {
 
 				return `
 					export const ctx = ${JSON.stringify(ctx)}
+				`;
+			}
+
+			if (id == "\0virtual:svg-register") {
+				const { code } = await createSvg();
+
+				return code;
+			}
+
+			if (id == "\0virtual:svg-icons") {
+				const { svgIcons } = await createSvg();
+
+				return `
+					export const svgIcons = ${JSON.stringify(svgIcons)}
 				`;
 			}
 		},

@@ -5,27 +5,22 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
-import { isNumber } from "lodash-es";
+import { computed, defineComponent, reactive } from "vue";
+import { parsePx } from "/@/cool/utils";
 
 export default defineComponent({
 	name: "cl-svg",
 
 	props: {
-		name: {
-			type: String
-		},
-		className: {
-			type: String
-		},
-		size: {
-			type: [String, Number]
-		}
+		name: String,
+		className: String,
+		color: String,
+		size: [String, Number]
 	},
 
 	setup(props) {
-		const style = ref({
-			fontSize: isNumber(props.size) ? props.size + "px" : props.size
+		const style = reactive({
+			fontSize: parsePx(props.size!)
 		});
 
 		const iconName = computed(() => `#icon-${props.name}`);

@@ -1,7 +1,7 @@
 {
 	"name": "@cool-vue/vite-plugin",
-	"version": "7.1.7",
-	"description": "cool-admin/cool-uni builder",
+	"version": "7.2.1",
+	"description": "cool-admin、cool-uni builder",
 	"main": "/dist/index.js",
 	"scripts": {
 		"build": "rollup --c --bundleConfigAsCjs"
@@ -12,6 +12,7 @@
 	"files": [
 		"dist/*",
 		"types/*",
+		"client.d.ts",
 		"package.json"
 	],
 	"types": "./dist/index.d.ts",
@@ -33,6 +34,7 @@
 		"glob": "^10.3.12",
 		"lodash": "^4.17.21",
 		"magic-string": "^0.30.10",
-		"prettier": "^3.2.5"
+		"prettier": "^3.2.5",
+		"svgo": "^3.3.2"
 	}
 }

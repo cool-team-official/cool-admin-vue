@@ -1,1 +1,4 @@
-export declare function createSvg(html: string): string;
+export declare function createSvg(): Promise<{
+    code: string;
+    svgIcons: string[];
+}>;

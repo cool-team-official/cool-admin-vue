@@ -10,14 +10,7 @@
 
 <script lang="ts" name="cl-menu-icon" setup>
 import { ref, useModel } from "vue";
-import { basename } from "/@/cool/utils";
-
-// svg 图标加载
-const svgFiles = import.meta.glob("/src/modules/*/static/**/*.svg", {
-	eager: true
-});
-
-const emit = defineEmits(["update:modelValue"]);
+import { svgIcons } from "virtual:svg-icons";
 
 const props = defineProps({
 	modelValue: {
@@ -26,20 +19,10 @@ const props = defineProps({
 	}
 });
 
-function iconList() {
-	const list: string[] = [];
-
-	for (const i in svgFiles) {
-		if (i.includes("icon-")) {
-			list.push(basename(i).replace(".svg", ""));
-		}
-	}
-
-	return list;
-}
+const emit = defineEmits(["update:modelValue"]);
 
 // 图标列表
-const list = ref(iconList());
+const list = ref(svgIcons.filter((e) => e.indexOf("icon-") === 0));
 
 // 已选图标
 const value = useModel(props, "modelValue");

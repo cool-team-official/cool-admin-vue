@@ -2,7 +2,6 @@ import type { Plugin } from "vite";
 import { createEps } from "./eps";
 import { parseJson } from "./utils";
 import { createTag } from "./tag";
-import { createSvg } from "./svg";
 import { createMenu } from "./menu";
 import { config } from "./config";
 
@@ -52,13 +51,6 @@ export function base(): Plugin {
 			}
 
 			return code;
-		},
-		transformIndexHtml(html) {
-			if (config.type == "admin") {
-				return createSvg(html);
-			}
-
-			return html;
 		},
 	};
 }

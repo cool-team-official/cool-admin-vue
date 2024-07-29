@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('fs'), require('path'), require('axios'), require('lodash'), require('prettier'), require('@vue/compiler-sfc'), require('magic-string'), require('glob')) :
-    typeof define === 'function' && define.amd ? define(['exports', 'fs', 'path', 'axios', 'lodash', 'prettier', '@vue/compiler-sfc', 'magic-string', 'glob'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.index = {}, global.fs, global.path, global.axios, global.lodash, global.prettier, global.compilerSfc, global.magicString, global.glob));
-})(this, (function (exports, fs, path, axios, lodash, prettier, compilerSfc, magicString, glob) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('fs'), require('path'), require('axios'), require('lodash'), require('prettier'), require('@vue/compiler-sfc'), require('magic-string'), require('glob'), require('svgo')) :
+    typeof define === 'function' && define.amd ? define(['exports', 'fs', 'path', 'axios', 'lodash', 'prettier', '@vue/compiler-sfc', 'magic-string', 'glob', 'svgo'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.index = {}, global.fs, global.path, global.axios, global.lodash, global.prettier, global.compilerSfc, global.magicString, global.glob, global.svgo));
+})(this, (function (exports, fs, path, axios, lodash, prettier, compilerSfc, magicString, glob, svgo) { 'use strict';
 
     const config = {
         type: "admin",
@@ -533,52 +533,6 @@
         return null;
     }
 
-    function findFiles(dir) {
-        const res = [];
-        const dirs = fs.readdirSync(dir, {
-            withFileTypes: true,
-        });
-        for (const d of dirs) {
-            if (d.isDirectory()) {
-                res.push(...findFiles(dir + d.name + "/"));
-            }
-            else {
-                if (path.extname(d.name) == ".svg") {
-                    const svg = fs.readFileSync(dir + d.name)
-                        .toString()
-                        .replace(/(\r)|(\n)/g, "")
-                        .replace(/<svg([^>+].*?)>/, (_, $2) => {
-                        let width = 0;
-                        let height = 0;
-                        let content = $2.replace(/(width|height)="([^>+].*?)"/g, (_, s2, s3) => {
-                            if (s2 === "width") {
-                                width = s3;
-                            }
-                            else if (s2 === "height") {
-                                height = s3;
-                            }
-                            return "";
-                        });
-                        if (!/(viewBox="[^>+].*?")/g.test($2)) {
-                            content += `viewBox="0 0 ${width} ${height}"`;
-                        }
-                        return `<symbol id="icon-${d.name.replace(".svg", "")}" ${content}>`;
-                    })
-                        .replace("</svg>", "</symbol>");
-                    res.push(svg);
-                }
-            }
-        }
-        return res;
-    }
-    function createSvg(html) {
-        const res = findFiles(rootDir("./src/"));
-        return html.replace("<body>", `<body>
-			<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position: absolute; width: 0; height: 0">
-				${res.join("")}
-			</svg>`);
-    }
-
     // 创建文件
     async function createMenu(options) {
         // 格式化内容
@@ -648,12 +602,6 @@
                     return createTag(code, id);
                 }
                 return code;
-            },
-            transformIndexHtml(html) {
-                if (config.type == "admin") {
-                    return createSvg(html);
-                }
-                return html;
             },
         };
     }
@@ -775,8 +723,82 @@
         return ctx;
     }
 
+    let svgIcons = [];
+    function findSvg(dir) {
+        const arr = [];
+        const dirs = fs.readdirSync(dir, {
+            withFileTypes: true,
+        });
+        for (const d of dirs) {
+            if (d.isDirectory()) {
+                arr.push(...findSvg(dir + d.name + "/"));
+            }
+            else {
+                if (path.extname(d.name) == ".svg") {
+                    svgIcons.push(path.basename(d.name, ".svg"));
+                    const svg = fs.readFileSync(dir + d.name)
+                        .toString()
+                        .replace(/(\r)|(\n)/g, "")
+                        .replace(/<svg([^>+].*?)>/, (_, $2) => {
+                        let width = 0;
+                        let height = 0;
+                        let content = $2.replace(/(width|height)="([^>+].*?)"/g, (_, s2, s3) => {
+                            if (s2 === "width") {
+                                width = s3;
+                            }
+                            else if (s2 === "height") {
+                                height = s3;
+                            }
+                            return "";
+                        });
+                        if (!/(viewBox="[^>+].*?")/g.test($2)) {
+                            content += `viewBox="0 0 ${width} ${height}"`;
+                        }
+                        return `<symbol id="icon-${d.name.replace(".svg", "")}" ${content}>`;
+                    })
+                        .replace("</svg>", "</symbol>");
+                    arr.push(svg);
+                }
+            }
+        }
+        return arr;
+    }
+    function compilerSvg() {
+        svgIcons = [];
+        return findSvg(rootDir("./src/"))
+            .map((e) => {
+            return svgo.optimize(e)?.data || e;
+        })
+            .join("");
+    }
+    async function createSvg() {
+        const html = compilerSvg();
+        const code = `
+if (typeof window !== 'undefined') {
+	function loadSvg() {
+		const svgDom = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		svgDom.style.position = 'absolute';
+		svgDom.style.width = '0';
+		svgDom.style.height = '0';
+		svgDom.setAttribute('xmlns','http://www.w3.org/2000/svg');
+		svgDom.setAttribute('xmlns:link','http://www.w3.org/1999/xlink');
+		svgDom.innerHTML = '${html}';
+		document.body.insertBefore(svgDom, document.body.firstChild);
+	}
+
+	loadSvg();
+}
+		`;
+        return { code, svgIcons };
+    }
+
     async function virtual() {
-        const virtualModuleIds = ["virtual:eps", "virtual:ctx"];
+        const virtualModuleIds = [
+            "virtual:eps",
+            "virtual:ctx",
+            "virtual:svg-register",
+            "virtual:svg-icons",
+        ];
         return {
             name: "vite-cool-virtual",
             enforce: "pre",
@@ -827,6 +849,16 @@
                     const ctx = await createCtx();
                     return `
 					export const ctx = ${JSON.stringify(ctx)}
+				`;
+                }
+                if (id == "\0virtual:svg-register") {
+                    const { code } = await createSvg();
+                    return code;
+                }
+                if (id == "\0virtual:svg-icons") {
+                    const { svgIcons } = await createSvg();
+                    return `
+					export const svgIcons = ${JSON.stringify(svgIcons)}
 				`;
                 }
             },
