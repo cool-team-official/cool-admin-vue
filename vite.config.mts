@@ -56,9 +56,8 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 			}
 		},
 		esbuild: {
-			drop: isDev ? [] : ["console", "debugger"]
+			// drop: isDev ? [] : ["console", "debugger"]
 		},
-
 		build: {
 			minify: "esbuild",
 			// terserOptions: {

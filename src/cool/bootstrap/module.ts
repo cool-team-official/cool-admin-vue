@@ -1,5 +1,5 @@
 import { type App, type Directive } from "vue";
-import { assign, chain, isFunction } from "lodash-es";
+import { assign, isFunction, orderBy } from "lodash-es";
 import { filename } from "../utils";
 import { module } from "../module";
 import { hmr } from "../hooks";
@@ -63,44 +63,41 @@ for (const i in files) {
 
 // 创建
 export function createModule(app: App) {
-	const list = chain(module.list)
-		.map((e) => {
-			const d = isFunction(e.value) ? e.value(app) : e.value;
+	// 排序
+	module.list.forEach((e) => {
+		const d = isFunction(e.value) ? e.value(app) : e.value;
 
-			if (d) {
-				assign(e, d);
+		if (d) {
+			assign(e, d);
+		}
+
+		if (!d.order) {
+			e.order = 0;
+		}
+	});
+
+	const list = orderBy(module.list, "order", "desc").map((e) => {
+		// 初始化
+		e.install?.(app, e.options);
+
+		// 注册组件
+		e.components?.forEach(async (c) => {
+			// @ts-ignore
+			const v = await (isFunction(c) ? c() : c);
+			const n = v.default || v;
+
+			if (n.name) {
+				app.component(n.name, n);
 			}
+		});
 
-			if (!d.order) {
-				e.order = 0;
-			}
+		// 注册指令
+		e.directives?.forEach((v) => {
+			app.directive(v.name, v.value);
+		});
 
-			return e;
-		})
-		.orderBy("order", "desc")
-		.map((e) => {
-			// 初始化
-			e.install?.(app, e.options);
-
-			// 注册组件
-			e.components?.forEach(async (c) => {
-				// @ts-ignore
-				const v = await (isFunction(c) ? c() : c);
-				const n = v.default || v;
-
-				if (n.name) {
-					app.component(n.name, n);
-				}
-			});
-
-			// 注册指令
-			e.directives?.forEach((v) => {
-				app.directive(v.name, v.value);
-			});
-
-			return e;
-		})
-		.value();
+		return e;
+	});
 
 	return {
 		// 模块列表

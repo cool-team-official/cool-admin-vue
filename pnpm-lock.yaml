@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@cool-vue/crud':
-    specifier: ^7.1.26
-    version: 7.1.26(typescript@5.4.2)
+    specifier: ^7.1.27
+    version: 7.1.27(typescript@5.4.2)
   '@element-plus/icons-vue':
     specifier: ^2.3.1
     version: 2.3.1(vue@3.4.15)
@@ -86,8 +86,8 @@ dependencies:
 
 devDependencies:
   '@cool-vue/vite-plugin':
-    specifier: ^7.1.6
-    version: 7.1.6
+    specifier: ^7.1.7
+    version: 7.1.7
   '@rushstack/eslint-patch':
     specifier: ^1.8.0
     version: 1.8.0
@@ -529,8 +529,8 @@ packages:
       '@babel/helper-validator-identifier': 7.24.7
       to-fast-properties: 2.0.0
 
-  /@cool-vue/crud@7.1.26(typescript@5.4.2):
-    resolution: {integrity: sha512-v8X32My5iGqt048FWkthMxVdOY5kTf2MVLIHyr8NoCEbSFN4vzDSbLE6TWgQMHd62GCDxlB9e/QQGCc55CZGcA==}
+  /@cool-vue/crud@7.1.27(typescript@5.4.2):
+    resolution: {integrity: sha512-S/Z6Q4Aw3lshVevpizQ5Z4DarXJdkBTEZFSOlLEnBkhzBLGFBzLiNI42vkm9Ru0mcV+WNic5RJ8C99/LUhC/6g==}
     dependencies:
       '@element-plus/icons-vue': 2.3.1(vue@3.4.15)
       array.prototype.flat: 1.3.2
@@ -544,8 +544,8 @@ packages:
       - typescript
     dev: false
 
-  /@cool-vue/vite-plugin@7.1.6:
-    resolution: {integrity: sha512-nKh0YQd6yP6aRwOcPOAxN81+HJ+XR9NrF5KKaegK36FLrcHW2gnf2+qtqnbd+SFkm6BTM0iojPedW6cYU0aREg==}
+  /@cool-vue/vite-plugin@7.1.7:
+    resolution: {integrity: sha512-pSTXigNa2HrW7ps4EFEqI18KzZh19WEoDZlV8l84DDOJHV4jjaeSKbBpur/aCWBIogeZOaMCiboCCytfSUGYCQ==}
     dependencies:
       '@vue/compiler-sfc': 3.4.34
       axios: 1.7.2
@@ -1388,7 +1388,7 @@ packages:
       '@babel/helper-module-imports': 7.22.15
       '@babel/helper-plugin-utils': 7.24.8
       '@babel/parser': 7.24.8
-      '@vue/compiler-sfc': 3.4.15
+      '@vue/compiler-sfc': 3.4.34
     dev: true
 
   /@vue/compiler-core@3.4.15:

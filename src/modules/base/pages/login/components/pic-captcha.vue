@@ -35,18 +35,22 @@ async function refresh() {
 			color: "#2c3142"
 		})
 		.then(({ captchaId, data }) => {
-			if (data.includes(";base64,")) {
-				base64.value = data;
-			} else {
-				svg.value = data;
-			}
+			if (data) {
+				if (data.includes(";base64,")) {
+					base64.value = data;
+				} else {
+					svg.value = data;
+				}
 
-			emit("update:modelValue", captchaId);
-			emit("change", {
-				base64,
-				svg,
-				captchaId
-			});
+				emit("update:modelValue", captchaId);
+				emit("change", {
+					base64,
+					svg,
+					captchaId
+				});
+			} else {
+				ElMessage.error("验证码获取失败");
+			}
 		})
 		.catch((err) => {
 			ElMessage.error(err.message);
