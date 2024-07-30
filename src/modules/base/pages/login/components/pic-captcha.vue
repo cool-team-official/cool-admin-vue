@@ -3,8 +3,15 @@
 		<div v-if="svg" class="svg" v-html="svg" />
 		<img v-else-if="base64" class="base64" :src="base64" alt="" />
 
+		<template v-else-if="isError">
+			<el-text type="danger"> 后端未启动 </el-text>
+			<el-icon color="#f56c6c" :size="16">
+				<warning-filled />
+			</el-icon>
+		</template>
+
 		<template v-else>
-			<el-icon class="is-loading">
+			<el-icon class="is-loading" :size="18">
 				<loading />
 			</el-icon>
 		</template>
@@ -14,12 +21,15 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { Loading } from "@element-plus/icons-vue";
+import { Loading, WarningFilled } from "@element-plus/icons-vue";
 import { useCool } from "/@/cool";
 
 const emit = defineEmits(["update:modelValue", "change"]);
 
 const { service } = useCool();
+
+// 是否异常
+const isError = ref(false);
 
 // base64
 const base64 = ref("");
@@ -27,7 +37,12 @@ const base64 = ref("");
 // svg
 const svg = ref("");
 
+// 刷新
 async function refresh() {
+	isError.value = false;
+	svg.value = "";
+	base64.value = "";
+
 	await service.base.open
 		.captcha({
 			height: 45,
@@ -54,6 +69,7 @@ async function refresh() {
 		})
 		.catch((err) => {
 			ElMessage.error(err.message);
+			isError.value = true;
 		});
 }
 
@@ -75,6 +91,7 @@ defineExpose({
 	height: 45px;
 	width: 150px;
 	position: relative;
+	user-select: none;
 
 	.svg {
 		height: 100%;
@@ -87,7 +104,6 @@ defineExpose({
 
 	.el-icon {
 		position: absolute;
-		font-size: 22px;
 		right: 20px;
 	}
 }
