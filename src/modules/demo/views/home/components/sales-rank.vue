@@ -122,7 +122,7 @@ function changeDate(value: string) {
 				list-style: none;
 				font-size: 14px;
 				cursor: pointer;
-				color: #d8d8d8;
+				color: var(--el-color-info);
 				white-space: nowrap;
 				margin-right: 10px;
 				flex: 1;
@@ -132,13 +132,17 @@ function changeDate(value: string) {
 				}
 
 				&:not(.active):hover {
-					color: #999;
+					color: #666;
 				}
 			}
 		}
 
 		:deep(.el-date-editor) {
 			width: 150px;
+
+			.el-input__inner {
+				color: #333;
+			}
 		}
 	}
 

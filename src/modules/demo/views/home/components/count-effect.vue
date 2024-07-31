@@ -7,7 +7,7 @@
 			</div>
 
 			<div class="card__container">
-				<el-progress :percentage="value" :stroke-width="8" />
+				<el-progress :percentage="value" :stroke-width="10" :show-text="false" />
 			</div>
 
 			<div class="card__footer">
@@ -48,7 +48,7 @@ import { BottomRight, TopRight } from "@element-plus/icons-vue";
 const value = ref(0);
 
 setTimeout(() => {
-	value.value = 50;
+	value.value = Math.random() * 30 + 30;
 }, 0);
 </script>
 
@@ -64,7 +64,6 @@ setTimeout(() => {
 			display: flex;
 			list-style: none;
 			flex: 1;
-			color: #d8d8d8;
 
 			.fall,
 			.rise {
@@ -85,7 +84,6 @@ setTimeout(() => {
 
 	.card__container {
 		padding-top: 15px;
-		padding-right: 10px;
 		box-sizing: border-box;
 	}
 }

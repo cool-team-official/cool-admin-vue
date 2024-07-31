@@ -1,53 +1,51 @@
 <template>
-	<div class="cl-chat__wrap">
+	<div class="cl-chat__icon" @click="open">
 		<el-badge :value="unCount" :hidden="!unCount">
-			<div class="cl-chat__icon" @click="open">
-				<cl-svg name="icon-notice" :size="16" />
-			</div>
+			<cl-svg name="icon-notice" :size="16" />
 		</el-badge>
+	</div>
 
-		<!-- 弹框 -->
-		<cl-dialog
-			v-model="visible"
-			title="聊天窗口"
-			height="70vh"
-			width="1200px"
-			padding="0"
-			keep-alive
-			:scrollbar="false"
-			:close-on-click-modal="false"
-			close-on-press-escape
-			:controls="['slot-expand', 'cl-flex1', 'fullscreen', 'close']"
+	<!-- 弹框 -->
+	<cl-dialog
+		v-model="visible"
+		title="聊天窗口"
+		height="70vh"
+		width="1200px"
+		padding="0"
+		keep-alive
+		:scrollbar="false"
+		:close-on-click-modal="false"
+		close-on-press-escape
+		:controls="['slot-expand', 'cl-flex1', 'fullscreen', 'close']"
+	>
+		<div
+			class="cl-chat"
+			:class="{
+				'is-mini': browser.isMini,
+				'is-expand': isExpand
+			}"
 		>
-			<div
-				class="cl-chat"
-				:class="{
-					'is-mini': browser.isMini,
-					'is-expand': isExpand
-				}"
-			>
-				<div class="cl-chat__session">
-					<chat-session />
-				</div>
-
-				<div class="cl-chat__right">
-					<chat-message />
-				</div>
+			<div class="cl-chat__session">
+				<chat-session />
 			</div>
 
-			<!-- 展开按钮 -->
-			<template #slot-expand>
-				<button class="cl-dialog__controls-icon">
-					<el-icon @click="isExpand = true" v-if="!isExpand">
-						<notebook />
-					</el-icon>
-					<el-icon @click="isExpand = false" v-else>
-						<arrow-left />
-					</el-icon>
-				</button>
-			</template>
-		</cl-dialog>
-	</div>
+			<div class="cl-chat__right">
+				<chat-message />
+			</div>
+		</div>
+
+		<!-- 展开按钮 -->
+		<template #slot-expand>
+			<button class="cl-dialog__controls-icon">
+				<el-icon @click="isExpand = true" v-if="!isExpand">
+					<notebook />
+				</el-icon>
+				<el-icon @click="isExpand = false" v-else>
+					<arrow-left />
+				</el-icon>
+			</button>
+		</template>
+	</cl-dialog>
 </template>
 
 <script lang="ts" name="cl-chat" setup>
@@ -207,8 +205,10 @@ defineExpose({
 	height: 100%;
 
 	&__icon {
-		padding: 0 5px;
-		text-align: center;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 45px;
 
 		&:hover {
 			color: var(--color-primary);

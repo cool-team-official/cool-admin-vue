@@ -58,7 +58,7 @@ import { BottomRight, TopRight } from "@element-plus/icons-vue";
 			display: flex;
 			list-style: none;
 			flex: 1;
-			color: #d8d8d8;
+			color: var(--el-color-info);
 
 			.fall,
 			.rise {

@@ -521,9 +521,10 @@ defineExpose({
 
 				.el-icon {
 					padding: 5px;
-					font-size: 18px;
+					font-size: 16px;
 					margin-left: 5px;
 					cursor: pointer;
+					border-radius: 4px;
 
 					&:hover {
 						background-color: var(--el-fill-color-lighter);
