@@ -51,6 +51,11 @@ router.onError((err: Error) => {
 		ElMessage.error(`页面存在错误：${err.message}`);
 		console.error(err);
 
+		// 动态加载组件错误，刷新页面
+		if (err.message?.includes("Failed to fetch dynamically imported module")) {
+			window.location.reload();
+		}
+
 		setTimeout(() => {
 			lock = false;
 		}, 0);
