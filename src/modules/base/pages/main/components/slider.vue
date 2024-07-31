@@ -6,7 +6,9 @@
 		</div>
 
 		<div class="app-slider__container">
-			<b-menu />
+			<el-scrollbar>
+				<b-menu />
+			</el-scrollbar>
 		</div>
 	</div>
 </template>
@@ -50,79 +52,41 @@ const { app } = useBase();
 
 	&__container {
 		height: calc(100% - 80px);
-		overflow-y: auto;
-
-		&::-webkit-scrollbar {
-			width: 0;
-			height: 0;
-		}
 	}
 
 	&__menu {
-		&.el-popper {
-			&.is-light {
-				border: 0;
-			}
-		}
-
 		.el-menu {
 			border-right: 0;
 			background-color: transparent;
 
-			&--popup {
-				.cl-svg,
-				span {
-					color: #000;
-				}
-			}
-
-			.el-sub-menu__title,
-			&-item {
-				&.is-active,
-				&:hover {
-					background-color: var(--color-primary) !important;
-
-					.cl-svg,
-					span {
-						color: #fff;
-					}
-				}
-			}
-
-			.el-sub-menu__title,
-			&-item,
-			&__title {
-				color: #eee;
-				letter-spacing: 0.5px;
+			.el-menu-item,
+			.el-menu__title,
+			.el-sub-menu__title {
 				height: 50px;
-				line-height: 50px;
-
-				.wrap {
-					width: 100%;
-					box-sizing: border-box;
-					padding: 0 4px;
-				}
+				color: #fff;
 
 				.cl-svg {
 					font-size: 16px;
 				}
 
 				span {
-					display: inline-block;
 					font-size: 12px;
-					letter-spacing: 1px;
-					margin-left: 10px;
 					user-select: none;
+					letter-spacing: 1px;
+				}
+
+				&.is-active,
+				&:hover {
+					background-color: var(--color-primary);
+					color: #fff;
 				}
 			}
 
-			&--collapse {
-				.wrap {
-					text-align: center;
-				}
-
+			&--popup {
+				.el-menu-item,
+				.el-menu__title,
 				.el-sub-menu__title {
-					padding: 0;
+					color: var(--el-text-color-primary);
 				}
 			}
 		}

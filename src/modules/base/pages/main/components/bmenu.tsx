@@ -1,4 +1,4 @@
-import { defineComponent, h, VNode } from "vue";
+import { defineComponent, h } from "vue";
 import { useBase, Menu } from "/$/base";
 import { useCool } from "/@/cool";
 
@@ -28,12 +28,12 @@ export default defineComponent({
 					.filter((e) => e.isShow)
 					.map((e) => {
 						const item = (e: Menu.Item) => {
-							return (
-								<div class="wrap">
+							return [
+								<el-icon>
 									<cl-svg name={e.icon} />
-									<span v-show={!app.isFold || index != 1}>{e.meta?.label}</span>
-								</div>
-							);
+								</el-icon>,
+								<span v-show={!app.isFold || index != 1}>{e.meta?.label}</span>
+							];
 						};
 
 						if (e.type == 0) {
@@ -72,7 +72,6 @@ export default defineComponent({
 								}
 							);
 						}
-
 					});
 			}
 
