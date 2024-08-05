@@ -226,7 +226,7 @@ export function useCode() {
 			// 字典
 			const dict = item.component?.options || column.dict;
 
-			if (dict) {
+			if (!isEmpty(dict)) {
 				options[item.prop] = dict;
 
 				const str = `$$options.${item.prop}$$`;
@@ -326,13 +326,17 @@ export function useCode() {
 		// 筛选
 		const clFilter = fieldEq
 			.map((field) => {
-				const item = upsert.items.find((e) => e.prop == field);
-
-				if (item) {
-					return `<!-- 筛选${item.label} -->\n<cl-filter label="${item.label}">\n<cl-select prop="${field}" :options="options.${field}" />\n</cl-filter>`;
-				} else {
+				if (isEmpty(options[field])) {
 					return "";
 				}
+
+				const item = upsert.items.find((e) => e.prop == field);
+
+				if (!item) {
+					return "";
+				}
+
+				return `<!-- 筛选${item.label} -->\n<cl-filter label="${item.label}">\n<cl-select prop="${field}" :options="options.${field}" />\n</cl-filter>`;
 			})
 			.filter(Boolean)
 			.join("\n");
