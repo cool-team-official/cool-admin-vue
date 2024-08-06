@@ -12,6 +12,17 @@
     <img src="https://img.shields.io/github/last-commit/cool-team-official/cool-admin-vue?style=flat-square" alt="GitHub tag"></a>
 </p>
 
+## 特性
+
+Ai时代，很多老旧的框架已经无法满足现代化的开发需求，Cool-Admin开发了一系列的功能，让开发变得更简单、更快速、更高效。
+
+- **Ai编码**：通过微调大模型学习框架特有写法，实现简单功能从Api接口到前端页面的一键生成
+- **流程编排**：通过拖拽编排方式，即可实现类似像智能客服这样的功能
+- **模块化**：代码是模块化的，清晰明了，方便维护
+- **插件化**：插件化的设计，可以通过安装插件的方式扩展如：支付、短信、邮件等功能
+
+![](https://cool-show.oss-cn-shanghai.aliyuncs.com/admin/flow.png)
+
 ## 地址
 
 -   [📌 v6 vue3 + element-plus + ts + vite](https://github.com/cool-team-official/cool-admin-vue/tree/6.x)
