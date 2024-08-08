@@ -11,12 +11,7 @@
 		"experimentalDecorators": true,
 		"esModuleInterop": true,
 		"lib": ["esnext", "dom", "WebWorker"],
-		"types": [
-			"vite/client",
-			"element-plus/global",
-			"@cool-vue/vite-plugin/client",
-			"./build/cool/eps.d.ts"
-		],
+		"types": ["element-plus/global", "@cool-vue/vite-plugin/client", "./build/cool/eps.d.ts"],
 		"paths": {
 			"/@/*": ["./src/*"],
 			"/$/*": ["./src/modules/*"],
@@ -24,6 +19,6 @@
 			"/~/*": ["./packages/*"]
 		}
 	},
-	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "env.d.ts"],
+	"include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
 	"exclude": ["node_modules", "dist"]
 }
