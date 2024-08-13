@@ -5,4 +5,8 @@ export declare function createEps(query?: {
     service: {};
     list: Eps.Entity[];
     isUpdate: boolean;
+} | {
+    service: {};
+    list: never[];
+    isUpdate?: undefined;
 }>;

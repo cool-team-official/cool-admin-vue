@@ -14,7 +14,10 @@ export function cool(options: Config.Options) {
 
 	// Eps
 	if (options.eps) {
-		const { dist, mapping, api } = options.eps;
+		const { dist, mapping, api, enable = true } = options.eps;
+
+		// 是否开启
+		config.eps.enable = enable;
 
 		// 类型
 		if (api) {

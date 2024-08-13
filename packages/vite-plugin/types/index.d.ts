@@ -62,6 +62,7 @@ export namespace Ctx {
 export namespace Config {
 	type Type = "app" | "admin";
 	interface Eps {
+		enable: boolean;
 		api: "app" | "admin" | (string & {});
 		dist: string;
 		mapping: {

@@ -5,6 +5,7 @@ export const config: Config.Data = {
 	reqUrl: "",
 	demo: false,
 	eps: {
+		enable: true,
 		api: "",
 		dist: "./build/cool",
 		mapping: [

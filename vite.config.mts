@@ -24,7 +24,10 @@ export default ({ mode }: ConfigEnv): UserConfig => {
 			// vueDevTools(),
 			cool({
 				type: "admin",
-				proxy
+				proxy,
+				eps: {
+					enable: true
+				}
 			}),
 			visualizer({
 				open: false,

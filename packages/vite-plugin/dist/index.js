@@ -9,6 +9,7 @@
         reqUrl: "",
         demo: false,
         eps: {
+            enable: true,
             api: "",
             dist: "./build/cool",
             mapping: [
@@ -493,21 +494,29 @@
     }
     // 创建 eps
     async function createEps(query) {
-        // 获取数据
-        await getData(query?.list || []);
-        // 创建 service
-        createService();
-        // 创建目录
-        createDir(getEpsPath(), true);
-        // 创建 json 文件
-        const isUpdate = createJson();
-        // 创建描述文件
-        createDescribe({ service, list });
-        return {
-            service,
-            list,
-            isUpdate,
-        };
+        if (config.eps.enable) {
+            // 获取数据
+            await getData(query?.list || []);
+            // 创建 service
+            createService();
+            // 创建目录
+            createDir(getEpsPath(), true);
+            // 创建 json 文件
+            const isUpdate = createJson();
+            // 创建描述文件
+            createDescribe({ service, list });
+            return {
+                service,
+                list,
+                isUpdate,
+            };
+        }
+        else {
+            return {
+                service: {},
+                list: [],
+            };
+        }
     }
 
     function createTag(code, id) {
@@ -872,7 +881,9 @@ if (typeof window !== 'undefined') {
         config.reqUrl = options.proxy["/dev/"].target;
         // Eps
         if (options.eps) {
-            const { dist, mapping, api } = options.eps;
+            const { dist, mapping, api, enable = true } = options.eps;
+            // 是否开启
+            config.eps.enable = enable;
             // 类型
             if (api) {
                 config.eps.api = api;

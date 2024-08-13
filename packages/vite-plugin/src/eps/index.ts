@@ -473,24 +473,31 @@ function createService() {
 
 // 创建 eps
 export async function createEps(query?: { list: any[] }) {
-	// 获取数据
-	await getData(query?.list || []);
+	if (config.eps.enable) {
+		// 获取数据
+		await getData(query?.list || []);
 
-	// 创建 service
-	createService();
+		// 创建 service
+		createService();
 
-	// 创建目录
-	createDir(getEpsPath(), true);
+		// 创建目录
+		createDir(getEpsPath(), true);
 
-	// 创建 json 文件
-	const isUpdate = createJson();
+		// 创建 json 文件
+		const isUpdate = createJson();
 
-	// 创建描述文件
-	createDescribe({ service, list });
+		// 创建描述文件
+		createDescribe({ service, list });
 
-	return {
-		service,
-		list,
-		isUpdate,
-	};
+		return {
+			service,
+			list,
+			isUpdate,
+		};
+	} else {
+		return {
+			service: {},
+			list: [],
+		};
+	}
 }
