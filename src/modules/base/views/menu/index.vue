@@ -410,14 +410,13 @@ function onData(list: Item[]) {
 
 // 监听子节点数据的加载
 function onChildrenLoad(row: Item, treeNode: unknown, resolve: (data: Item[]) => void) {
-	resolve(row._children!);
+	resolve(row._children || []);
 }
 
 // 行点击展开
 function onRowClick(row: Item) {
 	if (row._children) {
-		row.children = row._children;
-		Table.value?.toggleRowExpansion(row);
+		Table.value?.Table.store.loadOrToggle(row);
 	}
 }
 
