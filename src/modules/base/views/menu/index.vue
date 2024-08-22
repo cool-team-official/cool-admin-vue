@@ -393,6 +393,13 @@ function onData(list: Item[]) {
 	// 递归处理
 	const deep = (arr: Item[]) => {
 		arr.forEach((e) => {
+			const nodes: { [key: number]: Item[] } =
+				Table.value?.Table.store.states.lazyTreeNodeMap.value || {};
+
+			if (nodes[e.id!]) {
+				nodes[e.id!] = e.children!;
+			}
+
 			if (!isEmpty(e.children)) {
 				e.hasChildren = true;
 				e._children = e.children;
