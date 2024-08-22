@@ -107,11 +107,11 @@ import { setFocus, useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 import { deepTree } from "/@/cool/utils";
 import { useStore } from "/$/base/store";
+import { isEmpty } from "lodash-es";
 import MenuImp from "./components/imp.vue";
 import MenuExp from "./components/exp.vue";
 import AutoMenu from "/$/helper/components/auto-menu/index.vue";
 import AutoPerms from "/$/helper/components/auto-perms/index.vue";
-import { isEmpty } from "/@/modules/dict/utils";
 
 interface Item extends Eps.BaseSysMenuEntity {
 	children?: Item[];
