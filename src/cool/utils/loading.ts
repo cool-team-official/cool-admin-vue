@@ -24,7 +24,7 @@ export const Loading = {
 	close() {
 		const el = document.getElementById("Loading");
 
-		if (el) {
+		if (el && !el.classList.contains("is-hide")) {
 			setTimeout(() => {
 				el.className += " is-hide";
 			}, 0);
