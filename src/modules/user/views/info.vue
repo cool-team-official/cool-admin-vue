@@ -3,34 +3,23 @@
 		<cl-row>
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn />
-			<!-- 新增按钮 -->
-			<cl-add-btn />
 			<!-- 删除按钮 -->
 			<cl-multi-delete-btn />
-			<!-- 筛选类型 -->
-			<cl-filter label="类型">
-				<cl-select
-					prop="type"
-					:options="[
-						{ label: '普通', value: 0 },
-						{ label: '会员', value: 1 },
-						{ label: '超级会员', value: 2 }
-					]"
-				/>
+			<!-- 登录方式 -->
+			<cl-filter label="登录方式">
+				<cl-select :options="options.loginType" prop="loginType" :width="120" />
 			</cl-filter>
-			<!-- 筛选状态 -->
+			<!-- 性别 -->
+			<cl-filter label="性别">
+				<cl-select :options="options.gender" prop="gender" :width="120" />
+			</cl-filter>
+			<!-- 状态 -->
 			<cl-filter label="状态">
-				<cl-select
-					prop="status"
-					:options="[
-						{ label: '是', value: 1 },
-						{ label: '否', value: 0 }
-					]"
-				/>
+				<cl-select :options="options.status" prop="status" :width="120" />
 			</cl-filter>
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
-			<cl-search-key placeholder="搜索标题" />
+			<cl-search-key placeholder="搜索昵称、手机号" />
 		</cl-row>
 
 		<cl-row>
@@ -49,53 +38,63 @@
 	</cl-crud>
 </template>
 
-<script lang="ts" name="user-info" setup>
+<script lang="ts" name="user-list" setup>
 import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
+import { reactive } from "vue";
 
 const { service } = useCool();
 
-// cl-upsert
-const Upsert = useUpsert({
-	items: [
+// 数据选项
+const options = reactive({
+	loginType: [
 		{
-			label: "标题",
-			prop: "title",
-			component: { name: "el-input", props: { clearable: true } },
-			required: true
-		},
-		{
-			label: "折扣",
-			prop: "discount",
-			component: { name: "el-input", props: { clearable: true } },
-			required: true
-		},
-		{
-			label: "有效期",
-			prop: "validity",
-			component: { name: "el-input", props: { clearable: true } },
-			required: true
-		},
-		{
-			label: "状态",
-			prop: "status",
-			flex: false,
-			component: { name: "cl-switch" },
-			required: true
-		},
-		{
-			label: "类型",
-			prop: "type",
-			component: {
-				name: "el-radio-group",
-				options: [
-					{ label: "普通", value: 0 },
-					{ label: "会员", value: 1 },
-					{ label: "超级会员", value: 2 }
-				]
-			},
+			label: "小程序",
 			value: 0,
-			required: true
+			type: "danger"
+		},
+		{
+			label: "公众号",
+			value: 1,
+			type: "success"
+		},
+		{
+			label: "H5",
+			value: 2
+		}
+	],
+	gender: [
+		{
+			label: "未知",
+			value: 0,
+			type: "info"
+		},
+		{
+			label: "男",
+			value: 1,
+			type: "success"
+		},
+		{
+			label: "女",
+			value: 2,
+			type: "danger"
+		}
+	],
+	status: [
+		{
+			label: "禁用",
+			value: 0,
+			type: "danger"
+		},
+		{
+			label: "正常",
+			value: 1,
+			type: "success"
+		},
+		{
+			label: "已注销",
+			value: 2,
+			type: "warning"
 		}
 	]
 });
@@ -103,32 +102,105 @@ const Upsert = useUpsert({
 // cl-table
 const Table = useTable({
 	columns: [
-		{ type: "selection" },
-		{ label: "标题", prop: "title", minWidth: 140 },
-		{ label: "折扣", prop: "discount", minWidth: 140 },
-		{ label: "有效期", prop: "validity", minWidth: 140 },
+		{
+			type: "selection",
+			width: 60
+		},
+		{
+			label: "昵称",
+			prop: "nickName",
+			minWidth: 150
+		},
+		{
+			label: "头像",
+			prop: "avatarUrl",
+			minWidth: 100,
+			component: {
+				name: "cl-avatar"
+			}
+		},
+		{
+			label: "手机",
+			prop: "phone",
+			minWidth: 120
+		},
+		{
+			label: "性别",
+			prop: "gender",
+			dict: options.gender,
+			minWidth: 100
+		},
+		{
+			label: "登录方式",
+			prop: "loginType",
+			dict: options.loginType,
+			minWidth: 100
+		},
 		{
 			label: "状态",
 			prop: "status",
 			minWidth: 100,
-			component: { name: "cl-switch" },
-			dict: [
-				{ label: "是", value: 1 },
-				{ label: "否", value: 0 }
-			]
+			dict: options.status
 		},
 		{
-			label: "类型",
-			prop: "type",
-			dict: [
-				{ label: "普通", value: 0 },
-				{ label: "会员", value: 1 },
-				{ label: "超级会员", value: 2 }
-			],
-			dictColor: true,
-			minWidth: 120
+			label: "创建时间",
+			prop: "createTime",
+			sortable: "desc",
+			minWidth: 170
 		},
-		{ type: "op", buttons: ["edit", "delete"] }
+		{
+			label: "操作",
+			type: "op",
+			buttons: ["edit", "delete"]
+		}
+	]
+});
+
+// cl-upsert
+const Upsert = useUpsert({
+	dialog: {
+		width: "600px"
+	},
+	items: [
+		{
+			prop: "avatarUrl",
+			label: "头像",
+			component: { name: "cl-upload" }
+		},
+		{
+			prop: "nickName",
+			label: "昵称",
+			component: { name: "el-input" },
+			required: true
+		},
+		{
+			prop: "phone",
+			label: "手机号",
+			component: {
+				name: "el-input",
+				props: {
+					maxlength: 11
+				}
+			}
+		},
+		{
+			prop: "gender",
+			label: "性别",
+			value: 1,
+			component: {
+				name: "el-radio-group",
+				options: options.gender
+			}
+		},
+		{
+			prop: "status",
+			label: "状态",
+			value: 1,
+			component: {
+				name: "el-radio-group",
+				options: options.status
+			}
+		}
 	]
 });
 
@@ -141,9 +213,4 @@ const Crud = useCrud(
 		app.refresh();
 	}
 );
-
-// 刷新
-function refresh(params?: any) {
-	Crud.value?.refresh(params);
-}
 </script>
