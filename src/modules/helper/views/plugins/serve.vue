@@ -141,7 +141,7 @@ const info = ref<Eps.PluginInfoEntity>();
 
 // 刷新
 function refresh() {
-	service.plugin.info.page().then((res) => {
+	service.plugin.info.page({ page: 1, size: 100 }).then((res) => {
 		list.value = res.list;
 	});
 }

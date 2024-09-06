@@ -34,7 +34,6 @@ export function useCode() {
 				table: {
 					label,
 					dict: list,
-					dictColor: true,
 					minWidth: 120
 				},
 				form: {

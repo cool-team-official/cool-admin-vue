@@ -56,6 +56,11 @@ const props = defineProps({
 	defaultQuickType: {
 		type: String as PropType<"day" | "week" | "month" | "year" | "">,
 		default: "day"
+	},
+	// 筛选后是否刷新
+	enableRefresh: {
+		type: Boolean,
+		default: true
 	}
 });
 
@@ -108,7 +113,8 @@ function onChange(value: any) {
 		};
 	}
 
-	if (props.prop) {
+	// 筛选列表
+	if (props.enableRefresh) {
 		Crud.value?.refresh({
 			...params,
 			page: 1
