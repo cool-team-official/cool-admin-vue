@@ -1,6 +1,6 @@
 /// <reference types="../index" />
 export declare function useTable(props: any): {
-    Table: import("vue").Ref<any>;
+    Table: import("vue").Ref<any, any>;
     config: {
         columns: {
             [x: string]: any;

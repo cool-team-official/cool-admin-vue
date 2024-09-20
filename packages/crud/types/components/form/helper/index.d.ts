@@ -1,6 +1,6 @@
 /// <reference types="../index" />
 export declare function useForm(): {
-    Form: import("vue").Ref<any>;
+    Form: import("vue").Ref<any, any>;
     config: {
         [x: string]: any;
         title?: any;
@@ -225,10 +225,10 @@ export declare function useForm(): {
         };
     };
     form: obj;
-    visible: import("vue").Ref<boolean>;
-    saving: import("vue").Ref<boolean>;
-    loading: import("vue").Ref<boolean>;
-    disabled: import("vue").Ref<boolean>;
+    visible: import("vue").Ref<boolean, boolean>;
+    saving: import("vue").Ref<boolean, boolean>;
+    loading: import("vue").Ref<boolean, boolean>;
+    disabled: import("vue").Ref<boolean, boolean>;
 };
 export * from "./action";
 export * from "./api";

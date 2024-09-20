@@ -1,4 +1,4 @@
-declare const _default: import("vue").DefineComponent<{
+declare const _default: import("vue").DefineComponent<import("vue").ExtractPropTypes<{
     items: {
         type: ArrayConstructor;
         default: () => never[];
@@ -13,7 +13,7 @@ declare const _default: import("vue").DefineComponent<{
     onClosed: FunctionConstructor;
     onInfo: FunctionConstructor;
     onSubmit: FunctionConstructor;
-}, () => any, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("opened" | "closed")[], "opened" | "closed", import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
+}>, () => any, {}, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, ("opened" | "closed")[], "opened" | "closed", import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<{
     items: {
         type: ArrayConstructor;
         default: () => never[];
@@ -28,11 +28,11 @@ declare const _default: import("vue").DefineComponent<{
     onClosed: FunctionConstructor;
     onInfo: FunctionConstructor;
     onSubmit: FunctionConstructor;
-}>> & {
+}>> & Readonly<{
     onOpened?: ((...args: any[]) => any) | undefined;
     onClosed?: ((...args: any[]) => any) | undefined;
-}, {
+}>, {
     sync: boolean;
     items: unknown[];
-}, {}>;
+}, {}, {}, {}, string, import("vue").ComponentProvideOptions, true, {}, any>;
 export default _default;

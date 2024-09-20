@@ -105,7 +105,7 @@ type Item = Eps.UserInfoEntity;
 
 const props = defineProps({
 	modelValue: {
-		type: Array as PropType<Item[]>,
+		type: [Array, Number] as PropType<Item[] | Item>,
 		default: () => []
 	},
 	isDisabled: Boolean,

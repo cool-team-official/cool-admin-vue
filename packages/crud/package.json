@@ -1,6 +1,6 @@
 {
 	"name": "@cool-vue/crud",
-	"version": "7.2.0",
+	"version": "7.2.1",
 	"private": false,
 	"main": "./dist/index.umd.min.js",
 	"typings": "types/index.d.ts",
@@ -14,10 +14,10 @@
 		"@element-plus/icons-vue": "^2.3.1",
 		"array.prototype.flat": "^1.2.4",
 		"core-js": "^3.21.1",
-		"element-plus": "^2.6.1",
+		"element-plus": "^2.8.3",
 		"lodash-es": "^4.17.21",
 		"mitt": "^3.0.1",
-		"vue": "^3.4.15"
+		"vue": "^3.5.6"
 	},
 	"devDependencies": {
 		"@types/array.prototype.flat": "^1.2.1",

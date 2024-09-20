@@ -3,7 +3,7 @@ export declare function useTabs({ config, Form }: {
     config: ClForm.Config;
     Form: Vue.Ref<any>;
 }): {
-    active: import("vue").Ref<string | undefined>;
+    active: import("vue").Ref<string | undefined, string | undefined>;
     list: import("vue").ComputedRef<ClFormTabs.labels>;
     isLoaded: (value: any) => any;
     onLoad: (value: any) => void;

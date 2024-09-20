@@ -1,7 +1,7 @@
 <template>
 	<!--【很重要】直接绑定status，或者使用 form[prop!] -->
 	<el-radio-group v-model="form.status">
-		<el-radio v-for="(item, index) in list" :key="index" :label="item.value">
+		<el-radio v-for="(item, index) in list" :key="index" :value="item.value">
 			{{ item.label }}
 		</el-radio>
 	</el-radio-group>

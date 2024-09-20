@@ -177,11 +177,11 @@ export function parseTableOpButtons(buttons: any[], { scope }: any) {
  */
 export function parseExtensionComponent(vnode: any) {
 	if (["el-select", "el-radio-group", "el-checkbox-group"].includes(vnode.name)) {
-		const list = getValue(vnode.options) || [];
+		const list: any[] = getValue(vnode.options) || [];
 
 		const children = (
 			<div>
-				{list.map((e: any, i: number) => {
+				{list.map((e, i) => {
 					let label: any;
 					let value: any;
 

@@ -10,7 +10,7 @@ import "@cool-vue/crud/dist/index.css";
 
 export default (): Merge<ModuleConfig, CrudOptions> => {
 	return {
-		order: 100,
+		order: 99,
 		label: "CRUD",
 		description: "快速增删改查及一系列辅助组件",
 		author: "COOL",
