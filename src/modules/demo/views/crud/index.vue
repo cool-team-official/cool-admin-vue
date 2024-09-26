@@ -50,6 +50,7 @@ import FormComponent from "./components/form/component/index.vue";
 import FormPlugin from "./components/form/plugin/index.vue";
 
 import TableBase from "./components/table/base.vue";
+import TableFormatter from "./components/table/formatter.vue";
 import TableOp from "./components/table/op.vue";
 import TableSearch from "./components/table/search.vue";
 import TableSelection from "./components/table/selection.vue";
@@ -105,6 +106,7 @@ const list = [
 				label: "基础",
 				children: [
 					TableBase,
+					TableFormatter,
 					TableOp,
 					TableSearch,
 					TableSelection,

@@ -104,13 +104,10 @@ import { CircleClose } from "@element-plus/icons-vue";
 type Item = Eps.UserInfoEntity;
 
 const props = defineProps({
-	modelValue: {
-		type: [Array, Number] as PropType<Item[] | Item>,
-		default: () => []
-	},
+	modelValue: null,
 	isDisabled: Boolean,
 	prop: String,
-	scope: null,
+	scope: Object as PropType<Item>,
 	disabled: Boolean,
 
 	// 是否多选

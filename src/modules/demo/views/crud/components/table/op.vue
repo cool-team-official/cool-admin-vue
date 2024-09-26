@@ -116,7 +116,8 @@ const Table = useTable({
 			]
 
 			// 动态返回按钮配置
-			// buttons() {
+			// 用于控制是否根据状态显示按钮
+			// buttons({ scope }) {
 			//     return ['edit', 'info', 'delete']
 			// }
 		}
