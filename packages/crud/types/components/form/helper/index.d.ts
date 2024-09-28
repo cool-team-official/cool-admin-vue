@@ -199,6 +199,7 @@ export declare function useForm(): {
                 close: fn;
                 done: fn;
             }) => void) | undefined;
+            change?: ((data: any, prop: string) => void) | undefined;
         } | undefined;
         op: {
             hidden?: boolean | undefined;

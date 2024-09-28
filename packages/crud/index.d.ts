@@ -532,6 +532,7 @@ declare namespace ClForm {
 			open?(data: T): void;
 			close?(action: CloseAction, done: fn): void;
 			submit?(data: T, event: { close: fn; done: fn }): void;
+			change?(data: T, prop: string): void;
 		};
 		op: {
 			hidden?: boolean;
@@ -658,6 +659,8 @@ declare namespace ClSearch {
 		data?: T;
 		props?: ElementPlus.FormProps;
 		resetBtn?: boolean;
+		Form?: ClForm.Ref;
+		onChange?(data: T, prop: string): void;
 		onLoad?(data: T): void;
 		onSearch?(data: T, options: { next: ClCrud.Service["api"]["page"] }): void;
 	}

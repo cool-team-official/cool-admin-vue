@@ -1,5 +1,6 @@
-import { reactive, ref } from "vue";
+import { reactive, ref, watch } from "vue";
 import { useConfig } from "../../../hooks";
+import { cloneDeep } from "lodash-es";
 
 export function useForm() {
 	const { dict } = useConfig();
@@ -33,6 +34,9 @@ export function useForm() {
 	// 表单数据
 	const form = reactive<obj>({});
 
+	// 表单数据备份
+	const oldForm = ref<obj>({});
+
 	// 表单是否可见
 	const visible = ref(false);
 
@@ -44,6 +48,25 @@ export function useForm() {
 
 	// 表单禁用状态
 	const disabled = ref(false);
+
+	// 监听表单变化
+	watch(
+		() => form,
+		(val) => {
+			if (config.on?.change) {
+				for (let i in val) {
+					if (form[i] !== oldForm.value[i]) {
+						config.on?.change(val, i);
+					}
+				}
+			}
+
+			oldForm.value = cloneDeep(val);
+		},
+		{
+			deep: true
+		}
+	);
 
 	return {
 		Form,

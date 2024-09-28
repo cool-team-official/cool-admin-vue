@@ -128,7 +128,11 @@ const Search = useSearch({
 				}
 			}
 		}
-	]
+	],
+
+	onChange(data, prop) {
+		console.log(data, prop);
+	}
 });
 
 function refresh(params?: any) {

@@ -9,7 +9,7 @@
 		"lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .eslintignore"
 	},
 	"dependencies": {
-		"@cool-vue/crud": "^7.2.1",
+		"@cool-vue/crud": "^7.2.2",
 		"@element-plus/icons-vue": "^2.3.1",
 		"@vueuse/core": "^10.4.0",
 		"@wangeditor/editor": "^5.1.23",
