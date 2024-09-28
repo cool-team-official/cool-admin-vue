@@ -80,14 +80,14 @@ import { useBase } from "/$/base";
 import PicCaptcha from "./components/pic-captcha.vue";
 import { storage } from "/@/cool/utils";
 
-const { refs, setRefs, router, service } = useCool();
+const { refs, setRefs, router, service, browser } = useCool();
 const { user, app } = useBase();
 
 // 状态
 const saving = ref(false);
 
 // 避免自动填充
-const readonly = ref(true);
+const readonly = ref(!browser.isMini);
 
 // 表单数据
 const form = reactive({
@@ -125,12 +125,12 @@ async function toLogin() {
 
 		// 跳转首页
 		router.push("/");
-	} catch (err: any) {
+	} catch (err) {
 		// 刷新验证码
 		refs.picCaptcha.refresh();
 
 		// 提示错误
-		ElMessage.error(err.message);
+		ElMessage.error((err as Error).message);
 	}
 
 	saving.value = false;
