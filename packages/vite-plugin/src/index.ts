@@ -3,7 +3,7 @@ import { config } from "./config";
 import { demo } from "./demo";
 import { virtual } from "./virtual";
 import type { Config } from "../types";
-import { merge } from "lodash-es";
+import { merge } from "lodash";
 
 export function cool(options: Config.Options) {
 	// 应用类型，admin | app

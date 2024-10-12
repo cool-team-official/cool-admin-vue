@@ -1,7 +1,7 @@
 import { join } from "path";
 import { readFile, rootDir, writeFile, error } from "../utils";
 import { glob } from "glob";
-import { assign, cloneDeep, isEqual, orderBy } from "lodash-es";
+import { assign, cloneDeep, isEqual, orderBy } from "lodash";
 import { config } from "../config";
 import fs from "fs";
 import axios from "axios";

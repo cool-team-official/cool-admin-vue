@@ -272,7 +272,7 @@
 			`;
                 if (!ignore.includes(item.name)) {
                     ignore.push(item.name);
-                    t0 += t;
+                    t0 += t + "\n\n";
                 }
             }
             return t0;
