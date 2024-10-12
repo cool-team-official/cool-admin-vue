@@ -1,7 +1,7 @@
 import { createDir, error, firstUpperCase, readFile, rootDir, toCamel } from "../utils";
 import { join } from "path";
 import axios from "axios";
-import { isArray, isEmpty, last, merge, values } from "lodash";
+import { isArray, isEmpty, last, merge, values } from "lodash-es";
 import { createWriteStream } from "fs";
 import prettier from "prettier";
 import { config } from "../config";
@@ -57,14 +57,8 @@ async function getData(data?: Eps.Entity[]) {
 		});
 	}
 
-	// 本地文件
-	const epsPath = getEpsPath("eps.json");
-
-	try {
-		list = readFile(epsPath, true) || [];
-	} catch (err: any) {
-		error(`[cool-eps] ${epsPath} 文件异常, ${err.message}`);
-	}
+	// 读取本地数据
+	list = readFile(getEpsPath("eps.json"), true) || [];
 
 	// 请求地址
 	const url = config.reqUrl + getEpsUrl();
@@ -82,11 +76,11 @@ async function getData(data?: Eps.Entity[]) {
 					list = values(data).flat();
 				}
 			} else {
-				error(`[cool-eps] ${message}`);
+				error(`[cool-eps] ${message || "获取数据失败"}`);
 			}
 		})
 		.catch(() => {
-			error(`[cool-eps] 后端未启动 ➜  ${url}`);
+			error(`[cool-eps] 后端未启动 ➜ ${url}`);
 		});
 
 	// 合并自定义数据
@@ -163,82 +157,69 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 		return type;
 	}
 
+	// 格式化方法名
+	function formatName(name: string) {
+		return (name || "").replace(/[:,\s,\/,-]/g, "");
+	}
+
 	// 创建 Entity
 	function createEntity() {
-		const t0: string[][] = [];
-		const arr: string[] = [];
+		const ignore: string[] = [];
+
+		let t0 = "";
 
 		for (const item of list) {
 			if (!item.name) continue;
-			const t = [`interface ${item.name} {`];
+
+			let t = `interface ${formatName(item.name)} {`;
+
 			for (const col of item.columns || []) {
-				// 描述
-				t.push("\n");
-				t.push("/**\n");
-				t.push(` * ${col.comment}\n`);
-				t.push(" */\n");
-				t.push(
-					`${col.propertyName}?: ${getType({
+				t += `
+					/**
+					 * ${col.comment}
+					 */
+					${col.propertyName}?: ${getType({
 						propertyName: col.propertyName,
 						type: col.type,
-					})};`,
-				);
+					})}
+				`;
 			}
-			t.push("\n");
-			t.push("/**\n");
-			t.push(` * 任意键值\n`);
-			t.push(" */\n");
-			t.push(`[key: string]: any;`);
-			t.push("}");
 
-			if (!arr.includes(item.name)) {
-				arr.push(item.name);
-				t0.push(t);
+			t += `
+				/**
+				 * 任意键值
+				 */
+				[key: string]: any;
+			}
+			`;
+
+			if (!ignore.includes(item.name)) {
+				ignore.push(item.name);
+				t0 += t;
 			}
 		}
 
-		return t0.map((e) => e.join("")).join("\n\n");
+		return t0;
 	}
 
 	// 创建 Service
 	function createDts() {
-		const t0: string[][] = [];
-
-		const t1 = [
-			`
-			type json = any;
-
-			type Service = {
-				request(options?: {
-					url: string;
-					method?: "POST" | "GET" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS";
-					data?: any;
-					params?: any;
-					headers?: {
-						[key: string]: any;
-					},
-					timeout?: number;
-					proxy?: boolean;
-					[key: string]: any;
-				}): Promise<any>;
-		`,
-		];
+		let controller = "";
+		let chain = "";
 
 		// 处理数据
 		function deep(d: any, k?: string) {
 			if (!k) k = "";
 
 			for (const i in d) {
-				const name = k + toCamel(firstUpperCase(i.replace(/[:]/g, "")));
+				const name = k + toCamel(firstUpperCase(formatName(i)));
 
 				if (d[i].namespace) {
 					// 查找配置
 					const item = list.find((e) => (e.prefix || "") === `/${d[i].namespace}`);
 
 					if (item) {
-						const t = [`interface ${name} {`];
-
-						t1.push(`${i}: ${name};`);
+						let t = `interface ${name} {`;
 
 						// 插入方法
 						if (item.api) {
@@ -247,9 +228,8 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 
 							item.api.forEach((a) => {
 								// 方法名
-								const n = toCamel(a.name || last(a.path.split("/")) || "").replace(
-									/[:\/-]/g,
-									"",
+								const n = toCamel(
+									formatName(a.name || last(a.path.split("/")) || ""),
 								);
 
 								if (n) {
@@ -312,16 +292,12 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 									}
 
 									// 描述
-									t.push("\n");
-									t.push("/**\n");
-									t.push(` * ${a.summary || n}\n`);
-									t.push(" */\n");
-
-									t.push(
-										`${n}(data${q.length == 1 ? "?" : ""}: ${q.join(
-											"",
-										)}): Promise<${res}>;`,
-									);
+									t += `
+										/**
+										 * ${a.summary || n}
+										 */
+										${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")}): Promise<${res}>;
+									`;
 
 									if (!permission.includes(n)) {
 										permission.push(n);
@@ -330,56 +306,68 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 							});
 
 							// 权限标识
-							t.push("\n");
-							t.push("/**\n");
-							t.push(" * 权限标识\n");
-							t.push(" */\n");
-							t.push(
-								`permission: { ${permission
-									.map((e) => `${e}: string;`)
-									.join("\n")} };`,
-							);
+							t += `
+								/**
+								 * 权限标识
+								 */
+								permission: { ${permission.map((e) => `${e}: string;`).join("\n")} };
+							`;
 
 							// 权限状态
-							t.push("\n");
-							t.push("/**\n");
-							t.push(" * 权限状态\n");
-							t.push(" */\n");
-							t.push(
-								`_permission: { ${permission
-									.map((e) => `${e}: boolean;`)
-									.join("\n")} };`,
-							);
+							t += `
+								/**
+								 * 权限状态
+								 */
+								_permission: { ${permission.map((e) => `${e}: boolean;`).join("\n")} };
+							`;
 
-							// 请求
-							t.push("\n");
-							t.push("/**\n");
-							t.push(" * 请求\n");
-							t.push(" */\n");
-							t.push(`request: Service['request']`);
+							t += `
+								request: Service['request']
+							`;
 						}
 
-						t.push("}");
-						t0.push(t);
+						t += "}\n\n";
+
+						controller += t;
+						chain += `${formatName(i)}: ${name};`;
 					}
 				} else {
-					t1.push(`${i}: {`);
+					chain += `${formatName(i)}: {`;
 					deep(d[i], name);
-					t1.push(`},`);
+					chain += "},";
 				}
 			}
 		}
 
-		// 深度
+		// 遍历
 		deep(service);
 
-		// 结束
-		t1.push("}");
+		return `
+			type json = any;
 
-		// 追加
-		t0.push(t1);
+			${controller}
 
-		return t0.map((e) => e.join("")).join("\n\n");
+			type Service = {
+				/**
+				 * 基础请求
+				 */
+				request(options?: {
+					url: string;
+					method?: "POST" | "GET" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS";
+					data?: any;
+					params?: any;
+					headers?: {
+						authorization?: string;
+						[key: string]: any;
+					},
+					timeout?: number;
+					proxy?: boolean;
+					[key: string]: any;
+				}): Promise<any>;
+
+				${chain}
+			}
+		`;
 	}
 
 	// 文件内容

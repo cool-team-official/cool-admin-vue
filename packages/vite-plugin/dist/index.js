@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('fs'), require('path'), require('axios'), require('lodash'), require('prettier'), require('@vue/compiler-sfc'), require('magic-string'), require('glob'), require('svgo')) :
-    typeof define === 'function' && define.amd ? define(['exports', 'fs', 'path', 'axios', 'lodash', 'prettier', '@vue/compiler-sfc', 'magic-string', 'glob', 'svgo'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.index = {}, global.fs, global.path, global.axios, global.lodash, global.prettier, global.compilerSfc, global.magicString, global.glob, global.svgo));
-})(this, (function (exports, fs, path, axios, lodash, prettier, compilerSfc, magicString, glob, svgo) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('fs'), require('path'), require('axios'), require('lodash-es'), require('prettier'), require('@vue/compiler-sfc'), require('magic-string'), require('glob'), require('svgo')) :
+    typeof define === 'function' && define.amd ? define(['exports', 'fs', 'path', 'axios', 'lodash-es', 'prettier', '@vue/compiler-sfc', 'magic-string', 'glob', 'svgo'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.index = {}, global.fs, global.path, global.axios, global.lodashEs, global.prettier, global.compilerSfc, global.magicString, global.glob, global.svgo));
+})(this, (function (exports, fs, path, axios, lodashEs, prettier, compilerSfc, magicString, glob, svgo) { 'use strict';
 
     const config = {
         type: "admin",
@@ -141,7 +141,7 @@
     // 获取数据
     async function getData(data) {
         // 自定义数据
-        if (!lodash.isEmpty(data)) {
+        if (!lodashEs.isEmpty(data)) {
             customList = (data || []).map((e) => {
                 return {
                     ...e,
@@ -149,14 +149,8 @@
                 };
             });
         }
-        // 本地文件
-        const epsPath = getEpsPath("eps.json");
-        try {
-            list = readFile(epsPath, true) || [];
-        }
-        catch (err) {
-            error(`[cool-eps] ${epsPath} 文件异常, ${err.message}`);
-        }
+        // 读取本地数据
+        list = readFile(getEpsPath("eps.json"), true) || [];
         // 请求地址
         const url = config.reqUrl + getEpsUrl();
         // 请求数据
@@ -167,23 +161,23 @@
             .then((res) => {
             const { code, data, message } = res.data;
             if (code === 1000) {
-                if (!lodash.isEmpty(data) && data) {
-                    list = lodash.values(data).flat();
+                if (!lodashEs.isEmpty(data) && data) {
+                    list = lodashEs.values(data).flat();
                 }
             }
             else {
-                error(`[cool-eps] ${message}`);
+                error(`[cool-eps] ${message || "获取数据失败"}`);
             }
         })
             .catch(() => {
-            error(`[cool-eps] 后端未启动 ➜  ${url}`);
+            error(`[cool-eps] 后端未启动 ➜ ${url}`);
         });
         // 合并自定义数据
-        if (lodash.isArray(customList)) {
+        if (lodashEs.isArray(customList)) {
             customList.forEach((e) => {
                 const d = list.find((a) => e.prefix === a.prefix);
                 if (d) {
-                    lodash.merge(d, e);
+                    lodashEs.merge(d, e);
                 }
                 else {
                     list.push(e);
@@ -246,79 +240,65 @@
             }
             return type;
         }
+        // 格式化方法名
+        function formatName(name) {
+            return (name || "").replace(/[:,\s,\/,-]/g, "");
+        }
         // 创建 Entity
         function createEntity() {
-            const t0 = [];
-            const arr = [];
+            const ignore = [];
+            let t0 = "";
             for (const item of list) {
                 if (!item.name)
                     continue;
-                const t = [`interface ${item.name} {`];
+                let t = `interface ${formatName(item.name)} {`;
                 for (const col of item.columns || []) {
-                    // 描述
-                    t.push("\n");
-                    t.push("/**\n");
-                    t.push(` * ${col.comment}\n`);
-                    t.push(" */\n");
-                    t.push(`${col.propertyName}?: ${getType({
+                    t += `
+					/**
+					 * ${col.comment}
+					 */
+					${col.propertyName}?: ${getType({
                     propertyName: col.propertyName,
                     type: col.type,
-                })};`);
+                })}
+				`;
                 }
-                t.push("\n");
-                t.push("/**\n");
-                t.push(` * 任意键值\n`);
-                t.push(" */\n");
-                t.push(`[key: string]: any;`);
-                t.push("}");
-                if (!arr.includes(item.name)) {
-                    arr.push(item.name);
-                    t0.push(t);
+                t += `
+				/**
+				 * 任意键值
+				 */
+				[key: string]: any;
+			}
+			`;
+                if (!ignore.includes(item.name)) {
+                    ignore.push(item.name);
+                    t0 += t;
                 }
             }
-            return t0.map((e) => e.join("")).join("\n\n");
+            return t0;
         }
         // 创建 Service
         function createDts() {
-            const t0 = [];
-            const t1 = [
-                `
-			type json = any;
-
-			type Service = {
-				request(options?: {
-					url: string;
-					method?: "POST" | "GET" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS";
-					data?: any;
-					params?: any;
-					headers?: {
-						[key: string]: any;
-					},
-					timeout?: number;
-					proxy?: boolean;
-					[key: string]: any;
-				}): Promise<any>;
-		`,
-            ];
+            let controller = "";
+            let chain = "";
             // 处理数据
             function deep(d, k) {
                 if (!k)
                     k = "";
                 for (const i in d) {
-                    const name = k + toCamel(firstUpperCase(i.replace(/[:]/g, "")));
+                    const name = k + toCamel(firstUpperCase(formatName(i)));
                     if (d[i].namespace) {
                         // 查找配置
                         const item = list.find((e) => (e.prefix || "") === `/${d[i].namespace}`);
                         if (item) {
-                            const t = [`interface ${name} {`];
-                            t1.push(`${i}: ${name};`);
+                            let t = `interface ${name} {`;
                             // 插入方法
                             if (item.api) {
                                 // 权限列表
                                 const permission = [];
                                 item.api.forEach((a) => {
                                     // 方法名
-                                    const n = toCamel(a.name || lodash.last(a.path.split("/")) || "").replace(/[:\/-]/g, "");
+                                    const n = toCamel(formatName(a.name || lodashEs.last(a.path.split("/")) || ""));
                                     if (n) {
                                         // 参数类型
                                         let q = [];
@@ -335,7 +315,7 @@
                                             const b = `${p.schema.type || "string"}`;
                                             q.push(`${a}: ${b},`);
                                         });
-                                        if (lodash.isEmpty(q)) {
+                                        if (lodashEs.isEmpty(q)) {
                                             q = ["any"];
                                         }
                                         else {
@@ -367,57 +347,75 @@
                                                 break;
                                         }
                                         // 描述
-                                        t.push("\n");
-                                        t.push("/**\n");
-                                        t.push(` * ${a.summary || n}\n`);
-                                        t.push(" */\n");
-                                        t.push(`${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")}): Promise<${res}>;`);
+                                        t += `
+										/**
+										 * ${a.summary || n}
+										 */
+										${n}(data${q.length == 1 ? "?" : ""}: ${q.join("")}): Promise<${res}>;
+									`;
                                         if (!permission.includes(n)) {
                                             permission.push(n);
                                         }
                                     }
                                 });
                                 // 权限标识
-                                t.push("\n");
-                                t.push("/**\n");
-                                t.push(" * 权限标识\n");
-                                t.push(" */\n");
-                                t.push(`permission: { ${permission
-                                .map((e) => `${e}: string;`)
-                                .join("\n")} };`);
+                                t += `
+								/**
+								 * 权限标识
+								 */
+								permission: { ${permission.map((e) => `${e}: string;`).join("\n")} };
+							`;
                                 // 权限状态
-                                t.push("\n");
-                                t.push("/**\n");
-                                t.push(" * 权限状态\n");
-                                t.push(" */\n");
-                                t.push(`_permission: { ${permission
-                                .map((e) => `${e}: boolean;`)
-                                .join("\n")} };`);
-                                // 请求
-                                t.push("\n");
-                                t.push("/**\n");
-                                t.push(" * 请求\n");
-                                t.push(" */\n");
-                                t.push(`request: Service['request']`);
+                                t += `
+								/**
+								 * 权限状态
+								 */
+								_permission: { ${permission.map((e) => `${e}: boolean;`).join("\n")} };
+							`;
+                                t += `
+								request: Service['request']
+							`;
                             }
-                            t.push("}");
-                            t0.push(t);
+                            t += "}\n\n";
+                            controller += t;
+                            chain += `${formatName(i)}: ${name};`;
                         }
                     }
                     else {
-                        t1.push(`${i}: {`);
+                        chain += `${formatName(i)}: {`;
                         deep(d[i], name);
-                        t1.push(`},`);
+                        chain += "},";
                     }
                 }
             }
-            // 深度
+            // 遍历
             deep(service);
-            // 结束
-            t1.push("}");
-            // 追加
-            t0.push(t1);
-            return t0.map((e) => e.join("")).join("\n\n");
+            return `
+			type json = any;
+
+			${controller}
+
+			type Service = {
+				/**
+				 * 基础请求
+				 */
+				request(options?: {
+					url: string;
+					method?: "POST" | "GET" | "PUT" | "DELETE" | "PATCH" | "HEAD" | "OPTIONS";
+					data?: any;
+					params?: any;
+					headers?: {
+						authorization?: string;
+						[key: string]: any;
+					},
+					timeout?: number;
+					proxy?: boolean;
+					[key: string]: any;
+				}): Promise<any>;
+
+				${chain}
+			}
+		`;
         }
         // 文件内容
         const text = `
@@ -661,7 +659,7 @@
             // 页面配置
             ctx = readFile(ctxPath, true);
             // 原数据，做更新比较用
-            const ctxData = lodash.cloneDeep(ctx);
+            const ctxData = lodashEs.cloneDeep(ctx);
             // 删除临时页面
             ctx.pages = ctx.pages?.filter((e) => !e.isTemp);
             ctx.subPackages = ctx.subPackages?.filter((e) => !e.isTemp);
@@ -681,7 +679,7 @@
                             ? ctx.subPackages?.find((a) => a.root == e.root)
                             : ctx.pages?.find((a) => a.path == e.path);
                         if (d) {
-                            lodash.assign(d, e);
+                            lodashEs.assign(d, e);
                         }
                         else {
                             if (isSub) {
@@ -697,12 +695,12 @@
             // 排序后检测，避免加载顺序问题
             function order(d) {
                 return {
-                    pages: lodash.orderBy(d.pages, "path"),
-                    subPackages: lodash.orderBy(d.subPackages, "root"),
+                    pages: lodashEs.orderBy(d.pages, "path"),
+                    subPackages: lodashEs.orderBy(d.subPackages, "root"),
                 };
             }
             // 是否需要更新 pages.json
-            if (!lodash.isEqual(order(ctxData), order(ctx))) {
+            if (!lodashEs.isEqual(order(ctxData), order(ctx))) {
                 console.log("[cool-ctx] pages updated");
                 writeFile(ctxPath, JSON.stringify(ctx, null, 4));
             }
@@ -894,7 +892,7 @@ if (typeof window !== 'undefined') {
             }
             // 匹配规则
             if (mapping) {
-                lodash.merge(config.eps.mapping, mapping);
+                lodashEs.merge(config.eps.mapping, mapping);
             }
         }
         return [base(), virtual(), demo(options.demo)];

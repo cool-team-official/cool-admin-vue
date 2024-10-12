@@ -1,6 +1,6 @@
 {
 	"name": "@cool-vue/vite-plugin",
-	"version": "7.2.2",
+	"version": "7.2.3",
 	"description": "cool-admin、cool-uni builder",
 	"main": "/dist/index.js",
 	"scripts": {
@@ -33,6 +33,7 @@
 		"axios": "^1.6.8",
 		"glob": "^10.3.12",
 		"lodash": "^4.17.21",
+		"lodash-es": "^4.17.21",
 		"magic-string": "^0.30.10",
 		"prettier": "^3.2.5",
 		"svgo": "^3.3.2"
