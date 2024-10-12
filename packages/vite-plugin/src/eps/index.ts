@@ -195,7 +195,7 @@ async function createDescribe({ list, service }: { list: Eps.Entity[]; service: 
 
 			if (!ignore.includes(item.name)) {
 				ignore.push(item.name);
-				t0 += t;
+				t0 += t + "\n\n";
 			}
 		}
 

@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('fs'), require('path'), require('axios'), require('lodash-es'), require('prettier'), require('@vue/compiler-sfc'), require('magic-string'), require('glob'), require('svgo')) :
-    typeof define === 'function' && define.amd ? define(['exports', 'fs', 'path', 'axios', 'lodash-es', 'prettier', '@vue/compiler-sfc', 'magic-string', 'glob', 'svgo'], factory) :
-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.index = {}, global.fs, global.path, global.axios, global.lodashEs, global.prettier, global.compilerSfc, global.magicString, global.glob, global.svgo));
-})(this, (function (exports, fs, path, axios, lodashEs, prettier, compilerSfc, magicString, glob, svgo) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('fs'), require('path'), require('axios'), require('lodash'), require('prettier'), require('@vue/compiler-sfc'), require('magic-string'), require('glob'), require('svgo')) :
+    typeof define === 'function' && define.amd ? define(['exports', 'fs', 'path', 'axios', 'lodash', 'prettier', '@vue/compiler-sfc', 'magic-string', 'glob', 'svgo'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.index = {}, global.fs, global.path, global.axios, global.lodash, global.prettier, global.compilerSfc, global.magicString, global.glob, global.svgo));
+})(this, (function (exports, fs, path, axios, lodash, prettier, compilerSfc, magicString, glob, svgo) { 'use strict';
 
     const config = {
         type: "admin",
@@ -141,7 +141,7 @@
     // 获取数据
     async function getData(data) {
         // 自定义数据
-        if (!lodashEs.isEmpty(data)) {
+        if (!lodash.isEmpty(data)) {
             customList = (data || []).map((e) => {
                 return {
                     ...e,
@@ -161,8 +161,8 @@
             .then((res) => {
             const { code, data, message } = res.data;
             if (code === 1000) {
-                if (!lodashEs.isEmpty(data) && data) {
-                    list = lodashEs.values(data).flat();
+                if (!lodash.isEmpty(data) && data) {
+                    list = lodash.values(data).flat();
                 }
             }
             else {
@@ -173,11 +173,11 @@
             error(`[cool-eps] 后端未启动 ➜ ${url}`);
         });
         // 合并自定义数据
-        if (lodashEs.isArray(customList)) {
+        if (lodash.isArray(customList)) {
             customList.forEach((e) => {
                 const d = list.find((a) => e.prefix === a.prefix);
                 if (d) {
-                    lodashEs.merge(d, e);
+                    lodash.merge(d, e);
                 }
                 else {
                     list.push(e);
@@ -298,7 +298,7 @@
                                 const permission = [];
                                 item.api.forEach((a) => {
                                     // 方法名
-                                    const n = toCamel(formatName(a.name || lodashEs.last(a.path.split("/")) || ""));
+                                    const n = toCamel(formatName(a.name || lodash.last(a.path.split("/")) || ""));
                                     if (n) {
                                         // 参数类型
                                         let q = [];
@@ -315,7 +315,7 @@
                                             const b = `${p.schema.type || "string"}`;
                                             q.push(`${a}: ${b},`);
                                         });
-                                        if (lodashEs.isEmpty(q)) {
+                                        if (lodash.isEmpty(q)) {
                                             q = ["any"];
                                         }
                                         else {
@@ -659,7 +659,7 @@
             // 页面配置
             ctx = readFile(ctxPath, true);
             // 原数据，做更新比较用
-            const ctxData = lodashEs.cloneDeep(ctx);
+            const ctxData = lodash.cloneDeep(ctx);
             // 删除临时页面
             ctx.pages = ctx.pages?.filter((e) => !e.isTemp);
             ctx.subPackages = ctx.subPackages?.filter((e) => !e.isTemp);
@@ -679,7 +679,7 @@
                             ? ctx.subPackages?.find((a) => a.root == e.root)
                             : ctx.pages?.find((a) => a.path == e.path);
                         if (d) {
-                            lodashEs.assign(d, e);
+                            lodash.assign(d, e);
                         }
                         else {
                             if (isSub) {
@@ -695,12 +695,12 @@
             // 排序后检测，避免加载顺序问题
             function order(d) {
                 return {
-                    pages: lodashEs.orderBy(d.pages, "path"),
-                    subPackages: lodashEs.orderBy(d.subPackages, "root"),
+                    pages: lodash.orderBy(d.pages, "path"),
+                    subPackages: lodash.orderBy(d.subPackages, "root"),
                 };
             }
             // 是否需要更新 pages.json
-            if (!lodashEs.isEqual(order(ctxData), order(ctx))) {
+            if (!lodash.isEqual(order(ctxData), order(ctx))) {
                 console.log("[cool-ctx] pages updated");
                 writeFile(ctxPath, JSON.stringify(ctx, null, 4));
             }
@@ -892,7 +892,7 @@ if (typeof window !== 'undefined') {
             }
             // 匹配规则
             if (mapping) {
-                lodashEs.merge(config.eps.mapping, mapping);
+                lodash.merge(config.eps.mapping, mapping);
             }
         }
         return [base(), virtual(), demo(options.demo)];
