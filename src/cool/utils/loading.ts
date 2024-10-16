@@ -26,7 +26,7 @@ export const Loading = {
 
 		if (el) {
 			setTimeout(() => {
-				el.className += " is-hide";
+				el.classList.add("is-hide");
 			}, 0);
 		}
 	}
