@@ -168,7 +168,7 @@ export function useCode() {
 		}
 
 		// 格式化标题
-		label = label.split(" ")[0];
+		label = label?.split?.(" ")?.[0] || column.propertyName;
 
 		return {
 			column: {
