@@ -16,7 +16,7 @@ export function useUpload() {
 		return new Promise((resolve, reject) => {
 			const executor = async () => {
 				// 合并配置
-				const { prefixPath, onProgress } = merge(options, opts);
+				const { prefixPath, onProgress } = merge({}, options, opts);
 
 				// 文件id
 				const fileId = uuid("");
