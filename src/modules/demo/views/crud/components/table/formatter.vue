@@ -31,18 +31,18 @@
 </template>
 
 <script setup lang="tsx">
-import { useCrud, useTable } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useDict } from "/$/dict";
+import { useCrud, useTable } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useDict } from '/$/dict';
 
 const { dict } = useDict();
 
 // cl-crud 配置
 const Crud = useCrud(
 	{
-		service: "test"
+		service: 'test'
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -50,24 +50,24 @@ const Crud = useCrud(
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 140
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140,
 			formatter(row) {
-				return "📱" + row.phone;
+				return '📱' + row.phone;
 			}
 		},
 		{
-			label: "用户信息",
+			label: '用户信息',
 			minWidth: 200,
 			// tsx 方式渲染
 			// 【很重要】使用 tsx 语法时，script 的 lang 一定要设置为 tsx
@@ -76,16 +76,16 @@ const Table = useTable({
 				return (
 					<el-row>
 						<cl-avatar size={30} />
-						<el-text style={{ marginLeft: "10px" }}>{row.name}</el-text>
+						<el-text style={{ marginLeft: '10px' }}>{row.name}</el-text>
 					</el-row>
 				);
 			}
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		}
 	]
 });

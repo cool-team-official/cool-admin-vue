@@ -35,24 +35,24 @@
 </template>
 
 <script lang="ts" name="app-process" setup>
-import { onMounted, watch } from "vue";
-import { last } from "lodash-es";
-import { useCool } from "/@/cool";
-import { CloseBold } from "@element-plus/icons-vue";
-import { ContextMenu } from "@cool-vue/crud";
-import { useBase, Process } from "/$/base";
+import { onMounted, watch } from 'vue';
+import { last } from 'lodash-es';
+import { useCool } from '/@/cool';
+import { CloseBold } from '@element-plus/icons-vue';
+import { ContextMenu } from '@cool-vue/crud';
+import { useBase, type Process } from '/$/base';
 
 const { refs, setRefs, route, router, mitt } = useCool();
 const { process } = useBase();
 
 // 刷新当前路由
 function toRefresh() {
-	mitt.emit("view.refresh");
+	mitt.emit('view.refresh');
 }
 
 // 回首页
 function toHome() {
-	router.push("/");
+	router.push('/');
 }
 
 // 返回上一页
@@ -62,11 +62,11 @@ function toBack() {
 
 // 跳转
 function toPath() {
-	const d = process.list.find((e) => e.active);
+	const d = process.list.find(e => e.active);
 
 	if (!d) {
 		const next = last(process.list);
-		router.push(next ? next.fullPath : "/");
+		router.push(next ? next.fullPath : '/');
 	}
 }
 
@@ -74,7 +74,7 @@ function toPath() {
 function scrollTo(left: number) {
 	refs.scroller.wrapRef.scrollTo({
 		left,
-		behavior: "smooth"
+		behavior: 'smooth'
 	});
 }
 
@@ -103,28 +103,28 @@ function onDel(index: number) {
 function openCM(e: any, item: Process.Item) {
 	ContextMenu.open(e, {
 		hover: {
-			target: "app-process__item"
+			target: 'app-process__item'
 		},
 		list: [
 			{
-				label: "关闭当前",
+				label: '关闭当前',
 				hidden: item.fullPath !== route.path,
 				callback(done) {
-					onDel(process.list.findIndex((e) => e.fullPath == item.fullPath));
+					onDel(process.list.findIndex(e => e.fullPath == item.fullPath));
 					done();
 					toPath();
 				}
 			},
 			{
-				label: "关闭其他",
+				label: '关闭其他',
 				callback(done) {
-					process.set(process.list.filter((e) => e.fullPath == item.fullPath));
+					process.set(process.list.filter(e => e.fullPath == item.fullPath));
 					done();
 					toPath();
 				}
 			},
 			{
-				label: "关闭所有",
+				label: '关闭所有',
 				callback(done) {
 					process.clear();
 					done();
@@ -138,13 +138,13 @@ function openCM(e: any, item: Process.Item) {
 watch(
 	() => route.path,
 	function (val) {
-		adScroll(process.list.findIndex((e) => e.fullPath === val) || 0);
+		adScroll(process.list.findIndex(e => e.fullPath === val) || 0);
 	}
 );
 
 onMounted(() => {
 	// 添加滚轮事件监听器
-	refs.scroller.wrapRef?.addEventListener("wheel", function (event: WheelEvent) {
+	refs.scroller.wrapRef?.addEventListener('wheel', function (event: WheelEvent) {
 		// 阻止默认滚动行为
 		event.preventDefault();
 
@@ -178,16 +178,18 @@ onMounted(() => {
 		list-style: none;
 
 		.item {
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
 			position: relative;
 			padding: 0 10px;
-			line-height: 30px;
 			color: #333;
 			cursor: pointer;
 			font-weight: bold;
 
 			&:not(:last-child)::after {
 				display: block;
-				content: "";
+				content: '';
 				position: absolute;
 				right: 0;
 				top: calc(50% - 5px);
@@ -229,6 +231,10 @@ onMounted(() => {
 		margin-right: 10px;
 		color: #909399;
 		cursor: pointer;
+
+		span {
+			line-height: 1;
+		}
 
 		.el-icon {
 			font-size: 13px;

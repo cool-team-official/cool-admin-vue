@@ -1,25 +1,25 @@
 <template>
 	<div
+		:ref="setRefs('editor')"
 		class="cl-editor-monaco"
 		:class="{
 			disabled,
 			border
 		}"
-		:ref="setRefs('editor')"
 		:style="{ height: parsePx(height) }"
 	></div>
 </template>
 
 <script lang="ts" name="cl-editor-monaco" setup>
-import { nextTick, onMounted, onUnmounted, ref, watch } from "vue";
-import { isObject, merge } from "lodash-es";
-import { useCool } from "/@/cool";
-import { parsePx } from "/@/cool/utils";
-import * as monaco from "monaco-editor";
-import "../utils/worker";
-import "../utils/theme";
-import "../utils/config";
-import { useFormat } from "../utils/format";
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue';
+import { isObject, merge } from 'lodash-es';
+import { useCool } from '/@/cool';
+import { parsePx } from '/@/cool/utils';
+import * as monaco from 'monaco-editor';
+import '../utils/worker';
+import '../utils/theme';
+import '../utils/config';
+import { useFormat } from '../utils/format';
 
 const props = defineProps({
 	modelValue: null,
@@ -38,7 +38,7 @@ const props = defineProps({
 	},
 	language: {
 		type: String,
-		default: "json"
+		default: 'json'
 	},
 	disabled: Boolean,
 	border: {
@@ -47,7 +47,7 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(['update:modelValue', 'change']);
 
 const { refs, setRefs } = useCool();
 const format = useFormat();
@@ -64,11 +64,11 @@ function getContent() {
 }
 
 // 设置内容
-function setContent(value: string = "") {
+function setContent(value: string = '') {
 	if (isObject(value)) {
 		value = JSON.stringify(value);
 	} else {
-		value = (value || "").toString();
+		value = (value || '').toString();
 	}
 
 	if (value != getContent()) {
@@ -77,11 +77,11 @@ function setContent(value: string = "") {
 }
 
 // 光标后追加内容
-function appendContent(text: string = "") {
+function appendContent(text: string = '') {
 	const position = editor?.getPosition();
 
 	if (position) {
-		editor?.executeEdits("", [
+		editor?.executeEdits('', [
 			{
 				range: new monaco.Range(
 					position.lineNumber,
@@ -108,7 +108,7 @@ function revealLine(val: number) {
 
 // 格式化内容
 async function formatCode() {
-	await editor?.getAction("editor.action.formatDocument")?.run();
+	await editor?.getAction('editor.action.formatDocument')?.run();
 	return getContent();
 }
 
@@ -116,7 +116,7 @@ async function formatCode() {
 function create() {
 	const options = merge(
 		{
-			theme: "default",
+			theme: 'default',
 			language: props.language,
 			minimap: {
 				enabled: false
@@ -139,14 +139,14 @@ function create() {
 	// 监听值改变
 	editor.onDidChangeModelContent(() => {
 		// 自适应高度
-		if (props.height == "auto") {
+		if (props.height == 'auto') {
 			height.value = Number(editor?.getContentHeight()) + 2;
 		}
 
 		const value = getContent();
 
-		emit("update:modelValue", value);
-		emit("change", value);
+		emit('update:modelValue', value);
+		emit('change', value);
 	});
 
 	nextTick(() => {
@@ -176,7 +176,7 @@ watch(() => props.modelValue, setContent);
 // 监听是否禁用
 watch(
 	() => props.disabled,
-	(val) => {
+	val => {
 		editor?.updateOptions({
 			readOnly: val
 		});

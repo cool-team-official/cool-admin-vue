@@ -37,20 +37,20 @@
 </template>
 
 <script lang="ts" name="my-info" setup>
-import { ElMessage } from "element-plus";
-import { onMounted, reactive, ref } from "vue";
-import { useBase } from "/$/base";
-import { useCool } from "/@/cool";
+import { ElMessage } from 'element-plus';
+import { onMounted, reactive, ref } from 'vue';
+import { useBase } from '/$/base';
+import { useCool } from '/@/cool';
 
 const { service } = useCool();
 const { user } = useBase();
 
 // 表单数据
 const form = reactive({
-	headImg: "",
-	nickName: "",
-	password: "",
-	oldPassword: ""
+	headImg: '',
+	nickName: '',
+	password: '',
+	oldPassword: ''
 });
 
 // 保存状态
@@ -63,13 +63,13 @@ async function save() {
 	await service.base.comm
 		.personUpdate(form)
 		.then(() => {
-			form.password = "";
-			form.oldPassword = "";
+			form.password = '';
+			form.oldPassword = '';
 
-			ElMessage.success("修改成功");
+			ElMessage.success('修改成功');
 			user.get();
 		})
-		.catch((err) => {
+		.catch(err => {
 			ElMessage.error(err.message);
 		});
 
@@ -77,8 +77,8 @@ async function save() {
 }
 
 onMounted(() => {
-	form.headImg = user.info?.headImg || "";
-	form.nickName = user.info?.nickName || "";
+	form.headImg = user.info?.headImg || '';
+	form.nickName = user.info?.nickName || '';
 });
 </script>
 

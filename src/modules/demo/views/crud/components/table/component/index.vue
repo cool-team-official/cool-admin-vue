@@ -31,20 +31,20 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useDict } from "/$/dict";
-import { ElMessage } from "element-plus";
-import UserInfo from "./user-info.vue";
+import { useCrud, useTable } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useDict } from '/$/dict';
+import { ElMessage } from 'element-plus';
+import UserInfo from './user-info.vue';
 
 const { dict } = useDict();
 
 // cl-crud 配置
 const Crud = useCrud(
 	{
-		service: "test"
+		service: 'test'
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -52,14 +52,14 @@ const Crud = useCrud(
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 	columns: [
 		{
-			type: "selection"
+			type: 'selection'
 		},
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 140,
 
 			//【很重要】组件实例方式渲染
@@ -68,14 +68,14 @@ const Table = useTable({
 			}
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140,
 
 			//【很重要】组件名方式渲染
 			component: {
 				// 组件名，组件必须全局注册了
-				name: "el-input",
+				name: 'el-input',
 
 				// 传入参数
 				props: {
@@ -86,16 +86,16 @@ const Table = useTable({
 			}
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation"),
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation'),
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		}
 	]
 });

@@ -20,28 +20,28 @@
 </template>
 
 <script setup lang="ts">
-import { useForm } from "@cool-vue/crud";
+import { useForm } from '@cool-vue/crud';
 
 const Form = useForm();
 
 function open() {
 	Form.value?.open({
-		title: "必填项配置",
+		title: '必填项配置',
 		items: [
 			{
-				label: "昵称",
-				prop: "nickname",
+				label: '昵称',
+				prop: 'nickname',
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				},
 				// 是否必填，默认判断绑定值是否空
 				required: true
 			},
 			{
-				label: "手机号",
-				prop: "phone",
+				label: '手机号',
+				prop: 'phone',
 				component: {
-					name: "el-input",
+					name: 'el-input',
 					props: {
 						maxlength: 11
 					}
@@ -53,10 +53,10 @@ function open() {
 					{
 						required: true,
 						validator: (rule, value, callback) => {
-							if (value === "") {
-								callback(new Error("手机号不能为空"));
+							if (value === '') {
+								callback(new Error('手机号不能为空'));
 							} else if (!/^1[3456789]\d{9}$/.test(value)) {
-								callback(new Error("手机号格式错误"));
+								callback(new Error('手机号格式错误'));
 							} else {
 								callback();
 							}

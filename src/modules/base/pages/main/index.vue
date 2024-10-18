@@ -15,11 +15,11 @@
 </template>
 
 <script lang="ts" name="app-layout" setup>
-import Topbar from "./components/topbar.vue";
-import Slider from "./components/slider.vue";
-import process from "./components/process.vue";
-import Views from "./components/views.vue";
-import { useBase } from "/$/base";
+import Topbar from './components/topbar.vue';
+import Slider from './components/slider.vue';
+import process from './components/process.vue';
+import Views from './components/views.vue';
+import { useBase } from '/$/base';
 
 const { app } = useBase();
 </script>

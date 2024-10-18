@@ -2,9 +2,12 @@
 import type { App } from "vue";
 import "./static/index.scss";
 declare const Crud: {
-    install(app: App, options?: Options): {
-        name: string;
-    };
+	install(
+		app: App,
+		options?: Options
+	): {
+		name: string;
+	};
 };
 export default Crud;
 export * from "./emitter";

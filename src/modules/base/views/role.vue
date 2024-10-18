@@ -44,66 +44,66 @@
 </template>
 
 <script lang="ts" setup name="sys-role">
-import { useTable, useUpsert, useCrud } from "@cool-vue/crud";
-import { useCool } from "/@/cool";
+import { useTable, useUpsert, useCrud } from '@cool-vue/crud';
+import { useCool } from '/@/cool';
 
 const { service } = useCool();
 
 // cl-crud
-const Crud = useCrud({ service: service.base.sys.role }, (app) => {
+const Crud = useCrud({ service: service.base.sys.role }, app => {
 	app.refresh();
 });
 
 // cl-upsert
 const Upsert = useUpsert({
 	dialog: {
-		width: "800px"
+		width: '800px'
 	},
 
 	items: [
 		{
-			prop: "name",
-			label: "名称",
+			prop: 'name',
+			label: '名称',
 			span: 12,
 			required: true,
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			prop: "label",
-			label: "标识",
+			prop: 'label',
+			label: '标识',
 			span: 12,
 			required: true,
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			prop: "remark",
-			label: "备注",
+			prop: 'remark',
+			label: '备注',
 			span: 24,
 			component: {
-				name: "el-input",
+				name: 'el-input',
 				props: {
-					type: "textarea",
+					type: 'textarea',
 					rows: 4
 				}
 			}
 		},
 		{
-			label: "功能权限",
-			prop: "menuIdList",
+			label: '功能权限',
+			prop: 'menuIdList',
 			value: [],
 			component: {
-				name: "cl-menu-check"
+				name: 'cl-menu-check'
 			}
 		},
 		{
-			label: "数据权限",
-			prop: "relevance",
+			label: '数据权限',
+			prop: 'relevance',
 			component: {
-				name: "slot-relevance"
+				name: 'slot-relevance'
 			}
 		}
 	],
@@ -120,41 +120,41 @@ const Upsert = useUpsert({
 const Table = useTable({
 	columns: [
 		{
-			type: "selection",
+			type: 'selection',
 			width: 60
 		},
 		{
-			prop: "name",
-			label: "名称",
+			prop: 'name',
+			label: '名称',
 			minWidth: 150
 		},
 		{
-			prop: "label",
-			label: "标识",
+			prop: 'label',
+			label: '标识',
 			minWidth: 120
 		},
 		{
-			prop: "remark",
-			label: "备注",
+			prop: 'remark',
+			label: '备注',
 			showOverflowTooltip: true,
 			minWidth: 150
 		},
 		{
-			prop: "createTime",
-			label: "创建时间",
-			sortable: "desc",
+			prop: 'createTime',
+			label: '创建时间',
+			sortable: 'desc',
 			minWidth: 170
 		},
 		{
-			prop: "updateTime",
-			label: "更新时间",
-			sortable: "custom",
+			prop: 'updateTime',
+			label: '更新时间',
+			sortable: 'custom',
 			minWidth: 170
 		},
 		{
-			label: "操作",
-			type: "op",
-			buttons: ["edit", "delete"]
+			label: '操作',
+			type: 'op',
+			buttons: ['edit', 'delete']
 		}
 	]
 });

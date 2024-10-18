@@ -1,11 +1,11 @@
-import { defineStore } from "pinia";
-import { reactive, ref } from "vue";
-import { merge } from "lodash-es";
-import { useBrowser } from "/@/cool";
-import { storage } from "/@/cool/utils";
-import { config } from "/@/config";
+import { defineStore } from 'pinia';
+import { reactive, ref } from 'vue';
+import { merge } from 'lodash-es';
+import { useBrowser } from '/@/cool';
+import { storage } from '/@/cool/utils';
+import { config } from '/@/config';
 
-export const useAppStore = defineStore("app", function () {
+export const useAppStore = defineStore('app', function () {
 	const { browser, onScreenChange } = useBrowser();
 
 	// 基本信息
@@ -33,7 +33,7 @@ export const useAppStore = defineStore("app", function () {
 	// 设置基本信息
 	function set(data: any) {
 		merge(info, data);
-		storage.set("__app__", info);
+		storage.set('__app__', info);
 	}
 
 	// 添加事件

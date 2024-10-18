@@ -1,4 +1,4 @@
-import { type Ref, inject } from "vue";
+import { type Ref, inject } from 'vue';
 
 declare interface Space {
 	loading: boolean;
@@ -13,7 +13,7 @@ declare interface Space {
 }
 
 export function useSpace() {
-	const space = inject("space") as Space;
+	const space = inject('space') as Space;
 
 	return { space };
 }

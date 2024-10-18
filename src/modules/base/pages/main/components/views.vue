@@ -2,7 +2,7 @@
 	<div class="app-views">
 		<router-view v-slot="{ Component }">
 			<transition :name="app.info.router.transition || 'none'">
-				<keep-alive :include="caches" :key="key">
+				<keep-alive :key="key" :include="caches">
 					<component :is="Component" />
 				</keep-alive>
 			</transition>
@@ -11,9 +11,9 @@
 </template>
 
 <script lang="ts" name="app-views" setup>
-import { computed, onMounted, onUnmounted, ref } from "vue";
-import { useBase } from "/$/base";
-import { useCool } from "/@/cool";
+import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { useBase } from '/$/base';
+import { useCool } from '/@/cool';
 
 const { mitt } = useCool();
 const { process, app } = useBase();
@@ -24,9 +24,9 @@ const key = ref(1);
 // 缓存列表
 const caches = computed(() => {
 	return process.list
-		.filter((e) => e.meta?.keepAlive)
-		.map((e) => {
-			return e.path.substring(1, e.path.length).replace(/\//g, "-");
+		.filter(e => e.meta?.keepAlive)
+		.map(e => {
+			return e.path.substring(1, e.path.length).replace(/\//g, '-');
 		});
 });
 
@@ -36,11 +36,11 @@ function refresh() {
 }
 
 onMounted(() => {
-	mitt.on("view.refresh", refresh);
+	mitt.on('view.refresh', refresh);
 });
 
 onUnmounted(() => {
-	mitt.off("view.refresh");
+	mitt.off('view.refresh');
 });
 </script>
 

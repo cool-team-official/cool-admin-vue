@@ -1,5 +1,5 @@
-import { TreeData } from "element-plus/es/components/tree/src/tree.type";
-import Node from "element-plus/es/components/tree/src/model/node";
+import { TreeData } from 'element-plus/es/components/tree/src/tree.type';
+import Node from 'element-plus/es/components/tree/src/model/node';
 
 export declare namespace ClViewGroup {
 	interface Item {

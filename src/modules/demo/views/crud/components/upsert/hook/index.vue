@@ -39,18 +39,18 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useDict } from "/$/dict";
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useDict } from '/$/dict';
 
 const { dict } = useDict();
 
 // cl-crud 配置
 const Crud = useCrud(
 	{
-		service: "test"
+		service: 'test'
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -58,42 +58,42 @@ const Crud = useCrud(
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 140
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140
 		},
 		{
-			label: "省市区",
-			prop: "pca",
+			label: '省市区',
+			prop: 'pca',
 			formatter(row) {
-				return row.province ? row.province + "-" + row.city + "-" + row.district : "-";
+				return row.province ? row.province + '-' + row.city + '-' + row.district : '-';
 			},
 			minWidth: 140
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation"),
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation'),
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		},
 		{
-			type: "op",
-			buttons: ["edit", "delete"]
+			type: 'op',
+			buttons: ['edit', 'delete']
 		}
 	]
 });
@@ -102,22 +102,22 @@ const Table = useTable({
 const Upsert = useUpsert({
 	items: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "省市区",
-			prop: "pca2",
+			label: '省市区',
+			prop: 'pca2',
 
 			//【很重要】hook 参数配置
 			hook: {
@@ -140,52 +140,52 @@ const Upsert = useUpsert({
 			// hook: "pca2",
 
 			component: {
-				name: "cl-distpicker"
+				name: 'cl-distpicker'
 			}
 		},
 		{
-			label: "标签",
-			prop: "labels",
+			label: '标签',
+			prop: 'labels',
 			//【很重要】使用内置方法，避免一些辣鸡后端要你这么传给他
 			hook: {
 				// labels 的数据为 1,2,3
 
 				// 绑定的时候将 labels 按 , 分割成数组
-				bind: ["split", "number"],
+				bind: ['split', 'number'],
 
 				// 提交的时候将 labels 拼接成字符串
-				submit: ["join"]
+				submit: ['join']
 			},
 			component: {
-				name: "el-select",
+				name: 'el-select',
 				props: {
 					multiple: true
 				},
 				options: [
 					{
-						label: "帅气",
+						label: '帅气',
 						value: 1
 					},
 					{
-						label: "多金",
+						label: '多金',
 						value: 2
 					},
 					{
-						label: "有才华",
+						label: '有才华',
 						value: 3
 					}
 				]
 			}
 		},
 		{
-			label: "工作",
-			prop: "occupation",
+			label: '工作',
+			prop: 'occupation',
 			component: {
-				name: "cl-select",
+				name: 'cl-select',
 				props: {
 					tree: true,
 					checkStrictly: true,
-					options: dict.get("occupation")
+					options: dict.get('occupation')
 				}
 			}
 		}

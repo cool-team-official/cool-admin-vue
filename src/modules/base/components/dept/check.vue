@@ -25,10 +25,10 @@
 </template>
 
 <script lang="ts" name="cl-dept-check" setup>
-import { ref, watch } from "vue";
-import { deepTree } from "/@/cool/utils";
-import { useCool } from "/@/cool";
-import { useUpsert } from "@cool-vue/crud";
+import { ref, watch } from 'vue';
+import { deepTree } from '/@/cool/utils';
+import { useCool } from '/@/cool';
+import { useUpsert } from '@cool-vue/crud';
 
 const props = defineProps({
 	modelValue: {
@@ -38,7 +38,7 @@ const props = defineProps({
 	checkStrictly: Boolean
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue']);
 
 const { service } = useCool();
 
@@ -49,11 +49,11 @@ const Tree = ref();
 const list = ref();
 
 // 关键字搜素
-const keyword = ref("");
+const keyword = ref('');
 
 // 刷新树形列表
 async function refresh() {
-	return service.base.sys.department.list().then((res) => {
+	return service.base.sys.department.list().then(res => {
 		list.value = deepTree(res);
 	});
 }
@@ -66,7 +66,7 @@ function filterNode(val: string, data: any) {
 
 // 值改变
 function onCheckChange(_: any, { checkedKeys }: any) {
-	emit("update:modelValue", checkedKeys);
+	emit('update:modelValue', checkedKeys);
 }
 
 // 监听过滤

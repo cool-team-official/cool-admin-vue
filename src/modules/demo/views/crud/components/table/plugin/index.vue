@@ -31,19 +31,19 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useDict } from "/$/dict";
-import { setColumn } from "./column";
+import { useCrud, useTable } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useDict } from '/$/dict';
+import { setColumn } from './column';
 
 const { dict } = useDict();
 
 // cl-crud 配置
 const Crud = useCrud(
 	{
-		service: "test"
+		service: 'test'
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -51,26 +51,26 @@ const Crud = useCrud(
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			type: "selection"
+			type: 'selection'
 		},
 		{
-			tag: "UserInfo"
+			tag: 'UserInfo'
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation"),
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation'),
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		}
 	],
 

@@ -3,5 +3,5 @@
 </template>
 
 <script lang="ts" name="502" setup>
-import ErrorPage from "./components/error-page.vue";
+import ErrorPage from './components/error-page.vue';
 </script>

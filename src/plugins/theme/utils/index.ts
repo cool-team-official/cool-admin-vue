@@ -1,6 +1,6 @@
-import { Theme } from "../types";
-import { useBase } from "/$/base";
-import { storage } from "/@/cool";
+import type { Theme } from '../types';
+import { useBase } from '/$/base';
+import { storage } from '/@/cool';
 
 function mix(color1: string, color2: string, weight: number) {
 	weight = Math.max(Math.min(Number(weight), 1), 0);
@@ -13,37 +13,37 @@ function mix(color1: string, color2: string, weight: number) {
 	let r = Math.round(r1 * (1 - weight) + r2 * weight).toString(16);
 	let g = Math.round(g1 * (1 - weight) + g2 * weight).toString(16);
 	let b = Math.round(b1 * (1 - weight) + b2 * weight).toString(16);
-	r = ("0" + (r || 0).toString(16)).slice(-2);
-	g = ("0" + (g || 0).toString(16)).slice(-2);
-	b = ("0" + (b || 0).toString(16)).slice(-2);
-	return "#" + r + g + b;
+	r = ('0' + (r || 0).toString(16)).slice(-2);
+	g = ('0' + (g || 0).toString(16)).slice(-2);
+	b = ('0' + (b || 0).toString(16)).slice(-2);
+	return '#' + r + g + b;
 }
 
 export const themes = [
 	{
-		label: "钴蓝",
-		name: "default",
-		color: "#4165d7"
+		label: '钴蓝',
+		name: 'default',
+		color: '#4165d7'
 	},
 	{
-		label: "极黑",
-		name: "jihei",
-		color: "#222222"
+		label: '极黑',
+		name: 'jihei',
+		color: '#222222'
 	},
 	{
-		label: "果绿",
-		name: "guolv",
-		color: "#51C21A"
+		label: '果绿',
+		name: 'guolv',
+		color: '#51C21A'
 	},
 	{
-		label: "酱紫",
-		name: "jiangzi",
-		color: "#d0378d"
+		label: '酱紫',
+		name: 'jiangzi',
+		color: '#d0378d'
 	},
 	{
-		label: "苍青",
-		name: "cangqing",
-		color: "#7397ab"
+		label: '苍青',
+		name: 'cangqing',
+		color: '#7397ab'
 	}
 ];
 
@@ -51,29 +51,29 @@ export function setTheme({ color, name, isGroup, transition }: Theme) {
 	const { app } = useBase();
 
 	// 主题配置
-	const theme = storage.get("theme") || {};
+	const theme = storage.get('theme') || {};
 
 	// 变量前缀
-	const pre = "--el-color-primary";
+	const pre = '--el-color-primary';
 
 	// 白色混合色
-	const mixWhite = "#ffffff";
+	const mixWhite = '#ffffff';
 
 	// 黑色混合色
-	const mixBlack = "#000000";
+	const mixBlack = '#000000';
 
 	// 元素
 	const el = document.documentElement;
 
 	// 主题
 	if (name) {
-		const item = themes.find((e) => e.name == name);
+		const item = themes.find(e => e.name == name);
 
 		if (item) {
 			if (!color) {
 				color = item.color;
 			}
-			document.body?.setAttribute("class", `theme-${name}`);
+			document.body?.setAttribute('class', `theme-${name}`);
 		}
 
 		theme.name = name;
@@ -82,7 +82,7 @@ export function setTheme({ color, name, isGroup, transition }: Theme) {
 	// 设置主色
 	if (color) {
 		el.style.setProperty(pre, color);
-		el.style.setProperty("--color-primary", color);
+		el.style.setProperty('--color-primary', color);
 
 		// 设置辅色
 		for (let i = 1; i < 10; i += 1) {
@@ -113,5 +113,5 @@ export function setTheme({ color, name, isGroup, transition }: Theme) {
 		});
 	}
 
-	storage.set("theme", theme);
+	storage.set('theme', theme);
 }

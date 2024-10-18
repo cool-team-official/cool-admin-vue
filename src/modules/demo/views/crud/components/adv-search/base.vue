@@ -39,18 +39,18 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useAdvSearch, useTable } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useDict } from "/$/dict";
+import { useCrud, useAdvSearch, useTable } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useDict } from '/$/dict';
 
 const { dict } = useDict();
 
 // cl-crud 配置
 const Crud = useCrud(
 	{
-		service: "test"
+		service: 'test'
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -58,30 +58,30 @@ const Crud = useCrud(
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 140
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation"),
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation'),
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		}
 	]
 });
@@ -92,34 +92,34 @@ const AdvSearch = useAdvSearch({
 	// 配置如 cl-form 一样
 	items: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			component: {
-				name: "el-input",
+				name: 'el-input',
 				props: {
 					clearable: true
 				}
 			}
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			component: {
-				name: "el-input",
+				name: 'el-input',
 				props: {
 					clearable: true
 				}
 			}
 		},
 		{
-			label: "工作",
-			prop: "occupation",
+			label: '工作',
+			prop: 'occupation',
 			component: {
-				name: "cl-select",
+				name: 'cl-select',
 				props: {
 					tree: true,
 					checkStrictly: true,
-					options: dict.get("occupation")
+					options: dict.get('occupation')
 				}
 			}
 		}

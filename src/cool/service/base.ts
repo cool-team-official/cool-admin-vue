@@ -1,8 +1,8 @@
 // @ts-nocheck
-import { isDev, config, proxy } from "../../config";
-import { isObject } from "lodash-es";
-import { request } from "./request";
-import { AxiosRequestConfig } from "axios";
+import { isDev, config, proxy } from '../../config';
+import { isObject } from 'lodash-es';
+import { request } from './request';
+import { AxiosRequestConfig } from 'axios';
 
 export function Service(
 	value:
@@ -15,7 +15,7 @@ export function Service(
 ) {
 	return function (target: any) {
 		// 命名
-		if (typeof value == "string") {
+		if (typeof value == 'string') {
 			target.prototype.namespace = value;
 		}
 
@@ -44,8 +44,8 @@ export class BaseService {
 	async request(options: AxiosRequestConfig = {}) {
 		if (options.url) {
 			// 过滤 http 开头的地址
-			if (options.url.indexOf("http") < 0) {
-				let ns = "";
+			if (options.url.indexOf('http') < 0) {
+				let ns = '';
 
 				if (isDev) {
 					ns = this.proxy || config.baseUrl;
@@ -55,7 +55,7 @@ export class BaseService {
 
 				// 拼接前缀
 				if (this.namespace) {
-					ns += "/" + this.namespace;
+					ns += '/' + this.namespace;
 				}
 
 				// 处理地址
@@ -70,47 +70,47 @@ export class BaseService {
 
 	async list(data: any) {
 		return this.request({
-			url: "/list",
-			method: "POST",
+			url: '/list',
+			method: 'POST',
 			data
 		});
 	}
 
 	async page(data: any) {
 		return this.request({
-			url: "/page",
-			method: "POST",
+			url: '/page',
+			method: 'POST',
 			data
 		});
 	}
 
 	async info(params: any) {
 		return this.request({
-			url: "/info",
+			url: '/info',
 			params
 		});
 	}
 
 	async update(data: any) {
 		return this.request({
-			url: "/update",
-			method: "POST",
+			url: '/update',
+			method: 'POST',
 			data
 		});
 	}
 
 	async delete(data: any) {
 		return this.request({
-			url: "/delete",
-			method: "POST",
+			url: '/delete',
+			method: 'POST',
 			data
 		});
 	}
 
 	async add(data: any) {
 		return this.request({
-			url: "/add",
-			method: "POST",
+			url: '/add',
+			method: 'POST',
 			data
 		});
 	}

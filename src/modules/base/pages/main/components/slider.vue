@@ -14,9 +14,9 @@
 </template>
 
 <script lang="ts" name="app-slider" setup>
-import { useBase } from "/$/base";
-import { useBrowser } from "/@/cool";
-import BMenu from "./bmenu";
+import { useBase } from '/$/base';
+import { useBrowser } from '/@/cool';
+import BMenu from './bmenu';
 
 const { browser } = useBrowser();
 const { app } = useBase();

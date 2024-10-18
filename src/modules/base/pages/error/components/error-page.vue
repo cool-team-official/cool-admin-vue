@@ -33,9 +33,9 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
-import { useCool } from "/@/cool";
-import { useBase } from "/$/base";
+import { computed, ref } from 'vue';
+import { useCool } from '/@/cool';
+import { useBase } from '/$/base';
 
 const props = defineProps({
 	code: Number,
@@ -48,11 +48,11 @@ const { user } = useBase();
 const isLogout = ref(false);
 
 const codes = computed(() => {
-	return (props.code || "").toString().split("");
+	return (props.code || '').toString().split('');
 });
 
 function toLogin() {
-	router.push("/login");
+	router.push('/login');
 }
 
 async function reLogin() {
@@ -61,7 +61,7 @@ async function reLogin() {
 }
 
 function home() {
-	router.push("/");
+	router.push('/');
 }
 </script>
 

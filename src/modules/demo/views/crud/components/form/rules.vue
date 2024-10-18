@@ -51,33 +51,33 @@
 </template>
 
 <script setup lang="ts">
-import { useForm } from "@cool-vue/crud";
-import { Delete } from "@element-plus/icons-vue";
+import { useForm } from '@cool-vue/crud';
+import { Delete } from '@element-plus/icons-vue';
 
 const Form = useForm();
 
 function open() {
 	Form.value?.open({
-		title: "添加/删除表单项",
+		title: '添加/删除表单项',
 		items: [
 			{
-				label: "昵称",
-				prop: "nickname",
+				label: '昵称',
+				prop: 'nickname',
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				},
 				required: true
 			},
 			{
-				prop: "cert",
+				prop: 'cert',
 				//【很重要】默认数据格式，以实际业务为主。
 				value: [
 					{
-						label: ""
+						label: ''
 					}
 				],
 				component: {
-					name: "slot-cert"
+					name: 'slot-cert'
 				}
 			}
 		],
@@ -91,7 +91,7 @@ function open() {
 
 function rowAdd() {
 	Form.value?.form.cert.push({
-		label: ""
+		label: ''
 	});
 }
 

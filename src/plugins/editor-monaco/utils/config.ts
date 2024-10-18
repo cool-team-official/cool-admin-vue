@@ -1,4 +1,4 @@
-import { languages } from "monaco-editor";
+import { languages } from 'monaco-editor';
 
 languages.typescript.typescriptDefaults.setEagerModelSync(true);
 

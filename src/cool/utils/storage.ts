@@ -1,8 +1,8 @@
-import store from "store";
+import store from 'store';
 
 export default {
 	// 后缀标识
-	suffix: "_deadtime",
+	suffix: '_deadtime',
 
 	/**
 	 * 获取

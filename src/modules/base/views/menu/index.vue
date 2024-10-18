@@ -28,7 +28,10 @@
 				row-key="id"
 				lazy
 				:load="onChildrenLoad"
-				:tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+				:tree-props="{
+					children: 'children',
+					hasChildren: 'hasChildren'
+				}"
 				@row-click="onRowClick"
 			>
 				<!-- 图标 -->
@@ -39,10 +42,10 @@
 				<!-- 是否显示 -->
 				<template #column-isShow="{ scope }">
 					<cl-switch
+						v-if="scope.row.type != 2"
 						v-model="scope.row.isShow"
 						:scope="scope.row"
 						:column="scope.column"
-						v-if="scope.row.type != 2"
 					/>
 
 					<span v-else></span>
@@ -51,10 +54,10 @@
 				<!-- 图标 -->
 				<template #column-keepAlive="{ scope }">
 					<cl-switch
+						v-if="scope.row.type == 1"
 						v-model="scope.row.keepAlive"
 						:scope="scope.row"
 						:column="scope.column"
-						v-if="scope.row.type == 1"
 					/>
 
 					<span v-else></span>
@@ -71,12 +74,12 @@
 				<!-- 行新增 -->
 				<template #slot-add="{ scope }">
 					<el-button
-						type="success"
-						text
-						bg
 						v-permission="{
 							and: [service.base.sys.menu.permission.add, scope.row.type != 2]
 						}"
+						type="success"
+						text
+						bg
 						@click="append(scope.row)"
 					>
 						新增
@@ -103,15 +106,15 @@
 </template>
 
 <script lang="ts" name="sys-menu" setup>
-import { setFocus, useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { useCool } from "/@/cool";
-import { deepTree } from "/@/cool/utils";
-import { useStore } from "/$/base/store";
-import { isEmpty } from "lodash-es";
-import MenuImp from "./components/imp.vue";
-import MenuExp from "./components/exp.vue";
-import AutoMenu from "/$/helper/components/auto-menu/index.vue";
-import AutoPerms from "/$/helper/components/auto-perms/index.vue";
+import { setFocus, useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { useCool } from '/@/cool';
+import { deepTree } from '/@/cool/utils';
+import { useStore } from '/$/base/store';
+import { isEmpty } from 'lodash-es';
+import MenuImp from './components/imp.vue';
+import MenuExp from './components/exp.vue';
+import AutoMenu from '/$/helper/components/auto-menu/index.vue';
+import AutoPerms from '/$/helper/components/auto-perms/index.vue';
 
 interface Item extends Eps.BaseSysMenuEntity {
 	children?: Item[];
@@ -125,9 +128,9 @@ const { menu } = useStore();
 // cl-table
 const Table = useTable({
 	contextMenu: [
-		(row) => {
+		row => {
 			return {
-				label: "新增",
+				label: '新增',
 				hidden: !(row.type != 2 && service.base.sys.user._permission.add),
 				callback(done) {
 					append(row);
@@ -135,11 +138,11 @@ const Table = useTable({
 				}
 			};
 		},
-		"update",
-		"delete",
-		(row) => {
+		'update',
+		'delete',
+		row => {
 			return {
-				label: "权限",
+				label: '权限',
 				hidden: !(row.type != 2 && service.base.sys.user._permission.add),
 				callback(done) {
 					addPermission(row);
@@ -150,87 +153,87 @@ const Table = useTable({
 	],
 	columns: [
 		{
-			type: "selection"
+			type: 'selection'
 		},
 		{
-			prop: "name",
-			label: "名称",
-			align: "left",
+			prop: 'name',
+			label: '名称',
+			align: 'left',
 			width: 200,
-			fixed: "left"
+			fixed: 'left'
 		},
 		{
-			prop: "isShow",
-			label: "是否显示",
+			prop: 'isShow',
+			label: '是否显示',
 			width: 100
 		},
 		{
-			prop: "icon",
-			label: "图标",
+			prop: 'icon',
+			label: '图标',
 			width: 100
 		},
 		{
-			prop: "type",
-			label: "类型",
+			prop: 'type',
+			label: '类型',
 			width: 100,
 			dict: [
 				{
-					label: "目录",
+					label: '目录',
 					value: 0,
-					type: "warning"
+					type: 'warning'
 				},
 				{
-					label: "菜单",
+					label: '菜单',
 					value: 1,
-					type: "success"
+					type: 'success'
 				},
 				{
-					label: "权限",
+					label: '权限',
 					value: 2,
-					type: "danger"
+					type: 'danger'
 				}
 			]
 		},
 		{
-			prop: "router",
-			label: "节点路由",
+			prop: 'router',
+			label: '节点路由',
 			minWidth: 170
 		},
 		{
-			prop: "keepAlive",
-			label: "路由缓存",
+			prop: 'keepAlive',
+			label: '路由缓存',
 			width: 100
 		},
 		{
-			prop: "viewPath",
-			label: "文件路径",
+			prop: 'viewPath',
+			label: '文件路径',
 			minWidth: 200,
 			showOverflowTooltip: true
 		},
 		{
-			prop: "perms",
-			label: "权限",
-			headerAlign: "center",
+			prop: 'perms',
+			label: '权限',
+			headerAlign: 'center',
 			minWidth: 300,
 			dict: []
 		},
 		{
-			prop: "orderNum",
-			label: "排序号",
+			prop: 'orderNum',
+			label: '排序号',
 			width: 90,
-			fixed: "right"
+			fixed: 'right'
 		},
 		{
-			prop: "updateTime",
-			label: "更新时间",
-			sortable: "custom",
+			prop: 'updateTime',
+			label: '更新时间',
+			sortable: 'custom',
 			width: 170
 		},
 		{
-			label: "操作",
-			type: "op",
+			label: '操作',
+			type: 'op',
 			width: 250,
-			buttons: ["slot-add", "edit", "delete"]
+			buttons: ['slot-add', 'edit', 'delete']
 		}
 	]
 });
@@ -238,131 +241,131 @@ const Table = useTable({
 // cl-upsert
 const Upsert = useUpsert({
 	dialog: {
-		width: "800px"
+		width: '800px'
 	},
 	items: [
 		{
-			prop: "type",
+			prop: 'type',
 			value: 0,
-			label: "节点类型",
+			label: '节点类型',
 			required: true,
 			component: {
-				name: "el-radio-group",
+				name: 'el-radio-group',
 				options: [
 					{
-						label: "目录",
+						label: '目录',
 						value: 0
 					},
 					{
-						label: "菜单",
+						label: '菜单',
 						value: 1
 					},
 					{
-						label: "权限",
+						label: '权限',
 						value: 2
 					}
 				]
 			}
 		},
 		{
-			prop: "name",
-			label: "节点名称",
+			prop: 'name',
+			label: '节点名称',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			},
 			required: true
 		},
 		{
-			prop: "parentId",
-			label: "上级节点",
+			prop: 'parentId',
+			label: '上级节点',
 			hook: {
 				submit(value) {
 					return value || null;
 				}
 			},
 			component: {
-				name: "slot-parentId"
+				name: 'slot-parentId'
 			}
 		},
 		{
-			prop: "router",
-			label: "节点路由",
+			prop: 'router',
+			label: '节点路由',
 			hidden: ({ scope }) => scope.type != 1,
 			component: {
-				name: "el-input",
+				name: 'el-input',
 				props: {
-					placeholder: "请输入节点路由，如：/test"
+					placeholder: '请输入节点路由，如：/test'
 				}
 			}
 		},
 		{
-			prop: "keepAlive",
+			prop: 'keepAlive',
 			value: true,
-			label: "路由缓存",
+			label: '路由缓存',
 			hidden: ({ scope }) => scope.type != 1,
 			component: {
-				name: "el-radio-group",
+				name: 'el-radio-group',
 				options: [
 					{
-						label: "开启",
+						label: '开启',
 						value: true
 					},
 					{
-						label: "关闭",
+						label: '关闭',
 						value: false
 					}
 				]
 			}
 		},
 		{
-			prop: "isShow",
-			label: "是否显示",
+			prop: 'isShow',
+			label: '是否显示',
 			value: true,
 			hidden: ({ scope }) => scope.type == 2,
 			flex: false,
 			component: {
-				name: "el-switch"
+				name: 'el-switch'
 			}
 		},
 		{
-			prop: "viewPath",
-			label: "文件路径",
+			prop: 'viewPath',
+			label: '文件路径',
 			hidden: ({ scope }) => scope.type != 1,
 			component: {
-				name: "cl-menu-file"
+				name: 'cl-menu-file'
 			}
 		},
 		{
-			prop: "icon",
-			label: "节点图标",
+			prop: 'icon',
+			label: '节点图标',
 			hidden: ({ scope }) => scope.type == 2,
 			component: {
-				name: "cl-menu-icon"
+				name: 'cl-menu-icon'
 			}
 		},
 		{
-			prop: "orderNum",
-			label: "排序号",
+			prop: 'orderNum',
+			label: '排序号',
 			component: {
-				name: "el-input-number",
+				name: 'el-input-number',
 				props: {
-					placeholder: "请填写排序号",
+					placeholder: '请填写排序号',
 					min: 0,
 					max: 99,
-					"controls-position": "right"
+					'controls-position': 'right'
 				}
 			}
 		},
 		{
-			prop: "perms",
-			label: "权限",
+			prop: 'perms',
+			label: '权限',
 			hidden: ({ scope }) => scope.type != 2,
 			component: {
-				name: "slot-perms"
+				name: 'slot-perms'
 			}
 		}
 	],
-	plugins: [setFocus("name")]
+	plugins: [setFocus('name')]
 });
 
 // cl-crud
@@ -370,13 +373,13 @@ const Crud = useCrud(
 	{
 		service: service.base.sys.menu,
 		onRefresh(_, { render }) {
-			service.base.sys.menu.list().then((list) => {
+			service.base.sys.menu.list().then(list => {
 				render(onData(list));
 				menu.get();
 			});
 		}
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -392,7 +395,7 @@ function onData(list: Item[]) {
 
 	// 递归处理
 	const deep = (arr: Item[]) => {
-		arr.forEach((e) => {
+		arr.forEach(e => {
 			const nodes: { [key: number]: Item[] } =
 				Table.value?.Table.store.states.lazyTreeNodeMap.value || {};
 
@@ -446,5 +449,5 @@ function addPermission({ id }: Item) {
 	});
 }
 
-mitt.on("helper.createMenu", refresh);
+mitt.on('helper.createMenu', refresh);
 </script>

@@ -3,13 +3,13 @@
 		<el-button :icon="Upload">上传</el-button>
 
 		<template #item="{ item }">
-			<div class="item" v-show="item.url">{{ item.url }}</div>
+			<div v-show="item.url" class="item">{{ item.url }}</div>
 		</template>
 	</cl-upload>
 </template>
 
 <script lang="ts" setup>
-import { Upload } from "@element-plus/icons-vue";
+import { Upload } from '@element-plus/icons-vue';
 </script>
 
 <style lang="scss" scoped>

@@ -1,9 +1,9 @@
 <template>
 	<el-scrollbar>
 		<div class="crud-demo">
-			<el-tabs type="card" v-model="active" @tab-change="onTabChange">
+			<el-tabs v-model="active" type="card" @tab-change="onTabChange">
 				<el-tab-pane v-for="(a, ai) in list" :key="ai" :label="a.title" :name="a.title">
-					<div class="group" v-for="(b, bi) in a.children" :key="bi">
+					<div v-for="(b, bi) in a.children" :key="bi" class="group">
 						<p class="label"># {{ b.label }}</p>
 
 						<el-row :gutter="10">
@@ -26,60 +26,60 @@
 </template>
 
 <script lang="ts" setup name="demo-crud">
-import { ref, onActivated } from "vue";
+import { ref, onActivated } from 'vue';
 
-import CrudBase from "./components/crud/base.vue";
-import CrudAll from "./components/crud/all.vue";
-import CrudDict from "./components/crud/dict.vue";
-import CrudEvent from "./components/crud/event.vue";
-import CrudService from "./components/crud/service.vue";
+import CrudBase from './components/crud/base.vue';
+import CrudAll from './components/crud/all.vue';
+import CrudDict from './components/crud/dict.vue';
+import CrudEvent from './components/crud/event.vue';
+import CrudService from './components/crud/service.vue';
 
-import FormOpen from "./components/form/open.vue";
-import FormConfig from "./components/form/config.vue";
-import FormRequired from "./components/form/required.vue";
-import FormLayout from "./components/form/layout.vue";
-import FormOptions from "./components/form/options.vue";
-import FormHidden from "./components/form/hidden.vue";
-import FormDisabled from "./components/form/disabled.vue";
-import FormEvent from "./components/form/event.vue";
-import FormGroup from "./components/form/group.vue";
-import FormChildren from "./components/form/children.vue";
-import FormCrud from "./components/form/crud.vue";
-import FormRules from "./components/form/rules.vue";
-import FormComponent from "./components/form/component/index.vue";
-import FormPlugin from "./components/form/plugin/index.vue";
+import FormOpen from './components/form/open.vue';
+import FormConfig from './components/form/config.vue';
+import FormRequired from './components/form/required.vue';
+import FormLayout from './components/form/layout.vue';
+import FormOptions from './components/form/options.vue';
+import FormHidden from './components/form/hidden.vue';
+import FormDisabled from './components/form/disabled.vue';
+import FormEvent from './components/form/event.vue';
+import FormGroup from './components/form/group.vue';
+import FormChildren from './components/form/children.vue';
+import FormCrud from './components/form/crud.vue';
+import FormRules from './components/form/rules.vue';
+import FormComponent from './components/form/component/index.vue';
+import FormPlugin from './components/form/plugin/index.vue';
 
-import TableBase from "./components/table/base.vue";
-import TableFormatter from "./components/table/formatter.vue";
-import TableOp from "./components/table/op.vue";
-import TableSearch from "./components/table/search.vue";
-import TableSelection from "./components/table/selection.vue";
-import TableSlot from "./components/table/slot.vue";
-import TableSummary from "./components/table/summary.vue";
-import TableHidden from "./components/table/hidden.vue";
-import TableChildren from "./components/table/children.vue";
-import TableContextMenu from "./components/table/context-menu.vue";
-import TableDict from "./components/table/dict.vue";
-import TableSpanMethod from "./components/table/span-method.vue";
-import TableColumnCustom from "./components/table/column-custom.vue";
-import TableComponent from "./components/table/component/index.vue";
-import TablePlugin from "./components/table/plugin/index.vue";
+import TableBase from './components/table/base.vue';
+import TableFormatter from './components/table/formatter.vue';
+import TableOp from './components/table/op.vue';
+import TableSearch from './components/table/search.vue';
+import TableSelection from './components/table/selection.vue';
+import TableSlot from './components/table/slot.vue';
+import TableSummary from './components/table/summary.vue';
+import TableHidden from './components/table/hidden.vue';
+import TableChildren from './components/table/children.vue';
+import TableContextMenu from './components/table/context-menu.vue';
+import TableDict from './components/table/dict.vue';
+import TableSpanMethod from './components/table/span-method.vue';
+import TableColumnCustom from './components/table/column-custom.vue';
+import TableComponent from './components/table/component/index.vue';
+import TablePlugin from './components/table/plugin/index.vue';
 
-import UpsertBase from "./components/upsert/base.vue";
-import UpsertEvent from "./components/upsert/event.vue";
-import UpsertMode from "./components/upsert/mode.vue";
-import UpsertHook from "./components/upsert/hook/index.vue";
+import UpsertBase from './components/upsert/base.vue';
+import UpsertEvent from './components/upsert/event.vue';
+import UpsertMode from './components/upsert/mode.vue';
+import UpsertHook from './components/upsert/hook/index.vue';
 
-import SearchBase from "./components/search/base.vue";
-import SearchCustom from "./components/search/custom.vue";
-import SearchLayout from "./components/search/layout.vue";
+import SearchBase from './components/search/base.vue';
+import SearchCustom from './components/search/custom.vue';
+import SearchLayout from './components/search/layout.vue';
 
-import AdvSearchBase from "./components/adv-search/base.vue";
-import AdvSearchCustom from "./components/adv-search/custom.vue";
+import AdvSearchBase from './components/adv-search/base.vue';
+import AdvSearchCustom from './components/adv-search/custom.vue';
 
-import OtherTsx from "./components/other/tsx";
-import OtherTips from "./components/other/tips.vue";
-import { useCool } from "/@/cool";
+import OtherTsx from './components/other/tsx';
+import OtherTips from './components/other/tips.vue';
+import { useCool } from '/@/cool';
 
 const { route, router } = useCool();
 
@@ -87,23 +87,23 @@ const active = ref();
 
 const list = [
 	{
-		title: "cl-crud",
+		title: 'cl-crud',
 		children: [
 			{
-				label: "基础",
+				label: '基础',
 				children: [CrudBase, CrudService, CrudDict, CrudEvent]
 			},
 			{
-				label: "高级",
+				label: '高级',
 				children: [CrudAll]
 			}
 		]
 	},
 	{
-		title: "cl-table",
+		title: 'cl-table',
 		children: [
 			{
-				label: "基础",
+				label: '基础',
 				children: [
 					TableBase,
 					TableFormatter,
@@ -120,29 +120,29 @@ const list = [
 				]
 			},
 			{
-				label: "高级",
+				label: '高级',
 				children: [TableColumnCustom, TableComponent, TablePlugin]
 			}
 		]
 	},
 	{
-		title: "cl-upsert",
+		title: 'cl-upsert',
 		children: [
 			{
-				label: "基础",
+				label: '基础',
 				children: [UpsertBase, UpsertEvent, UpsertMode]
 			},
 			{
-				label: "高级",
+				label: '高级',
 				children: [UpsertHook]
 			}
 		]
 	},
 	{
-		title: "cl-form",
+		title: 'cl-form',
 		children: [
 			{
-				label: "基础",
+				label: '基础',
 				children: [
 					FormOpen,
 					FormConfig,
@@ -158,34 +158,34 @@ const list = [
 				]
 			},
 			{
-				label: "高级",
+				label: '高级',
 				children: [FormRules, FormComponent, FormPlugin]
 			}
 		]
 	},
 	{
-		title: "cl-search",
+		title: 'cl-search',
 		children: [
 			{
-				label: "基础",
+				label: '基础',
 				children: [SearchBase, SearchCustom, SearchLayout]
 			}
 		]
 	},
 	{
-		title: "cl-adv-search",
+		title: 'cl-adv-search',
 		children: [
 			{
-				label: "基础",
+				label: '基础',
 				children: [AdvSearchBase, AdvSearchCustom]
 			}
 		]
 	},
 	{
-		title: "other",
+		title: 'other',
 		children: [
 			{
-				label: "高级",
+				label: '高级',
 				children: [OtherTsx, OtherTips]
 			}
 		]
@@ -202,7 +202,7 @@ function onTabChange(val: any) {
 
 onActivated(() => {
 	const { key } = route.query;
-	active.value = (key || "cl-crud") as string;
+	active.value = (key || 'cl-crud') as string;
 });
 </script>
 
@@ -251,7 +251,7 @@ onActivated(() => {
 
 				&:hover {
 					&:after {
-						content: "";
+						content: '';
 						width: 100%;
 						height: 1px;
 						position: absolute;

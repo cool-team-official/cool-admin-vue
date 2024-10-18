@@ -51,8 +51,8 @@
 </template>
 
 <script lang="ts" setup>
-import * as echarts from "echarts";
-import { useCrud, useTable } from "@cool-vue/crud";
+import * as echarts from 'echarts';
+import { useCrud, useTable } from '@cool-vue/crud';
 
 const Crud = useCrud(
 	{
@@ -61,27 +61,27 @@ const Crud = useCrud(
 				return Promise.resolve({
 					list: [
 						{
-							keyWord: "无线耳机",
+							keyWord: '无线耳机',
 							users: 983,
 							ud: 5
 						},
 						{
-							keyWord: "运动耳机",
+							keyWord: '运动耳机',
 							users: 763,
 							ud: -3
 						},
 						{
-							keyWord: "蓝牙音箱",
+							keyWord: '蓝牙音箱',
 							users: 328,
 							ud: 7
 						},
 						{
-							keyWord: "4k显示屏",
+							keyWord: '4k显示屏',
 							users: 144,
 							ud: 4
 						},
 						{
-							keyWord: "罗技 G530",
+							keyWord: '罗技 G530',
 							users: 121,
 							ud: -1
 						}
@@ -90,7 +90,7 @@ const Crud = useCrud(
 			}
 		}
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -100,24 +100,24 @@ const Table = useTable({
 	contextMenu: [],
 	columns: [
 		{
-			label: "排名",
-			type: "index",
+			label: '排名',
+			type: 'index',
 			width: 60
 		},
 		{
-			label: "搜索关键词",
-			prop: "keyWord",
+			label: '搜索关键词',
+			prop: 'keyWord',
 			minWidth: 100
 		},
 		{
-			label: "用户数",
-			prop: "users",
+			label: '用户数',
+			prop: 'users',
 			minWidth: 100
 		},
 		{
-			label: "周涨幅",
-			prop: "ud",
-			sortable: "desc",
+			label: '周涨幅',
+			prop: 'ud',
+			sortable: 'desc',
 			minWidth: 100
 		}
 	]
@@ -132,12 +132,12 @@ function chartOption() {
 			bottom: 0
 		},
 		xAxis: {
-			type: "category",
+			type: 'category',
 			data: [],
 			boundaryGap: false
 		},
 		yAxis: {
-			type: "value",
+			type: 'value',
 			splitLine: {
 				show: false
 			},
@@ -153,11 +153,11 @@ function chartOption() {
 		},
 		series: [
 			{
-				name: "总访问量",
-				type: "line",
+				name: '总访问量',
+				type: 'line',
 				smooth: true,
 				showSymbol: false,
-				symbol: "circle",
+				symbol: 'circle',
 				symbolSize: 6,
 				data: new Array(12)
 					.fill(1)
@@ -171,18 +171,18 @@ function chartOption() {
 						[
 							{
 								offset: 0,
-								color: "#D1E5FF"
+								color: '#D1E5FF'
 							},
 							{
 								offset: 1,
-								color: "#FFFFFF"
+								color: '#FFFFFF'
 							}
 						],
 						false
 					)
 				},
 				itemStyle: {
-					color: "#4165d7"
+					color: '#4165d7'
 				},
 				lineStyle: {
 					width: 2

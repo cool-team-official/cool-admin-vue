@@ -44,9 +44,9 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useCool } from "/@/cool";
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useCool } from '/@/cool';
 
 const { service } = useCool();
 
@@ -55,7 +55,7 @@ const Crud = useCrud(
 	{
 		service: service.demo.goods
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -64,46 +64,46 @@ const Crud = useCrud(
 //【很重要】添加类型标注 <Eps.DemoGoodsEntity>，也可以自定义<{ title: string; price: number }>
 const Table = useTable<Eps.DemoGoodsEntity>({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			type: "selection"
+			type: 'selection'
 		},
 		{
-			label: "商品标题",
-			prop: "title", //【很重要】编辑的时候会提示 DemoGoodsEntity 实体的属性名
+			label: '商品标题',
+			prop: 'title', //【很重要】编辑的时候会提示 DemoGoodsEntity 实体的属性名
 			minWidth: 140
 		},
 		{
-			label: "主图",
-			prop: "mainImage",
+			label: '主图',
+			prop: 'mainImage',
 			minWidth: 140,
 			component: {
-				name: "cl-image",
+				name: 'cl-image',
 				props: {
 					size: 60
 				}
 			}
 		},
 		{
-			label: "价格",
-			prop: "price",
+			label: '价格',
+			prop: 'price',
 			minWidth: 120
 		},
 		{
-			label: "库存",
-			prop: "stock",
+			label: '库存',
+			prop: 'stock',
 			minWidth: 120
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		},
 		{
-			type: "op"
+			type: 'op'
 		}
 	]
 });
@@ -113,25 +113,25 @@ const Table = useTable<Eps.DemoGoodsEntity>({
 const Upsert = useUpsert<Eps.DemoGoodsEntity>({
 	items: [
 		{
-			label: "商品标题",
-			prop: "title", //【很重要】编辑的时候会提示 DemoGoodsEntity 实体的属性名
+			label: '商品标题',
+			prop: 'title', //【很重要】编辑的时候会提示 DemoGoodsEntity 实体的属性名
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "主图",
-			prop: "mainImage",
+			label: '主图',
+			prop: 'mainImage',
 			component: {
-				name: "cl-upload"
+				name: 'cl-upload'
 			}
 		},
 		{
-			label: "价格",
-			prop: "price",
-			hook: "number",
+			label: '价格',
+			prop: 'price',
+			hook: 'number',
 			component: {
-				name: "el-input-number",
+				name: 'el-input-number',
 				props: {
 					min: 0.01,
 					max: 10000
@@ -139,10 +139,10 @@ const Upsert = useUpsert<Eps.DemoGoodsEntity>({
 			}
 		},
 		{
-			label: "库存",
-			prop: "stock",
+			label: '库存',
+			prop: 'stock',
 			component: {
-				name: "el-input-number",
+				name: 'el-input-number',
 				props: {
 					min: 0,
 					max: 1000

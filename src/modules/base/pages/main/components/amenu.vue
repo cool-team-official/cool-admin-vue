@@ -17,20 +17,20 @@
 </template>
 
 <script lang="ts" name="a-menu" setup>
-import { computed, ref, watch } from "vue";
-import { useBase, Menu } from "/$/base";
-import { useCool } from "/@/cool";
-import { ElMessage } from "element-plus";
+import { computed, ref, watch } from 'vue';
+import { useBase, Menu } from '/$/base';
+import { useCool } from '/@/cool';
+import { ElMessage } from 'element-plus';
 
 const { router, route } = useCool();
 const { menu } = useBase();
 
 // 选中标识
-const active = ref("0");
+const active = ref('0');
 
 // 组列表
 const list = computed(() => {
-	return menu.group.filter((e) => e.isShow);
+	return menu.group.filter(e => e.isShow);
 });
 
 // 选择导航
@@ -64,7 +64,7 @@ function refresh() {
 		switch (e.type) {
 			case 0:
 				if (e.children) {
-					e.children.forEach((e) => {
+					e.children.forEach(e => {
 						deep(e, i);
 					});
 				}

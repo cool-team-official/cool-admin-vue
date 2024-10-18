@@ -5,9 +5,9 @@
 		<cl-dialog v-model="visible" title="自定义列">
 			<div class="cl-column-custom__dialog">
 				<div class="left">
-					<draggable item-key="prop" v-model="list">
+					<draggable v-model="list" item-key="prop">
 						<template #item="{ element: item }">
-							<el-checkbox border v-model="item.checked">{{
+							<el-checkbox v-model="item.checked" border>{{
 								item.label
 							}}</el-checkbox>
 						</template>
@@ -27,13 +27,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, type PropType, nextTick, watch, computed } from "vue";
-import Draggable from "vuedraggable/src/vuedraggable";
-import { has, isBoolean, orderBy } from "lodash-es";
-import { storage } from "/@/cool";
+import { defineComponent, ref, type PropType, nextTick, watch, computed } from 'vue';
+import Draggable from 'vuedraggable/src/vuedraggable';
+import { has, isBoolean, orderBy } from 'lodash-es';
+import { storage } from '/@/cool';
 
 export default defineComponent({
-	name: "cl-column-custom",
+	name: 'cl-column-custom',
 
 	components: {
 		Draggable
@@ -60,15 +60,15 @@ export default defineComponent({
 
 		// 列配置
 		const columns = computed(() => {
-			return props.columns.filter((e) => !e.type && e.prop);
+			return props.columns.filter(e => !e.type && e.prop);
 		});
 
 		// 改变列
 		function change() {
 			nextTick(() => {
-				columns.value.forEach((e) => {
-					e.hidden = !list.value.find((a) => a.prop == e.prop)?.checked;
-					e.orderNum = list.value.findIndex((a) => a.prop == e.prop);
+				columns.value.forEach(e => {
+					e.hidden = !list.value.find(a => a.prop == e.prop)?.checked;
+					e.orderNum = list.value.findIndex(a => a.prop == e.prop);
 				});
 			});
 		}
@@ -82,7 +82,7 @@ export default defineComponent({
 
 		// 重置
 		function reset() {
-			columns.value.forEach((e) => {
+			columns.value.forEach(e => {
 				if (e.orderNum !== undefined) {
 					e.hidden = false;
 					e.orderNum = 0;
@@ -107,7 +107,7 @@ export default defineComponent({
 
 		// 排序
 		function sort(list: any[]) {
-			return orderBy(list, "orderNum", "asc");
+			return orderBy(list, 'orderNum', 'asc');
 		}
 
 		// 刷新
@@ -119,7 +119,7 @@ export default defineComponent({
 			const selection: any[] = storage.get(name);
 
 			list.value = sort(
-				columns.value.map((e) => {
+				columns.value.map(e => {
 					let checked = true;
 					let orderNum = e.orderNum || 0;
 
@@ -128,8 +128,8 @@ export default defineComponent({
 					}
 
 					if (selection) {
-						checked = selection.find((a) => a.prop == e.prop)?.checked;
-						orderNum = selection.findIndex((a) => a.prop == e.prop);
+						checked = selection.find(a => a.prop == e.prop)?.checked;
+						orderNum = selection.findIndex(a => a.prop == e.prop);
 					}
 
 					return {
@@ -146,11 +146,11 @@ export default defineComponent({
 
 		// 合计
 		function summary(subData: { [key: string]: any }) {
-			return sort(columns.value.filter((e) => !e.hidden)).map((e) => {
+			return sort(columns.value.filter(e => !e.hidden)).map(e => {
 				if (has(subData, e.prop)) {
 					return subData[e.prop];
 				} else {
-					return "";
+					return '';
 				}
 			});
 		}

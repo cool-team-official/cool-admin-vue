@@ -11,47 +11,47 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
+import { reactive } from 'vue';
 
 const chartOption = reactive({
 	tooltip: {
-		trigger: "item",
-		formatter: "{a} <br/>{b}: {c} ({d}%)"
+		trigger: 'item',
+		formatter: '{a} <br/>{b}: {c} ({d}%)'
 	},
 	legend: {
 		bottom: 30,
-		left: "center",
-		data: ["手机", "相机", "耳机", "音箱", "手表"]
+		left: 'center',
+		data: ['手机', '相机', '耳机', '音箱', '手表']
 	},
 	series: [
 		{
-			type: "pie",
-			radius: ["50%", "60%"],
-			center: ["50%", "40%"],
+			type: 'pie',
+			radius: ['50%', '60%'],
+			center: ['50%', '40%'],
 			avoidLabelOverlap: false,
 			label: {
 				show: false,
-				position: "center"
+				position: 'center'
 			},
 			emphasis: {
 				label: {
 					show: true,
-					fontSize: "30",
-					fontWeight: "bold"
+					fontSize: '30',
+					fontWeight: 'bold'
 				}
 			},
 			labelLine: {
 				show: false
 			},
 			data: [
-				{ value: 335, name: "手机" },
-				{ value: 310, name: "相机" },
-				{ value: 234, name: "耳机" },
-				{ value: 135, name: "音箱" },
-				{ value: 500, name: "手表" }
+				{ value: 335, name: '手机' },
+				{ value: 310, name: '相机' },
+				{ value: 234, name: '耳机' },
+				{ value: 135, name: '音箱' },
+				{ value: 500, name: '手表' }
 			],
 			itemStyle: {
-				borderColor: "#fff",
+				borderColor: '#fff',
 				borderWidth: 4
 			},
 			roundCap: 1

@@ -13,9 +13,9 @@
 </template>
 
 <script setup lang="ts" name="cl-view-head">
-import { computed } from "vue";
-import { useCool } from "/@/cool";
-import { ArrowLeft } from "@element-plus/icons-vue";
+import { computed } from 'vue';
+import { useCool } from '/@/cool';
+import { ArrowLeft } from '@element-plus/icons-vue';
 
 const props = defineProps({
 	title: String,

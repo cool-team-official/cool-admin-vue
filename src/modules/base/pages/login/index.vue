@@ -73,12 +73,12 @@
 </template>
 
 <script lang="ts" name="login" setup>
-import { reactive, ref } from "vue";
-import { ElMessage } from "element-plus";
-import { useCool } from "/@/cool";
-import { useBase } from "/$/base";
-import PicCaptcha from "./components/pic-captcha.vue";
-import { storage } from "/@/cool/utils";
+import { reactive, ref } from 'vue';
+import { ElMessage } from 'element-plus';
+import { useCool } from '/@/cool';
+import { useBase } from '/$/base';
+import PicCaptcha from './components/pic-captcha.vue';
+import { storage } from '/@/cool/utils';
 
 const { refs, setRefs, router, service, browser } = useCool();
 const { user, app } = useBase();
@@ -91,24 +91,24 @@ const readonly = ref(!browser.isMini);
 
 // 表单数据
 const form = reactive({
-	username: storage.get("username") || "",
-	password: "",
-	captchaId: "",
-	verifyCode: ""
+	username: storage.get('username') || '',
+	password: '',
+	captchaId: '',
+	verifyCode: ''
 });
 
 // 登录
 async function toLogin() {
 	if (!form.username) {
-		return ElMessage.error("用户名不能为空");
+		return ElMessage.error('用户名不能为空');
 	}
 
 	if (!form.password) {
-		return ElMessage.error("密码不能为空");
+		return ElMessage.error('密码不能为空');
 	}
 
 	if (!form.verifyCode) {
-		return ElMessage.error("图片验证码不能为空");
+		return ElMessage.error('图片验证码不能为空');
 	}
 
 	saving.value = true;
@@ -118,13 +118,13 @@ async function toLogin() {
 		await service.base.open.login(form).then(user.setToken);
 
 		// token 事件
-		await Promise.all(app.events.hasToken.map((e) => e()));
+		await Promise.all(app.events.hasToken.map(e => e()));
 
 		// 设置缓存
-		storage.set("username", form.username);
+		storage.set('username', form.username);
 
 		// 跳转首页
-		router.push("/");
+		router.push('/');
 	} catch (err) {
 		// 刷新验证码
 		refs.picCaptcha.refresh();
@@ -139,6 +139,36 @@ async function toLogin() {
 
 <style lang="scss" scoped>
 $color: #2c3142;
+
+@keyframes dou {
+	0% {
+		transform: rotate(0);
+	}
+	11% {
+		transform: rotate(7.61deg);
+	}
+	23% {
+		transform: rotate(-5.8deg);
+	}
+	36% {
+		transform: rotate(3.35deg);
+	}
+	49% {
+		transform: rotate(-1.9deg);
+	}
+	62% {
+		transform: rotate(1.12deg);
+	}
+	75% {
+		transform: rotate(-0.64deg);
+	}
+	88% {
+		transform: rotate(0.37deg);
+	}
+	100% {
+		transform: rotate(-0.28deg);
+	}
+}
 
 .page-login {
 	display: flex;

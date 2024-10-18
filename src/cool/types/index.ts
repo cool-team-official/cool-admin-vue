@@ -1,5 +1,5 @@
-import { Component, Directive, App } from "vue";
-import { Router as VueRouter, RouteRecordRaw } from "vue-router";
+import type { Component, Directive, App } from 'vue';
+import type { Router as VueRouter, RouteRecordRaw } from 'vue-router';
 
 export declare type Merge<A, B> = Omit<A, keyof B> & B;
 
@@ -24,7 +24,7 @@ export declare interface ModuleConfig {
 	};
 	components?: Component[];
 	views?: RouteRecordRaw[];
-	pages?: RouteRecordRaw[];
+	pages?: (RouteRecordRaw & { isPage?: boolean })[];
 	install?(app: App, options?: any): any;
 	onLoad?(events: {
 		hasToken: (cb: () => Promise<any> | void) => Promise<any> | void;
@@ -44,17 +44,8 @@ export declare interface Module extends ModuleConfig {
 }
 
 export declare interface Router extends VueRouter {
-	find(path: string): RouteRecordRaw | undefined;
-	append(
-		data: {
-			name?: string;
-			path: string;
-			component?: any;
-			viewPath?: string;
-			isPage?: boolean;
-			[key: string]: any;
-		}[]
-	): void;
-	register(path: string): Promise<{ route: RouteRecordRaw | undefined; isReg: boolean }>;
-	[key: string]: any;
+	find(path: string): { route: RouteRecordRaw; isReg: boolean };
+	del(name: string): void;
+	clear(): void;
+	append(data: any | any[]): void;
 }

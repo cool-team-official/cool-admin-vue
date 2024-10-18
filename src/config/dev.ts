@@ -1,18 +1,18 @@
-import { getUrlParam, storage } from "/@/cool/utils";
-import { proxy } from "./proxy";
+import { getUrlParam, storage } from '/@/cool/utils';
+import { proxy } from './proxy';
 
 export default {
 	// 根地址
-	host: proxy["/dev/"].target,
+	host: proxy['/dev/'].target,
 
 	// 请求地址
 	get baseUrl() {
-		let proxy = getUrlParam("proxy");
+		let proxy = getUrlParam('proxy');
 
 		if (proxy) {
-			storage.set("proxy", proxy);
+			storage.set('proxy', proxy);
 		} else {
-			proxy = storage.get("proxy") || "dev";
+			proxy = storage.get('proxy') || 'dev';
 		}
 
 		return `/${proxy}`;

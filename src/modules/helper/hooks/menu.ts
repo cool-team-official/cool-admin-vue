@@ -1,7 +1,7 @@
-import { ElMessage } from "element-plus";
-import type { EpsModule } from "../types";
-import { service } from "/@/cool";
-import { useCode } from "./code";
+import { ElMessage } from 'element-plus';
+import type { EpsModule } from '../types';
+import { service } from '/@/cool';
+import { useCode } from './code';
 
 export function useMenu() {
 	const { createVue } = useCode();
@@ -12,7 +12,7 @@ export function useMenu() {
 			// 视图文件路径
 			data.viewPath = `modules/${data.module}/views${data.router?.replace(
 				`/${data.module}`,
-				""
+				''
 			)}.vue`;
 
 			// 添加菜单
@@ -26,9 +26,9 @@ export function useMenu() {
 					code: undefined,
 					columns: undefined
 				})
-				.then((res) => {
+				.then(res => {
 					// 权限列表
-					const perms = data.api?.map((e) => {
+					const perms = data.api?.map(e => {
 						const d = {
 							type: 2,
 							parentId: res.id,
@@ -36,19 +36,19 @@ export function useMenu() {
 							perms: [e.path]
 						};
 
-						if (e.path == "/update") {
-							if (data.api?.find((a) => a.path == "/info")) {
-								d.perms.push("/info");
+						if (e.path == '/update') {
+							if (data.api?.find(a => a.path == '/info')) {
+								d.perms.push('/info');
 							}
 						}
 
 						return {
 							...d,
 							perms: d.perms
-								.map((e) =>
-									(data.prefix?.replace("/admin/", "") + e).replace(/\//g, ":")
+								.map(e =>
+									(data.prefix?.replace('/admin/', '') + e).replace(/\//g, ':')
 								)
-								.join(",")
+								.join(',')
 						};
 					});
 
@@ -57,8 +57,8 @@ export function useMenu() {
 						resolve(() => {
 							service
 								.request({
-									url: "/__cool_createMenu",
-									method: "POST",
+									url: '/__cool_createMenu',
+									method: 'POST',
 									proxy: false,
 									data: {
 										code: createVue(data),
@@ -71,7 +71,7 @@ export function useMenu() {
 						});
 					});
 				})
-				.catch((err) => {
+				.catch(err => {
 					ElMessage.error(err.message);
 					reject();
 				});

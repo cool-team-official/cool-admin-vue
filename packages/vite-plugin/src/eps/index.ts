@@ -7,7 +7,7 @@ import prettier from "prettier";
 import { config } from "../config";
 import type { Eps } from "../../types";
 
-let service = {};
+const service = {};
 let list: Eps.Entity[] = [];
 let customList: Eps.Entity[] = [];
 

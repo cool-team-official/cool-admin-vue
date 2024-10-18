@@ -45,9 +45,9 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable } from "@cool-vue/crud";
-import { computed, ref } from "vue";
-import { useDict } from "/$/dict";
+import { useCrud, useTable } from '@cool-vue/crud';
+import { computed, ref } from 'vue';
+import { useDict } from '/$/dict';
 
 const { dict } = useDict();
 
@@ -55,58 +55,58 @@ const { dict } = useDict();
 const Crud = useCrud(
 	{
 		// 测试数据，移步到 cl-crud 例子查看
-		service: "test"
+		service: 'test'
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
 
-const active = ref("user");
+const active = ref('user');
 
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			label: "ID",
-			prop: "id",
+			label: 'ID',
+			prop: 'id',
 			minWidth: 140,
 
 			//【很重要】配置 hidden 参数，格式为 boolean 或者 Vue.ComputedRef<boolean>
 			hidden: computed(() => {
-				return active.value != "company";
+				return active.value != 'company';
 			})
 		},
 		{
-			label: "账号",
-			prop: "account",
+			label: '账号',
+			prop: 'account',
 			minWidth: 140,
 			hidden: true // 默认 false
 		},
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 140
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation"),
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation'),
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		}
 	]
 });

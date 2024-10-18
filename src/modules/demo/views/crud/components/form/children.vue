@@ -20,27 +20,27 @@
 </template>
 
 <script setup lang="ts">
-import { useForm } from "@cool-vue/crud";
+import { useForm } from '@cool-vue/crud';
 
 const Form = useForm();
 
 function open() {
 	Form.value?.open({
-		title: "层级显示",
+		title: '层级显示',
 		items: [
 			{
-				label: "姓名",
-				prop: "name",
+				label: '姓名',
+				prop: 'name',
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				}
 			},
 			{
-				label: "年龄",
-				prop: "age",
+				label: '年龄',
+				prop: 'age',
 				value: 18,
 				component: {
-					name: "el-input-number"
+					name: 'el-input-number'
 				}
 			},
 
@@ -48,27 +48,27 @@ function open() {
 			{
 				component: {
 					//【很重要】使用 cl-form-card 组件渲染，也可以使用自定义
-					name: "cl-form-card",
+					name: 'cl-form-card',
 					props: {
 						// 标题
-						label: "基础信息",
+						label: '基础信息',
 						// 是否展开，默认 true
 						expand: true
 					}
 				},
 				children: [
 					{
-						label: "账号",
-						prop: "account",
+						label: '账号',
+						prop: 'account',
 						component: {
-							name: "el-input"
+							name: 'el-input'
 						}
 					},
 					{
-						label: "密码",
-						prop: "password",
+						label: '密码',
+						prop: 'password',
 						component: {
-							name: "el-input"
+							name: 'el-input'
 						}
 					}
 				]
@@ -77,32 +77,32 @@ function open() {
 			// 其他信息
 			{
 				component: {
-					name: "cl-form-card",
+					name: 'cl-form-card',
 					props: {
-						label: "其他信息",
+						label: '其他信息',
 						expand: false
 					}
 				},
 				children: [
 					{
-						label: "身份证",
-						prop: "idcard",
+						label: '身份证',
+						prop: 'idcard',
 						component: {
-							name: "el-input"
+							name: 'el-input'
 						}
 					},
 					{
-						label: "学校",
-						prop: "school",
+						label: '学校',
+						prop: 'school',
 						component: {
-							name: "el-input"
+							name: 'el-input'
 						}
 					},
 					{
-						label: "专业",
-						prop: "major",
+						label: '专业',
+						prop: 'major',
 						component: {
-							name: "el-input"
+							name: 'el-input'
 						}
 					}
 				]

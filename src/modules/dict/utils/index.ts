@@ -17,5 +17,5 @@ export function deepFind(value: any, list: any[]) {
 }
 
 export function isEmpty(val: any) {
-	return val === "" || val === null || val === undefined;
+	return val === '' || val === null || val === undefined;
 }

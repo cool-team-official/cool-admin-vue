@@ -1,2 +1,2 @@
-export * from "./utils/declare";
-export * from "./utils/theme";
+export * from './utils/declare';
+export * from './utils/theme';

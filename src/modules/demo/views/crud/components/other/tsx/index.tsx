@@ -1,6 +1,6 @@
-import { defineComponent, ref } from "vue";
-import { Check } from "@element-plus/icons-vue";
-import "./index.scss";
+import { defineComponent, ref } from 'vue';
+import { Check } from '@element-plus/icons-vue';
+import './index.scss';
 
 interface Item {
 	name: string;
@@ -8,17 +8,17 @@ interface Item {
 }
 
 export default defineComponent({
-	emits: ["checked"],
+	emits: ['checked'],
 
 	setup(props, { emit, expose, slots }) {
 		// 列表数据
 		const list = ref<Item[]>([
 			{
-				name: "鸡腿堡",
+				name: '鸡腿堡',
 				value: 1
 			},
 			{
-				name: "牛肉堡",
+				name: '牛肉堡',
 				value: 2
 			}
 		]);
@@ -39,7 +39,7 @@ export default defineComponent({
 			active.value = item.value;
 
 			// 自定义事件
-			emit("checked", item);
+			emit('checked', item);
 		}
 
 		// 暴露方法和变量，使上级可以使用 ref 的方式来调用
@@ -60,13 +60,13 @@ export default defineComponent({
 
 					<div class="c">
 						<el-button onClick={open}>预览</el-button>
-						<demo-code files={["other/tsx/index.tsx"]} />
+						<demo-code files={['other/tsx/index.tsx']} />
 
 						{/* ref 的绑定值必须 .value */}
 						<cl-dialog v-model={visible.value} title="tsx示例">
 							<div class="tsx-list">
 								{/* 循环的使用 */}
-								{list.value.map((item) => {
+								{list.value.map(item => {
 									// 插槽的使用
 									return slots.default ? (
 										slots.default(item)
@@ -74,8 +74,10 @@ export default defineComponent({
 										<div
 											// 动态样式的使用
 											class={[
-												"item",
-												{ "is-active": item.value == active.value }
+												'item',
+												{
+													'is-active': item.value == active.value
+												}
 											]}
 											// 事件的使用
 											onClick={() => toCheck(item)}

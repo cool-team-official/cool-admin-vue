@@ -44,9 +44,9 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useDict } from "/$/dict";
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useDict } from '/$/dict';
 
 const { dict } = useDict();
 
@@ -54,34 +54,34 @@ const { dict } = useDict();
 const Crud = useCrud(
 	{
 		//【很重要】配置 service，如：service.base.sys.user
-		service: "test",
+		service: 'test',
 
 		//【很重要】字典配置，文案和请求方法等
 		dict: {
 			// 修改请求
 			// 比如说默认列表请求的是 page 接口，可以修改成 getUserList 等等，这取决于后端有没有这个接口。
 			api: {
-				list: "list",
-				add: "add",
-				update: "update",
-				delete: "delete",
-				info: "info",
-				page: "page"
+				list: 'list',
+				add: 'add',
+				update: 'update',
+				delete: 'delete',
+				info: 'info',
+				page: 'page'
 			},
 
 			// 修改文案
 			label: {
-				op: "操作",
-				add: "添加",
-				delete: "移除",
-				multiDelete: "批量移除",
-				update: "修改",
-				refresh: "刷新",
-				info: "详情"
+				op: '操作',
+				add: '添加',
+				delete: '移除',
+				multiDelete: '批量移除',
+				update: '修改',
+				refresh: '刷新',
+				info: '详情'
 			}
 		}
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -89,37 +89,37 @@ const Crud = useCrud(
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			type: "selection"
+			type: 'selection'
 		},
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 140
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation"),
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation'),
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		},
 		{
-			type: "op",
-			buttons: ["edit", "delete"]
+			type: 'op',
+			buttons: ['edit', 'delete']
 		}
 	]
 });
@@ -128,28 +128,28 @@ const Table = useTable({
 const Upsert = useUpsert({
 	items: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "工作",
-			prop: "occupation",
+			label: '工作',
+			prop: 'occupation',
 			component: {
-				name: "cl-select",
+				name: 'cl-select',
 				props: {
 					tree: true,
 					checkStrictly: true,
-					options: dict.get("occupation")
+					options: dict.get('occupation')
 				}
 			}
 		}

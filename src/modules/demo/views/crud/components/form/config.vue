@@ -25,37 +25,37 @@
 </template>
 
 <script setup lang="ts">
-import { useForm } from "@cool-vue/crud";
-import { ElMessage } from "element-plus";
+import { useForm } from '@cool-vue/crud';
+import { ElMessage } from 'element-plus';
 
 const Form = useForm();
 
 function open() {
 	Form.value?.open({
-		title: "参数配置",
+		title: '参数配置',
 
 		// 打开是否重置表单
 		isReset: false,
 
 		// 默认表单值
 		form: {
-			nickName: "神仙都没用"
+			nickName: '神仙都没用'
 		},
 
 		// 表单配置
 		props: {
 			// 标签宽度
-			labelWidth: "120px",
+			labelWidth: '120px',
 
 			// 标签位置
-			labelPosition: "top"
+			labelPosition: 'top'
 		},
 
 		// 窗口的高。配置后，在窗口内部滚动。默认整个页面滚动
-		height: "60vh",
+		height: '60vh',
 
 		// 窗口的宽，默认 50%
-		width: "60%",
+		width: '60%',
 
 		// 窗口设置
 		dialog: {
@@ -65,19 +65,19 @@ function open() {
 			// 顶部操作按钮，默认["fullscreen", "close"]
 			// fullscreen 全屏
 			// close 关闭
-			controls: ["close"]
+			controls: ['close']
 		},
 
 		// 底部操作按钮
 		op: {
 			// 默认靠右布局
-			justify: "flex-end",
+			justify: 'flex-end',
 
 			// 保存按钮文字
-			saveButtonText: "提交",
+			saveButtonText: '提交',
 
 			// 关闭按钮文字
-			closeButtonText: "关闭",
+			closeButtonText: '关闭',
 
 			// 是否隐藏
 			hidden: false,
@@ -86,27 +86,27 @@ function open() {
 			buttons: [
 				// 自定义
 				{
-					label: "自定义按钮",
+					label: '自定义按钮',
 					onClick() {
-						ElMessage.success("自定义按钮点击");
+						ElMessage.success('自定义按钮点击');
 					}
 				},
 				// close 关闭
-				"close",
+				'close',
 				// save 保存
-				"save",
+				'save',
 				// 插槽使用，配合 template，往上看 cl-form 组件
-				"slot-btns"
+				'slot-btns'
 			]
 		},
 
 		// 表单项配置
 		items: [
 			{
-				label: "昵称",
-				prop: "nickName",
+				label: '昵称',
+				prop: 'nickName',
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				}
 			}
 		],

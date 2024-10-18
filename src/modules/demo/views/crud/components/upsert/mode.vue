@@ -39,19 +39,19 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useDict } from "/$/dict";
-import { ElMessage } from "element-plus";
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useDict } from '/$/dict';
+import { ElMessage } from 'element-plus';
 
 const { dict } = useDict();
 
 // cl-crud 配置
 const Crud = useCrud(
 	{
-		service: "test"
+		service: 'test'
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -59,35 +59,35 @@ const Crud = useCrud(
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 140
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation"),
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation'),
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		},
 		{
-			type: "op",
+			type: 'op',
 			width: 240,
-			buttons: ["info", "edit", "delete"]
+			buttons: ['info', 'edit', 'delete']
 		}
 	]
 });
@@ -96,39 +96,39 @@ const Table = useTable({
 const Upsert = useUpsert({
 	items: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		//【很重要】只有返回方法的时候才能使用 Upsert
 		() => {
 			return {
-				label: "手机号",
-				prop: "phone",
+				label: '手机号',
+				prop: 'phone',
 
 				// 新增的时候隐藏
 				// hidden: Upsert.value?.mode == "add",
 
 				component: {
-					name: "el-input",
+					name: 'el-input',
 					props: {
 						// 编辑的时候禁用
-						disabled: Upsert.value?.mode == "update"
+						disabled: Upsert.value?.mode == 'update'
 					}
 				}
 			};
 		},
 		{
-			label: "工作",
-			prop: "occupation",
+			label: '工作',
+			prop: 'occupation',
 			component: {
-				name: "cl-select",
+				name: 'cl-select',
 				props: {
 					tree: true,
 					checkStrictly: true,
-					options: dict.get("occupation")
+					options: dict.get('occupation')
 				}
 			}
 		}

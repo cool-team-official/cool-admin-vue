@@ -1,17 +1,17 @@
-import { isEmpty, isFunction, isRegExp, isString } from "lodash-es";
-import { PropRules } from "../dict";
-import type { EpsColumn, EpsModule } from "../types";
+import { isEmpty, isFunction, isRegExp, isString } from 'lodash-es';
+import { PropRules } from '../dict';
+import type { EpsColumn, EpsModule } from '../types';
 
 export function useCode() {
 	// 特殊情况处理
 	const handler = {
 		// 单选
 		dict({ comment }: EpsColumn) {
-			const [label, ...arr] = comment.split(" ");
+			const [label, ...arr] = comment.split(' ');
 
 			// 选项列表
-			const list: any[] = arr.map((e) => {
-				const [value, label] = e.split("-");
+			const list: any[] = arr.map(e => {
+				const [value, label] = e.split('-');
 
 				return {
 					label,
@@ -21,11 +21,11 @@ export function useCode() {
 
 			// boolean
 			if (list.length == 2) {
-				list.forEach((e) => {
+				list.forEach(e => {
 					if (e.value == 1) {
-						e.type = "success";
+						e.type = 'success';
 					} else {
-						e.type = "danger";
+						e.type = 'danger';
 					}
 				});
 			}
@@ -39,7 +39,7 @@ export function useCode() {
 				form: {
 					label,
 					component: {
-						name: "",
+						name: '',
 						options: list
 					}
 				} as ClForm.Item
@@ -51,7 +51,7 @@ export function useCode() {
 			}
 
 			// 匹配组件
-			d.form.component!.name = arr.length > 4 ? "el-select" : "el-radio-group";
+			d.form.component!.name = arr.length > 4 ? 'el-select' : 'el-radio-group';
 
 			return d;
 		},
@@ -69,15 +69,15 @@ export function useCode() {
 			}
 
 			switch (form.component?.name) {
-				case "el-select":
+				case 'el-select':
 					Object.assign(form.component.props, {
 						multiple: true,
 						filterable: true
 					});
 					break;
 
-				case "el-radio-group":
-					form.component.name = "el-checkbox-group";
+				case 'el-radio-group':
+					form.component.name = 'el-checkbox-group';
 					break;
 			}
 
@@ -91,12 +91,12 @@ export function useCode() {
 	// 创建组件
 	function createComponent(column: EpsColumn, columns: EpsColumn[]) {
 		const prop = column.propertyName;
-		let label = column.comment || "";
+		let label = column.comment || '';
 		let d: any;
 		let isHidden = false;
 
 		// 根据规则匹配组件
-		PropRules.find((r) => {
+		PropRules.find(r => {
 			let s = false;
 
 			// 已知组件的情况下
@@ -107,7 +107,7 @@ export function useCode() {
 			} else {
 				// 根据规则匹配
 				if (r.test) {
-					s = !!r.test.find((e) => {
+					s = !!r.test.find(e => {
 						if (isRegExp(e)) {
 							return e.test(prop);
 						}
@@ -133,7 +133,7 @@ export function useCode() {
 			if (r.group) {
 				if (
 					r.group.includes(prop) &&
-					r.group.some((e) => columns.find((c) => c.propertyName == e))
+					r.group.some(e => columns.find(c => c.propertyName == e))
 				) {
 					if (r.group[0] == prop) {
 						s = true;
@@ -145,7 +145,6 @@ export function useCode() {
 
 			if (s) {
 				if (r.handler) {
-					// @ts-ignore
 					const fn = isString(r.handler) ? handler[r.handler] : r.handler;
 
 					if (isFunction(fn)) {
@@ -164,11 +163,11 @@ export function useCode() {
 
 		// 没找到则默认input
 		if (!d) {
-			d = PropRules.find((e) => e.value == "input")?.render;
+			d = PropRules.find(e => e.value == 'input')?.render;
 		}
 
 		// 格式化标题
-		label = label?.split?.(" ")?.[0] || column.propertyName;
+		label = label?.split?.(' ')?.[0] || column.propertyName;
 
 		return {
 			column: {
@@ -187,9 +186,9 @@ export function useCode() {
 
 	// 创建 vue 代码
 	function createVue({
-		router = "",
+		router = '',
 		columns = [],
-		prefix = "",
+		prefix = '',
 		api = [],
 		fieldEq = [],
 		keyWordLikeFields = []
@@ -205,10 +204,10 @@ export function useCode() {
 		};
 
 		// 选项
-		const options = {};
+		const options: any = {};
 
 		// 遍历
-		columns.forEach((e) => {
+		columns.forEach(e => {
 			// 创建组件
 			const { item, column, isHidden } = createComponent(e, columns);
 
@@ -238,34 +237,34 @@ export function useCode() {
 			}
 
 			// 表单忽略
-			if (!["createTime", "updateTime", "id", "endTime", "endDate"].includes(item.prop)) {
+			if (!['createTime', 'updateTime', 'id', 'endTime', 'endDate'].includes(item.prop)) {
 				upsert.items.push(item);
 			}
 
 			// 表格忽略
-			if (!["id"].includes(item.prop)) {
+			if (!['id'].includes(item.prop)) {
 				// 默认排序
-				if (item.prop == "createTime") {
-					column.sortable = "desc";
+				if (item.prop == 'createTime') {
+					column.sortable = 'desc';
 				}
 
 				table.columns.push(column);
 			}
 
 			// 时间范围处理
-			if (["startTime", "startDate"].includes(item.prop)) {
-				const key = item.prop.replace("start", "");
+			if (['startTime', 'startDate'].includes(item.prop)) {
+				const key = item.prop.replace('start', '');
 
-				if (columns.find((e) => e.propertyName == "end" + key)) {
+				if (columns.find(e => e.propertyName == 'end' + key)) {
 					item.prop = key.toLocaleLowerCase();
-					const isTime = item.prop == "time";
-					item.label = isTime ? "时间范围" : "日期范围";
-					item.hook = "datetimeRange";
+					const isTime = item.prop == 'time';
+					item.label = isTime ? '时间范围' : '日期范围';
+					item.hook = 'datetimeRange';
 					item.component = {
-						name: "el-date-picker",
+						name: 'el-date-picker',
 						props: {
-							type: isTime ? "datetimerange" : "daterange",
-							valueFormat: isTime ? "YYYY-MM-DD HH:mm:ss" : "YYYY-MM-DD 00:00:00",
+							type: isTime ? 'datetimerange' : 'daterange',
+							valueFormat: isTime ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD 00:00:00',
 							defaultTime: [
 								new Date(2000, 1, 1, 0, 0, 0),
 								new Date(2000, 1, 1, 23, 59, 59)
@@ -277,17 +276,17 @@ export function useCode() {
 		});
 
 		// 请求服务
-		const service = prefix.replace("/admin", "service").split("/");
+		const service = prefix.replace('/admin', 'service').split('/');
 
 		// 请求地址
-		const paths = api.map((e) => e.path);
+		const paths = api.map(e => e.path);
 
 		// 权限
 		const perms = {
-			add: paths.includes("/add"),
-			del: paths.includes("/delete"),
-			update: paths.includes("/info") && paths.includes("/update"),
-			page: paths.includes("/page"),
+			add: paths.includes('/add'),
+			del: paths.includes('/delete'),
+			update: paths.includes('/info') && paths.includes('/update'),
+			page: paths.includes('/page'),
 			upsert: true
 		};
 		perms.upsert = perms.add || perms.update;
@@ -297,15 +296,15 @@ export function useCode() {
 			const buttons: ClTable.OpButton = [];
 
 			if (perms.upsert) {
-				buttons.push("edit");
+				buttons.push('edit');
 			}
 
 			if (perms.del) {
-				buttons.push("delete");
+				buttons.push('delete');
 			}
 
 			table.columns.push({
-				type: "op",
+				type: 'op',
 				buttons
 			});
 		}
@@ -313,50 +312,50 @@ export function useCode() {
 		// 是否多选、序号
 		if (perms.del) {
 			table.columns.unshift({
-				type: "selection"
+				type: 'selection'
 			});
 		} else {
 			table.columns.unshift({
-				label: "#",
-				type: "index"
+				label: '#',
+				type: 'index'
 			});
 		}
 
 		// 筛选
 		const clFilter = fieldEq
-			.map((field) => {
+			.map(field => {
 				if (isEmpty(options[field])) {
-					return "";
+					return '';
 				}
 
-				const item = upsert.items.find((e) => e.prop == field);
+				const item = upsert.items.find(e => e.prop == field);
 
 				if (!item) {
-					return "";
+					return '';
 				}
 
 				return `<!-- 筛选${item.label} -->\n<cl-filter label="${item.label}">\n<cl-select prop="${field}" :options="options.${field}" />\n</cl-filter>`;
 			})
 			.filter(Boolean)
-			.join("\n");
+			.join('\n');
 
 		// 关键字搜索
 		const clSearchKeyPlaceholder = keyWordLikeFields
-			.map((field) => {
-				return table.columns.find((e) => e.prop == field)?.label;
+			.map(field => {
+				return table.columns.find(e => e.prop == field)?.label;
 			})
-			.filter((e) => !!e)
-			.join("、");
+			.filter(e => !!e)
+			.join('、');
 
 		// 选项
 		const ConstOptions = `${
 			isEmpty(options)
-				? ""
-				: "\n// 选项\nconst options = reactive(" + toCodeString(options) + ")\n"
+				? ''
+				: '\n// 选项\nconst options = reactive(' + toCodeString(options) + ')\n'
 		}`;
 
 		// Vue 依赖
-		let ImportVue = "";
+		let ImportVue = '';
 
 		if (ConstOptions) {
 			ImportVue = "import { reactive } from 'vue';\n";
@@ -368,12 +367,12 @@ export function useCode() {
 		<cl-row>
 			<!-- 刷新按钮 -->
 			<cl-refresh-btn />
-			${perms.add ? "<!-- 新增按钮 -->\n			<cl-add-btn />" : ""}
-			${perms.del ? "<!-- 删除按钮 -->\n			<cl-multi-delete-btn />" : ""}
+			${perms.add ? '<!-- 新增按钮 -->\n			<cl-add-btn />' : ''}
+			${perms.del ? '<!-- 删除按钮 -->\n			<cl-multi-delete-btn />' : ''}
 			${clFilter}
 			<cl-flex1 />
 			<!-- 关键字搜索 -->
-			<cl-search-key placeholder="搜索${clSearchKeyPlaceholder || "关键字"}" />
+			<cl-search-key placeholder="搜索${clSearchKeyPlaceholder || '关键字'}" />
 		</cl-row>
 
 		<cl-row>
@@ -392,7 +391,7 @@ export function useCode() {
 	</cl-crud>
 </template>
 
-<script lang="ts" name="${router.replace(/^\//, "").replace(/\//g, "-")}" setup>
+<script lang="ts" name="${router.replace(/^\//, '').replace(/\//g, '-')}" setup>
 import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
 import { useCool } from "/@/cool";
 ${ImportVue}
@@ -407,7 +406,7 @@ const Table = useTable(${toCodeString(table)});
 // cl-crud
 const Crud = useCrud(
 	{
-		service: ${service.join(".")}
+		service: ${service.join('.')}
 	},
 	(app) => {
 		app.refresh();
@@ -420,7 +419,7 @@ function refresh(params?: any) {
 }
 </script>`;
 
-		return temp.replace(/"\$\$|\$\$"/g, "");
+		return temp.replace(/"\$\$|\$\$"/g, '');
 	}
 
 	// 转成代码字符串
@@ -437,7 +436,7 @@ function refresh(params?: any) {
 			}
 		});
 
-		arr.forEach((e) => {
+		arr.forEach(e => {
 			code = code.replace(e[0].substring(1, e[0].length - 1), e[1]);
 		});
 

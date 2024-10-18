@@ -20,77 +20,77 @@
 </template>
 
 <script setup lang="ts">
-import { useForm } from "@cool-vue/crud";
+import { useForm } from '@cool-vue/crud';
 
 const Form = useForm();
 
 function open() {
 	Form.value?.open({
-		title: "分组显示",
+		title: '分组显示',
 		items: [
 			{
 				//【很重要】必须为 tabs
-				type: "tabs",
+				type: 'tabs',
 				props: {
 					// 分组样式
-					type: "card",
+					type: 'card',
 					// 分组列表，必须是 { label, value } 的数组格式
 					labels: [
 						{
-							label: "基础信息", // 标题
-							value: "base" // 唯一标识
+							label: '基础信息', // 标题
+							value: 'base' // 唯一标识
 						},
 						{
-							label: "认证信息",
-							value: "auth"
+							label: '认证信息',
+							value: 'auth'
 						}
 					]
 				}
 			},
 			// 基础信息
 			{
-				group: "base", // 标识
-				label: "账号",
-				prop: "account",
+				group: 'base', // 标识
+				label: '账号',
+				prop: 'account',
 				required: true,
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				}
 			},
 			{
-				group: "base", // 标识
-				label: "密码",
-				prop: "password",
+				group: 'base', // 标识
+				label: '密码',
+				prop: 'password',
 				required: true,
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				}
 			},
 
 			// 其他信息 group = other
 			{
-				group: "auth", // 标识
-				label: "身份证",
-				prop: "idcard",
+				group: 'auth', // 标识
+				label: '身份证',
+				prop: 'idcard',
 				required: true,
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				}
 			},
 			{
-				group: "auth", // 标识
-				label: "学校",
-				prop: "school",
+				group: 'auth', // 标识
+				label: '学校',
+				prop: 'school',
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				}
 			},
 			{
-				group: "auth", // 标识
-				label: "专业",
-				prop: "major",
+				group: 'auth', // 标识
+				label: '专业',
+				prop: 'major',
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				}
 			}
 		],

@@ -21,7 +21,7 @@
 				</p>
 			</div>
 
-			<div class="start" v-if="step.value == 'start'">
+			<div v-if="step.value == 'start'" class="start">
 				<el-button class="go btn-primary" @click="step.next">
 					快速开始
 
@@ -33,7 +33,7 @@
 				<el-button class="doc" @click="toDoc"> 文档 </el-button>
 			</div>
 
-			<div class="enter" v-if="step.value == 'enter'">
+			<div v-if="step.value == 'enter'" class="enter">
 				<el-input
 					:ref="setRefs('inputEntity')"
 					v-model="form.entity"
@@ -41,11 +41,11 @@
 					@keydown.enter="step.next"
 				/>
 
-				<el-icon class="icon is-loading" v-if="step.loading">
+				<el-icon v-if="step.loading" class="icon is-loading">
 					<loading />
 				</el-icon>
 
-				<cl-svg class="icon" name="enter" v-else @click="step.next" />
+				<cl-svg v-else class="icon" name="enter" @click="step.next" />
 			</div>
 
 			<div
@@ -115,9 +115,9 @@
 
 								<div class="module-list">
 									<div
-										class="item"
 										v-for="(item, index) in module.dirs"
 										:key="index"
+										class="item"
 										@click="
 											() => {
 												form.module = item;
@@ -148,7 +148,7 @@
 							<el-input v-model="form.column" maxlength="200" placeholder="请输入" />
 						</div>
 
-						<div class="row" v-if="lang.value == 'Node'">
+						<div v-if="lang.value == 'Node'" class="row">
 							<div class="label">
 								其他你想做的事
 
@@ -177,7 +177,7 @@
 				<div class="tips">如遇见 “代码缺失”、“请求超时”，请尝试「刷新」吧</div>
 			</div>
 
-			<div class="coding" v-if="step.value == 'coding'">
+			<div v-if="step.value == 'coding'" class="coding">
 				<div class="editor">
 					<div class="topbar">
 						<div class="dots">
@@ -192,9 +192,9 @@
 					<div class="content">
 						<div class="tabs">
 							<div
-								class="item"
 								v-for="(item, index) in code.list"
 								:key="index"
+								class="item"
 								:class="{
 									active: code.active == item.value
 								}"
@@ -207,8 +207,8 @@
 								{{ item.label }}
 							</div>
 
-							<div class="op" v-if="!isEmpty(code.list) && !code.loading">
-								<el-tooltip content="重新生成" v-if="code.active == 'vue'">
+							<div v-if="!isEmpty(code.list) && !code.loading" class="op">
+								<el-tooltip v-if="code.active == 'vue'" content="重新生成">
 									<el-icon @click="code.refresh()">
 										<refresh />
 									</el-icon>
@@ -230,9 +230,11 @@
 
 						<div class="code">
 							<cl-editor
-								name="cl-editor-monaco"
+								v-if="activeCode"
 								:ref="setRefs('editor')"
+								:key="activeCode.value"
 								v-model="activeCode.content"
+								name="cl-editor-monaco"
 								height="100%"
 								:border="false"
 								:options="{
@@ -241,15 +243,13 @@
 										enabled: true
 									}
 								}"
-								:key="activeCode.value"
 								:language="activeCode.value == 'vue' ? 'html' : lang.tpl"
-								v-if="activeCode"
 							/>
 						</div>
 
 						<div class="console">
 							<el-scrollbar :ref="setRefs('console.scrollbar')">
-								<div class="item" v-for="(item, index) in code.logs" :key="index">
+								<div v-for="(item, index) in code.logs" :key="index" class="item">
 									<span class="date"> {{ item.date }} </span>
 
 									<span class="text">
@@ -257,8 +257,8 @@
 									</span>
 
 									<el-icon
-										class="is-loading"
 										v-if="code.loading ? index == code.logs.length - 1 : false"
+										class="is-loading"
 									>
 										<loading />
 									</el-icon>
@@ -276,8 +276,8 @@
 </template>
 
 <script lang="tsx" setup name="helper-ai-code">
-import { onMounted, reactive, computed, nextTick } from "vue";
-import { useCool, module } from "/@/cool";
+import { onMounted, reactive, computed, nextTick } from 'vue';
+import { useCool, module } from '/@/cool';
 import {
 	Download,
 	Back,
@@ -286,17 +286,17 @@ import {
 	DocumentCopy,
 	QuestionFilled,
 	Refresh
-} from "@element-plus/icons-vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { assign, isEmpty } from "lodash-es";
-import { useMenu, useAi } from "../hooks";
-import { config, isDev } from "/@/config";
-import { useForm } from "@cool-vue/crud";
-import { sleep, storage } from "/@/cool/utils";
-import dayjs from "dayjs";
-import type { CodeItem, EpsColumn } from "../types";
-import { useClipboard } from "@vueuse/core";
-import { ctx } from "virtual:ctx";
+} from '@element-plus/icons-vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { assign, isEmpty } from 'lodash-es';
+import { useMenu, useAi } from '../hooks';
+import { config, isDev } from '/@/config';
+import { useForm } from '@cool-vue/crud';
+import { sleep, storage } from '/@/cool/utils';
+import dayjs from 'dayjs';
+import type { CodeItem, EpsColumn } from '../types';
+import { useClipboard } from '@vueuse/core';
+import { ctx } from 'virtual:ctx';
 
 const { service, refs, setRefs, router } = useCool();
 const menu = useMenu();
@@ -306,17 +306,17 @@ const { copy } = useClipboard();
 
 // 表单
 const form = reactive({
-	entity: "",
-	module: "",
-	other: "",
-	column: ""
+	entity: '',
+	module: '',
+	other: '',
+	column: ''
 });
 
 // 执行步骤
 const step = reactive({
 	loading: false,
-	value: "start",
-	list: ["start", "enter", "form", "coding"],
+	value: 'start',
+	list: ['start', 'enter', 'form', 'coding'],
 
 	async next() {
 		if (step.loading) {
@@ -334,19 +334,19 @@ const step = reactive({
 		}
 
 		switch (active) {
-			case "enter":
+			case 'enter':
 				setTimeout(() => {
 					refs.inputEntity.focus();
 				}, 300);
 				break;
 
-			case "form":
+			case 'form':
 				if (!form.entity) {
 					step.loading = false;
 					return false;
 				}
 
-				desc.set(["正在做初步分析，请稍等..."]);
+				desc.set(['正在做初步分析，请稍等...']);
 
 				await code.getColumns();
 				break;
@@ -368,21 +368,23 @@ const step = reactive({
 	}
 });
 
+type LangType = 'Node' | 'Java' | 'Go' | 'Python';
+
 // 语言
 const lang = reactive({
-	value: "Node",
+	value: 'Node' as LangType,
 
 	get() {
-		lang.value = ctx.serviceLang;
-		code.active = lang.value.toLocaleLowerCase() + "-entity";
+		lang.value = ctx.serviceLang as LangType;
+		code.active = lang.value.toLocaleLowerCase() + '-entity';
 	},
 
-	get tpl() {
+	tpl() {
 		const d = {
-			Node: "typescript",
-			Java: "java",
-			Go: "go",
-			Python: "python"
+			Node: 'typescript',
+			Java: 'java',
+			Go: 'go',
+			Python: 'python'
 		};
 
 		return d[lang.value];
@@ -391,43 +393,43 @@ const lang = reactive({
 
 // 代码
 const code = reactive({
-	active: "",
+	active: '',
 
 	// 代码列表
 	list: [] as CodeItem[],
 
 	// 其他数据
 	data: {
-		router: "",
-		prefix: "",
-		fileName: "",
+		router: '',
+		prefix: '',
+		fileName: '',
 		columns: [] as EpsColumn[],
 		fieldEq: [],
 		keyWordLikeFields: [],
 		api: [
 			{
-				path: "/add",
-				summary: "新增"
+				path: '/add',
+				summary: '新增'
 			},
 			{
-				path: "/info",
-				summary: "单个信息"
+				path: '/info',
+				summary: '单个信息'
 			},
 			{
-				path: "/update",
-				summary: "修改"
+				path: '/update',
+				summary: '修改'
 			},
 			{
-				path: "/delete",
-				summary: "删除"
+				path: '/delete',
+				summary: '删除'
 			},
 			{
-				path: "/page",
-				summary: "分页查询"
+				path: '/page',
+				summary: '分页查询'
 			},
 			{
-				path: "/list",
-				summary: "列表查询"
+				path: '/list',
+				summary: '列表查询'
 			}
 		]
 	},
@@ -444,11 +446,11 @@ const code = reactive({
 	// 获取字段
 	async getColumns() {
 		return ai
-			.invokeFlow("comm-column", {
+			.invokeFlow('comm-column', {
 				name: form.entity,
-				modules: module.dirs.join("、")
+				modules: module.dirs.join('、')
 			})
-			.then((res) => {
+			.then(res => {
 				form.column = res.columns;
 				form.module = res.module;
 			});
@@ -465,74 +467,74 @@ const code = reactive({
 	// 提示
 	tips(val?: string) {
 		code.logs.push({
-			date: dayjs().format("HH:mm:ss"),
+			date: dayjs().format('HH:mm:ss'),
 			text: val
 		});
 
 		// 日志滚动
 		nextTick(() => {
-			refs["console.scrollbar"]?.wrapRef?.scrollTo({
+			refs['console.scrollbar']?.wrapRef?.scrollTo({
 				top: Math.random() + 10000,
-				behavior: "smooth"
+				behavior: 'smooth'
 			});
 		});
 	},
 
 	// 生成 Node
 	async createNode() {
-		code.tips("Entity 代码生成中");
+		code.tips('Entity 代码生成中');
 
 		// entity 代码
-		const entity = await code.setContent("Entity 实体", "node-entity");
+		const entity = await code.setContent('Entity 实体', 'node-entity');
 
-		code.tips("Entity 生成成功，开始解析");
+		code.tips('Entity 生成成功，开始解析');
 
 		// entity 关键数据
-		const entityData = await ai.invokeFlow("comm-parse-entity", {
+		const entityData = await ai.invokeFlow('comm-parse-entity', {
 			entity,
 			module: form.module
 		});
 
 		code.tips(`Entity 解析成功，${JSON.stringify(entityData)}`);
 
-		code.data.router = entityData.path.replace("/admin", "");
+		code.data.router = entityData.path.replace('/admin', '');
 		code.data.prefix = entityData.path;
 		code.data.fileName = entityData.fileName;
 
 		// 解析字段
 		code.parseColumn();
 
-		code.tips("Service 代码生成中");
+		code.tips('Service 代码生成中');
 
 		// service 代码
-		const service = await code.setContent("Service 服务", "node-service", {
+		const service = await code.setContent('Service 服务', 'node-service', {
 			...entityData,
 			entity
 		});
 
-		code.tips("Service 生成成功，开始解析");
+		code.tips('Service 生成成功，开始解析');
 
 		// service 关键数据
-		const serviceData = await ai.invokeFlow("comm-parse-service", {
+		const serviceData = await ai.invokeFlow('comm-parse-service', {
 			service
 		});
 
 		code.tips(`Service 解析成功，${JSON.stringify(serviceData)}`);
 
-		code.tips("Controller 代码生成中");
+		code.tips('Controller 代码生成中');
 
 		// controller 代码
-		const controller = await code.setContent("Controller 控制器", "node-controller", {
+		const controller = await code.setContent('Controller 控制器', 'node-controller', {
 			...serviceData,
 			...entityData,
 			service,
 			entity
 		});
 
-		code.tips("Controller 生成成功，开始解析");
+		code.tips('Controller 生成成功，开始解析');
 
 		// controller 关键数据
-		const controllerData = await ai.invokeFlow("comm-parse-controller", {
+		const controllerData = await ai.invokeFlow('comm-parse-controller', {
 			entity,
 			controller
 		});
@@ -545,76 +547,76 @@ const code = reactive({
 
 	// 生成 Java
 	async createJava() {
-		code.tips("Entity 代码生成中");
+		code.tips('Entity 代码生成中');
 
 		// entity 代码
-		const entity = await code.setContent("Entity 实体", "java-entity");
+		const entity = await code.setContent('Entity 实体', 'java-entity');
 
-		code.tips("Entity 生成成功，开始解析");
+		code.tips('Entity 生成成功，开始解析');
 
 		// entity 关键数据
-		const entityData = await ai.invokeFlow("comm-parse-entity", {
+		const entityData = await ai.invokeFlow('comm-parse-entity', {
 			entity,
 			module: form.module
 		});
 
 		code.tips(`Entity 解析成功，${JSON.stringify(entityData)}`);
 
-		code.data.router = entityData.path.replace("/admin", "");
+		code.data.router = entityData.path.replace('/admin', '');
 		code.data.prefix = entityData.path;
 		code.data.fileName = entityData.fileName;
 
 		// 解析字段
 		code.parseColumn();
 
-		code.tips("Mapper 代码生成中");
+		code.tips('Mapper 代码生成中');
 
 		// mapper 代码
-		await code.setContent("Mapper 映射", "java-mapper", {
+		await code.setContent('Mapper 映射', 'java-mapper', {
 			...entityData,
 			entity
 		});
 
-		code.tips("Mapper 生成成功");
+		code.tips('Mapper 生成成功');
 
-		code.tips("Service 代码生成中");
+		code.tips('Service 代码生成中');
 
 		// service 接口类
-		const _service = await code.setContent("Service 接口类", "java-service", {
+		const _service = await code.setContent('Service 接口类', 'java-service', {
 			...entityData,
 			entity
 		});
 
 		// service 实现类
-		const service = await code.setContent("Service 实现类", "java-service-impl", {
+		const service = await code.setContent('Service 实现类', 'java-service-impl', {
 			...entityData,
 			entity,
 			service: _service
 		});
 
-		code.tips("Service 生成成功，开始解析");
+		code.tips('Service 生成成功，开始解析');
 
 		// service 关键数据
-		const serviceData = await ai.invokeFlow("comm-parse-service", {
+		const serviceData = await ai.invokeFlow('comm-parse-service', {
 			service
 		});
 
 		code.tips(`Service 解析成功，${JSON.stringify(serviceData)}`);
 
-		code.tips("Controller 代码生成中");
+		code.tips('Controller 代码生成中');
 
 		// controller 代码
-		const controller = await code.setContent("Controller 控制器", "java-controller", {
+		const controller = await code.setContent('Controller 控制器', 'java-controller', {
 			...serviceData,
 			...entityData,
 			service,
 			entity
 		});
 
-		code.tips("Controller 生成成功，开始解析");
+		code.tips('Controller 生成成功，开始解析');
 
 		// controller 关键数据
-		const controllerData = await ai.invokeFlow("comm-parse-controller", {
+		const controllerData = await ai.invokeFlow('comm-parse-controller', {
 			controller
 		});
 
@@ -627,15 +629,15 @@ const code = reactive({
 	// 生成代码
 	async create() {
 		if (!form.entity) {
-			return ElMessage.warning("请填写实体名称");
+			return ElMessage.warning('请填写实体名称');
 		}
 
 		if (!form.module) {
-			return ElMessage.warning("请填写模块");
+			return ElMessage.warning('请填写模块');
 		}
 
 		if (!form.column) {
-			return ElMessage.warning("请填写字段");
+			return ElMessage.warning('请填写字段');
 		}
 
 		code.loading = true;
@@ -646,23 +648,24 @@ const code = reactive({
 		// 下一步
 		step.next();
 
-		code.tips("AI 开始编码");
+		code.tips('AI 开始编码');
 
 		await sleep(300);
 
+		// @ts-ignore
 		await code[`create${lang.value}`]();
 
 		await code.createVue();
 
-		code.tips("编码完成");
+		code.tips('编码完成');
 
 		code.loading = false;
 
 		if (isDev) {
-			ElMessageBox.confirm("编码完成，是否创建文件？", "提示", {
-				type: "success",
-				confirmButtonText: "开始创建",
-				cancelButtonText: "稍后再看"
+			ElMessageBox.confirm('编码完成，是否创建文件？', '提示', {
+				type: 'success',
+				confirmButtonText: '开始创建',
+				cancelButtonText: '稍后再看'
 			})
 				.then(() => {
 					createFile();
@@ -673,39 +676,39 @@ const code = reactive({
 
 	// 解析字段
 	async parseColumn() {
-		const a = ai.invokeFlow("comm-parse-entity-column", {
+		const a = ai.invokeFlow('comm-parse-entity-column', {
 			entity: code.getContent(`${lang.value}-entity`)
 		});
 
-		const b = ai.invokeFlow("comm-parse-column", {
+		const b = ai.invokeFlow('comm-parse-column', {
 			entity: code.getContent(`${lang.value}-entity`)
 		});
 
-		code.req = Promise.all([a, b]).then((res) => {
+		code.req = Promise.all([a, b]).then(res => {
 			if (res[0]?.columns) {
 				code.data.columns = res[0].columns.map((e: EpsColumn) => {
 					if (res[1]?.columns) {
-						e.component = res[1].columns[e.propertyName] || "input";
+						e.component = res[1].columns[e.propertyName] || 'input';
 					}
 					return e;
 				});
 
 				code.data.columns.push({
-					comment: "更新时间",
+					comment: '更新时间',
 					length: 0,
-					component: "datetime",
+					component: 'datetime',
 					nullable: false,
-					propertyName: "updateTime",
-					type: "datetime"
+					propertyName: 'updateTime',
+					type: 'datetime'
 				});
 
 				code.data.columns.push({
-					comment: "创建时间",
+					comment: '创建时间',
 					length: 0,
-					component: "datetime",
+					component: 'datetime',
 					nullable: false,
-					propertyName: "createTime",
-					type: "datetime"
+					propertyName: 'createTime',
+					type: 'datetime'
 				});
 			}
 		});
@@ -713,19 +716,19 @@ const code = reactive({
 
 	// 创建vue
 	async createVue() {
-		const item = code.add("Vue 页面", "vue");
+		const item = code.add('Vue 页面', 'vue');
 
-		item.content = "";
+		item.content = '';
 
 		assign(code.data, form);
 
-		code.tips("Vue 代码开始生成");
+		code.tips('Vue 代码开始生成');
 
 		if (!code.req) {
 			code.parseColumn();
 		}
 
-		code.tips("AI 分析中");
+		code.tips('AI 分析中');
 
 		await code.req;
 
@@ -740,19 +743,19 @@ const code = reactive({
 		// 格式化
 		refs.editor.formatCode();
 
-		code.tips("Vue 生成成功");
+		code.tips('Vue 生成成功');
 	},
 
 	// 添加 tab
 	add(label: string, flow: string) {
-		let item = code.list.find((e) => e.value == flow);
+		let item = code.list.find(e => e.value == flow);
 
 		if (!item) {
 			item = reactive<CodeItem>({
 				label,
 				value: flow,
-				content: "",
-				_content: ""
+				content: '',
+				_content: ''
 			});
 
 			code.list.push(item);
@@ -765,28 +768,28 @@ const code = reactive({
 
 	// 获取数据
 	get(value: string) {
-		return code.list.find((e) => e.value == value)!;
+		return code.list.find(e => e.value == value)!;
 	},
 
 	// 获取内容
 	getContent(value: string) {
 		return code.list.find(
-			(e) => e.value == value || e.value.toLocaleLowerCase() == value.toLocaleLowerCase()
+			e => e.value == value || e.value.toLocaleLowerCase() == value.toLocaleLowerCase()
 		)?.content;
 	},
 
 	// 设置内容
 	async setContent(label: string, flow: string, data?: any) {
-		return new Promise((resolve) => {
+		return new Promise(resolve => {
 			const item = code.add(label, flow);
 
 			// 是否结束
 			let isEnd = false;
 
 			// 所有内容
-			let content = "";
+			let content = '';
 
-			ai.invokeFlow(flow, { ...form, ...data }, (res) => {
+			ai.invokeFlow(flow, { ...form, ...data }, res => {
 				isEnd = res.isEnd;
 
 				if (!res.isEnd) {
@@ -794,19 +797,19 @@ const code = reactive({
 
 					if (content.indexOf(`\`\`\`${lang.tpl}\n`) == 0) {
 						item._content = content
-							.replace(new RegExp(`^\\\`\\\`\\\`${lang.tpl}\\n`, "g"), "")
-							.replace(/```$/, "");
+							.replace(new RegExp(`^\\\`\\\`\\\`${lang.tpl}\\n`, 'g'), '')
+							.replace(/```$/, '');
 					}
 				}
 			});
 
 			const timer = setInterval(() => {
-				if (step.value != "coding") {
+				if (step.value != 'coding') {
 					clearInterval(timer);
 					return;
 				}
 
-				const v = item._content[item.content.length] || "";
+				const v = item._content[item.content.length] || '';
 
 				if (isEnd) {
 					if (!v) {
@@ -829,12 +832,12 @@ const code = reactive({
 	// 复制
 	copy() {
 		copy(code.getContent(code.active)!);
-		ElMessage.success("复制成功");
+		ElMessage.success('复制成功');
 
 		// 存本地，方便调试
-		storage.set("ai-code.list", code.list);
-		storage.set("ai-code.data", code.data);
-		storage.set("ai-code.form", form);
+		storage.set('ai-code.list', code.list);
+		storage.set('ai-code.data', code.data);
+		storage.set('ai-code.form', form);
 	},
 
 	// 重新生成
@@ -847,28 +850,28 @@ const code = reactive({
 });
 
 const activeCode = computed(() => {
-	return code.list.find((e) => e.value == code.active);
+	return code.list.find(e => e.value == code.active);
 });
 
 // 滚动文案
 const desc = reactive({
 	list: [] as string[],
-	text: "",
+	text: '',
 
 	change() {
 		switch (step.value) {
-			case "enter":
-				desc.list = ["请简要描述您的功能，AI帮你写代码"];
+			case 'enter':
+				desc.list = ['请简要描述您的功能，AI帮你写代码'];
 				break;
 
-			case "form":
-				desc.list = ["准备就绪，配置预设参数"];
+			case 'form':
+				desc.list = ['准备就绪，配置预设参数'];
 				break;
 
 			default:
 				desc.list = [
-					"COOL为开发者而生",
-					"只需少量的口语提示就能完成特定的功能，大大节省开发时间"
+					'COOL为开发者而生',
+					'只需少量的口语提示就能完成特定的功能，大大节省开发时间'
 				];
 		}
 
@@ -933,7 +936,7 @@ const desc = reactive({
 			clearTimeout(desc.t2);
 		}
 
-		desc.text = "";
+		desc.text = '';
 	},
 
 	init() {
@@ -944,82 +947,82 @@ const desc = reactive({
 // 创建文件
 function createFile() {
 	if (!isDev) {
-		return ElMessage.error("只有在开发环境下才能创建文件");
+		return ElMessage.error('只有在开发环境下才能创建文件');
 	}
 
 	Form.value?.open({
-		title: "配置菜单",
-		width: "800px",
+		title: '配置菜单',
+		width: '800px',
 		items: [
 			{
-				prop: "parentId",
-				label: "上级节点",
+				prop: 'parentId',
+				label: '上级节点',
 				component: {
-					name: "cl-menu-select",
+					name: 'cl-menu-select',
 					props: {
 						type: 1
 					}
 				}
 			},
 			{
-				prop: "keepAlive",
+				prop: 'keepAlive',
 				value: true,
-				label: "路由缓存",
+				label: '路由缓存',
 				component: {
-					name: "el-radio-group",
+					name: 'el-radio-group',
 					options: [
 						{
-							label: "开启",
+							label: '开启',
 							value: true
 						},
 						{
-							label: "关闭",
+							label: '关闭',
 							value: false
 						}
 					]
 				}
 			},
 			{
-				prop: "icon",
-				label: "菜单图标",
+				prop: 'icon',
+				label: '菜单图标',
 				component: {
-					name: "cl-menu-icon"
+					name: 'cl-menu-icon'
 				}
 			},
 			{
-				prop: "orderNum",
-				label: "排序号",
+				prop: 'orderNum',
+				label: '排序号',
 				component: {
-					name: "el-input-number",
+					name: 'el-input-number',
 					props: {
-						placeholder: "请填写排序号",
+						placeholder: '请填写排序号',
 						min: 0,
 						max: 99,
-						"controls-position": "right"
+						'controls-position': 'right'
 					}
 				}
 			}
 		],
 		op: {
-			saveButtonText: "开始创建"
+			saveButtonText: '开始创建'
 		},
 		on: {
 			submit(data, { close }) {
-				code.tips("创建 Vue 文件中，过程可能会发生页面及服务重启");
+				code.tips('创建 Vue 文件中，过程可能会发生页面及服务重启');
 
 				// 添加菜单、权限
 				menu.create({
-					code: code.getContent("vue"),
+					code: code.getContent('vue'),
 					...code.data,
 					...data,
 					name: form.entity
 				})
-					.then((create) => {
-						const files = {};
+					.then(create => {
+						const files: any = {};
 
 						// 文件内容
-						code.list.forEach((e) => {
-							const i = e.value.indexOf("-");
+						code.list.forEach(e => {
+							const i = e.value.indexOf('-');
 							let k = e.value;
 							if (i >= 0) {
 								k = k.substring(i + 1, k.length);
@@ -1036,16 +1039,16 @@ function createFile() {
 
 						// 每3s检测服务状态
 						const timer = setInterval(() => {
-							code.tips("检测后端服务是否启动");
+							code.tips('检测后端服务是否启动');
 
 							service
 								.request({
-									url: "/admin/base/open/eps"
+									url: '/admin/base/open/eps'
 								})
-								.then((res) => {
+								.then(res => {
 									if (res && !isEmpty(res)) {
-										code.tips("文件创建成功");
-										ElMessage.success("文件创建成功");
+										code.tips('文件创建成功');
+										ElMessage.success('文件创建成功');
 										clearInterval(timer);
 										create();
 									}
@@ -1062,13 +1065,13 @@ function createFile() {
 
 // 文档
 function toDoc() {
-	window.open("https://cool-js.com/");
+	window.open('https://cool-js.com/');
 }
 
 // 返回
 function toBack() {
-	ElMessageBox.confirm(`确定要返回 ${config.app.name} 吗？`, "提示", {
-		type: "warning"
+	ElMessageBox.confirm(`确定要返回 ${config.app.name} 吗？`, '提示', {
+		type: 'warning'
 	})
 		.then(() => {
 			router.back();
@@ -1081,15 +1084,15 @@ onMounted(() => {
 	desc.init();
 
 	// 测试
-	if (step.value == "coding") {
-		code.list = storage.get("ai-code.list") || [];
+	if (step.value == 'coding') {
+		code.list = storage.get('ai-code.list') || [];
 
-		if (storage.get("ai-code.data")) {
-			code.data = storage.get("ai-code.data");
+		if (storage.get('ai-code.data')) {
+			code.data = storage.get('ai-code.data');
 		}
 
-		if (storage.get("ai-code.form")) {
-			assign(form, storage.get("ai-code.form"));
+		if (storage.get('ai-code.form')) {
+			assign(form, storage.get('ai-code.form'));
 		}
 	}
 });
@@ -1298,7 +1301,7 @@ $color: #41d1ff;
 				margin-top: 50px;
 
 				&::after {
-					content: "";
+					content: '';
 					display: inline-block;
 					margin-left: 4px;
 					height: 22px;

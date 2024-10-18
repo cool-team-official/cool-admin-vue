@@ -26,19 +26,21 @@
 									<div class="tag">
 										<el-tag size="small" effect="dark">{{ item.name }}</el-tag>
 										<el-tag size="small" effect="dark" type="success"
-											>v{{ item.version || "1.0.0" }}</el-tag
+											>v{{ item.version || '1.0.0' }}</el-tag
 										>
 									</div>
 
 									<p class="title">
-										{{ item.label || "未知" }}
+										{{ item.label || '未知' }}
 									</p>
 
-									<p class="desc">{{ item.description || "暂无描述" }}</p>
+									<p class="desc">
+										{{ item.description || '暂无描述' }}
+									</p>
 
 									<div class="author">
-										<span>{{ item.author || "Ta" }}：</span>
-										<span>{{ item.updateTime || "2024-01-01" }}</span>
+										<span>{{ item.author || 'Ta' }}：</span>
+										<span>{{ item.updateTime || '2024-01-01' }}</span>
 									</div>
 								</div>
 							</div>
@@ -46,9 +48,9 @@
 							<div class="f">
 								<cl-flex1 />
 								<el-button
+									v-if="item.demo && !isEmpty(item.demo)"
 									round
 									@click="det.open(item)"
-									v-if="item.demo && !isEmpty(item.demo)"
 									>示例</el-button
 								>
 							</div>
@@ -74,21 +76,21 @@
 </template>
 
 <script lang="ts" setup name="helper-plugins-vue">
-import { reactive, nextTick, markRaw } from "vue";
-import { module, useCool } from "/@/cool";
-import { isEmpty, isFunction, isString } from "lodash-es";
+import { reactive, nextTick, markRaw } from 'vue';
+import { module, useCool } from '/@/cool';
+import { isEmpty, isFunction, isString } from 'lodash-es';
 
 const { router } = useCool();
 
 // 选项卡
 const tab = reactive({
-	active: "installed",
+	active: 'installed',
 
-	onChange(val: string) {
-		if (val == "shop") {
+	onChange(val: any) {
+		if (val == 'shop') {
 			nextTick(() => {
-				tab.active = "installed";
-				window.open("https://cool-js.com/plugin");
+				tab.active = 'installed';
+				window.open('https://cool-js.com/plugin');
 			});
 		}
 	}
@@ -96,10 +98,10 @@ const tab = reactive({
 
 // 插件列表
 const list = module.list
-	.filter((e) => e.type == "plugins")
-	.map((e) => {
-		if (e.author == "COOL") {
-			e.logo = "https://cool-js.com/logo.png";
+	.filter(e => e.type == 'plugins')
+	.map(e => {
+		if (e.author == 'COOL') {
+			e.logo = 'https://cool-js.com/logo.png';
 		}
 
 		return {
@@ -111,7 +113,7 @@ const list = module.list
 // 插件详情
 const det = reactive({
 	visible: false,
-	title: "",
+	title: '',
 	active: 0,
 	tabs: [] as any[],
 
@@ -142,5 +144,5 @@ const det = reactive({
 </script>
 
 <style lang="scss" scoped>
-@import "../../static/index.scss";
+@forward '../../static/index.scss';
 </style>

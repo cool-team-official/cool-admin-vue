@@ -26,13 +26,13 @@
 </template>
 
 <script lang="ts">
-import { type PropType, computed, defineComponent } from "vue";
-import { isArray, isNumber, isString } from "lodash-es";
-import { PictureFilled } from "@element-plus/icons-vue";
-import { parsePx } from "/@/cool/utils";
+import { type PropType, computed, defineComponent } from 'vue';
+import { isArray, isNumber, isString } from 'lodash-es';
+import { PictureFilled } from '@element-plus/icons-vue';
+import { parsePx } from '/@/cool/utils';
 
 export default defineComponent({
-	name: "cl-image",
+	name: 'cl-image',
 
 	components: {
 		PictureFilled
@@ -47,8 +47,8 @@ export default defineComponent({
 		},
 		lazy: Boolean,
 		fit: {
-			type: String as PropType<"" | "contain" | "cover" | "none" | "fill" | "scale-down">,
-			default: "cover"
+			type: String as PropType<'' | 'contain' | 'cover' | 'none' | 'fill' | 'scale-down'>,
+			default: 'cover'
 		}
 	},
 
@@ -61,7 +61,7 @@ export default defineComponent({
 			}
 
 			if (isString(urls)) {
-				return (urls || "").split(",").filter(Boolean);
+				return (urls || '').split(',').filter(Boolean);
 			}
 
 			return [];

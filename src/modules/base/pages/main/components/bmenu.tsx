@@ -1,9 +1,9 @@
-import { defineComponent, h } from "vue";
-import { useBase, Menu } from "/$/base";
-import { useCool } from "/@/cool";
+import { defineComponent, h } from 'vue';
+import { useBase, Menu } from '/$/base';
+import { useCool } from '/@/cool';
 
 export default defineComponent({
-	name: "b-menu",
+	name: 'b-menu',
 
 	setup() {
 		const { router, route, browser } = useCool();
@@ -25,8 +25,8 @@ export default defineComponent({
 		function renderMenu() {
 			function deep(list: Menu.Item[], index: number) {
 				return list
-					.filter((e) => e.isShow)
-					.map((e) => {
+					.filter(e => e.isShow)
+					.map(e => {
 						const item = (e: Menu.Item) => {
 							return [
 								<el-icon>
@@ -42,7 +42,7 @@ export default defineComponent({
 								{
 									index: String(e.id),
 									key: e.id,
-									popperClass: "app-slider__menu"
+									popperClass: 'app-slider__menu'
 								},
 								{
 									title() {
@@ -57,12 +57,7 @@ export default defineComponent({
 							return h(
 								<el-menu-item />,
 								{
-									index:
-										route.path == "/"
-											? e.meta?.isHome
-												? "/"
-												: e.path
-											: e.path,
+									index: e.meta?.isHome ? '/' : e.path,
 									key: e.id
 								},
 								{

@@ -1,5 +1,5 @@
-import type { ModuleConfig } from "/@/cool";
-import { useDict } from "./index";
+import type { ModuleConfig } from '/@/cool';
+import { useDict } from './index';
 
 export default (): ModuleConfig => {
 	return {

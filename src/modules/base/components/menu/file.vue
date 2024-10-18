@@ -1,7 +1,7 @@
 <template>
 	<div class="cl-menu-file">
 		<template v-if="isEdit">
-			<el-input placeholder="请输入" v-model="text" @change="onTextChange"></el-input>
+			<el-input v-model="text" placeholder="请输入" @change="onTextChange"></el-input>
 
 			<el-tooltip content="选择文件">
 				<el-icon @click="toggle(false)">
@@ -30,26 +30,26 @@
 </template>
 
 <script lang="ts" name="cl-menu-file" setup>
-import { ref, watch } from "vue";
-import { deepPaths } from "/@/cool/utils";
-import { FolderChecked, Edit } from "@element-plus/icons-vue";
+import { ref, watch } from 'vue';
+import { deepPaths } from '/@/cool/utils';
+import { FolderChecked, Edit } from '@element-plus/icons-vue';
 
 const props = defineProps({
 	modelValue: {
 		type: String,
-		default: ""
+		default: ''
 	}
 });
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(['update:modelValue', 'change']);
 
 // 扫描文件
 function findFiles() {
-	const files = import.meta.glob(["/src/modules/*/{views,pages}/**/*", "!**/components"]);
+	const files = import.meta.glob(['/src/modules/*/{views,pages}/**/*', '!**/components']);
 	const list: string[] = [];
 
 	for (const i in files) {
-		if (!i.includes("base/pages")) {
+		if (!i.includes('base/pages')) {
 			list.push(i.substring(13));
 		}
 	}
@@ -70,16 +70,16 @@ const isEdit = ref(false);
 const data = ref(findFiles());
 
 // 路径值改变
-function onPathChange(arr: string[]) {
-	const v = "modules/" + (arr || []).join("/");
-	emit("update:modelValue", v);
-	emit("change", v);
+function onPathChange(arr: any) {
+	const v = 'modules/' + (arr || []).join('/');
+	emit('update:modelValue', v);
+	emit('change', v);
 }
 
 // 文本值改变
 function onTextChange(v: string) {
-	emit("update:modelValue", v);
-	emit("change", v);
+	emit('update:modelValue', v);
+	emit('change', v);
 }
 
 // 切换
@@ -89,13 +89,13 @@ function toggle(f: boolean) {
 
 watch(
 	() => props.modelValue,
-	(val) => {
+	val => {
 		if (val) {
-			if (val.includes("http")) {
+			if (val.includes('http')) {
 				text.value = val;
 				isEdit.value = true;
 			} else {
-				path.value = val.replace(/(modules\/|cool\/)/g, "").split("/");
+				path.value = val.replace(/(modules\/|cool\/)/g, '').split('/');
 			}
 		}
 	},

@@ -1,33 +1,33 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import { deepTree, revDeepTree, storage } from "/@/cool/utils";
-import { cloneDeep, isArray, isEmpty, orderBy } from "lodash-es";
-import { router, service } from "/@/cool";
-import { revisePath } from "../utils";
-import { Menu } from "../types";
-import { config } from "/@/config";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { deepTree, revDeepTree, storage } from '/@/cool/utils';
+import { isArray, isEmpty, orderBy } from 'lodash-es';
+import { router, service } from '/@/cool';
+import { revisePath } from '../utils';
+import { config } from '/@/config';
+import type { Menu } from '../types';
 
 // 本地缓存
 const data = storage.info();
 
-export const useMenuStore = defineStore("menu", function () {
+export const useMenuStore = defineStore('menu', function () {
 	// 视图路由
 	const routes = ref<Menu.List>([]);
 
 	// 菜单组
-	const group = ref<Menu.List>(data["base.menuGroup"] || []);
+	const group = ref<Menu.List>(data['base.menuGroup'] || []);
 
 	// 左侧菜单列表
 	const list = ref<Menu.List>([]);
 
 	// 权限列表
-	const perms = ref<any[]>(data["base.menuPerms"] || []);
+	const perms = ref<any[]>(data['base.menuPerms'] || []);
 
 	// 设置左侧菜单
 	function setMenu(i: number = 0) {
 		// 显示分组显示菜单
 		if (config.app.menu.isGroup) {
-			list.value = group.value.filter((e) => e.isShow)[i]?.children || [];
+			list.value = group.value.filter(e => e.isShow)[i]?.children || [];
 		} else {
 			list.value = group.value;
 		}
@@ -36,20 +36,20 @@ export const useMenuStore = defineStore("menu", function () {
 	// 设置权限
 	function setPerms(list: Menu.List) {
 		function deep(d: any) {
-			if (typeof d == "object") {
+			if (typeof d == 'object') {
 				if (d.permission) {
 					if (d.namespace) {
 						d._permission = {};
 						for (const i in d.permission) {
 							d._permission[i] =
-								list.findIndex((e) =>
+								list.findIndex(e =>
 									e
-										.replace(/:/g, "/")
-										.includes(`${d.namespace.replace("admin/", "")}/${i}`)
+										.replace(/:/g, '/')
+										.includes(`${d.namespace.replace('admin/', '')}/${i}`)
 								) >= 0;
 						}
 					} else {
-						console.error("namespace is required", d);
+						console.error('namespace is required', d);
 					}
 				} else {
 					for (const i in d) {
@@ -60,7 +60,7 @@ export const useMenuStore = defineStore("menu", function () {
 		}
 
 		perms.value = list;
-		storage.set("base.menuPerms", list);
+		storage.set('base.menuPerms', list);
 
 		deep(service);
 	}
@@ -71,40 +71,49 @@ export const useMenuStore = defineStore("menu", function () {
 		const fp = getPath(group.value);
 
 		// 查找符合路由
-		const route = list.find((e) => (e.meta!.isHome = e.path == fp));
+		const route = list.find(e => (e.meta!.isHome = e.path == fp));
+
+		// 过滤菜单
+		routes.value = list.filter(e => e.type == 1);
 
 		if (route) {
-			const home = router.getRoutes().find((e) => e.meta.isHome);
+			// 移除旧路由
+			router.del('home');
+			router.del('homeRedirect');
 
-			// 判断是否存在
-			if (!home) {
-				router.append([
-					{
-						...route,
-						path: "/",
-						name: "home"
-					}
-				]);
-			} else {
-				Object.assign(home.meta, route.meta);
+			// 添加一个重定向
+			if (route.path != '/') {
+				const item = routes.value.find(e => e.name == 'homeRedirect');
+
+				if (item) {
+					item.path = route.path;
+				} else {
+					routes.value.push({
+						path: route.path,
+						redirect: '/',
+						name: 'homeRedirect'
+					} as any);
+				}
 			}
-		}
 
-		routes.value = list.filter((e) => e.type == 1);
+			// 设置为首页
+			route.path = '/';
+			route.name = 'home';
+		}
 	}
 
 	// 设置菜单组
 	function setGroup(list: Menu.List) {
-		group.value = orderBy(deepTree(list), "orderNum");
-		storage.set("base.menuGroup", group.value);
+		group.value = orderBy(deepTree(list), 'orderNum');
+		storage.set('base.menuGroup', group.value);
 	}
 
 	// 获取菜单，权限信息
 	async function get() {
 		function next(res: { menus: Menu.List; perms?: any[] }) {
 			const list = res.menus
-				?.filter((e) => e.type != 2)
-				.map((e) => {
+				?.filter(e => e.type != 2)
+				.map(e => {
 					const path = revisePath(e.router || String(e.id));
 					const isShow = e.isShow === undefined ? true : e.isShow;
 
@@ -152,7 +161,7 @@ export const useMenuStore = defineStore("menu", function () {
 	function getPath(data: Menu.Item | Menu.List) {
 		const list = isArray(data) ? data : [data];
 
-		let path = "";
+		let path = '';
 
 		function deep(arr: Menu.List) {
 			arr.forEach((e: Menu.Item) => {

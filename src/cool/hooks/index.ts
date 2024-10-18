@@ -1,8 +1,8 @@
-import { getCurrentInstance, Ref, reactive } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { service } from "../service";
-import { useBrowser } from "./browser";
-import { useMitt } from "./mitt";
+import { getCurrentInstance, type Ref, reactive } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { service } from '../service';
+import { useBrowser } from './browser';
+import { useMitt } from './mitt';
 
 export function useRefs() {
 	const refs = reactive<{ [key: string]: any }>({});
@@ -50,5 +50,5 @@ export function useCool() {
 	};
 }
 
-export * from "./browser";
-export * from "./hmr";
+export * from './browser';
+export * from './hmr';

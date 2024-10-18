@@ -42,8 +42,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-import { BottomRight, TopRight } from "@element-plus/icons-vue";
+import { ref } from 'vue';
+import { BottomRight, TopRight } from '@element-plus/icons-vue';
 
 const value = ref(0);
 

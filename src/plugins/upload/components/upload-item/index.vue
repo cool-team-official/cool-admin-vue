@@ -22,7 +22,7 @@
 
 				<!-- 视频 -->
 				<template v-else-if="item.type === 'video'">
-					<video :ref="setRefs('video')" :src="item.url" :key="item.url" />
+					<video :ref="setRefs('video')" :key="item.url" :src="item.url" />
 				</template>
 
 				<!-- 其他 -->
@@ -34,14 +34,14 @@
 					<!-- 文件名 -->
 					<div class="cl-upload-item__name">
 						<span>{{ fileName(item.name || url) }}</span>
-						<span class="error" v-show="item.error">{{ item.error }}</span>
+						<span v-show="item.error" class="error">{{ item.error }}</span>
 					</div>
 				</template>
 
 				<!-- 音频 -->
 				<template v-if="item.type === 'audio'">
-					<audio controls :ref="setRefs('audio')">
-						<source :src="item.url" type="audio/mpeg" :key="item.url" />
+					<audio :ref="setRefs('audio')" controls>
+						<source :key="item.url" :src="item.url" type="audio/mpeg" />
 					</audio>
 				</template>
 
@@ -64,11 +64,11 @@
 
 				<!-- 角标 -->
 				<span
+					v-if="showTag"
 					class="cl-upload-item__tag"
 					:style="{
 						backgroundColor: tag.color
 					}"
-					v-if="showTag"
 				>
 					{{ tag.name }}
 				</span>
@@ -78,14 +78,14 @@
 					<div class="cl-upload-item__actions">
 						<template v-if="media.isMedia">
 							<el-icon
+								v-if="item.isPlay"
 								class="action-pause"
 								@click.stop="media.pause()"
-								v-if="item.isPlay"
 							>
 								<video-pause />
 							</el-icon>
 
-							<el-icon class="action-play" @click.stop="media.play()" v-else>
+							<el-icon v-else class="action-play" @click.stop="media.play()">
 								<video-play />
 							</el-icon>
 						</template>
@@ -97,9 +97,9 @@
 						</template>
 
 						<el-icon
+							v-if="!disabled || deletable"
 							class="action-delete"
 							@click.stop="remove"
-							v-if="!disabled || deletable"
 						>
 							<delete />
 						</el-icon>
@@ -114,16 +114,16 @@
 </template>
 
 <script lang="ts" name="cl-upload-item" setup>
-import { computed, type PropType, onMounted, watch, reactive } from "vue";
-import { ZoomIn, Delete, VideoPause, VideoPlay } from "@element-plus/icons-vue";
-import { ContextMenu } from "@cool-vue/crud";
-import { useCool } from "/@/cool";
-import { extname } from "/@/cool/utils";
-import { fileName, getRule } from "../../utils";
-import { ElMessage } from "element-plus";
-import { useClipboard } from "@vueuse/core";
-import Viewer from "./viewer.vue";
-import type { Upload } from "../../types";
+import { computed, type PropType, onMounted, watch, reactive } from 'vue';
+import { ZoomIn, Delete, VideoPause, VideoPlay } from '@element-plus/icons-vue';
+import { ContextMenu } from '@cool-vue/crud';
+import { useCool } from '/@/cool';
+import { extname } from '/@/cool/utils';
+import { fileName, getRule } from '../../utils';
+import { ElMessage } from 'element-plus';
+import { useClipboard } from '@vueuse/core';
+import Viewer from './viewer.vue';
+import type { Upload } from '../../types';
 
 const props = defineProps({
 	item: {
@@ -145,13 +145,13 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(["remove"]);
+const emit = defineEmits(['remove']);
 
 const { refs, setRefs } = useCool();
 const { copy } = useClipboard();
 
 // 图片地址
-const url = computed(() => props.item.url || "");
+const url = computed(() => props.item.url || '');
 
 // 角标
 const tag = computed(() => {
@@ -165,7 +165,7 @@ const tag = computed(() => {
 
 // 移除
 function remove() {
-	emit("remove", props.item);
+	emit('remove', props.item);
 }
 
 // 预览
@@ -177,22 +177,22 @@ function preview() {
 function onContextMenu(e: any) {
 	ContextMenu.open(e, {
 		hover: {
-			target: "cl-upload-item__wrap"
+			target: 'cl-upload-item__wrap'
 		},
 		list: [
 			{
-				label: "预览",
+				label: '预览',
 				callback(done) {
 					preview();
 					done();
 				}
 			},
 			{
-				label: "复制链接",
+				label: '复制链接',
 				callback(done) {
 					if (props.item.url) {
 						copy(props.item.url);
-						ElMessage.success("复制成功");
+						ElMessage.success('复制成功');
 					}
 
 					done();
@@ -206,7 +206,7 @@ function onContextMenu(e: any) {
 			// 	}
 			// },
 			{
-				label: "删除",
+				label: '删除',
 				callback(done) {
 					remove();
 					done();
@@ -218,10 +218,10 @@ function onContextMenu(e: any) {
 
 // 媒体
 const media = reactive({
-	isMedia: ["video", "audio"].includes(props.item.type!),
+	isMedia: ['video', 'audio'].includes(props.item.type!),
 
 	play() {
-		props.list.forEach((e) => {
+		props.list.forEach(e => {
 			e.isPlay = e.uid ? props.item.uid == e.uid : props.item.id == e.id;
 		});
 	},
@@ -241,12 +241,12 @@ const media = reactive({
 		// 监听播放\暂停
 		watch(
 			() => props.item.isPlay,
-			(val) => {
+			val => {
 				if (!el) {
 					el = refs[props.item.type!];
 
 					// 监听播放完成
-					el?.addEventListener("ended", () => {
+					el?.addEventListener('ended', () => {
 						media.pause();
 					});
 				}
@@ -363,7 +363,7 @@ onMounted(() => {
 			color: #fff;
 
 			&::after {
-				content: "%";
+				content: '%';
 				margin-left: 2px;
 			}
 		}

@@ -100,7 +100,7 @@ function parse(method: "submit" | "bind", { value, hook: pipe, form, prop }: any
 	} else if (isArray(pipe)) {
 		pipes = pipe;
 	} else if (isObject(pipe)) {
-		// @ts-ignore
+		// @ts-expect-error
 		pipes = isArray(pipe[method]) ? pipe[method] : [pipe[method]];
 	} else if (isFunction(pipe)) {
 		pipes = [pipe];

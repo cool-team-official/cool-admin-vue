@@ -1,5 +1,5 @@
 <template>
-	<div class="chat-message" v-loading="message?.loading" element-loading-text="消息列表加载中">
+	<div v-loading="message?.loading" class="chat-message" element-loading-text="消息列表加载中">
 		<!-- 头部 -->
 		<div class="head">
 			<template v-if="session?.value">
@@ -27,7 +27,7 @@
 						<div
 							class="det"
 							@contextmenu="
-								(e) => {
+								e => {
 									onContextMenu(e, item);
 								}
 							"
@@ -37,12 +37,12 @@
 							</div>
 							<div class="content">
 								<!-- 文本 -->
-								<div class="is-text" v-if="item.contentType == 0">
+								<div v-if="item.contentType == 0" class="is-text">
 									<span>{{ item.content.text }}</span>
 								</div>
 
 								<!-- 图片 -->
-								<div class="is-image" v-else-if="item.contentType == 1">
+								<div v-else-if="item.contentType == 1" class="is-image">
 									<el-image
 										:src="item.content.imageUrl"
 										:preview-src-list="previewUrls"
@@ -61,7 +61,7 @@
 		<div class="footer">
 			<div class="tools">
 				<ul>
-					<cl-upload @success="onImageSend" :show-file-list="false">
+					<cl-upload :show-file-list="false" @success="onImageSend">
 						<li>
 							<el-icon><picture-filled /></el-icon>
 						</li>
@@ -93,35 +93,35 @@
 					}"
 					placeholder="输入内容"
 				></el-input>
-				<el-button type="success" @click="onTextSend" :disabled="!value">发送</el-button>
+				<el-button type="success" :disabled="!value" @click="onTextSend">发送</el-button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from "vue";
-import { useChat } from "../hooks";
-import { useStore } from "../store";
-import { PictureFilled, VideoCamera, Microphone, Location } from "@element-plus/icons-vue";
-import { useBase } from "/$/base";
-import { ContextMenu } from "@cool-vue/crud";
-import { useClipboard } from "@vueuse/core";
-import { Chat } from "../types";
-import { ElMessage } from "element-plus";
+import { computed, ref } from 'vue';
+import { useChat } from '../hooks';
+import { useStore } from '../store';
+import { PictureFilled, VideoCamera, Microphone, Location } from '@element-plus/icons-vue';
+import { useBase } from '/$/base';
+import { ContextMenu } from '@cool-vue/crud';
+import { useClipboard } from '@vueuse/core';
+import { Chat } from '../types';
+import { ElMessage } from 'element-plus';
 
 const { user } = useBase();
 const { chat } = useChat();
 const { message, session } = useStore();
 const { copy } = useClipboard();
 
-const value = ref("");
+const value = ref('');
 
 // 过滤列表
 const list = computed(() => {
 	let n = 0;
 
-	return message.list.map((e) => {
+	return message.list.map(e => {
 		if (e.contentType == 1) {
 			e._index = n++;
 		}
@@ -136,8 +136,8 @@ const list = computed(() => {
 // 预览图片地址
 const previewUrls = computed(() =>
 	message.list
-		.filter((e) => e.contentType == 1)
-		.map((e) => e.content?.imageUrl)
+		.filter(e => e.contentType == 1)
+		.map(e => e.content?.imageUrl)
 		.filter(Boolean)
 );
 
@@ -152,7 +152,7 @@ function onTextSend() {
 		},
 		true
 	);
-	value.value = "";
+	value.value = '';
 }
 
 // 图片消息
@@ -166,29 +166,29 @@ function onImageSend(res: any) {
 		},
 		true
 	);
-	value.value = "";
+	value.value = '';
 }
 
 // 右键菜单
 function onContextMenu(e: Event, item: Chat.Message) {
 	ContextMenu.open(e, {
 		hover: {
-			target: "content"
+			target: 'content'
 		},
 		list: [
 			{
-				label: "复制",
+				label: '复制',
 				callback(done) {
-					copy(item.content.text || "");
-					ElMessage.success("复制成功");
+					copy(item.content.text || '');
+					ElMessage.success('复制成功');
 					done();
 				}
 			},
 			{
-				label: "转发"
+				label: '转发'
 			},
 			{
-				label: "删除"
+				label: '删除'
 			}
 		]
 	});

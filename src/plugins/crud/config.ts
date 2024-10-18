@@ -1,8 +1,8 @@
-import type { Merge, ModuleConfig } from "/@/cool";
+import type { Merge, ModuleConfig } from '/@/cool';
 
 // npm
-import Crud, { locale, setFocus } from "@cool-vue/crud";
-import "@cool-vue/crud/dist/index.css";
+import Crud, { locale, setFocus } from '@cool-vue/crud';
+import '@cool-vue/crud/dist/index.css';
 
 // 调试、自定义crud
 // import Crud, { locale, setFocus } from "/~/crud/src";
@@ -11,15 +11,15 @@ import "@cool-vue/crud/dist/index.css";
 export default (): Merge<ModuleConfig, CrudOptions> => {
 	return {
 		order: 99,
-		label: "CRUD",
-		description: "快速增删改查及一系列辅助组件",
-		author: "COOL",
-		version: "1.0.7",
-		updateTime: "2024-05-26",
-		demo: "/demo/crud",
+		label: 'CRUD',
+		description: '快速增删改查及一系列辅助组件',
+		author: 'COOL',
+		version: '1.0.7',
+		updateTime: '2024-05-26',
+		demo: '/demo/crud',
 
 		// 组件全注册
-		components: Object.values(import.meta.glob("./components/**/*.{vue,tsx}")),
+		components: Object.values(import.meta.glob('./components/**/*.{vue,tsx}')),
 
 		// 配置参数，具体配置点 CrudOptions 查看
 		options: {
@@ -42,8 +42,8 @@ export default (): Merge<ModuleConfig, CrudOptions> => {
 			dict: {
 				// 排序字段
 				sort: {
-					prop: "order",
-					order: "sort"
+					prop: 'order',
+					order: 'sort'
 				},
 				// 按钮及提示文案
 				label: locale.zhCn

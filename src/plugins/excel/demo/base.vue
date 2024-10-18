@@ -28,10 +28,10 @@
 </template>
 
 <script lang="tsx" setup>
-import { useCrud, useTable } from "@cool-vue/crud";
-import { useCool } from "/@/cool";
-import { useDict } from "/$/dict";
-import { ElMessage } from "element-plus";
+import { useCrud, useTable } from '@cool-vue/crud';
+import { useCool } from '/@/cool';
+import { useDict } from '/$/dict';
+import { ElMessage } from 'element-plus';
 
 const { service } = useCool();
 const { dict } = useDict();
@@ -41,7 +41,7 @@ const Crud = useCrud(
 	{
 		service: service.test
 	},
-	(app) => {
+	app => {
 		app.refresh({ size: 10 });
 	}
 );
@@ -50,25 +50,25 @@ const Crud = useCrud(
 const Table = useTable({
 	columns: [
 		{
-			label: "姓名",
-			prop: "name"
+			label: '姓名',
+			prop: 'name'
 		},
 		{
-			label: "手机号",
-			prop: "phone"
+			label: '手机号',
+			prop: 'phone'
 		},
 		{
-			label: "账号",
-			prop: "account"
+			label: '账号',
+			prop: 'account'
 		},
 		{
-			label: "存款(元)",
-			prop: "wages"
+			label: '存款(元)',
+			prop: 'wages'
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation")
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation')
 		}
 	]
 });

@@ -32,10 +32,12 @@
 								</div>
 
 								<p class="title">
-									{{ item.name || "未知" }}
+									{{ item.name || '未知' }}
 								</p>
 
-								<p class="desc">{{ item.description || "暂无描述" }}</p>
+								<p class="desc">
+									{{ item.description || '暂无描述' }}
+								</p>
 
 								<div class="author">
 									<span>{{ item.author }}：</span>
@@ -108,26 +110,26 @@
 </template>
 
 <script lang="ts" setup name="helper-plugins-serve">
-import { onActivated, reactive, ref, nextTick } from "vue";
-import { useCool } from "/@/cool";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { Plus, Setting } from "@element-plus/icons-vue";
-import { marked } from "marked";
-import { useForm } from "@cool-vue/crud";
-import { merge } from "lodash-es";
+import { onActivated, reactive, ref, nextTick } from 'vue';
+import { useCool } from '/@/cool';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { Plus, Setting } from '@element-plus/icons-vue';
+import { marked } from 'marked';
+import { useForm } from '@cool-vue/crud';
+import { merge } from 'lodash-es';
 
 const { service, refs, setRefs } = useCool();
 const Form = useForm();
 
 // 选项卡
 const tab = reactive({
-	active: "installed",
+	active: 'installed',
 
-	onChange(val: string) {
-		if (val == "shop") {
+	onChange(val: any) {
+		if (val == 'shop') {
 			nextTick(() => {
-				tab.active = "installed";
-				window.open("https://cool-js.com/plugin");
+				tab.active = 'installed';
+				window.open('https://cool-js.com/plugin');
 			});
 		}
 	}
@@ -141,7 +143,7 @@ const info = ref<Eps.PluginInfoEntity>();
 
 // 刷新
 function refresh() {
-	service.plugin.info.page({ page: 1, size: 100 }).then((res) => {
+	service.plugin.info.page({ page: 1, size: 100 }).then(res => {
 		list.value = res.list;
 	});
 }
@@ -149,10 +151,10 @@ function refresh() {
 // 参数设置
 function toSet(item: Eps.PluginInfoEntity) {
 	Form.value?.open({
-		title: "设置",
+		title: '设置',
 
 		props: {
-			labelWidth: "60px"
+			labelWidth: '60px'
 		},
 
 		form: {
@@ -161,29 +163,29 @@ function toSet(item: Eps.PluginInfoEntity) {
 
 		items: [
 			{
-				label: "参数",
-				prop: "config",
-				value: "{}",
+				label: '参数',
+				prop: 'config',
+				value: '{}',
 				component: {
-					name: "cl-editor",
+					name: 'cl-editor',
 					props: {
-						name: "cl-editor-monaco",
-						ref: setRefs("editor")
+						name: 'cl-editor-monaco',
+						ref: setRefs('editor')
 					}
 				}
 			},
 			{
-				label: " ",
+				label: ' ',
 				flex: false,
 				component: {
-					name: "slot-upload"
+					name: 'slot-upload'
 				}
 			},
 			{
-				label: "状态",
-				prop: "status",
+				label: '状态',
+				prop: 'status',
 				component: {
-					name: "cl-switch"
+					name: 'cl-switch'
 				}
 			}
 		],
@@ -200,16 +202,16 @@ function toSet(item: Eps.PluginInfoEntity) {
 							status: data.status
 						})
 						.then(() => {
-							ElMessage.success("修改成功");
+							ElMessage.success('修改成功');
 							merge(item, data);
 							close();
 						})
-						.catch((err) => {
+						.catch(err => {
 							ElMessage.error(err.message);
 							done();
 						});
 				} catch (e) {
-					ElMessage.error("参数格式错误，请检查");
+					ElMessage.error('参数格式错误，请检查');
 					done();
 				}
 			}
@@ -225,8 +227,8 @@ async function toDetail(item: Eps.PluginInfoEntity) {
 
 // 卸载
 function toDel(item: Eps.PluginInfoEntity, index: number) {
-	ElMessageBox.confirm(`确定要卸载插件【${item.name}】吗？`, "提示", {
-		type: "warning"
+	ElMessageBox.confirm(`确定要卸载插件【${item.name}】吗？`, '提示', {
+		type: 'warning'
 	})
 		.then(() => {
 			service.plugin.info
@@ -235,9 +237,9 @@ function toDel(item: Eps.PluginInfoEntity, index: number) {
 				})
 				.then(() => {
 					list.value.splice(index, 1);
-					ElMessage.success("卸载成功");
+					ElMessage.success('卸载成功');
 				})
-				.catch((err) => {
+				.catch(err => {
 					ElMessage.error(err.message);
 				});
 		})
@@ -257,9 +259,9 @@ function onStatusChange(item: Eps.PluginInfoEntity) {
 			status: item.status
 		})
 		.then(() => {
-			ElMessage.success(item.status ? "开启成功" : "关闭成功");
+			ElMessage.success(item.status ? '开启成功' : '关闭成功');
 		})
-		.catch((err) => {
+		.catch(err => {
 			ElMessage.error(err.message);
 		});
 }
@@ -269,39 +271,39 @@ function onBeforeUpload(file: File) {
 	function next(force: string) {
 		const formData = new FormData();
 
-		formData.append("files", file);
-		formData.append("force", force);
+		formData.append('files', file);
+		formData.append('force', force);
 
 		service.plugin.info
 			.request({
-				url: "/install",
-				method: "POST",
+				url: '/install',
+				method: 'POST',
 				data: formData,
 				headers: {
-					"Content-Type": "multipart/form-data"
+					'Content-Type': 'multipart/form-data'
 				}
 			})
-			.then((res) => {
+			.then(res => {
 				if (res) {
-					ElMessageBox.confirm(res.message, "提示", {
-						type: "warning",
-						confirmButtonText: "继续"
+					ElMessageBox.confirm(res.message, '提示', {
+						type: 'warning',
+						confirmButtonText: '继续'
 					})
 						.then(() => {
-							next("true");
+							next('true');
 						})
 						.catch(() => null);
 				} else {
-					ElMessage.success("插件安装成功");
+					ElMessage.success('插件安装成功');
 					refresh();
 				}
 			})
-			.catch((err) => {
+			.catch(err => {
 				ElMessage.error(err.message);
 			});
 	}
 
-	next("false");
+	next('false');
 
 	return false;
 }
@@ -318,9 +320,9 @@ function onDrop(e: DragEvent) {
 	if (e.dataTransfer) {
 		const file = e.dataTransfer.files[0];
 
-		ElMessageBox.confirm("检测到插件，是否安装", "提示", {
-			type: "warning",
-			confirmButtonText: "安装"
+		ElMessageBox.confirm('检测到插件，是否安装', '提示', {
+			type: 'warning',
+			confirmButtonText: '安装'
 		})
 			.then(() => {
 				onBeforeUpload(file);
@@ -335,7 +337,7 @@ onActivated(() => {
 </script>
 
 <style lang="scss" scoped>
-@import "../../static/index.scss";
+@forward '../../static/index.scss';
 
 .info-header {
 	display: flex;

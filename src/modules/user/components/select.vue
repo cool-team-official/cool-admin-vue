@@ -12,7 +12,7 @@
 			</div>
 
 			<cl-crud padding="0">
-				<cl-table :data="data" :ref="setRefs('table')" :auto-height="false" />
+				<cl-table :ref="setRefs('table')" :data="data" :auto-height="false" />
 
 				<cl-row type="flex" align="middle" justify="end" :style="{ marginTop: '10px' }">
 					<el-pagination
@@ -37,7 +37,7 @@
 					</el-icon>
 				</template>
 
-				<span class="placeholder" v-else>请选择用户</span>
+				<span v-else class="placeholder">请选择用户</span>
 			</div>
 		</template>
 	</div>
@@ -49,7 +49,7 @@
 				<cl-refresh-btn />
 
 				<!-- 全选 -->
-				<el-button type="primary" @click="selectAll" v-if="multiple">全选</el-button>
+				<el-button v-if="multiple" type="primary" @click="selectAll">全选</el-button>
 
 				<cl-filter label="状态">
 					<cl-select :options="options.status" prop="status" :width="120" />
@@ -64,10 +64,10 @@
 				<!-- 数据表格 -->
 				<cl-table ref="Table" :auto-height="false" @selection-change="onSelectionChange">
 					<template #column-check="{ scope }">
-						<el-button type="success" disabled v-if="selection[0]?.id == scope.row.id"
+						<el-button v-if="selection[0]?.id == scope.row.id" type="success" disabled
 							>已选</el-button
 						>
-						<el-button @click="select(scope.row)" v-else>选择</el-button>
+						<el-button v-else @click="select(scope.row)">选择</el-button>
 					</template>
 				</cl-table>
 			</cl-row>
@@ -83,10 +83,10 @@
 		<template #footer>
 			<el-button @click="close">取消</el-button>
 			<el-button
+				v-if="multiple"
 				type="success"
 				:disabled="isEmpty(selection)"
 				@click="select()"
-				v-if="multiple"
 				>选择</el-button
 			>
 		</template>
@@ -94,11 +94,11 @@
 </template>
 
 <script lang="ts" setup name="user-select">
-import { useCrud, useForm, useTable } from "@cool-vue/crud";
-import { useCool } from "/@/cool";
-import { type PropType, computed, nextTick, reactive, ref, watch } from "vue";
-import { cloneDeep, isArray, isEmpty } from "lodash-es";
-import { CircleClose } from "@element-plus/icons-vue";
+import { useCrud, useForm, useTable } from '@cool-vue/crud';
+import { useCool } from '/@/cool';
+import { type PropType, computed, nextTick, reactive, ref, watch } from 'vue';
+import { cloneDeep, isArray, isEmpty } from 'lodash-es';
+import { CircleClose } from '@element-plus/icons-vue';
 
 // 替换你的类型
 type Item = Eps.UserInfoEntity;
@@ -117,7 +117,7 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue']);
 
 const { service, refs, setRefs } = useCool();
 
@@ -128,14 +128,14 @@ const Form = useForm();
 const options = reactive({
 	status: [
 		{
-			label: "启用",
+			label: '启用',
 			value: 1,
-			type: "success"
+			type: 'success'
 		},
 		{
-			label: "禁用",
+			label: '禁用',
 			value: 0,
-			type: "danger"
+			type: 'danger'
 		}
 	]
 });
@@ -146,43 +146,43 @@ const Table = useTable({
 	columns: [
 		props.multiple
 			? {
-					type: "selection",
+					type: 'selection',
 					width: 60,
 					reserveSelection: true
 				}
 			: {
-					label: "操作",
-					prop: "check",
+					label: '操作',
+					prop: 'check',
 					width: 100
 				},
 		{
-			prop: "avatarUrl",
-			label: "头像",
+			prop: 'avatarUrl',
+			label: '头像',
 			component: {
-				name: "cl-avatar"
+				name: 'cl-avatar'
 			},
 			minWidth: 100
 		},
 		{
-			prop: "phone",
-			label: "手机号",
+			prop: 'phone',
+			label: '手机号',
 			minWidth: 120
 		},
 		{
-			prop: "nickName",
-			label: "姓名",
+			prop: 'nickName',
+			label: '姓名',
 			minWidth: 150
 		},
 		{
-			label: "状态",
-			prop: "status",
+			label: '状态',
+			prop: 'status',
 			minWidth: 100,
 			dict: options.status
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
-			sortable: "desc",
+			label: '创建时间',
+			prop: 'createTime',
+			sortable: 'desc',
 			minWidth: 170
 		}
 	]
@@ -195,11 +195,11 @@ const Crud = useCrud({
 		const res = await next(params);
 
 		// 添加已加载列表的 id
-		loadIds.value.push(...res.list.map((e) => e.id));
+		loadIds.value.push(...res.list.map(e => e.id));
 
 		// 数据反选
-		selection.value.forEach((e) => {
-			const d = Table.value?.data.find((a) => a.id == e.id);
+		selection.value.forEach(e => {
+			const d = Table.value?.data.find(a => a.id == e.id);
 
 			if (d) {
 				Table.value?.toggleRowSelection(d, true);
@@ -243,7 +243,7 @@ function onSelectionChange(arr: Item[]) {
 	const ids = Array.from(new Set(loadIds.value));
 
 	// 过滤掉已加载的，再加上已选的
-	selection.value = selection.value.filter((e) => !ids.includes(e.id!)).concat(...arr);
+	selection.value = selection.value.filter(e => !ids.includes(e.id!)).concat(...arr);
 }
 
 // 打开选择弹窗
@@ -288,7 +288,7 @@ function select(item?: Item) {
 // 全选
 async function selectAll() {
 	// 全部数据
-	await Crud.value?.refresh({ page: 1, size: 10000 }).then((res) => {
+	await Crud.value?.refresh({ page: 1, size: 10000 }).then(res => {
 		list.value = res.list;
 	});
 
@@ -300,14 +300,14 @@ async function selectAll() {
 
 // 移除
 function remove() {
-	const ids = selection.value.map((e) => e.id);
+	const ids = selection.value.map(e => e.id);
 
-	list.value = list.value.filter((e) => {
+	list.value = list.value.filter(e => {
 		// 清空选择状态
 		refs.table?.toggleRowSelection(e, false);
 
 		// 移除已选的
-		return !ids.find((id) => id == e.id);
+		return !ids.find(id => id == e.id);
 	});
 }
 
@@ -315,12 +315,12 @@ function remove() {
 watch(
 	list,
 	(arr = []) => {
-		const ids = arr.map((e) => e.id);
+		const ids = arr.map(e => e.id);
 
 		if (props.multiple) {
-			emit("update:modelValue", ids);
+			emit('update:modelValue', ids);
 		} else {
-			emit("update:modelValue", ids[0]);
+			emit('update:modelValue', ids[0]);
 		}
 
 		Form.value?.validateField(props.prop);

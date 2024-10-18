@@ -8,26 +8,26 @@
 						<div class="head">
 							<span>{{ config.label }}</span>
 
-							<el-tooltip content="刷新" v-if="config.enableRefresh">
+							<el-tooltip v-if="config.enableRefresh" content="刷新">
 								<el-icon @click="refresh()">
 									<icon-refresh />
 								</el-icon>
 							</el-tooltip>
 
-							<el-tooltip content="添加" v-if="config.enableAdd">
+							<el-tooltip v-if="config.enableAdd" content="添加">
 								<el-icon
-									@click="edit()"
 									v-permission="config.service.permission.add"
+									@click="edit()"
 								>
 									<plus />
 								</el-icon>
 							</el-tooltip>
 						</div>
 
-						<div class="search" v-if="config.enableKeySearch">
+						<div v-if="config.enableKeySearch" class="search">
 							<el-input
-								placeholder="搜索关键字"
 								v-model="keyWord"
+								placeholder="搜索关键字"
 								clearable
 								:prefix-icon="Search"
 								@change="
@@ -38,16 +38,16 @@
 							/>
 						</div>
 
-						<div class="data" v-loading="loading">
+						<div v-loading="loading" class="data">
 							<el-scrollbar>
 								<!-- 树类型 -->
 								<template v-if="tree.visible">
 									<el-tree
+										:ref="setRefs('tree')"
 										class="tree"
 										highlight-current
 										auto-expand-parent
 										:expand-on-click-node="false"
-										:ref="setRefs('tree')"
 										:lazy="tree.lazy"
 										:data="list"
 										:props="tree.props"
@@ -66,8 +66,8 @@
 								<!-- 列表类型 -->
 								<template v-else>
 									<ul
-										class="list"
 										v-infinite-scroll="onMore"
+										class="list"
 										:infinite-scroll-immediate="false"
 										:infinite-scroll-disabled="loaded"
 									>
@@ -76,7 +76,7 @@
 											:key="index"
 											@click="select(item)"
 											@contextmenu="
-												(e) => {
+												e => {
 													onContextMenu(e, item);
 												}
 											"
@@ -103,8 +103,8 @@
 													</slot>
 
 													<el-icon
-														class="arrow-right"
 														v-show="selected?.id == item.id"
+														class="arrow-right"
 													>
 														<arrow-right-bold />
 													</el-icon>
@@ -121,7 +121,7 @@
 				</slot>
 
 				<!-- 收起按钮 -->
-				<div class="collapse-btn" @click="expand(false)" v-if="browser.isMini">
+				<div v-if="browser.isMini" class="collapse-btn" @click="expand(false)">
 					<el-icon>
 						<arrow-right />
 					</el-icon>
@@ -138,16 +138,16 @@
 
 					<slot name="title" :selected="selected">
 						<span class="title">
-							{{ config.title }}（{{ selected?.name || "未选择" }}）
+							{{ config.title }}（{{ selected?.name || '未选择' }}）
 						</span>
 					</slot>
 				</div>
 
-				<div class="content" v-if="selected || config.custom">
+				<div v-if="selected || config.custom" class="content">
 					<slot name="right"></slot>
 				</div>
 
-				<el-empty :image-size="80" v-else />
+				<el-empty v-else :image-size="80" />
 			</div>
 		</div>
 
@@ -156,7 +156,7 @@
 </template>
 
 <script lang="ts" setup name="cl-view-group">
-import { inject, nextTick, onMounted, reactive, ref, useSlots } from "vue";
+import { inject, nextTick, onMounted, reactive, ref, useSlots } from 'vue';
 import {
 	ArrowLeft,
 	ArrowRight,
@@ -164,13 +164,13 @@ import {
 	Refresh as IconRefresh,
 	Plus,
 	Search
-} from "@element-plus/icons-vue";
-import { useBrowser, useCool } from "/@/cool";
-import { ContextMenu, useForm } from "@cool-vue/crud";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { isEmpty, merge } from "lodash-es";
-import { deepTree } from "/@/cool/utils";
-import { type ClViewGroup } from "../types/index.d";
+} from '@element-plus/icons-vue';
+import { useBrowser, useCool } from '/@/cool';
+import { ContextMenu, useForm } from '@cool-vue/crud';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { isEmpty, merge } from 'lodash-es';
+import { deepTree } from '/@/cool/utils';
+import { type ClViewGroup } from '../types/index.d';
 
 const { browser, onScreenChange } = useBrowser();
 const slots = useSlots();
@@ -181,9 +181,9 @@ const { refs, setRefs } = useCool();
 const config = reactive(
 	Object.assign(
 		{
-			label: "组",
-			title: "列表",
-			leftWidth: "300px",
+			label: '组',
+			title: '列表',
+			leftWidth: '300px',
 			data: {},
 			service: {},
 			enableContextMenu: true,
@@ -192,7 +192,7 @@ const config = reactive(
 			enableAdd: true,
 			custom: false
 		},
-		inject("useViewGroup__options")
+		inject('useViewGroup__options')
 	)
 ) as ClViewGroup.Options;
 
@@ -200,14 +200,14 @@ const config = reactive(
 const isCustom = !!slots.left;
 
 if (isEmpty(config.service) && !isCustom) {
-	console.error("<cl-view-group /> 参数 service 不能为空");
+	console.error('<cl-view-group /> 参数 service 不能为空');
 }
 
 // 加载中
 const loading = ref(false);
 
 // 搜索关键字
-const keyWord = ref("");
+const keyWord = ref('');
 
 // 列表
 const list = ref<ClViewGroup.Item[]>([]);
@@ -224,11 +224,11 @@ const tree = reactive(
 		{
 			visible: !!config.tree,
 			props: {
-				label: "name",
-				children: "children",
-				disabled: "disabled",
-				isLeaf: "isLeaf",
-				class: ""
+				label: 'name',
+				children: 'children',
+				disabled: 'disabled',
+				isLeaf: 'isLeaf',
+				class: ''
 			},
 			defaultExpandedKeys: [] as number[]
 		},
@@ -265,15 +265,15 @@ function select(data?: ClViewGroup.Item) {
 // 编辑
 function edit(item?: ClViewGroup.Item) {
 	Form.value?.open({
-		title: (item ? "编辑" : "添加") + config.label,
+		title: (item ? '编辑' : '添加') + config.label,
 		form: {
 			...item
 		},
 		on: {
 			submit(data, { close, done }) {
-				config.service[item ? "update" : "add"](data)
+				config.service[item ? 'update' : 'add'](data)
 					.then(() => {
-						ElMessage.success("保存成功");
+						ElMessage.success('保存成功');
 
 						if (item) {
 							Object.assign(item, data);
@@ -282,7 +282,7 @@ function edit(item?: ClViewGroup.Item) {
 						refresh();
 						close();
 					})
-					.catch((err) => {
+					.catch(err => {
 						ElMessage.error(err.message);
 						done();
 					});
@@ -294,15 +294,15 @@ function edit(item?: ClViewGroup.Item) {
 
 // 删除
 function remove(item: ClViewGroup.Item) {
-	ElMessageBox.confirm("此操作将会删除选择的数据，是否继续？", "提示", {
-		type: "warning"
+	ElMessageBox.confirm('此操作将会删除选择的数据，是否继续？', '提示', {
+		type: 'warning'
 	})
 		.then(() => {
 			function next(params: any) {
 				config.service
 					.delete(params)
 					.then(async () => {
-						ElMessage.success("删除成功");
+						ElMessage.success('删除成功');
 
 						// 刷新列表
 						await refresh();
@@ -312,7 +312,7 @@ function remove(item: ClViewGroup.Item) {
 							select();
 						}
 					})
-					.catch((err) => {
+					.catch(err => {
 						ElMessage.error(err.message);
 					});
 			}
@@ -329,8 +329,8 @@ function remove(item: ClViewGroup.Item) {
 
 // 请求参数
 const reqParams = {
-	order: "createTime",
-	sort: "asc",
+	order: 'createTime',
+	sort: 'asc',
 	page: 1,
 	size: 50 // 每页条数
 };
@@ -358,12 +358,12 @@ async function refresh(params?: any) {
 
 	if (tree.visible) {
 		// 树形数据
-		req = config.service.list(data).then((res) => {
+		req = config.service.list(data).then(res => {
 			list.value = deepTree(res);
 		});
 	} else {
 		// 列表数据
-		req = config.service.page(data).then((res) => {
+		req = config.service.page(data).then(res => {
 			const arr = config.onData?.(res.list) || res.list;
 
 			if (reqParams.page == 1) {
@@ -389,7 +389,7 @@ async function refresh(params?: any) {
 				select(item);
 			}
 		})
-		.catch((err) => {
+		.catch(err => {
 			ElMessage.error(err.message);
 		});
 
@@ -411,11 +411,11 @@ function onContextMenu(e: any, item: ClViewGroup.Item) {
 
 	ContextMenu.open(e, {
 		hover: {
-			target: "item"
+			target: 'item'
 		},
 		list: [
 			{
-				label: "编辑",
+				label: '编辑',
 				hidden: !config.service._permission.update,
 				callback(done) {
 					done();
@@ -423,7 +423,7 @@ function onContextMenu(e: any, item: ClViewGroup.Item) {
 				}
 			},
 			{
-				label: "删除",
+				label: '删除',
 				hidden: !config.service._permission.delete,
 				callback(done) {
 					done();
@@ -462,7 +462,7 @@ defineExpose({
 	height: 100%;
 	width: 100%;
 
-	$left-width: v-bind("config.leftWidth");
+	$left-width: v-bind('config.leftWidth');
 	$bg: var(--el-bg-color);
 
 	&__wrap {
@@ -592,7 +592,7 @@ defineExpose({
 
 					&::after {
 						display: block;
-						content: "";
+						content: '';
 						height: 1px;
 					}
 				}

@@ -37,10 +37,10 @@
 </template>
 
 <script lang="ts" name="sys-log" setup>
-import { onMounted, ref } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { useCool } from "/@/cool";
-import { useCrud, useTable } from "@cool-vue/crud";
+import { onMounted, ref } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { useCool } from '/@/cool';
+import { useCrud, useTable } from '@cool-vue/crud';
 
 const { service } = useCool();
 
@@ -48,61 +48,61 @@ const { service } = useCool();
 const day = ref(1);
 
 // cl-crud
-const Crud = useCrud({ service: service.base.sys.log }, (app) => {
+const Crud = useCrud({ service: service.base.sys.log }, app => {
 	app.refresh();
 });
 
 // cl-table
 const Table = useTable({
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 	columns: [
 		{
-			type: "index",
-			label: "#",
+			type: 'index',
+			label: '#',
 			width: 60
 		},
 		{
-			prop: "userId",
-			label: "用户ID",
+			prop: 'userId',
+			label: '用户ID',
 			minWidth: 100
 		},
 		{
-			prop: "name",
-			label: "用户昵称",
+			prop: 'name',
+			label: '用户昵称',
 			minWidth: 120
 		},
 		{
-			prop: "action",
-			label: "请求地址",
+			prop: 'action',
+			label: '请求地址',
 			minWidth: 200,
 			showOverflowTooltip: true
 		},
 		{
-			prop: "params",
-			label: "参数",
+			prop: 'params',
+			label: '参数',
 			minWidth: 200,
 			component: {
-				name: "cl-code-json",
+				name: 'cl-code-json',
 				props: {
 					popover: true
 				}
 			}
 		},
 		{
-			prop: "ip",
-			label: "ip",
+			prop: 'ip',
+			label: 'ip',
 			minWidth: 150,
 			dict: [],
 			dictColor: true,
 			formatter(row) {
-				return row.ip.split(",");
+				return row.ip.split(',');
 			}
 		},
 		{
-			prop: "createTime",
-			label: "请求时间",
+			prop: 'createTime',
+			label: '请求时间',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		}
 	]
 });
@@ -112,26 +112,26 @@ function saveDay() {
 	service.base.sys.log
 		.setKeep({ value: day.value })
 		.then(() => {
-			ElMessage.success("保存成功");
+			ElMessage.success('保存成功');
 		})
-		.catch((err) => {
+		.catch(err => {
 			ElMessage.error(err.message);
 		});
 }
 
 // 清空日志
 function clear() {
-	ElMessageBox.confirm("是否要清空日志？", "提示", {
-		type: "warning"
+	ElMessageBox.confirm('是否要清空日志？', '提示', {
+		type: 'warning'
 	})
 		.then(() => {
 			service.base.sys.log
 				.clear()
 				.then(() => {
-					ElMessage.success("清空成功");
+					ElMessage.success('清空成功');
 					Crud.value?.refresh();
 				})
-				.catch((err) => {
+				.catch(err => {
 					ElMessage.error(err.message);
 				});
 		})
@@ -140,7 +140,7 @@ function clear() {
 
 onMounted(() => {
 	// 获取天数
-	service.base.sys.log.getKeep().then((res) => {
+	service.base.sys.log.getKeep().then(res => {
 		day.value = Number(res);
 	});
 });

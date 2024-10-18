@@ -1,8 +1,4 @@
-# 🎨 editorconfig.org
-
-root = true
-
-[*]
+[*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,vue}]
 charset = utf-8
 end_of_line = lf
 indent_style = tab

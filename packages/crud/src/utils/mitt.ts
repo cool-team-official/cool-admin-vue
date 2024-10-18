@@ -10,7 +10,7 @@ class Mitt {
 	}
 
 	send(type: "emit" | "off" | "on", name: string, ...args: any[]) {
-		// @ts-ignore
+		// @ts-expect-error
 		mitt[type](`${this.id}__${name}`, ...args);
 	}
 

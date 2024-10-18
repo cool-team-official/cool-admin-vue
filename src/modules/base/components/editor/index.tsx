@@ -1,8 +1,8 @@
-import { defineComponent, h, resolveComponent, ref, reactive, watch } from "vue";
-import { isComponent } from "/@/cool/utils";
+import { defineComponent, h, resolveComponent, ref, reactive, watch } from 'vue';
+import { isComponent } from '/@/cool/utils';
 
 export default defineComponent({
-	name: "cl-editor",
+	name: 'cl-editor',
 
 	props: {
 		name: {
@@ -15,7 +15,7 @@ export default defineComponent({
 		const Editor = ref();
 		const ex = reactive({});
 
-		watch(Editor, (v) => {
+		watch(Editor, v => {
 			if (v) {
 				Object.assign(ex, v);
 			}
@@ -26,7 +26,6 @@ export default defineComponent({
 		return () => {
 			return isComponent(props.name) ? (
 				h(
-					// @ts-ignore
 					resolveComponent(props.name),
 					{
 						...props,

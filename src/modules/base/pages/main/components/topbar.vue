@@ -25,7 +25,7 @@
 		</ul>
 
 		<!-- 用户信息 -->
-		<div class="app-topbar__user" v-if="user.info">
+		<div v-if="user.info" class="app-topbar__user">
 			<el-dropdown trigger="click" hide-on-click @command="onCommand">
 				<span class="el-dropdown-link">
 					<span class="name">{{ user.info.nickName }}</span>
@@ -50,13 +50,13 @@
 </template>
 
 <script lang="ts" name="app-topbar" setup>
-import { computed, markRaw, onMounted, reactive } from "vue";
-import { isFunction, orderBy } from "lodash-es";
-import { useBase } from "/$/base";
-import { module, useCool } from "/@/cool";
-import RouteNav from "./route-nav.vue";
-import AMenu from "./amenu.vue";
-import { ElMessageBox } from "element-plus";
+import { computed, markRaw, onMounted, reactive } from 'vue';
+import { isFunction, orderBy } from 'lodash-es';
+import { useBase } from '/$/base';
+import { module, useCool } from '/@/cool';
+import RouteNav from './route-nav.vue';
+import AMenu from './amenu.vue';
+import { ElMessageBox } from 'element-plus';
 
 const { router, service, browser } = useCool();
 const { user, app } = useBase();
@@ -64,12 +64,12 @@ const { user, app } = useBase();
 // 命令事件
 async function onCommand(name: string) {
 	switch (name) {
-		case "my":
-			router.push("/my/info");
+		case 'my':
+			router.push('/my/info');
 			break;
-		case "exit":
-			ElMessageBox.confirm("确定退出登录吗？", "提示", {
-				type: "warning"
+		case 'exit':
+			ElMessageBox.confirm('确定退出登录吗？', '提示', {
+				type: 'warning'
 			})
 				.then(async () => {
 					await service.base.comm.logout();
@@ -85,10 +85,10 @@ const toolbar = reactive({
 	list: [] as any[],
 
 	async init() {
-		const arr = orderBy(module.list.map((e) => e.toolbar).filter(Boolean), "order");
+		const arr = orderBy(module.list.map(e => e.toolbar).filter(Boolean), 'order');
 
 		this.list = await Promise.all(
-			arr.map(async (e) => {
+			arr.map(async e => {
 				if (e) {
 					const c = await (isFunction(e.component) ? e.component() : e.component);
 
@@ -104,7 +104,7 @@ const toolbar = reactive({
 
 // 工具栏组件
 const toolbarComponents = computed(() => {
-	return toolbar.list.filter((e) => {
+	return toolbar.list.filter(e => {
 		if (browser.isMini) {
 			return e?.h5 ?? true;
 		}

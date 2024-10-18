@@ -1,19 +1,19 @@
 <template>
 	<slot>
-		<el-button @click="open()" v-if="showBtn">{{ text }}</el-button>
+		<el-button v-if="showBtn" @click="open()">{{ text }}</el-button>
 	</slot>
 
 	<cl-dialog
+		v-model="visible"
 		:height="height"
 		:width="width"
 		:title="title"
 		:scrollbar="isScroll"
 		append-to-body
-		v-model="visible"
 		v-bind="$attrs"
 	>
 		<div class="cl-editor-preview">
-			<el-tabs v-model="active" type="card" v-if="list.length > 1" @tab-change="onTabChange">
+			<el-tabs v-if="list.length > 1" v-model="active" type="card" @tab-change="onTabChange">
 				<el-tab-pane
 					v-for="(item, index) in list"
 					:key="index"
@@ -27,13 +27,13 @@
 				<slot name="prepend"></slot>
 
 				<cl-editor
-					:name="`cl-editor-${name}`"
 					:ref="setRefs('editor')"
 					:key="active"
-					height="100%"
-					preview
 					v-bind="editConfig"
 					v-model="content"
+					:name="`cl-editor-${name}`"
+					height="100%"
+					preview
 				/>
 
 				<slot name="append"></slot>
@@ -42,17 +42,17 @@
 
 		<template #footer>
 			<el-button @click="close">关闭</el-button>
-			<el-button type="success" @click="toCopy" v-if="isCopy">复制</el-button>
+			<el-button v-if="isCopy" type="success" @click="toCopy">复制</el-button>
 		</template>
 	</cl-dialog>
 </template>
 
 <script lang="ts" name="cl-editor-preview" setup>
-import { useClipboard } from "@vueuse/core";
-import { ElMessage } from "element-plus";
-import { isObject, isString } from "lodash-es";
-import { nextTick, ref, computed, type PropType } from "vue";
-import { useCool } from "/@/cool";
+import { useClipboard } from '@vueuse/core';
+import { ElMessage } from 'element-plus';
+import { isObject, isString } from 'lodash-es';
+import { nextTick, ref, computed, type PropType } from 'vue';
+import { useCool } from '/@/cool';
 
 interface TabItem {
 	name: string;
@@ -69,7 +69,7 @@ const props = defineProps({
 	},
 	text: {
 		type: String,
-		default: "点击查看"
+		default: '点击查看'
 	},
 	showBtn: {
 		type: Boolean,
@@ -77,11 +77,11 @@ const props = defineProps({
 	},
 	height: {
 		type: String,
-		default: "60vh"
+		default: '60vh'
 	},
 	width: {
 		type: String,
-		default: "60%"
+		default: '60%'
 	},
 	formatter: Function,
 
@@ -99,7 +99,7 @@ const { copy } = useClipboard();
 const visible = ref(false);
 
 // 内容
-const content = ref("");
+const content = ref('');
 
 // 语言
 const language = ref();
@@ -112,7 +112,7 @@ const list = ref<TabItem[]>([]);
 
 // 是否代码预览
 const isCode = computed(() => {
-	return props.name == "monaco";
+	return props.name == 'monaco';
 });
 
 // 是否可以滚动
@@ -131,7 +131,7 @@ const editConfig = computed(() => {
 
 // 标题
 const title = computed(() => {
-	return props.title || (isCode.value ? "代码预览" : "文本预览");
+	return props.title || (isCode.value ? '代码预览' : '文本预览');
 });
 
 // 打开
@@ -189,7 +189,7 @@ function close() {
 // 复制
 function toCopy() {
 	copy(content.value);
-	ElMessage.success("复制成功");
+	ElMessage.success('复制成功');
 }
 
 defineExpose({

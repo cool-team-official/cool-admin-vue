@@ -1,60 +1,60 @@
-import type { ModuleConfig } from "/@/cool";
-import { useStore } from "./store";
-import { config } from "/@/config";
-import "./static/css/index.scss";
+import type { ModuleConfig } from '/@/cool';
+import { useStore } from './store';
+import { config } from '/@/config';
+import './static/css/index.scss';
 
 export default (): ModuleConfig => {
 	return {
 		order: 99,
-		components: Object.values(import.meta.glob("./components/**/*.{vue,tsx}")),
+		components: Object.values(import.meta.glob('./components/**/*.{vue,tsx}')),
 		views: [
 			{
-				path: "/my/info",
+				path: '/my/info',
 				meta: {
-					label: "个人中心"
+					label: '个人中心'
 				},
-				component: () => import("./views/info.vue")
+				component: () => import('./views/info.vue')
 			}
 		],
 		pages: [
 			{
-				path: "/login",
-				component: () => import("./pages/login/index.vue")
+				path: '/login',
+				component: () => import('./pages/login/index.vue')
 			},
 			{
-				path: "/401",
+				path: '/401',
 				meta: {
 					process: false
 				},
-				component: () => import("./pages/error/401.vue")
+				component: () => import('./pages/error/401.vue')
 			},
 			{
-				path: "/403",
+				path: '/403',
 				meta: {
 					process: false
 				},
-				component: () => import("./pages/error/403.vue")
+				component: () => import('./pages/error/403.vue')
 			},
 			{
-				path: "/404",
+				path: '/404',
 				meta: {
 					process: false
 				},
-				component: () => import("./pages/error/404.vue")
+				component: () => import('./pages/error/404.vue')
 			},
 			{
-				path: "/500",
+				path: '/500',
 				meta: {
 					process: false
 				},
-				component: () => import("./pages/error/500.vue")
+				component: () => import('./pages/error/500.vue')
 			},
 			{
-				path: "/502",
+				path: '/502',
 				meta: {
 					process: false
 				},
-				component: () => import("./pages/error/502.vue")
+				component: () => import('./pages/error/502.vue')
 			}
 		],
 		install() {
@@ -67,7 +67,7 @@ export default (): ModuleConfig => {
 			// token 事件
 			async function hasToken(cb: () => Promise<any> | void) {
 				if (cb) {
-					app.addEvent("hasToken", cb);
+					app.addEvent('hasToken', cb);
 
 					if (user.token) {
 						await cb();

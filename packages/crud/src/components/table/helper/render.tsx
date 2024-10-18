@@ -142,7 +142,7 @@ export function useRender() {
 	}
 
 	// 插槽 empty
-	function renderEmpty(emptyText: String) {
+	function renderEmpty(emptyText: string) {
 		return (
 			<div class="cl-table__empty">
 				{slots.empty ? (

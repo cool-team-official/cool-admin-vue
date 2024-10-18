@@ -1,13 +1,13 @@
 <template>
-	<el-button @click="autoCreate" v-if="isDev" style="margin-left: 10px">自动添加</el-button>
+	<el-button v-if="isDev" style="margin-left: 10px" @click="autoCreate">自动添加</el-button>
 
 	<cl-form ref="Form">
 		<template #slot-list="{ scope }">
 			<el-scrollbar class="scrollbar">
-				<div class="list" v-for="(item, index) in scope.list" :key="index">
+				<div v-for="(item, index) in scope.list" :key="index" class="list">
 					<el-divider content-position="left">{{ item.prefix }}</el-divider>
 
-					<div class="item" v-for="(a, ai) in item.api" :key="ai">
+					<div v-for="(a, ai) in item.api" :key="ai" class="item">
 						<!-- 是否开启 -->
 						<el-switch v-model="a.checked"></el-switch>
 
@@ -29,18 +29,18 @@
 </template>
 
 <script setup name="auto-perms" lang="ts">
-import { useForm } from "@cool-vue/crud";
-import { useCool } from "/@/cool";
-import { deepPaths } from "/@/cool/utils";
-import { ElMessage } from "element-plus";
-import { isDev } from "/@/config";
-import type { EpsApi, EpsData, EpsModule } from "../../types";
+import { useForm } from '@cool-vue/crud';
+import { useCool } from '/@/cool';
+import { deepPaths } from '/@/cool/utils';
+import { ElMessage } from 'element-plus';
+import { isDev } from '/@/config';
+import type { EpsApi, EpsData, EpsModule } from '../../types';
 
 const props = defineProps({
 	menuId: [String, Number]
 });
 
-const emit = defineEmits(["open", "close"]);
+const emit = defineEmits(['open', 'close']);
 
 const { service } = useCool();
 const Form = useForm();
@@ -53,8 +53,8 @@ async function getEntity() {
 
 		// 遍历实体
 		for (const i in eps) {
-			eps[i].forEach((e) => {
-				e.prefix = e.prefix?.replace("/admin/", "");
+			eps[i].forEach(e => {
+				e.prefix = e.prefix?.replace('/admin/', '');
 
 				if (e.prefix) {
 					paths.push(e.prefix);
@@ -65,25 +65,25 @@ async function getEntity() {
 		}
 
 		return {
-			prop: "entity",
-			label: "实体数据",
+			prop: 'entity',
+			label: '实体数据',
 			component: {
-				name: "el-cascader",
+				name: 'el-cascader',
 				props: {
 					options: deepPaths(paths),
-					separator: ".",
+					separator: '.',
 					props: {
 						multiple: true
 					},
 					onChange(arr: string[][]) {
 						const list: any[] = [];
 
-						arr.forEach((v) => {
-							const d = modules.find((e) => e.prefix == v.join("/"));
+						arr.forEach(v => {
+							const d = modules.find(e => e.prefix == v.join('/'));
 
 							if (d) {
-								d.api.forEach((e) => {
-									e.perms = (d.prefix + e.path).replace(/\//g, ":");
+								d.api.forEach(e => {
+									e.perms = (d.prefix + e.path).replace(/\//g, ':');
 									e.checked = true;
 								});
 
@@ -92,7 +92,7 @@ async function getEntity() {
 						});
 
 						// 渲染列表
-						Form.value?.setForm("list", list);
+						Form.value?.setForm('list', list);
 					}
 				}
 			}
@@ -102,63 +102,63 @@ async function getEntity() {
 
 // 自动创建
 async function autoCreate() {
-	emit("open");
+	emit('open');
 
 	Form.value?.open({
-		title: "自动添加权限",
-		width: "800px",
+		title: '自动添加权限',
+		width: '800px',
 		dialog: {
 			draggable: true,
-			controls: ["close"]
+			controls: ['close']
 		},
 		props: {
-			labelPosition: "top"
+			labelPosition: 'top'
 		},
 		op: {
-			saveButtonText: "一键添加"
+			saveButtonText: '一键添加'
 		},
 		items: [
 			await getEntity(),
 			{
-				prop: "list",
-				label: "权限列表",
+				prop: 'list',
+				label: '权限列表',
 				value: [],
 				hidden({ scope }) {
 					return !scope.entity;
 				},
 				component: {
-					name: "slot-list"
+					name: 'slot-list'
 				}
 			}
 		],
 		on: {
 			submit(data: { list: any[]; entity: any }, { done, close }) {
 				if (!data.entity) {
-					ElMessage.error("请选择实体数据");
+					ElMessage.error('请选择实体数据');
 					done();
 					return;
 				}
 
 				// 选中权限
 				const checked: EpsApi[] = data.list
-					.map((e) => e.api)
+					.map(e => e.api)
 					.flat()
-					.filter((e) => e.checked);
+					.filter(e => e.checked);
 
-				if (checked.find((e) => !e.summary)) {
-					ElMessage.error("请填写权限名称");
+				if (checked.find(e => !e.summary)) {
+					ElMessage.error('请填写权限名称');
 					done();
 					return;
 				}
 
 				if (checked.length == 0) {
-					ElMessage.error("请至少选择一个权限");
+					ElMessage.error('请至少选择一个权限');
 					done();
 					return;
 				}
 
 				Promise.all(
-					checked.map((e) => {
+					checked.map(e => {
 						return service.base.sys.menu.add({
 							type: 2,
 							parentId: props.menuId,
@@ -168,11 +168,11 @@ async function autoCreate() {
 					})
 				)
 					.then(() => {
-						ElMessage.success("添加权限成功");
+						ElMessage.success('添加权限成功');
 						close();
-						emit("close");
+						emit('close');
 					})
-					.catch((err) => {
+					.catch(err => {
 						done();
 						ElMessage.error(err.message);
 					});

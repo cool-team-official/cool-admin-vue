@@ -6,7 +6,7 @@
 export function setRole(role?: string): ClForm.Plugin {
 	return ({ exposed }) => {
 		function deep(arr: ClForm.Item[]) {
-			arr.forEach((e) => {
+			arr.forEach(e => {
 				if (e.role) {
 					e.hidden = e.role != role;
 				}

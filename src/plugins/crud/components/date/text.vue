@@ -3,23 +3,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-import dayjs from "dayjs";
+import { defineComponent, computed } from 'vue';
+import dayjs from 'dayjs';
 
 export default defineComponent({
-	name: "cl-date-text",
+	name: 'cl-date-text',
 
 	props: {
 		modelValue: [String, Number],
 		format: {
 			type: String,
-			default: "YYYY-MM-DD HH:mm:ss"
+			default: 'YYYY-MM-DD HH:mm:ss'
 		}
 	},
 
 	setup(props) {
 		const value = computed(() => {
-			return props.modelValue ? dayjs(props.modelValue).format(props.format) : "";
+			return props.modelValue ? dayjs(props.modelValue).format(props.format) : '';
 		});
 
 		return {

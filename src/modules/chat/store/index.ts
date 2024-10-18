@@ -1,5 +1,5 @@
-import { useMessageStore } from "./message";
-import { useSessionStore } from "./session";
+import { useMessageStore } from './message';
+import { useSessionStore } from './session';
 
 export function useStore() {
 	const session = useSessionStore();

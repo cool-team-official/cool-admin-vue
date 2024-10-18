@@ -48,8 +48,8 @@
 
 						<!-- 自定义列 -->
 						<cl-column-custom
-							:columns="Table?.columns"
 							:ref="setRefs('columnCustom')"
+							:columns="Table?.columns"
 						/>
 
 						<!-- 关键字搜索 -->
@@ -120,11 +120,11 @@
 </template>
 
 <script lang="tsx" name="demo-crud" setup>
-import { useCrud, useUpsert, useTable, useAdvSearch, useSearch } from "@cool-vue/crud";
-import { useDict } from "/$/dict";
-import { reactive, ref } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { useCool } from "/@/cool";
+import { useCrud, useUpsert, useTable, useAdvSearch, useSearch } from '@cool-vue/crud';
+import { useDict } from '/$/dict';
+import { reactive, ref } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { useCool } from '/@/cool';
 
 // 基础
 const { service, refs, setRefs } = useCool();
@@ -136,12 +136,12 @@ const { dict } = useDict();
 const options = reactive({
 	status: [
 		{
-			label: "启用",
+			label: '启用',
 			value: 1
 		},
 		{
-			label: "禁用",
-			type: "danger",
+			label: '禁用',
+			type: 'danger',
 			value: 0
 		}
 	]
@@ -164,7 +164,7 @@ const Crud = useCrud(
 			Object.assign(subData, res.subData);
 		}
 	},
-	(app) => {
+	app => {
 		// Crud 加载完，默认刷新一次
 		app.refresh({
 			size: 10
@@ -184,127 +184,127 @@ const Upsert = useUpsert<Eps.UserInfoEntity>({
 	items: [
 		// 分组
 		{
-			type: "tabs",
+			type: 'tabs',
 			props: {
-				type: "card",
+				type: 'card',
 				labels: [
 					{
-						label: "基础信息",
-						value: "base"
+						label: '基础信息',
+						value: 'base'
 					},
 					{
-						label: "其他配置",
-						value: "other"
+						label: '其他配置',
+						value: 'other'
 					}
 				]
 			}
 		},
 		{
-			label: "头像",
-			prop: "avatarUrl",
-			group: "base",
+			label: '头像',
+			prop: 'avatarUrl',
+			group: 'base',
 			component: {
-				name: "cl-upload"
+				name: 'cl-upload'
 			}
 		},
 		{
-			label: "账号",
-			group: "base",
-			prop: "account",
+			label: '账号',
+			group: 'base',
+			prop: 'account',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		// 动态配置，新增显示、编辑隐藏
 		() => {
 			return () => {
 				return {
-					label: "密码",
-					group: "base",
-					prop: "password",
-					hidden: Upsert.value?.mode == "update", // 通过 mode 参数判断
+					label: '密码',
+					group: 'base',
+					prop: 'password',
+					hidden: Upsert.value?.mode == 'update', // 通过 mode 参数判断
 					component: {
-						name: "el-input",
+						name: 'el-input',
 						props: {
-							type: "password"
+							type: 'password'
 						}
 					}
 				};
 			};
 		},
 		{
-			group: "base",
-			prop: "user",
+			group: 'base',
+			prop: 'user',
 			component: {
-				name: "cl-form-card",
+				name: 'cl-form-card',
 				props: {
-					label: "用户信息（多层级展示）"
+					label: '用户信息（多层级展示）'
 				}
 			},
 			children: [
 				{
-					label: "姓名",
-					prop: "name",
+					label: '姓名',
+					prop: 'name',
 					required: true,
 					component: {
-						name: "el-input"
+						name: 'el-input'
 					}
 				},
 				{
-					label: "存款",
-					prop: "wages",
+					label: '存款',
+					prop: 'wages',
 					component: {
-						name: "el-input-number"
+						name: 'el-input-number'
 					}
 				}
 			]
 		},
 		{
-			group: "base",
-			prop: "contact",
+			group: 'base',
+			prop: 'contact',
 			component: {
-				name: "cl-form-card",
+				name: 'cl-form-card',
 				props: {
-					label: "联系信息",
+					label: '联系信息',
 					expand: false
 				}
 			},
 			children: [
 				{
-					label: "手机号",
-					prop: "phone",
+					label: '手机号',
+					prop: 'phone',
 					component: {
-						name: "el-input"
+						name: 'el-input'
 					}
 				},
 				{
-					label: "省市区",
-					prop: "pca",
-					group: "base",
+					label: '省市区',
+					prop: 'pca',
+					group: 'base',
 					component: {
-						name: "cl-distpicker"
+						name: 'cl-distpicker'
 					}
 				}
 			]
 		},
 		{
-			group: "other",
-			label: "工作",
-			prop: "occupation",
+			group: 'other',
+			label: '工作',
+			prop: 'occupation',
 			component: {
-				name: "el-tree-select",
+				name: 'el-tree-select',
 				props: {
-					data: dict.get("occupation"),
+					data: dict.get('occupation'),
 					checkStrictly: true
 				}
 			}
 		},
 		{
-			group: "other",
-			label: "身份证照片",
-			prop: "idCardPic",
+			group: 'other',
+			label: '身份证照片',
+			prop: 'idCardPic',
 			component: {
-				name: "cl-upload",
+				name: 'cl-upload',
 				props: {
 					isSpace: true,
 					size: [200, 300]
@@ -332,7 +332,7 @@ const Upsert = useUpsert<Eps.UserInfoEntity>({
 
 	// 提交钩子
 	onSubmit(data, { next, close, done }) {
-		console.log("onSubmit", data);
+		console.log('onSubmit', data);
 		// 继续请求 update/add 接口
 		next(data);
 
@@ -358,24 +358,24 @@ const Upsert = useUpsert<Eps.UserInfoEntity>({
 
 	// 打开后，数据加载完，onInfo 之后
 	onOpened(data) {
-		if (Upsert.value?.mode != "info") {
-			ElMessage.info("编辑中");
+		if (Upsert.value?.mode != 'info') {
+			ElMessage.info('编辑中');
 		}
 	},
 
 	// 关闭钩子
 	onClose(action, done) {
-		if (Upsert.value?.mode == "update") {
-			if (action == "close") {
-				return ElMessageBox.confirm("还没填完，确定关闭不？", "提示", {
-					type: "warning"
+		if (Upsert.value?.mode == 'update') {
+			if (action == 'close') {
+				return ElMessageBox.confirm('还没填完，确定关闭不？', '提示', {
+					type: 'warning'
 				})
 					.then(() => {
 						done();
-						ElMessage.info("好吧");
+						ElMessage.info('好吧');
 					})
 					.catch(() => {
-						ElMessage.success("请继续编辑");
+						ElMessage.success('请继续编辑');
 					});
 			}
 		}
@@ -388,62 +388,62 @@ const Upsert = useUpsert<Eps.UserInfoEntity>({
 const Table = useTable({
 	columns: [
 		{
-			type: "selection",
+			type: 'selection',
 			width: 60
 		},
 		// 展开列
 		{
-			label: "展开",
-			type: "expand",
-			prop: "detail",
+			label: '展开',
+			type: 'expand',
+			prop: 'detail',
 			width: 60
 		},
 		{
-			label: "头像",
-			prop: "avatar",
+			label: '头像',
+			prop: 'avatar',
 			width: 100,
 			component: {
-				name: "cl-image",
+				name: 'cl-image',
 				props: {
 					size: 40
 				}
 			}
 		},
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 120
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140,
 
 			// 带搜索组件
 			search: {
 				component: {
-					name: "el-input",
+					name: 'el-input',
 					props: {
-						placeholder: "搜索手机号"
+						placeholder: '搜索手机号'
 					}
 				}
 			}
 		},
 		{
-			label: "账号",
-			prop: "account",
+			label: '账号',
+			prop: 'account',
 			minWidth: 150
 		},
 		{
-			label: "存款(元)",
-			prop: "wages",
+			label: '存款(元)',
+			prop: 'wages',
 			minWidth: 150,
-			sortable: "desc" // 默认倒序
+			sortable: 'desc' // 默认倒序
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation"),
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation'),
 			dictColor: true,
 			minWidth: 150,
 			dictAllLevels: true, // 显示所有等级
@@ -451,52 +451,52 @@ const Table = useTable({
 			// 带搜索组件
 			search: {
 				component: {
-					name: "cl-select",
+					name: 'cl-select',
 					props: {
-						options: dict.get("occupation")
+						options: dict.get('occupation')
 					}
 				}
 			}
 		},
 		{
-			label: "状态",
+			label: '状态',
 			orderNum: 2,
-			prop: "status",
+			prop: 'status',
 			minWidth: 100,
 			component: {
-				name: "cl-switch"
+				name: 'cl-switch'
 			}
 		},
 		{
-			label: "出生年月",
+			label: '出生年月',
 			orderNum: 1,
 			minWidth: 165,
-			prop: "createTime",
-			sortable: "custom",
+			prop: 'createTime',
+			sortable: 'custom',
 			search: {
 				component: {
-					name: "cl-date-picker",
+					name: 'cl-date-picker',
 					props: {
-						type: "date",
-						valueFormat: "YYYY-MM-DD",
-						placeholder: "搜索日期"
+						type: 'date',
+						valueFormat: 'YYYY-MM-DD',
+						placeholder: '搜索日期'
 					}
 				}
 			}
 		},
 		{
-			type: "op",
+			type: 'op',
 			width: 320,
 			// 静态配置按钮
 			// buttons: ["info", "edit", "delete"],
 			// 动态配置按钮
 			buttons({ scope }) {
 				return [
-					"info",
-					"edit",
-					"delete",
+					'info',
+					'edit',
+					'delete',
 					{
-						label: "自定义",
+						label: '自定义',
 						onClick() {
 							ElMessage.info(`他是：${scope.row.name}`);
 						}
@@ -510,41 +510,41 @@ const Table = useTable({
 // 合计
 function onSummaryMethod() {
 	// 添加自定义列组件后
-	return ["合计", "", ...refs.columnCustom.summary(subData)];
+	return ['合计', '', ...refs.columnCustom.summary(subData)];
 }
 
 // 高级搜索
 const AdvSearch = useAdvSearch({
 	items: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			component: {
-				name: "el-input",
+				name: 'el-input',
 				props: {
 					clearable: true
 				}
 			}
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			component: {
-				name: "el-input",
+				name: 'el-input',
 				props: {
 					clearable: true
 				}
 			}
 		},
 		{
-			label: "工作",
-			prop: "occupation",
+			label: '工作',
+			prop: 'occupation',
 			hook: {
-				bind: "string"
+				bind: 'string'
 			},
 			component: {
-				name: "el-select",
-				options: dict.get("occupation")
+				name: 'el-select',
+				options: dict.get('occupation')
 			}
 		}
 	]
@@ -554,10 +554,10 @@ const AdvSearch = useAdvSearch({
 const Search = useSearch({
 	items: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			component: {
-				name: "el-input",
+				name: 'el-input',
 				props: {
 					clearable: true
 				}

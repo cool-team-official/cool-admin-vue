@@ -34,7 +34,7 @@
 					</div>
 
 					<!-- 文件区域 -->
-					<el-scrollbar class="cl-upload-space-inner__file" v-loading="loading">
+					<el-scrollbar v-loading="loading" class="cl-upload-space-inner__file">
 						<!-- 文件列表 -->
 						<template v-if="list.length > 0">
 							<div
@@ -44,17 +44,17 @@
 								}"
 							>
 								<div
-									class="cl-upload-space-inner__file-item"
 									v-for="item in list"
 									:key="item.preload || item.url"
+									class="cl-upload-space-inner__file-item"
 									@click="select(item)"
 								>
 									<upload-item :item="item" :list="list" @remove="remove" />
 
 									<!-- 已选序号 -->
 									<div
-										class="cl-upload-space-inner__file-index"
 										v-show="onIndex(item.id)"
+										class="cl-upload-space-inner__file-index"
 									>
 										<span>{{ onIndex(item.id) }}</span>
 									</div>
@@ -73,16 +73,16 @@
 
 					<div class="cl-upload-space-inner__footer">
 						<el-pagination
+							v-model:current-page="pagination.page"
 							:small="browser.isMini ? true : false"
 							:total="pagination.total"
 							:default-page-size="pagination.size"
-							v-model:current-page="pagination.page"
 							background
 							layout="prev, pager, next"
 							@current-change="refresh()"
 						/>
 
-						<span class="total" v-show="!browser.isMini"
+						<span v-show="!browser.isMini" class="total"
 							>共 {{ pagination.total }} 条</span
 						>
 					</div>
@@ -93,12 +93,12 @@
 </template>
 
 <script lang="ts" name="cl-upload-space-inner" setup>
-import { provide, reactive, ref, watch } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { UploadFilled } from "@element-plus/icons-vue";
-import { useCool } from "/@/cool";
-import { useViewGroup } from "/@/plugins/view";
-import UploadItem from "/@/plugins/upload/components/upload-item/index.vue";
+import { provide, reactive, ref, watch } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { UploadFilled } from '@element-plus/icons-vue';
+import { useCool } from '/@/cool';
+import { useViewGroup } from '/@/plugins/view';
+import UploadItem from '/@/plugins/upload/components/upload-item/index.vue';
 
 const props = defineProps({
 	limit: {
@@ -109,31 +109,31 @@ const props = defineProps({
 	selectable: Boolean
 });
 
-const emit = defineEmits(["selection-change", "confirm"]);
+const emit = defineEmits(['selection-change', 'confirm']);
 
 const { service, browser, refs, setRefs } = useCool();
 
 const { ViewGroup } = useViewGroup({
-	label: "分类",
-	title: "文件列表",
+	label: '分类',
+	title: '文件列表',
 	service: service.space.type,
 	onEdit() {
 		return {
-			width: "400px",
+			width: '400px',
 			props: {
-				labelPosition: "top"
+				labelPosition: 'top'
 			},
 			dialog: {
-				controls: ["close"]
+				controls: ['close']
 			},
 			items: [
 				{
-					label: "名称",
-					prop: "name",
-					value: "",
+					label: '名称',
+					prop: 'name',
+					value: '',
 					required: true,
 					component: {
-						name: "el-input",
+						name: 'el-input',
 						props: {
 							maxlength: 20,
 							clearable: true
@@ -179,10 +179,10 @@ function onSuccess<T extends { id: number }>(data: T) {
 			classifyId: ViewGroup.value?.selected?.id,
 			...data
 		})
-		.then((res) => {
+		.then(res => {
 			data.id = res.id;
 		})
-		.catch((err) => {
+		.catch(err => {
 			ElMessage.error(err.message);
 		});
 }
@@ -201,7 +201,7 @@ const reqParams = {
 async function refresh(params?: any) {
 	// 合并参数
 	Object.assign(reqParams, {
-		type: props.accept?.split("/")[0].replace("*", "") || undefined,
+		type: props.accept?.split('/')[0].replace('*', '') || undefined,
 		...pagination,
 		...params
 	});
@@ -211,7 +211,7 @@ async function refresh(params?: any) {
 		loading.value = true;
 	}
 
-	await service.space.info.page(reqParams).then((res) => {
+	await service.space.info.page(reqParams).then(res => {
 		// 设置分页
 		Object.assign(pagination, res.pagination);
 
@@ -225,7 +225,7 @@ async function refresh(params?: any) {
 
 // 选择
 function select(item: Eps.SpaceInfoEntity) {
-	const index = selection.value.findIndex((e) => e.id === item.id);
+	const index = selection.value.findIndex(e => e.id === item.id);
 
 	if (index >= 0) {
 		selection.value.splice(index, 1);
@@ -244,24 +244,24 @@ function select(item: Eps.SpaceInfoEntity) {
 
 // 选择序号
 function onIndex(id?: number) {
-	return selection.value.findIndex((e) => e.id === id) + 1;
+	return selection.value.findIndex(e => e.id === id) + 1;
 }
 
 // 删除选中
 function remove(item?: Eps.SpaceInfoEntity) {
 	// 已选文件 id
-	const ids = item ? [item.id] : selection.value.map((e) => e.id);
+	const ids = item ? [item.id] : selection.value.map(e => e.id);
 
-	ElMessageBox.confirm("此操作将删除文件, 是否继续?", "提示", {
-		type: "warning"
+	ElMessageBox.confirm('此操作将删除文件, 是否继续?', '提示', {
+		type: 'warning'
 	})
 		.then(() => {
-			ElMessage.success("删除成功");
+			ElMessage.success('删除成功');
 
 			// 删除文件及选择
-			ids.forEach((id) => {
-				[list.value, selection.value].forEach((list) => {
-					const index = list.findIndex((e) => e.id === id);
+			ids.forEach(id => {
+				[list.value, selection.value].forEach(list => {
+					const index = list.findIndex(e => e.id === id);
 					list.splice(index, 1);
 				});
 			});
@@ -271,7 +271,7 @@ function remove(item?: Eps.SpaceInfoEntity) {
 				.delete({
 					ids
 				})
-				.catch((err) => {
+				.catch(err => {
 					ElMessage.error(err.message);
 				});
 		})
@@ -288,7 +288,7 @@ function onDrop(e: DragEvent) {
 	e.preventDefault();
 
 	if (e.dataTransfer) {
-		// @ts-ignore
+		// @ts-expect-error
 		e.dataTransfer.files.forEach((file: File, index: number) => {
 			setTimeout(() => {
 				refs.upload.upload(file);
@@ -300,15 +300,15 @@ function onDrop(e: DragEvent) {
 // 监听选择
 watch(
 	selection,
-	(val) => {
-		emit("selection-change", val);
+	val => {
+		emit('selection-change', val);
 	},
 	{
 		deep: true
 	}
 );
 
-provide("space", {
+provide('space', {
 	selection,
 	refresh,
 	loading,

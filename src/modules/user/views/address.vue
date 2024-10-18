@@ -29,8 +29,8 @@
 </template>
 
 <script lang="ts" name="user-address" setup>
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { useCool } from "/@/cool";
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { useCool } from '/@/cool';
 
 const { service } = useCool();
 
@@ -38,48 +38,51 @@ const { service } = useCool();
 const Upsert = useUpsert({
 	items: [
 		{
-			label: "用户ID",
-			prop: "userId",
-			hook: "number",
-			component: { name: "el-input-number" },
+			label: '用户ID',
+			prop: 'userId',
+			hook: 'number',
+			component: { name: 'el-input-number' },
 			required: true
 		},
 		{
-			label: "用户名",
-			prop: "username",
-			component: { name: "el-input", props: { clearable: true } },
+			label: '用户名',
+			prop: 'username',
+			component: { name: 'el-input', props: { clearable: true } },
 			required: true
 		},
 		{
-			label: "收货人",
-			prop: "receiver",
-			component: { name: "el-input", props: { clearable: true } },
+			label: '收货人',
+			prop: 'receiver',
+			component: { name: 'el-input', props: { clearable: true } },
 			required: true
 		},
 		{
-			label: "手机号",
-			prop: "phone",
-			component: { name: "el-input", props: { clearable: true } },
+			label: '手机号',
+			prop: 'phone',
+			component: { name: 'el-input', props: { clearable: true } },
 			required: true
 		},
 		{
-			label: "省市区",
-			prop: "pca",
-			hook: "pca",
-			component: { name: "cl-distpicker" },
+			label: '省市区',
+			prop: 'pca',
+			hook: 'pca',
+			component: { name: 'cl-distpicker' },
 			required: true
 		},
 		{
-			label: "收货地址",
-			prop: "address",
-			component: { name: "el-input", props: { type: "textarea", rows: 4 } },
+			label: '收货地址',
+			prop: 'address',
+			component: {
+				name: 'el-input',
+				props: { type: 'textarea', rows: 4 }
+			},
 			required: true
 		},
 		{
-			label: "是否默认",
-			prop: "isDefault",
+			label: '是否默认',
+			prop: 'isDefault',
 			flex: false,
-			component: { name: "cl-switch" },
+			component: { name: 'cl-switch' },
 			required: true
 		}
 	]
@@ -88,41 +91,46 @@ const Upsert = useUpsert({
 // cl-table
 const Table = useTable({
 	columns: [
-		{ type: "selection" },
-		{ label: "用户ID", prop: "userId", minWidth: 140 },
-		{ label: "用户名", prop: "username", minWidth: 140 },
-		{ label: "收货人", prop: "receiver", minWidth: 140 },
-		{ label: "手机号", prop: "phone", minWidth: 140 },
+		{ type: 'selection' },
+		{ label: '用户ID', prop: 'userId', minWidth: 140 },
+		{ label: '用户名', prop: 'username', minWidth: 140 },
+		{ label: '收货人', prop: 'receiver', minWidth: 140 },
+		{ label: '手机号', prop: 'phone', minWidth: 140 },
 		{
-			label: "省市区",
-			prop: "province",
+			label: '省市区',
+			prop: 'province',
 			minWidth: 160,
 			formatter(row) {
-				return row.province + "-" + row.city + "-" + row.district;
+				return row.province + '-' + row.city + '-' + row.district;
 			}
 		},
-		{ label: "收货地址", prop: "address", showOverflowTooltip: true, minWidth: 200 },
 		{
-			label: "是否默认",
-			prop: "isDefault",
+			label: '收货地址',
+			prop: 'address',
+			showOverflowTooltip: true,
+			minWidth: 200
+		},
+		{
+			label: '是否默认',
+			prop: 'isDefault',
 			minWidth: 100,
-			component: { name: "cl-switch" }
+			component: { name: 'cl-switch' }
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "custom",
-			component: { name: "cl-date-text" }
+			sortable: 'custom',
+			component: { name: 'cl-date-text' }
 		},
 		{
-			label: "更新时间",
-			prop: "updateTime",
+			label: '更新时间',
+			prop: 'updateTime',
 			minWidth: 170,
-			sortable: "custom",
-			component: { name: "cl-date-text" }
+			sortable: 'custom',
+			component: { name: 'cl-date-text' }
 		},
-		{ type: "op", buttons: ["edit", "delete"] }
+		{ type: 'op', buttons: ['edit', 'delete'] }
 	]
 });
 
@@ -131,7 +139,7 @@ const Crud = useCrud(
 	{
 		service: service.user.address
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );

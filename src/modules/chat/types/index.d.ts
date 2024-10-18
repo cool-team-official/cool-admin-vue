@@ -1,10 +1,10 @@
-import { Socket } from "socket.io-client";
+import { Socket } from 'socket.io-client';
 
 export namespace Chat {
 	enum ContentType {
-		"text" = 0,
-		"image" = 1,
-		"video" = 2
+		'text' = 0,
+		'image' = 1,
+		'video' = 2
 	}
 
 	interface Message {

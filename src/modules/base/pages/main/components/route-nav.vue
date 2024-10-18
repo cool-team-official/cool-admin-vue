@@ -15,11 +15,11 @@
 </template>
 
 <script lang="ts" name="route-nav" setup>
-import { computed } from "vue";
-import { flattenDeep, last } from "lodash-es";
-import { ArrowRight } from "@element-plus/icons-vue";
-import { useCool } from "/@/cool";
-import { useBase } from "/$/base";
+import { computed } from 'vue';
+import { flattenDeep, last } from 'lodash-es';
+import { ArrowRight } from '@element-plus/icons-vue';
+import { useCool } from '/@/cool';
+import { useBase } from '/$/base';
 
 const { route, browser } = useCool();
 const { menu } = useBase();
@@ -27,7 +27,7 @@ const { menu } = useBase();
 // 数据列表
 const list = computed(() => {
 	function deep(item: any) {
-		if (route.path === "/") {
+		if (route.path === '/') {
 			return false;
 		}
 

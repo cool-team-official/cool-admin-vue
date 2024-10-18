@@ -1,10 +1,10 @@
-import { useCrud } from "@cool-vue/crud";
-import { ElMessage } from "element-plus";
-import { defineComponent, ref, watch } from "vue";
-import { isBoolean, isFunction } from "lodash-es";
+import { useCrud } from '@cool-vue/crud';
+import { ElMessage } from 'element-plus';
+import { defineComponent, ref, watch } from 'vue';
+import { isBoolean, isFunction } from 'lodash-es';
 
 export default defineComponent({
-	name: "cl-switch",
+	name: 'cl-switch',
 
 	props: {
 		scope: null,
@@ -21,7 +21,7 @@ export default defineComponent({
 		api: Function
 	},
 
-	emits: ["update:modelValue", "change"],
+	emits: ['update:modelValue', 'change'],
 
 	setup(props, { emit }) {
 		// cl-crud
@@ -37,7 +37,7 @@ export default defineComponent({
 		// 监听值
 		watch(
 			() => props.modelValue,
-			(val) => {
+			val => {
 				status.value = val;
 
 				if (val !== undefined) {
@@ -76,18 +76,18 @@ export default defineComponent({
 
 						if (req) {
 							req.then(() => {
-								emit("update:modelValue", val);
-								emit("change", val);
-								ElMessage.success("更新成功");
-							}).catch((err) => {
+								emit('update:modelValue', val);
+								emit('change', val);
+								ElMessage.success('更新成功');
+							}).catch(err => {
 								ElMessage.error(err.message);
 							});
 						}
 					}
 				}
 			} else {
-				emit("update:modelValue", val);
-				emit("change", val);
+				emit('update:modelValue', val);
+				emit('change', val);
 			}
 		}
 

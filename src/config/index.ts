@@ -1,5 +1,5 @@
-import dev from "./dev";
-import prod from "./prod";
+import dev from './dev';
+import prod from './prod';
 
 // 是否开发模式
 export const isDev = import.meta.env.DEV;
@@ -21,9 +21,9 @@ export const config = {
 		// 路由
 		router: {
 			// 模式
-			mode: "history",
+			mode: 'history',
 			// 转场动画
-			transition: "slide"
+			transition: 'slide'
 		},
 
 		// 字体图标库
@@ -34,22 +34,22 @@ export const config = {
 	ignore: {
 		// 不显示请求进度条
 		NProgress: [
-			"/__cool_eps",
-			"/base/open/eps",
-			"/base/comm/person",
-			"/base/comm/permmenu",
-			"/base/comm/upload",
-			"/base/comm/uploadMode",
-			"/dict/info/data",
-			"/space/info/add"
+			'/__cool_eps',
+			'/base/open/eps',
+			'/base/comm/person',
+			'/base/comm/permmenu',
+			'/base/comm/upload',
+			'/base/comm/uploadMode',
+			'/dict/info/data',
+			'/space/info/add'
 		],
 		// 页面不需要登录验证
-		token: ["/login", "/401", "/403", "/404", "/500", "/502"]
+		token: ['/login', '/401', '/403', '/404', '/500', '/502']
 	},
 
 	// 调试
 	test: {
-		token: "",
+		token: '',
 		eps: true
 	},
 
@@ -57,4 +57,4 @@ export const config = {
 	...(isDev ? dev : prod)
 };
 
-export * from "./proxy";
+export * from './proxy';

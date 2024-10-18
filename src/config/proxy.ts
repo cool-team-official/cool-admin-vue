@@ -1,13 +1,13 @@
 export const proxy = {
-	"/dev/": {
-		target: "http://127.0.0.1:8001",
+	'/dev/': {
+		target: 'http://127.0.0.1:8888',
 		changeOrigin: true,
-		rewrite: (path: string) => path.replace(/^\/dev/, "")
+		rewrite: (path: string) => path.replace(/^\/dev/, '')
 	},
 
-	"/prod/": {
-		target: "https://show.cool-admin.com",
+	'/prod/': {
+		target: 'https://show.cool-admin.com',
 		changeOrigin: true,
-		rewrite: (path: string) => path.replace(/^\/prod/, "/api")
+		rewrite: (path: string) => path.replace(/^\/prod/, '/api')
 	}
 };

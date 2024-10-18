@@ -49,11 +49,11 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useDict } from "/$/dict";
-import { useCool } from "/@/cool";
-import { ElMessage } from "element-plus";
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useDict } from '/$/dict';
+import { useCool } from '/@/cool';
+import { ElMessage } from 'element-plus';
 
 const { service } = useCool();
 const { dict } = useDict();
@@ -62,7 +62,7 @@ const { dict } = useDict();
 const Crud = useCrud(
 	{
 		// 配置 service
-		service: "test",
+		service: 'test',
 
 		//【很重要】监听刷新事件，每次调用 Crud.value.refresh() 会触发
 		onRefresh(params, { next }) {
@@ -77,11 +77,11 @@ const Crud = useCrud(
 		onDelete(selection, { next }) {
 			// 传入 ids，批量删除多个数据
 			next({
-				ids: selection.map((e) => e.id)
+				ids: selection.map(e => e.id)
 			});
 		}
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -89,38 +89,38 @@ const Crud = useCrud(
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			type: "selection"
+			type: 'selection'
 		},
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 140
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation"),
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation'),
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		},
 		{
-			type: "op",
+			type: 'op',
 			width: 300,
-			buttons: ["edit", "delete", "slot-btn"]
+			buttons: ['edit', 'delete', 'slot-btn']
 		}
 	]
 });
@@ -129,28 +129,28 @@ const Table = useTable({
 const Upsert = useUpsert({
 	items: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "工作",
-			prop: "occupation",
+			label: '工作',
+			prop: 'occupation',
 			component: {
-				name: "cl-select",
+				name: 'cl-select',
 				props: {
 					tree: true,
 					checkStrictly: true,
-					options: dict.get("occupation")
+					options: dict.get('occupation')
 				}
 			}
 		}
@@ -159,7 +159,7 @@ const Upsert = useUpsert({
 
 // 调用 Crud 方法
 function onEvent(row: any) {
-	ElMessage.info("自定义打开新增");
+	ElMessage.info('自定义打开新增');
 
 	// 打开新增表单
 	Crud.value?.rowAdd();

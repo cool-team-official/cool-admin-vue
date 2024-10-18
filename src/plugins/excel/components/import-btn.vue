@@ -3,7 +3,7 @@
 
 	<cl-form ref="Form">
 		<template #slot-upload>
-			<div class="upload" v-if="!upload.filename">
+			<div v-if="!upload.filename" class="upload">
 				<div class="tips">
 					<span>{{ tips }}</span>
 					<el-button type="primary" text bg @click="download">下载模版</el-button>
@@ -24,7 +24,7 @@
 		</template>
 
 		<template #slot-list>
-			<div class="data-table" v-if="list.length">
+			<div v-if="list.length" class="data-table">
 				<div class="head">
 					<el-button type="success" @click="clear">重新上传</el-button>
 					<el-button
@@ -43,7 +43,7 @@
 						max-height="600px"
 						@selection-change="table.onSelectionChange"
 						@row-click="
-							(row) => {
+							row => {
 								row._edit = true;
 							}
 						"
@@ -77,8 +77,8 @@
 
 								<template v-else>
 									<el-input
-										type="textarea"
 										v-model="scope.row[item]"
+										type="textarea"
 										clearable
 										:placeholder="item"
 									/>
@@ -102,11 +102,11 @@
 
 				<div class="pagination">
 					<el-pagination
+						v-model:current-page="pagination.page"
 						background
 						layout="total, prev, pager, next"
 						:total="upload.list.length"
 						:page-size="pagination.size"
-						v-model:current-page="pagination.page"
 						@current-change="pagination.onCurrentChange"
 					/>
 				</div>
@@ -116,24 +116,24 @@
 </template>
 
 <script lang="ts" setup name="cl-import-btn">
-import { useForm } from "@cool-vue/crud";
-import { ElMessage } from "element-plus";
-import { reactive, type PropType, computed } from "vue";
-import * as XLSX from "xlsx";
-import chardet from "chardet";
-import { extname } from "/@/cool/utils";
-import { has } from "lodash-es";
+import { useForm } from '@cool-vue/crud';
+import { ElMessage } from 'element-plus';
+import { reactive, type PropType, computed } from 'vue';
+import * as XLSX from 'xlsx';
+import chardet from 'chardet';
+import { extname } from '/@/cool/utils';
+import { has } from 'lodash-es';
 
 const props = defineProps({
 	onConfig: Function,
 	onSubmit: Function,
 	template: {
 		type: String,
-		default: ""
+		default: ''
 	},
 	tips: {
 		type: String,
-		default: "请按照模版填写信息"
+		default: '请按照模版填写信息'
 	},
 	limitSize: {
 		type: Number,
@@ -141,26 +141,26 @@ const props = defineProps({
 	},
 	type: {
 		type: String as PropType<
-			"default" | "success" | "warning" | "info" | "text" | "primary" | "danger"
+			'default' | 'success' | 'warning' | 'info' | 'text' | 'primary' | 'danger'
 		>,
-		default: "success"
+		default: 'success'
 	},
 	icon: String,
 	disabled: Boolean,
 	accept: {
 		type: String,
 		default:
-			"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/csv"
+			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,text/csv'
 	}
 });
 
-const emit = defineEmits(["change"]);
+const emit = defineEmits(['change']);
 
 const Form = useForm();
 
 // 上传信息
 const upload = reactive({
-	filename: "",
+	filename: '',
 	file: null as File | null,
 	list: [] as any[]
 });
@@ -187,7 +187,7 @@ const table = reactive({
 		if (index !== undefined) {
 			upload.list.splice(index, 1);
 		} else {
-			upload.list = upload.list.filter((a) => {
+			upload.list = upload.list.filter(a => {
 				return !table.selection.includes(a._index);
 			});
 		}
@@ -200,7 +200,7 @@ const table = reactive({
 
 	// 选中
 	onSelectionChange(arr: any[]) {
-		table.selection = arr.map((e) => e._index);
+		table.selection = arr.map(e => e._index);
 	}
 });
 
@@ -215,7 +215,7 @@ const list = computed(() => {
 
 // 清空
 function clear() {
-	upload.filename = "";
+	upload.filename = '';
 	upload.file = null;
 	upload.list = [];
 	table.header = [];
@@ -227,39 +227,39 @@ function open() {
 	clear();
 
 	Form.value?.open({
-		title: "导入",
-		width: computed(() => (upload.filename ? "80%" : "800px")),
+		title: '导入',
+		width: computed(() => (upload.filename ? '80%' : '800px')),
 		dialog: {
-			"close-on-press-escape": false
+			'close-on-press-escape': false
 		},
 		items: [
 			...(props.onConfig ? props.onConfig(Form) : []),
 			{
-				prop: "file",
+				prop: 'file',
 				component: {
-					name: "slot-upload"
+					name: 'slot-upload'
 				}
 			},
 			{
 				component: {
-					name: "slot-list"
+					name: 'slot-list'
 				}
 			}
 		],
 		op: {
-			saveButtonText: "提交"
+			saveButtonText: '提交'
 		},
 		on: {
 			submit(_, { done, close }) {
 				if (!upload.filename) {
 					done();
-					return ElMessage.error("请选择文件");
+					return ElMessage.error('请选择文件');
 				}
 
 				if (props.onSubmit) {
 					props.onSubmit(upload, { done, close });
 				} else {
-					ElMessage.error("<cl-import-btn /> 未配置 onSubmit 参数");
+					ElMessage.error('<cl-import-btn /> 未配置 onSubmit 参数');
 					done();
 				}
 			}
@@ -273,9 +273,9 @@ function onUpload(raw: File, _: any, { next }: any) {
 	const ext = extname(raw.name);
 
 	reader.onload = (event: any) => {
-		let data = "";
+		let data = '';
 
-		if (ext == "csv") {
+		if (ext == 'csv') {
 			const detected: any = chardet.detect(new Uint8Array(event.target.result));
 			const decoder = new TextDecoder(detected);
 			data = decoder.decode(event.target.result);
@@ -283,7 +283,7 @@ function onUpload(raw: File, _: any, { next }: any) {
 			data = event.target.result;
 		}
 
-		const workbook = XLSX.read(data, { type: "binary", raw: ext == "csv" });
+		const workbook = XLSX.read(data, { type: 'binary', raw: ext == 'csv' });
 
 		let json: any[] = [];
 		for (const sheet in workbook.Sheets) {
@@ -303,20 +303,20 @@ function onUpload(raw: File, _: any, { next }: any) {
 
 		const sheet = workbook.Sheets[Object.keys(workbook.Sheets)[0]];
 
-		for (let i in sheet) {
-			if (i[0] === "!") continue;
+		for (const i in sheet) {
+			if (i[0] === '!') continue;
 
 			const row = i.match(/[0-9]+/)?.[0];
 
-			if (row == "1") {
+			if (row == '1') {
 				table.header.push(sheet[i].v);
 			}
 		}
 
-		emit("change", json);
+		emit('change', json);
 	};
 
-	if (ext == "csv") {
+	if (ext == 'csv') {
 		reader.readAsArrayBuffer(raw);
 	} else {
 		reader.readAsBinaryString(raw);
@@ -329,9 +329,9 @@ function onUpload(raw: File, _: any, { next }: any) {
 
 // 下载模版
 function download() {
-	const link = document.createElement("a");
-	link.setAttribute("href", props.template);
-	link.setAttribute("download", "");
+	const link = document.createElement('a');
+	link.setAttribute('href', props.template);
+	link.setAttribute('download', '');
 	link.click();
 }
 

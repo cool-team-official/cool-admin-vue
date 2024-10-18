@@ -1,7 +1,7 @@
-import { useAppStore } from "./app";
-import { useMenuStore } from "./menu";
-import { useProcessStore } from "./process";
-import { useUserStore } from "./user";
+import { useAppStore } from './app';
+import { useMenuStore } from './menu';
+import { useProcessStore } from './process';
+import { useUserStore } from './user';
 
 export function useStore() {
 	const app = useAppStore();

@@ -34,20 +34,20 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useDict } from "/$/dict";
-import { ElMessage } from "element-plus";
-import { EditPen, MoreFilled } from "@element-plus/icons-vue";
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useDict } from '/$/dict';
+import { ElMessage } from 'element-plus';
+import { EditPen, MoreFilled } from '@element-plus/icons-vue';
 
 const { dict } = useDict();
 
 // cl-crud 配置
 const Crud = useCrud(
 	{
-		service: "test"
+		service: 'test'
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -58,46 +58,46 @@ const Table = useTable({
 
 	// 右键菜单配置，为 [] 时则不显示内容
 	contextMenu: [
-		"refresh", // 刷新
-		"check", // 选择行
-		"edit", // 弹出编辑框
-		"delete", // 弹出删除提示
-		"info", // 弹出详情
-		"order-desc", // 使列倒序
-		"order-asc", // 使列升序
+		'refresh', // 刷新
+		'check', // 选择行
+		'edit', // 弹出编辑框
+		'delete', // 弹出删除提示
+		'info', // 弹出详情
+		'order-desc', // 使列倒序
+		'order-asc', // 使列升序
 		{
-			label: "禁用状态",
+			label: '禁用状态',
 			disabled: true
 		},
 		{
-			label: "带图标",
+			label: '带图标',
 			prefixIcon: EditPen,
 			suffixIcon: MoreFilled
 		},
 		{
-			label: "超出隐藏，看我有很多字非常多",
+			label: '超出隐藏，看我有很多字非常多',
 			ellipsis: true
 		},
 		{
-			label: "多层级",
+			label: '多层级',
 			children: [
 				{
-					label: "A",
+					label: 'A',
 					children: [
 						{
-							label: "A-1",
+							label: 'A-1',
 							callback(done) {
-								ElMessage.success("点击了A-1");
+								ElMessage.success('点击了A-1');
 								done();
 							}
 						}
 					]
 				},
 				{
-					label: "B"
+					label: 'B'
 				},
 				{
-					label: "C"
+					label: 'C'
 				}
 			]
 		},
@@ -107,9 +107,9 @@ const Table = useTable({
 		(row, column, event) => {
 			// 必须返回一个对象
 			return {
-				label: "自定义2",
+				label: '自定义2',
 				callback(done) {
-					ElMessage.info("获取中");
+					ElMessage.info('获取中');
 
 					setTimeout(() => {
 						ElMessage.success(`Ta 是${row.name}`);
@@ -124,29 +124,29 @@ const Table = useTable({
 
 	columns: [
 		{
-			type: "selection"
+			type: 'selection'
 		},
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 140
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation"),
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation'),
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		}
 	]
 });
@@ -155,28 +155,28 @@ const Table = useTable({
 const Upsert = useUpsert({
 	items: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "工作",
-			prop: "occupation",
+			label: '工作',
+			prop: 'occupation',
 			component: {
-				name: "cl-select",
+				name: 'cl-select',
 				props: {
 					tree: true,
 					checkStrictly: true,
-					options: dict.get("occupation")
+					options: dict.get('occupation')
 				}
 			}
 		}

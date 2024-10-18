@@ -9,8 +9,8 @@
 
 <!--【很重要】必须要有name，避免注册后和其他冲突 -->
 <script setup lang="ts" name="select-status">
-import { useForm } from "@cool-vue/crud";
-import { computed, ref } from "vue";
+import { useForm } from '@cool-vue/crud';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
 	scope: null, // 表单值
@@ -28,15 +28,15 @@ const form = computed(() => Form.value?.form || {});
 // 选项列表
 const list = ref<{ label: string; value: number }[]>([
 	{
-		label: "很好",
+		label: '很好',
 		value: 1
 	},
 	{
-		label: "不舒服",
+		label: '不舒服',
 		value: 2
 	},
 	{
-		label: "要嘎了",
+		label: '要嘎了',
 		value: 3
 	}
 ]);

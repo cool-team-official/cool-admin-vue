@@ -15,11 +15,11 @@
 		<el-divider content-position="left"> 自定义 </el-divider>
 
 		<cl-upload-space
+			:ref="setRefs('uploadSpace')"
 			v-model="v3"
 			:multiple="false"
 			:show-btn="false"
 			accept="image/*"
-			:ref="setRefs('uploadSpace')"
 		>
 			<div class="space-custom" @click="refs.uploadSpace?.open">
 				<cl-avatar :size="50" :src="v3" />
@@ -30,14 +30,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-import { useCool } from "/@/cool";
+import { ref } from 'vue';
+import { useCool } from '/@/cool';
 
 const { refs, setRefs } = useCool();
 
-const v1 = ref("");
+const v1 = ref('');
 const v2 = ref<string[]>([]);
-const v3 = ref("");
+const v3 = ref('');
 </script>
 
 <style lang="scss" scoped>

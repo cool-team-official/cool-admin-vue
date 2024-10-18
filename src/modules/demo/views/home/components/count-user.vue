@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts" setup>
-import { BottomRight, TopRight } from "@element-plus/icons-vue";
+import { BottomRight, TopRight } from '@element-plus/icons-vue';
 </script>
 
 <style lang="scss" scoped>

@@ -12,44 +12,44 @@
 
 	<!-- 文档 -->
 	<cl-dialog v-model="doc.visible" title="文档预览" height="70vh" width="80%" :scrollbar="false">
-		<div class="viewer-doc" v-loading="doc.loading">
-			<iframe :src="doc.url" :ref="setRefs('docIframe')" />
+		<div v-loading="doc.loading" class="viewer-doc">
+			<iframe :ref="setRefs('docIframe')" :src="doc.url" />
 		</div>
 	</cl-dialog>
 </template>
 
 <script lang="ts" setup name="file-viewer">
-import { reactive, nextTick } from "vue";
-import { getType } from "../../utils";
-import type { Upload } from "../../types";
-import { useCool } from "/@/cool";
+import { reactive, nextTick } from 'vue';
+import { getType } from '../../utils';
+import type { Upload } from '../../types';
+import { useCool } from '/@/cool';
 
 const { refs, setRefs } = useCool();
 
 // 图片预览
 const img = reactive({
 	visible: false,
-	url: ""
+	url: ''
 });
 
 // 文档预览
 const doc = reactive({
 	visible: false,
 	loading: false,
-	url: ""
+	url: ''
 });
 
 // 打开
 function open(item: Upload.Item) {
 	if (item?.type) {
 		// 链接
-		const url = item.url || "";
+		const url = item.url || '';
 
 		// 类型
 		const type = getType(url);
 
 		// 图片预览
-		if (type == "image") {
+		if (type == 'image') {
 			img.visible = true;
 			img.url = url;
 
@@ -57,7 +57,7 @@ function open(item: Upload.Item) {
 		}
 
 		// 文档预览
-		if (["word", "excel", "ppt", "pdf"].includes(type)) {
+		if (['word', 'excel', 'ppt', 'pdf'].includes(type)) {
 			doc.visible = true;
 			doc.loading = true;
 			doc.url = `https://view.officeapps.live.com/op/view.aspx?src=${decodeURIComponent(url)}`;

@@ -44,13 +44,13 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useCool } from "/@/cool";
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useCool } from '/@/cool';
 
 //【很重要】service 是所有请求的集合，是一个对象（刷新页面和保存代码会自动读取后端的所有接口）
 const { service } = useCool();
-console.log("service", service);
+console.log('service', service);
 
 // cl-crud 配置
 const Crud = useCrud(
@@ -82,7 +82,7 @@ const Crud = useCrud(
 		// 	// add、delete、update、info、list 也是如此配置
 		// }
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -90,48 +90,48 @@ const Crud = useCrud(
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			type: "selection"
+			type: 'selection'
 		},
 		{
-			label: "商品名称",
-			prop: "title",
+			label: '商品名称',
+			prop: 'title',
 			minWidth: 140
 		},
 		{
-			label: "价格",
-			prop: "price",
+			label: '价格',
+			prop: 'price',
 			minWidth: 140
 		},
 		{
-			label: "主图",
-			prop: "mainImage",
+			label: '主图',
+			prop: 'mainImage',
 			minWidth: 140,
 			component: {
-				name: "cl-image",
+				name: 'cl-image',
 				props: {
 					size: 60
 				}
 			}
 		},
 		{
-			label: "描述",
-			prop: "description",
+			label: '描述',
+			prop: 'description',
 			minWidth: 200,
 			showOverflowTooltip: true
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		},
 		{
-			type: "op",
-			buttons: ["edit", "delete"]
+			type: 'op',
+			buttons: ['edit', 'delete']
 		}
 	]
 });
@@ -140,36 +140,36 @@ const Table = useTable({
 const Upsert = useUpsert({
 	items: [
 		{
-			label: "商品名称",
-			prop: "title",
+			label: '商品名称',
+			prop: 'title',
 			required: true,
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "价格",
-			prop: "price",
+			label: '价格',
+			prop: 'price',
 			required: true,
 			component: {
-				name: "el-input-number"
+				name: 'el-input-number'
 			}
 		},
 		{
-			label: "主图",
-			prop: "mainImage",
+			label: '主图',
+			prop: 'mainImage',
 			required: true,
 			component: {
-				name: "cl-upload"
+				name: 'cl-upload'
 			}
 		},
 		{
-			label: "描述",
-			prop: "description",
+			label: '描述',
+			prop: 'description',
 			component: {
-				name: "el-input",
+				name: 'el-input',
 				props: {
-					type: "textarea",
+					type: 'textarea',
 					rows: 4
 				}
 			}

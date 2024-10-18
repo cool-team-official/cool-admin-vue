@@ -22,17 +22,17 @@
 </template>
 
 <script lang="tsx" name="cl-code-json" setup>
-import { useClipboard } from "@vueuse/core";
-import { ElMessage } from "element-plus";
-import { isObject, isString } from "lodash-es";
-import { computed, defineComponent } from "vue";
+import { useClipboard } from '@vueuse/core';
+import { ElMessage } from 'element-plus';
+import { isObject, isString } from 'lodash-es';
+import { computed, defineComponent } from 'vue';
 
 const props = defineProps({
 	modelValue: [String, Object],
 	popover: Boolean,
 	height: {
 		type: [Number, String],
-		default: "100%"
+		default: '100%'
 	},
 	maxHeight: {
 		type: [Number, String],
@@ -51,7 +51,7 @@ const text = computed(() => {
 	} else if (isObject(v)) {
 		return JSON.stringify(v, null, 4);
 	} else {
-		return "";
+		return '';
 	}
 });
 
@@ -60,7 +60,7 @@ const viewer = defineComponent({
 	setup(_, { slots }) {
 		function toCopy() {
 			copy(text.value);
-			ElMessage.success("复制成功");
+			ElMessage.success('复制成功');
 		}
 
 		return () => {

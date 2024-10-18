@@ -1,25 +1,25 @@
-import { languages } from "monaco-editor";
-import prettier from "prettier/standalone";
-import pluginHtml from "prettier/plugins/html";
-import pluginTypescript from "prettier/plugins/typescript";
-import pluginPostcss from "prettier/plugins/postcss";
-import pluginEstree from "prettier/plugins/estree";
+import { languages } from 'monaco-editor';
+import prettier from 'prettier/standalone';
+import pluginHtml from 'prettier/plugins/html';
+import pluginTypescript from 'prettier/plugins/typescript';
+import pluginPostcss from 'prettier/plugins/postcss';
+import pluginEstree from 'prettier/plugins/estree';
 
 const options: { [key: string]: { parser: string; plugins: any[] } } = {
 	html: {
-		parser: "html",
+		parser: 'html',
 		plugins: [pluginHtml, pluginTypescript, pluginPostcss, pluginEstree]
 	},
 	typescript: {
-		parser: "typescript",
+		parser: 'typescript',
 		plugins: [pluginTypescript, pluginEstree]
 	},
 	css: {
-		parser: "css",
+		parser: 'css',
 		plugins: [pluginPostcss]
 	},
 	scss: {
-		parser: "scss",
+		parser: 'scss',
 		plugins: [pluginPostcss]
 	}
 };
@@ -39,10 +39,10 @@ export function useFormat() {
 							plugins: options[i].plugins,
 							semi: true,
 							printWidth: 100,
-							tabWidth: parser == "html" ? 4 : 2,
-							useTabs: parser == "html",
+							tabWidth: parser == 'html' ? 4 : 2,
+							useTabs: parser == 'html',
 							singleQuote: true,
-							trailingComma: "none"
+							trailingComma: 'none'
 						});
 					} catch (err) {
 						// ...

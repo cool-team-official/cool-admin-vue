@@ -13,7 +13,7 @@ export declare interface EpsApi {
 	method?: string;
 	prefix?: string;
 	tag?: string;
-	dts?: {};
+	dts?: any;
 	[key: string]: any;
 }
 

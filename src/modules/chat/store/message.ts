@@ -1,8 +1,8 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import { service } from "/@/cool";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { service } from '/@/cool';
 
-export const useMessageStore = defineStore("chat-message", () => {
+export const useMessageStore = defineStore('chat-message', () => {
 	// 加载状态
 	const loading = ref(false);
 
@@ -26,8 +26,8 @@ export const useMessageStore = defineStore("chat-message", () => {
 		}
 
 		// 发送请求
-		await service.chat.message.page(params).then((res) => {
-			list.value = res.list.map((e) => {
+		await service.chat.message.page(params).then(res => {
+			list.value = res.list.map(e => {
 				e.content = JSON.parse(e.content);
 				return e;
 			});

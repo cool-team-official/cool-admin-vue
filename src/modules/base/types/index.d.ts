@@ -1,10 +1,10 @@
-import { RouteComponent, RouteLocationNormalized } from "vue-router";
+import { RouteComponent, RouteLocationNormalized } from 'vue-router';
 
 export declare namespace Menu {
 	enum Type {
-		"目录" = 0,
-		"菜单" = 1,
-		"权限" = 2
+		'目录' = 0,
+		'菜单' = 1,
+		'权限' = 2
 	}
 
 	interface Item {

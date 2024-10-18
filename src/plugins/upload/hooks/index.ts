@@ -1,14 +1,14 @@
-import { ElMessage } from "element-plus";
-import { module, service } from "/@/cool";
-import { uuid } from "/@/cool/utils";
-import { pathJoin } from "../utils";
-import { useBase } from "/$/base";
-import { type AxiosProgressEvent } from "axios";
-import type { Upload } from "../types";
-import { merge } from "lodash-es";
+import { ElMessage } from 'element-plus';
+import { module, service } from '/@/cool';
+import { uuid } from '/@/cool/utils';
+import { pathJoin } from '../utils';
+import { useBase } from '/$/base';
+import { type AxiosProgressEvent } from 'axios';
+import type { Upload } from '../types';
+import { merge } from 'lodash-es';
 
 export function useUpload() {
-	const { options } = module.get("upload");
+	const { options } = module.get('upload');
 	const { user } = useBase();
 
 	// 上传
@@ -19,17 +19,17 @@ export function useUpload() {
 				const { prefixPath, onProgress } = merge({}, options, opts);
 
 				// 文件id
-				const fileId = uuid("");
+				const fileId = uuid('');
 
 				try {
 					// 上传模式、类型
 					const { mode, type } = await service.base.comm.uploadMode();
 
 					// 本地上传
-					const isLocal = mode == "local";
+					const isLocal = mode == 'local';
 
 					// 文件名
-					const fileName = fileId + "_" + file.name;
+					const fileName = fileId + '_' + file.name;
 
 					// Key
 					let key = isLocal ? fileName : pathJoin(prefixPath!, fileName);
@@ -39,7 +39,7 @@ export function useUpload() {
 						const fd = new FormData();
 
 						// key
-						fd.append("key", key);
+						fd.append('key', key);
 
 						// 签名数据
 						for (const i in data) {
@@ -49,7 +49,7 @@ export function useUpload() {
 						}
 
 						// 文件
-						fd.append("file", file);
+						fd.append('file', file);
 
 						// 上传进度
 						let progress = 0;
@@ -58,9 +58,9 @@ export function useUpload() {
 						await service
 							.request({
 								url: host,
-								method: "POST",
+								method: 'POST',
 								headers: {
-									"Content-Type": "multipart/form-data",
+									'Content-Type': 'multipart/form-data',
 									Authorization: isLocal ? user.token : null
 								},
 								timeout: 600000,
@@ -72,14 +72,14 @@ export function useUpload() {
 								proxy: isLocal,
 								NProgress: false
 							})
-							.then((res) => {
+							.then(res => {
 								if (progress != 100) {
 									onProgress?.(100);
 								}
 
 								key = encodeURIComponent(key);
 
-								let url = "";
+								let url = '';
 
 								if (isLocal) {
 									url = res;
@@ -93,7 +93,7 @@ export function useUpload() {
 									fileId
 								});
 							})
-							.catch((err) => {
+							.catch(err => {
 								ElMessage.error(err.message);
 								reject(err);
 							});
@@ -101,28 +101,28 @@ export function useUpload() {
 
 					if (isLocal) {
 						next({
-							host: "/admin/base/comm/upload"
+							host: '/admin/base/comm/upload'
 						});
 					} else {
 						service.base.comm
 							.upload(
-								type == "aws"
+								type == 'aws'
 									? {
 											key
 										}
 									: {}
 							)
-							.then((res) => {
+							.then(res => {
 								switch (type) {
 									// 腾讯
-									case "cos":
+									case 'cos':
 										next({
 											host: res.url,
 											data: res.credentials
 										});
 										break;
 									// 阿里
-									case "oss":
+									case 'oss':
 										next({
 											host: res.host,
 											preview: res.publicDomain,
@@ -134,7 +134,7 @@ export function useUpload() {
 										});
 										break;
 									// 七牛
-									case "qiniu":
+									case 'qiniu':
 										next({
 											host: res.uploadUrl,
 											preview: res.publicDomain,
@@ -144,7 +144,7 @@ export function useUpload() {
 										});
 										break;
 									// aws
-									case "aws":
+									case 'aws':
 										next({
 											host: res.url,
 											data: res.fields
@@ -155,8 +155,8 @@ export function useUpload() {
 							.catch(reject);
 					}
 				} catch (err) {
-					ElMessage.error("文件上传失败");
-					console.error("[upload]", err);
+					ElMessage.error('文件上传失败');
+					console.error('[upload]', err);
 					reject(err);
 				}
 			};

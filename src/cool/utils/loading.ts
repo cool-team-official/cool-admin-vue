@@ -6,7 +6,7 @@ export const Loading = {
 		try {
 			await Promise.all(list);
 		} catch (e) {
-			console.error("[Loading] Error: ", e);
+			console.error('[Loading] Error: ', e);
 		}
 
 		if (this.resolve) {
@@ -22,16 +22,16 @@ export const Loading = {
 	},
 
 	close() {
-		const el = document.getElementById("Loading");
+		const el = document.getElementById('Loading');
 
 		if (el) {
 			setTimeout(() => {
-				el.classList.add("is-hide");
+				el.classList.add('is-hide');
 			}, 0);
 		}
 	}
 };
 
-Loading.next = new Promise<void>((resolve) => {
+Loading.next = new Promise<void>(resolve => {
 	Loading.resolve = resolve;
 });

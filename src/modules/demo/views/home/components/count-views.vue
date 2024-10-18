@@ -19,8 +19,8 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
-import * as echarts from "echarts";
+import { reactive } from 'vue';
+import * as echarts from 'echarts';
 
 const chartOption = reactive({
 	grid: {
@@ -30,28 +30,28 @@ const chartOption = reactive({
 		bottom: 1
 	},
 	xAxis: {
-		type: "category",
+		type: 'category',
 		boundaryGap: false,
 		axisLine: {
 			show: false
 		},
 		data: [
-			"00:00",
-			"2:00",
-			"4:00",
-			"6:00",
-			"8:00",
-			"10:00",
-			"12:00",
-			"14:00",
-			"16:00",
-			"18:00",
-			"20:00",
-			"22:00"
+			'00:00',
+			'2:00',
+			'4:00',
+			'6:00',
+			'8:00',
+			'10:00',
+			'12:00',
+			'14:00',
+			'16:00',
+			'18:00',
+			'20:00',
+			'22:00'
 		]
 	},
 	yAxis: {
-		type: "value",
+		type: 'value',
 		splitLine: {
 			show: false
 		},
@@ -67,10 +67,10 @@ const chartOption = reactive({
 	},
 	series: [
 		{
-			type: "line",
+			type: 'line',
 			smooth: true,
 			showSymbol: false,
-			symbol: "circle",
+			symbol: 'circle',
 			symbolSize: 6,
 			data: new Array(12)
 				.fill(1)
@@ -84,18 +84,18 @@ const chartOption = reactive({
 					[
 						{
 							offset: 0,
-							color: "#D1E5FF"
+							color: '#D1E5FF'
 						},
 						{
 							offset: 1,
-							color: "#FFFFFF"
+							color: '#FFFFFF'
 						}
 					],
 					false
 				)
 			},
 			itemStyle: {
-				color: "#4165d7"
+				color: '#4165d7'
 			},
 			lineStyle: {
 				width: 2

@@ -21,8 +21,8 @@
 				</li>
 
 				<li v-show="isDrag" class="no">
-					<el-button @click="treeOrder(true)" size="small">保存</el-button>
-					<el-button @click="treeOrder(false)" size="small">取消</el-button>
+					<el-button size="small" @click="treeOrder(true)">保存</el-button>
+					<el-button size="small" @click="treeOrder(false)">取消</el-button>
 				</li>
 			</ul>
 		</div>
@@ -74,15 +74,15 @@
 </template>
 
 <script lang="ts" name="dept-list" setup>
-import { nextTick, onMounted, ref } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import { useCool } from "/@/cool";
-import { deepTree, revDeepTree } from "/@/cool/utils";
-import { isArray } from "lodash-es";
-import { ContextMenu, useForm } from "@cool-vue/crud";
-import { Refresh as RefreshIcon, Operation, MoreFilled } from "@element-plus/icons-vue";
-import { checkPerm } from "/$/base";
-import { useViewGroup } from "/@/plugins/view";
+import { nextTick, onMounted, ref } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { useCool } from '/@/cool';
+import { deepTree, revDeepTree } from '/@/cool/utils';
+import { isArray } from 'lodash-es';
+import { ContextMenu, useForm } from '@cool-vue/crud';
+import { Refresh as RefreshIcon, Operation, MoreFilled } from '@element-plus/icons-vue';
+import { checkPerm } from '/$/base';
+import { useViewGroup } from '/@/plugins/view';
 
 const props = defineProps({
 	drag: {
@@ -95,7 +95,7 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(["refresh", "user-add"]);
+const emit = defineEmits(['refresh', 'user-add']);
 
 const { service, browser } = useCool();
 const Form = useForm();
@@ -125,7 +125,7 @@ async function refresh() {
 	loading.value = true;
 	isDrag.value = false;
 
-	await service.base.sys.department.list().then((res) => {
+	await service.base.sys.department.list().then(res => {
 		list.value = deepTree(res);
 
 		if (!ViewGroup.value?.selected) {
@@ -143,7 +143,7 @@ function rowClick(item?: Eps.BaseSysDepartmentEntity) {
 	}
 
 	if (item) {
-		const ids = item.children ? revDeepTree(item.children).map((e) => e.id) : [];
+		const ids = item.children ? revDeepTree(item.children).map(e => e.id) : [];
 		ids.unshift(item.id);
 
 		// 选择
@@ -151,47 +151,47 @@ function rowClick(item?: Eps.BaseSysDepartmentEntity) {
 
 		nextTick(() => {
 			// 刷新列表
-			emit("refresh", { page: 1, departmentIds: ids });
+			emit('refresh', { page: 1, departmentIds: ids });
 		});
 	}
 }
 
 // 编辑部门
 function rowEdit(item: Eps.BaseSysDepartmentEntity) {
-	const method = item.id ? "update" : "add";
+	const method = item.id ? 'update' : 'add';
 
 	Form.value?.open({
-		title: "编辑部门",
-		width: "550px",
+		title: '编辑部门',
+		width: '550px',
 		props: {
-			labelWidth: "100px"
+			labelWidth: '100px'
 		},
 		items: [
 			{
-				label: "部门名称",
-				prop: "name",
+				label: '部门名称',
+				prop: 'name',
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				},
 				required: true
 			},
 			{
-				label: "上级部门",
-				prop: "parentName",
+				label: '上级部门',
+				prop: 'parentName',
 				component: {
-					name: "el-input",
+					name: 'el-input',
 					props: {
 						disabled: true
 					}
 				}
 			},
 			{
-				label: "排序",
-				prop: "orderNum",
+				label: '排序',
+				prop: 'orderNum',
 				component: {
-					name: "el-input-number",
+					name: 'el-input-number',
 					props: {
-						"controls-position": "right",
+						'controls-position': 'right',
 						min: 0,
 						max: 100
 					}
@@ -214,7 +214,7 @@ function rowEdit(item: Eps.BaseSysDepartmentEntity) {
 						close();
 						refresh();
 					})
-					.catch((err) => {
+					.catch(err => {
 						ElMessage.error(err.message);
 						done();
 					});
@@ -238,11 +238,11 @@ function rowDel(item: Eps.BaseSysDepartmentEntity) {
 				}
 
 				if (f) {
-					ElMessage.success("删除成功");
+					ElMessage.success('删除成功');
 				} else {
 					ElMessageBox.confirm(
 						`“${item.name}” 部门的用户已成功转移到 “${item.parentName}” 部门。`,
-						"删除成功"
+						'删除成功'
 					);
 				}
 			});
@@ -250,17 +250,17 @@ function rowDel(item: Eps.BaseSysDepartmentEntity) {
 		refresh();
 	}
 
-	ElMessageBox.confirm(`此操作将会删除 “${item.name}” 部门的所有用户，是否确认？`, "提示", {
-		type: "warning",
-		confirmButtonText: "直接删除",
-		cancelButtonText: "保留用户",
+	ElMessageBox.confirm(`此操作将会删除 “${item.name}” 部门的所有用户，是否确认？`, '提示', {
+		type: 'warning',
+		confirmButtonText: '直接删除',
+		cancelButtonText: '保留用户',
 		distinguishCancelAndClose: true
 	})
 		.then(() => {
 			del(true);
 		})
-		.catch((action) => {
-			if (action == "cancel") {
+		.catch(action => {
+			if (action == 'cancel') {
 				del(false);
 			}
 		});
@@ -269,14 +269,14 @@ function rowDel(item: Eps.BaseSysDepartmentEntity) {
 // 部门排序
 function treeOrder(f: boolean) {
 	if (f) {
-		ElMessageBox.confirm("部门架构已发生改变，是否保存？", "提示", {
-			type: "warning"
+		ElMessageBox.confirm('部门架构已发生改变，是否保存？', '提示', {
+			type: 'warning'
 		})
 			.then(async () => {
 				const ids: any[] = [];
 
 				function deep(list: any[], pid: any) {
-					list.forEach((e) => {
+					list.forEach(e => {
 						e.parentId = pid;
 						ids.push(e);
 
@@ -299,9 +299,9 @@ function treeOrder(f: boolean) {
 						})
 					)
 					.then(() => {
-						ElMessage.success("更新排序成功");
+						ElMessage.success('更新排序成功');
 					})
-					.catch((err) => {
+					.catch(err => {
 						ElMessage.error(err.message);
 					});
 
@@ -326,11 +326,11 @@ function onContextMenu(e: any, d?: any, n?: any) {
 	ContextMenu.open(e, {
 		list: [
 			{
-				label: "新增",
+				label: '新增',
 				hidden: (n && n.level >= props.level) || !checkPerm(perm.add),
 				callback(done) {
 					rowEdit({
-						name: "",
+						name: '',
 						parentName: d.name,
 						parentId: d.id
 					});
@@ -338,7 +338,7 @@ function onContextMenu(e: any, d?: any, n?: any) {
 				}
 			},
 			{
-				label: "编辑",
+				label: '编辑',
 				hidden: !checkPerm(perm.update),
 				callback(done) {
 					rowEdit(d);
@@ -346,7 +346,7 @@ function onContextMenu(e: any, d?: any, n?: any) {
 				}
 			},
 			{
-				label: "删除",
+				label: '删除',
 				hidden: !d.parentId || !checkPerm(perm.delete),
 				callback(done) {
 					rowDel(d);
@@ -354,10 +354,10 @@ function onContextMenu(e: any, d?: any, n?: any) {
 				}
 			},
 			{
-				label: "新增成员",
+				label: '新增成员',
 				hidden: !checkPerm(perm.add),
 				callback(done) {
-					emit("user-add", d);
+					emit('user-add', d);
 					done();
 				}
 			}

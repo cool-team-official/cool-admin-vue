@@ -4,7 +4,7 @@
 			<template v-if="showBtn">
 				<el-button @click="open">{{ text }}</el-button>
 
-				<div class="cl-upload-space__wrap-list" v-show="urls.length > 0 && showList">
+				<div v-show="urls.length > 0 && showList" class="cl-upload-space__wrap-list">
 					<cl-upload v-model="urls" disabled deletable draggable :multiple="multiple" />
 				</div>
 			</template>
@@ -35,22 +35,22 @@
 </template>
 
 <script lang="ts" setup name="cl-upload-space">
-import { computed, nextTick, onMounted, ref, watch } from "vue";
-import { useCool } from "/@/cool";
-import SpaceInner from "./space-inner.vue";
-import { isString } from "lodash-es";
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { useCool } from '/@/cool';
+import SpaceInner from './space-inner.vue';
+import { isString } from 'lodash-es';
 
 const props = defineProps({
 	modelValue: [String, Array],
 	// 标题
 	title: {
 		type: String,
-		default: "文件空间"
+		default: '文件空间'
 	},
 	// 按钮文本
 	text: {
 		type: String,
-		default: "点击上传"
+		default: '点击上传'
 	},
 	// 是否多选
 	multiple: {
@@ -76,7 +76,7 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(["update:modelValue", "change", "confirm"]);
+const emit = defineEmits(['update:modelValue', 'change', 'confirm']);
 
 const { refs, setRefs } = useCool();
 
@@ -85,7 +85,7 @@ const visible = ref(false);
 
 // 配置
 const config = ref({
-	title: "",
+	title: '',
 	limit: 9
 });
 
@@ -122,15 +122,15 @@ function confirm(arr?: Eps.SpaceInfoEntity[]) {
 	const list = arr || selection.value;
 
 	// 读取文件地址
-	urls.value = list.map((e) => e.url);
+	urls.value = list.map(e => e.url);
 
 	// 返回值
 	const v = props.multiple ? urls.value : urls.value[0];
 
 	// 事件
-	emit("update:modelValue", v);
-	emit("change", v);
-	emit("confirm", list);
+	emit('update:modelValue', v);
+	emit('change', v);
+	emit('confirm', list);
 
 	// 关闭
 	close();
@@ -139,7 +139,7 @@ function confirm(arr?: Eps.SpaceInfoEntity[]) {
 onMounted(() => {
 	watch(
 		() => props.modelValue,
-		(val) => {
+		val => {
 			if (val) {
 				urls.value = isString(val) ? [val] : val;
 			}

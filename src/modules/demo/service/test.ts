@@ -1,7 +1,7 @@
-import { Service } from "/@/cool";
-import Mock from "mockjs";
-import { uuid } from "/@/cool/utils";
-import { orderBy } from "lodash-es";
+import { Service } from '/@/cool';
+import Mock from 'mockjs';
+import { uuid } from '/@/cool/utils';
+import { orderBy } from 'lodash-es';
 
 interface User {
 	id: string;
@@ -16,21 +16,21 @@ interface User {
 
 // 模拟数据
 const data = Mock.mock({
-	"list|66": [
+	'list|66': [
 		{
-			id: "@id",
-			name: "@cname",
-			createTime: "@datetime(yyyy-MM-dd)",
-			"wages|50000-100000": 50000,
-			"status|0-1": 0,
+			id: '@id',
+			name: '@cname',
+			createTime: '@datetime(yyyy-MM-dd)',
+			'wages|50000-100000': 50000,
+			'status|0-1': 0,
 			account() {
-				return Mock.Random.string("lower", 8);
+				return Mock.Random.string('lower', 8);
 			},
 			occupation() {
 				return Mock.Random.integer(0, 5);
 			},
 			avatar() {
-				return Mock.Random.image("40x40", Mock.Random.color(), "#FFF", "png", this.name[0]);
+				return Mock.Random.image('40x40', Mock.Random.color(), '#FFF', 'png', this.name[0]);
 			},
 			phone() {
 				return Mock.Random.integer(13000000000, 19999999999);
@@ -41,32 +41,32 @@ const data = Mock.mock({
 
 const userList: User[] = data.list;
 
-@Service("test")
+@Service('test')
 class Test {
 	// 分页列表
 	async page(params: any) {
 		const { keyWord, page, size, sort, order } = params || {};
 
-		console.log("[test]", params);
+		console.log('[test]', params);
 
 		// 关键字查询
-		const keyWordLikeFields = ["phone", "name"];
+		const keyWordLikeFields = ['phone', 'name'];
 
 		// 等值查询
-		const fieldEq = ["createTime", "occupation", "status"];
+		const fieldEq = ['createTime', 'occupation', 'status'];
 
 		// 模糊查询
-		const likeFields = ["phone", "name"];
+		const likeFields = ['phone', 'name'];
 
 		// 过滤后的列表
 		const list = orderBy(userList, order, sort).filter((e: any) => {
 			let f = true;
 
 			if (keyWord !== undefined) {
-				f = !!keyWordLikeFields.find((k) => String(e[k]).includes(String(params.keyWord)));
+				f = !!keyWordLikeFields.find(k => String(e[k]).includes(String(params.keyWord)));
 			}
 
-			fieldEq.forEach((k) => {
+			fieldEq.forEach(k => {
 				if (f) {
 					if (params[k] !== undefined) {
 						f = e[k] == params[k];
@@ -74,7 +74,7 @@ class Test {
 				}
 			});
 
-			likeFields.forEach((k) => {
+			likeFields.forEach(k => {
 				if (f) {
 					if (params[k] !== undefined) {
 						f = String(e[k]).includes(String(params[k]));
@@ -85,7 +85,7 @@ class Test {
 			return f;
 		});
 
-		return new Promise((resolve) => {
+		return new Promise(resolve => {
 			// 模拟延迟
 			setTimeout(
 				() => {
@@ -110,7 +110,7 @@ class Test {
 
 	// 更新
 	async update(params: { id: any; [key: string]: any }) {
-		const item = userList.find((e) => e.id == params.id);
+		const item = userList.find(e => e.id == params.id);
 
 		if (item) {
 			Object.assign(item, params);
@@ -132,15 +132,15 @@ class Test {
 	// 详情
 	async info(params: { id: any }) {
 		const { id } = params || {};
-		return userList.find((e) => e.id == id);
+		return userList.find(e => e.id == id);
 	}
 
 	// 删除
 	async delete(params: { ids: any[] }) {
 		const { ids = [] } = params || {};
 
-		ids.forEach((id) => {
-			const index = userList.findIndex((e) => e.id == id);
+		ids.forEach(id => {
+			const index = userList.findIndex(e => e.id == id);
 			userList.splice(index, 1);
 		});
 	}

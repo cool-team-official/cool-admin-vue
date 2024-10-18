@@ -1,13 +1,13 @@
-import { merge } from "lodash-es";
-import { defineComponent } from "vue";
+import { merge } from 'lodash-es';
+import { defineComponent } from 'vue';
 
 const columns = {
 	UserInfo: {
-		label: "用户信息",
+		label: '用户信息',
 		minWidth: 200,
 		component: {
 			vm: defineComponent({
-				name: "user-info",
+				name: 'user-info',
 
 				props: {
 					scope: null
@@ -35,7 +35,7 @@ const columns = {
 export function setColumn(): ClTable.Plugin {
 	return ({ exposed }) => {
 		function deep(arr: ClTable.Column[]) {
-			arr.forEach((e) => {
+			arr.forEach(e => {
 				if (e.tag) {
 					merge(e, columns[e.tag]);
 				}

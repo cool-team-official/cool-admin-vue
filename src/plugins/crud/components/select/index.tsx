@@ -1,11 +1,11 @@
-import { useCrud } from "@cool-vue/crud";
-import { isEmpty, isString } from "lodash-es";
-import { computed, defineComponent, type PropType, type Ref, toValue, useModel } from "vue";
-import { parsePx } from "/@/cool/utils";
-import type { Dict } from "/$/dict/types";
+import { useCrud } from '@cool-vue/crud';
+import { isEmpty, isString } from 'lodash-es';
+import { computed, defineComponent, type PropType, type Ref, toValue, useModel } from 'vue';
+import { parsePx } from '/@/cool/utils';
+import type { Dict } from '/$/dict/types';
 
 export default defineComponent({
-	name: "cl-select",
+	name: 'cl-select',
 
 	props: {
 		modelValue: [String, Number, Array],
@@ -17,11 +17,11 @@ export default defineComponent({
 		scope: null,
 		labelKey: {
 			type: String,
-			default: "label"
+			default: 'label'
 		},
 		valueKey: {
 			type: String,
-			default: "value"
+			default: 'value'
 		},
 		width: [String, Number],
 		// 是否树形
@@ -32,14 +32,14 @@ export default defineComponent({
 		checkStrictly: Boolean
 	},
 
-	emits: ["update:modelValue", "change"],
+	emits: ['update:modelValue', 'change'],
 
 	setup(props, { emit }) {
 		// cl-crud
 		const Crud = useCrud();
 
 		// 选中值
-		const value = useModel(props, "modelValue");
+		const value = useModel(props, 'modelValue');
 
 		// 列表
 		const list = computed(() => {
@@ -53,7 +53,7 @@ export default defineComponent({
 
 				// 获取所有的值
 				const deep = (arr: Dict.Item[], f: boolean) => {
-					arr.forEach((e) => {
+					arr.forEach(e => {
 						const f2 = e[props.valueKey] == val;
 
 						if (f || f2) {
@@ -64,13 +64,13 @@ export default defineComponent({
 							deep(e.children, f || f2);
 						}
 					});
-				}
+				};
 
 				deep(list.value, false);
 
 				return isEmpty(ids) ? undefined : ids;
 			} else {
-				return val === "" ? undefined : val;
+				return val === '' ? undefined : val;
 			}
 		}
 
@@ -78,8 +78,8 @@ export default defineComponent({
 		function onChange(val: any) {
 			const v = getValue(val);
 
-			emit("update:modelValue", v);
-			emit("change", v);
+			emit('update:modelValue', v);
+			emit('change', v);
 
 			if (props.prop && !props.scope) {
 				Crud.value?.refresh({ page: 1, [props.prop]: v });
@@ -93,7 +93,7 @@ export default defineComponent({
 			};
 
 			// 占位符
-			const placeholder = props.prop ? "选择搜索" : "请选择";
+			const placeholder = props.prop ? '选择搜索' : '请选择';
 
 			// 树形下拉框
 			const TreeSelect = (
@@ -123,7 +123,7 @@ export default defineComponent({
 					style={style}
 					onChange={onChange}
 				>
-					{list.value?.map((e) => {
+					{list.value?.map(e => {
 						return isString(e) ? (
 							<el-option label={e} value={e} />
 						) : (

@@ -54,7 +54,7 @@ export function useForm() {
 		() => form,
 		(val) => {
 			if (config.on?.change) {
-				for (let i in val) {
+				for (const i in val) {
 					if (form[i] !== oldForm.value[i]) {
 						config.on?.change(val, i);
 					}

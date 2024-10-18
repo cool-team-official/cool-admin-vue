@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import { useForm } from "@cool-vue/crud";
-import { computed, reactive } from "vue";
+import { useForm } from '@cool-vue/crud';
+import { computed, reactive } from 'vue';
 
 const Form = useForm();
 
@@ -32,98 +32,98 @@ const options = reactive<{ [key: string]: { label: string; value: any }[] }>({
 
 function open() {
 	Form.value?.open({
-		title: "选项框配置",
+		title: '选项框配置',
 		items: [
 			{
-				label: "下拉框",
-				prop: "select",
+				label: '下拉框',
+				prop: 'select',
 				component: {
-					name: "el-select",
+					name: 'el-select',
 					props: {
 						clearable: true // 可清除
 					},
 					options: [
 						{
-							label: "javascript",
+							label: 'javascript',
 							value: 1
 						},
 						{
-							label: "vue",
+							label: 'vue',
 							value: 2
 						},
 						{
-							label: "html",
+							label: 'html',
 							value: 3
 						},
 						{
-							label: "css",
+							label: 'css',
 							value: 4
 						}
 					]
 				}
 			},
 			{
-				label: "单选框",
-				prop: "radio",
+				label: '单选框',
+				prop: 'radio',
 				value: 1,
 				component: {
-					name: "el-radio-group",
+					name: 'el-radio-group',
 					options: [
 						{
-							label: "手机",
+							label: '手机',
 							value: 1
 						},
 						{
-							label: "电脑",
+							label: '电脑',
 							value: 2
 						},
 						{
-							label: "电视",
+							label: '电视',
 							value: 3
 						}
 					]
 				}
 			},
 			{
-				label: "多选框",
-				prop: "checkbox",
+				label: '多选框',
+				prop: 'checkbox',
 				value: [2, 3],
 				component: {
-					name: "el-checkbox-group",
+					name: 'el-checkbox-group',
 					options: [
 						{
-							label: "咖啡",
+							label: '咖啡',
 							value: 1
 						},
 						{
-							label: "汉堡",
+							label: '汉堡',
 							value: 2
 						},
 						{
-							label: "炸鸡",
+							label: '炸鸡',
 							value: 3
 						},
 						{
-							label: "奶茶",
+							label: '奶茶',
 							value: 4
 						}
 					]
 				}
 			},
 			{
-				label: "动态配置1",
-				prop: "d1",
+				label: '动态配置1',
+				prop: 'd1',
 				component: {
-					name: "el-select",
+					name: 'el-select',
 					// 动态设置方法1，在 on.open 事件配置 options
 					options: []
 				}
 			},
 			{
-				label: "动态配置2",
-				prop: "d2",
+				label: '动态配置2',
+				prop: 'd2',
 				component: {
-					name: "el-select",
+					name: 'el-select',
 					// 动态设置方法2，使用 computed 更新 options
 					options: computed(() => options.user)
 				}
@@ -135,17 +135,17 @@ function open() {
 				setTimeout(() => {
 					// 动态设置方法1，使用 setOptions 方法设置
 					// d1 为 prop 值
-					Form.value?.setOptions("d1", [
+					Form.value?.setOptions('d1', [
 						{
-							label: "😊",
+							label: '😊',
 							value: 1
 						},
 						{
-							label: "😭",
+							label: '😭',
 							value: 2
 						},
 						{
-							label: "😘",
+							label: '😘',
 							value: 3
 						}
 					]);
@@ -153,11 +153,11 @@ function open() {
 					// 动态设置方法2，直接设置 options.user，由 computed 更新
 					options.user = [
 						{
-							label: "💰",
+							label: '💰',
 							value: 1
 						},
 						{
-							label: "🚗",
+							label: '🚗',
 							value: 2
 						}
 					];

@@ -5,8 +5,8 @@
 		</el-badge>
 	</div>
 
-	<div class="cl-theme-dark" v-if="theme.name == 'default'">
-		<el-switch inline-prompt v-model="isDark" :active-icon="Moon" :inactive-icon="Sunny" />
+	<div v-if="theme.name == 'default'" class="cl-theme-dark">
+		<el-switch v-model="isDark" inline-prompt :active-icon="Moon" :inactive-icon="Sunny" />
 	</div>
 
 	<el-drawer
@@ -20,7 +20,7 @@
 			<el-form label-position="top">
 				<el-form-item label="推荐">
 					<ul class="cl-theme__comd">
-						<li @click="setComd(item)" v-for="(item, name) in themes" :key="name">
+						<li v-for="(item, name) in themes" :key="name" @click="setComd(item)">
 							<div
 								class="w"
 								:style="{
@@ -63,14 +63,14 @@
 </template>
 
 <script lang="ts" setup name="cl-theme">
-import { reactive, ref } from "vue";
-import { Check, Moon, Sunny } from "@element-plus/icons-vue";
-import { ElMessage } from "element-plus";
-import { useBase } from "/$/base";
-import { useDark } from "@vueuse/core";
-import { storage } from "/@/cool";
-import { Theme } from "../types";
-import { setTheme, themes } from "../utils";
+import { reactive, ref } from 'vue';
+import { Check, Moon, Sunny } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus';
+import { useBase } from '/$/base';
+import { useDark } from '@vueuse/core';
+import { storage } from '/@/cool';
+import type { Theme } from '../types';
+import { setTheme, themes } from '../utils';
 
 const { menu } = useBase();
 
@@ -78,11 +78,11 @@ const { menu } = useBase();
 const isDark = ref(useDark());
 
 // 当前主题
-const theme = reactive<Theme>(storage.get("theme"));
+const theme = reactive<Theme>(storage.get('theme'));
 
 // 表单
 const form = reactive<{ color: string; theme: Theme }>({
-	color: theme.color || "",
+	color: theme.color || '',
 	theme
 });
 

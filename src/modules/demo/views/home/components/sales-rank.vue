@@ -54,33 +54,33 @@
 </template>
 
 <script lang="ts" setup>
-import dayjs from "dayjs";
-import { reactive, ref } from "vue";
+import dayjs from 'dayjs';
+import { reactive, ref } from 'vue';
 
 // 日期
-const date = ref(dayjs().format("YYYY-MM-DD"));
+const date = ref(dayjs().format('YYYY-MM-DD'));
 
 // 类型
-const type = ref("day");
+const type = ref('day');
 
 // 选项
 const options = reactive({
 	type: [
 		{
-			label: "今日",
-			value: "day"
+			label: '今日',
+			value: 'day'
 		},
 		{
-			label: "本周",
-			value: "week"
+			label: '本周',
+			value: 'week'
 		},
 		{
-			label: "本月",
-			value: "month"
+			label: '本月',
+			value: 'month'
 		},
 		{
-			label: "全年",
-			value: "year"
+			label: '全年',
+			value: 'year'
 		}
 	]
 });

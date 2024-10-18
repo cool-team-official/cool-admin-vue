@@ -1,12 +1,12 @@
-import axios from "axios";
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
-import { ElMessage } from "element-plus";
-import { endsWith } from "lodash-es";
-import { storage } from "/@/cool/utils";
-import { useBase } from "/$/base";
-import { router } from "../router";
-import { config, isDev } from "/@/config";
+import axios from 'axios';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+import { ElMessage } from 'element-plus';
+import { endsWith } from 'lodash-es';
+import { storage } from '/@/cool/utils';
+import { useBase } from '/$/base';
+import { router } from '../router';
+import { config, isDev } from '/@/config';
 
 const request = axios.create({
 	timeout: import.meta.env.VITE_TIMEOUT,
@@ -31,7 +31,7 @@ request.interceptors.request.use(
 		if (req.url) {
 			// 请求进度条
 			if (
-				!config.ignore.NProgress.some((e) => req.url.match(new RegExp(`${e}.*`))) &&
+				!config.ignore.NProgress.some(e => req.url.match(new RegExp(`${e}.*`))) &&
 				(req.NProgress ?? true)
 			) {
 				NProgress.start();
@@ -41,28 +41,28 @@ request.interceptors.request.use(
 		// 请求信息
 		if (isDev) {
 			console.group(req.url);
-			console.log("method:", req.method);
-			console.table("data:", req.method == "get" ? req.params : req.data);
+			console.log('method:', req.method);
+			console.table('data:', req.method == 'get' ? req.params : req.data);
 			console.groupEnd();
 		}
 
 		// 验证 token
 		if (user.token) {
 			// 请求标识
-			if (req.headers && req.headers["Authorization"] !== null) {
-				req.headers["Authorization"] = user.token;
+			if (req.headers && req.headers['Authorization'] !== null) {
+				req.headers['Authorization'] = user.token;
 			}
 
 			// 忽略
-			if (["eps", "refreshToken"].some((e) => endsWith(req.url, e))) {
+			if (['eps', 'refreshToken'].some(e => endsWith(req.url, e))) {
 				return req;
 			}
 
 			// 判断 token 是否过期
-			if (storage.isExpired("token")) {
+			if (storage.isExpired('token')) {
 				// 判断 refreshToken 是否过期
-				if (storage.isExpired("refreshToken")) {
-					ElMessage.error("登录状态已失效，请重新登录");
+				if (storage.isExpired('refreshToken')) {
+					ElMessage.error('登录状态已失效，请重新登录');
 					user.logout();
 				} else {
 					// 是否在刷新中
@@ -70,8 +70,8 @@ request.interceptors.request.use(
 						isRefreshing = true;
 
 						user.refreshToken()
-							.then((token) => {
-								queue.forEach((cb) => cb(token));
+							.then(token => {
+								queue.forEach(cb => cb(token));
 								queue = [];
 								isRefreshing = false;
 							})
@@ -80,12 +80,12 @@ request.interceptors.request.use(
 							});
 					}
 
-					return new Promise((resolve) => {
+					return new Promise(resolve => {
 						// 继续请求
-						queue.push((token) => {
+						queue.push(token => {
 							// 重新设置 token
 							if (req.headers) {
-								req.headers["Authorization"] = token;
+								req.headers['Authorization'] = token;
 							}
 							resolve(req);
 						});
@@ -96,14 +96,14 @@ request.interceptors.request.use(
 
 		return req;
 	},
-	(error) => {
+	error => {
 		return Promise.reject(error);
 	}
 );
 
 // 响应
 request.interceptors.response.use(
-	(res) => {
+	res => {
 		NProgress.done();
 
 		if (!res?.data) {
@@ -123,7 +123,7 @@ request.interceptors.response.use(
 				return Promise.reject({ code, message });
 		}
 	},
-	async (error) => {
+	async error => {
 		NProgress.done();
 
 		if (error.response) {
@@ -136,15 +136,15 @@ request.interceptors.response.use(
 				if (!isDev) {
 					switch (status) {
 						case 403:
-							router.push("/403");
+							router.push('/403');
 							break;
 
 						case 500:
-							router.push("/500");
+							router.push('/500');
 							break;
 
 						case 502:
-							router.push("/502");
+							router.push('/502');
 							break;
 					}
 				}

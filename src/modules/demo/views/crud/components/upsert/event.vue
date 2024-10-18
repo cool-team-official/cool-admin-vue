@@ -39,10 +39,10 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useDict } from "/$/dict";
-import { useCool } from "/@/cool";
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useDict } from '/$/dict';
+import { useCool } from '/@/cool';
 
 const { service } = useCool();
 const { dict } = useDict();
@@ -50,9 +50,9 @@ const { dict } = useDict();
 // cl-crud 配置
 const Crud = useCrud(
 	{
-		service: "test"
+		service: 'test'
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -60,35 +60,35 @@ const Crud = useCrud(
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 140
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140
 		},
 		{
-			label: "工作",
-			prop: "occupation",
-			dict: dict.get("occupation"),
+			label: '工作',
+			prop: 'occupation',
+			dict: dict.get('occupation'),
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		},
 		{
-			type: "op",
+			type: 'op',
 			// edit 打开编辑表单
-			buttons: ["edit", "delete"]
+			buttons: ['edit', 'delete']
 		}
 	]
 });
@@ -97,28 +97,28 @@ const Table = useTable({
 const Upsert = useUpsert({
 	items: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			label: "工作",
-			prop: "occupation",
+			label: '工作',
+			prop: 'occupation',
 			component: {
-				name: "cl-select",
+				name: 'cl-select',
 				props: {
 					tree: true,
 					checkStrictly: true,
-					options: dict.get("occupation")
+					options: dict.get('occupation')
 				}
 			}
 		}
@@ -128,7 +128,7 @@ const Upsert = useUpsert({
 
 	// 弹窗打开的事件，这个时候还未有表单数据
 	onOpen() {
-		console.log("onOpen");
+		console.log('onOpen');
 	},
 
 	// 获取详情，编辑的时候会触发
@@ -150,9 +150,9 @@ const Upsert = useUpsert({
 	// 弹窗打开后，已经得到了表单数据
 	onOpened(data) {
 		// 判定是否编辑模式
-		if (Upsert.value?.mode == "update") {
+		if (Upsert.value?.mode == 'update') {
 			// 对数据处理
-			data.phone += "000";
+			data.phone += '000';
 		}
 	},
 
@@ -190,7 +190,7 @@ const Upsert = useUpsert({
 	// 关闭时触发
 	onClose(action, done) {
 		// action 关闭的类型
-		console.log("action，", action);
+		console.log('action，', action);
 
 		// 使用 done 关闭窗口
 		done();
@@ -198,7 +198,7 @@ const Upsert = useUpsert({
 
 	// 关闭后触发
 	onClosed() {
-		console.log("onClosed");
+		console.log('onClosed');
 	}
 });
 

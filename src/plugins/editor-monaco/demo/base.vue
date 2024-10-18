@@ -3,20 +3,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref } from 'vue';
 
 const value = ref([
 	{
-		label: "A",
+		label: 'A',
 		children: [
 			{
-				label: "B",
+				label: 'B',
 				children: [
 					{
-						label: "C",
+						label: 'C',
 						children: [
 							{
-								label: "D"
+								label: 'D'
 							}
 						]
 					}

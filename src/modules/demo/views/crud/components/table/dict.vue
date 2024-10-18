@@ -31,18 +31,18 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable } from "@cool-vue/crud";
-import { computed, reactive, ref } from "vue";
-import { useDict } from "/$/dict";
+import { useCrud, useTable } from '@cool-vue/crud';
+import { computed, reactive, ref } from 'vue';
+import { useDict } from '/$/dict';
 
 const { dict } = useDict();
 
 // cl-crud 配置
 const Crud = useCrud(
 	{
-		service: "test"
+		service: 'test'
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -54,26 +54,26 @@ const options = reactive({
 // cl-table 配置
 const Table = useTable({
 	autoHeight: false,
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	columns: [
 		{
-			label: "姓名",
-			prop: "name",
+			label: '姓名',
+			prop: 'name',
 			minWidth: 140
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140
 		},
 		{
-			label: "工作",
-			prop: "occupation",
+			label: '工作',
+			prop: 'occupation',
 
 			//【很重要】字典匹配
 			// 使用字典模块的 get 方法绑定，菜单地址 /dict/list
-			dict: dict.get("occupation"),
+			dict: dict.get('occupation'),
 
 			// 是否使用不同颜色区分
 			dictColor: true,
@@ -81,8 +81,8 @@ const Table = useTable({
 			minWidth: 140
 		},
 		{
-			label: "等级",
-			prop: "occupation",
+			label: '等级',
+			prop: 'occupation',
 
 			//【很重要】动态匹配列表的情况，使用 computed
 			dict: computed(() => options.occupation),
@@ -90,30 +90,30 @@ const Table = useTable({
 			minWidth: 140
 		},
 		{
-			label: "状态",
-			prop: "status",
+			label: '状态',
+			prop: 'status',
 
 			// 自定义匹配列表
 			dict: [
 				{
-					label: "启用", // 显示文本
+					label: '启用', // 显示文本
 					value: 1, // 匹配值
-					type: "success" // el-tag 的type：success、danger、warning、info 默认 primary
+					type: 'success' // el-tag 的type：success、danger、warning、info 默认 primary
 				},
 				{
-					label: "禁用",
+					label: '禁用',
 					value: 0,
-					type: "danger"
+					type: 'danger'
 				}
 			],
 
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
-			sortable: "desc"
+			sortable: 'desc'
 		}
 	]
 });
@@ -127,27 +127,27 @@ function open() {
 	setTimeout(() => {
 		options.occupation = [
 			{
-				label: "A",
+				label: 'A',
 				value: 0
 			},
 			{
-				label: "B",
+				label: 'B',
 				value: 1
 			},
 			{
-				label: "C",
+				label: 'C',
 				value: 2
 			},
 			{
-				label: "D",
+				label: 'D',
 				value: 3
 			},
 			{
-				label: "E",
+				label: 'E',
 				value: 4
 			},
 			{
-				label: "F",
+				label: 'F',
 				value: 5
 			}
 		];

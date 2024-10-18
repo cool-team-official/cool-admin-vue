@@ -20,42 +20,42 @@
 </template>
 
 <script setup lang="ts">
-import { useForm } from "@cool-vue/crud";
-import { ElMessage } from "element-plus";
+import { useForm } from '@cool-vue/crud';
+import { ElMessage } from 'element-plus';
 
 const Form = useForm();
 
 function open() {
 	Form.value?.open({
-		title: "组件事件",
+		title: '组件事件',
 		items: [
 			{
-				label: "账号",
-				prop: "account",
+				label: '账号',
+				prop: 'account',
 				component: {
-					name: "el-input",
+					name: 'el-input',
 					props: {
 						// 组件内 emit 的用 on[name] 接收，如 onChange、onInput、onBlur 等
 						// 前提是组件内有触发事件
 						onBlur() {
-							ElMessage.info("账号检查中");
+							ElMessage.info('账号检查中');
 						}
 					}
 				}
 			},
 			{
-				label: "是否实名",
-				prop: "status",
+				label: '是否实名',
+				prop: 'status',
 				value: 1,
 				component: {
-					name: "el-radio-group",
+					name: 'el-radio-group',
 					options: [
 						{
-							label: "关闭",
+							label: '关闭',
 							value: 0
 						},
 						{
-							label: "开启",
+							label: '开启',
 							value: 1
 						}
 					],
@@ -64,22 +64,22 @@ function open() {
 						onChange(val: number) {
 							if (val == 1) {
 								// 显示表单项
-								Form.value?.showItem("idcard");
+								Form.value?.showItem('idcard');
 							} else {
 								// 隐藏表单项
-								Form.value?.hideItem("idcard");
+								Form.value?.hideItem('idcard');
 								// 清空值
-								Form.value?.setForm("idcard", undefined);
+								Form.value?.setForm('idcard', undefined);
 							}
 						}
 					}
 				}
 			},
 			{
-				label: "身份证",
-				prop: "idcard",
+				label: '身份证',
+				prop: 'idcard',
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				}
 			}
 		],

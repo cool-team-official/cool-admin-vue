@@ -34,75 +34,75 @@
 </template>
 
 <script setup lang="ts">
-import { useForm } from "@cool-vue/crud";
-import { ElMessage } from "element-plus";
-import SelectWork from "./select-work2.vue";
-import SelectLabels from "./select-labels.vue";
-import SelectStatus from "./select-status.vue";
+import { useForm } from '@cool-vue/crud';
+import { ElMessage } from 'element-plus';
+import SelectWork from './select-work2.vue';
+import SelectLabels from './select-labels.vue';
+import SelectStatus from './select-status.vue';
 
 const Form = useForm();
 
 function open() {
 	Form.value?.open({
-		title: "组件配置",
+		title: '组件配置',
 
 		items: [
 			{
-				label: "昵称",
-				prop: "name",
+				label: '昵称',
+				prop: 'name',
 				// 组件配置方式1：标签名（方便，但是不建议组件全局注册）
-				value: "神仙",
+				value: '神仙',
 				component: {
 					// 必须是“全局注册”的组件名，如 element-plus 的 el-input、el-date-picker 等
-					name: "el-input"
+					name: 'el-input'
 				}
 			},
 			{
-				label: "手机号",
-				prop: "phone",
-				value: "13255022000",
+				label: '手机号',
+				prop: 'phone',
+				value: '13255022000',
 				component: {
-					name: "el-input",
+					name: 'el-input',
 					// 自定义插槽
 					slots: {
 						prepend() {
-							return "+86";
+							return '+86';
 						}
 					}
 				}
 			},
 			{
-				label: "年龄",
-				prop: "age",
+				label: '年龄',
+				prop: 'age',
 				// 组件配置方式2：插槽（万能，就是代码多写点）
 				value: 18,
 				component: {
 					// 必须是 "slot-" 开头
-					name: "slot-age"
+					name: 'slot-age'
 				}
 			},
 			// -- start 组件配置方式3：组件实例（不想全局注册，但又想组件化）
 			{
-				label: "工作",
-				prop: "work",
-				value: "设计",
+				label: '工作',
+				prop: 'work',
+				value: '设计',
 				component: {
 					// 双向绑定
 					vm: SelectWork
 				}
 			},
 			{
-				label: "标签",
-				prop: "labels",
-				value: ["多金", "深情"],
+				label: '标签',
+				prop: 'labels',
+				value: ['多金', '深情'],
 				component: {
 					// scope[prop]绑定
 					vm: SelectLabels
 				}
 			},
 			{
-				label: "状态",
-				prop: "status",
+				label: '状态',
+				prop: 'status',
 				value: 1,
 				component: {
 					// useForm 绑定
@@ -114,7 +114,7 @@ function open() {
 		on: {
 			submit(data, { close }) {
 				ElMessage.info(
-					`${data.name || "无名"}（${data.age || 18}岁）工作：${data.work || "无"}`
+					`${data.name || '无名'}（${data.age || 18}岁）工作：${data.work || '无'}`
 				);
 				close();
 			}

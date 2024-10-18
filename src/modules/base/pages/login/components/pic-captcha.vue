@@ -19,12 +19,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from "vue";
-import { ElMessage } from "element-plus";
-import { Loading, WarningFilled } from "@element-plus/icons-vue";
-import { useCool } from "/@/cool";
+import { onMounted, ref } from 'vue';
+import { ElMessage } from 'element-plus';
+import { Loading, WarningFilled } from '@element-plus/icons-vue';
+import { useCool } from '/@/cool';
 
-const emit = defineEmits(["update:modelValue", "change"]);
+const emit = defineEmits(['update:modelValue', 'change']);
 
 const { service } = useCool();
 
@@ -32,42 +32,42 @@ const { service } = useCool();
 const isError = ref(false);
 
 // base64
-const base64 = ref("");
+const base64 = ref('');
 
 // svg
-const svg = ref("");
+const svg = ref('');
 
 // 刷新
 async function refresh() {
 	isError.value = false;
-	svg.value = "";
-	base64.value = "";
+	svg.value = '';
+	base64.value = '';
 
 	await service.base.open
 		.captcha({
 			height: 45,
 			width: 150,
-			color: "#2c3142"
+			color: '#2c3142'
 		})
 		.then(({ captchaId, data }) => {
 			if (data) {
-				if (data.includes(";base64,")) {
+				if (data.includes(';base64,')) {
 					base64.value = data;
 				} else {
 					svg.value = data;
 				}
 
-				emit("update:modelValue", captchaId);
-				emit("change", {
+				emit('update:modelValue', captchaId);
+				emit('change', {
 					base64,
 					svg,
 					captchaId
 				});
 			} else {
-				ElMessage.error("验证码获取失败");
+				ElMessage.error('验证码获取失败');
 			}
 		})
-		.catch((err) => {
+		.catch(err => {
 			ElMessage.error(err.message);
 			isError.value = true;
 		});

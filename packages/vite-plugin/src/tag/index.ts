@@ -18,12 +18,12 @@ export function createTag(code: string, id: string) {
 					export default defineComponent({
 						name: "${name}"
 					})
-				<\/script>`
+				<\/script>`,
 			);
 
 			return {
 				map: str().generateMap(),
-				code: str().toString()
+				code: str().toString(),
 			};
 		}
 	}

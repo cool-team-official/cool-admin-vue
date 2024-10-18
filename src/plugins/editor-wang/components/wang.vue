@@ -1,20 +1,20 @@
 <template>
-	<div class="cl-editor-wang" :class="{ disabled }" :ref="setRefs('editor')">
+	<div :ref="setRefs('editor')" class="cl-editor-wang" :class="{ disabled }">
 		<!-- 工具栏 -->
-		<toolbar :editor="Editor" :mode="mode" v-if="!preview" />
+		<toolbar v-if="!preview" :editor="Editor" :mode="mode" />
 
 		<!-- 编辑框 -->
 		<editor
 			v-model="value"
-			:defaultConfig="editorConfig"
+			:default-config="editorConfig"
 			:mode="mode"
 			:style="{
 				height: parsePx(height)
 			}"
-			@onCreated="onCreated"
-			@onFocus="onFocus"
-			@onBlur="onBlur"
-			@onChange="onChange"
+			@on-created="onCreated"
+			@on-focus="onFocus"
+			@on-blur="onBlur"
+			@on-change="onChange"
 		/>
 
 		<!-- 文件空间 - 视频 -->
@@ -27,31 +27,31 @@
 
 		<!-- 文件空间 - 图片 -->
 		<cl-upload-space
+			v-if="isSpace"
 			:ref="setRefs('image')"
 			accept="image/*"
 			:show-btn="false"
 			@confirm="onFileConfirm"
-			v-if="isSpace"
 		/>
 
 		<!-- 直接上传 - 图片 -->
-		<div class="upload-inner" v-else>
+		<div v-else class="upload-inner">
 			<cl-upload :ref="setRefs('image')" accept="image/*" @success="onFileConfirm" />
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-import { onBeforeUnmount, ref, shallowRef, watch, type PropType, defineComponent } from "vue";
-import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
-import { IEditorConfig } from "@wangeditor/editor";
-import { useCool } from "/@/cool";
-import { parsePx } from "/@/cool/utils";
-import { isArray } from "lodash-es";
-import "@wangeditor/editor/dist/css/style.css";
+import { onBeforeUnmount, ref, shallowRef, watch, type PropType, defineComponent } from 'vue';
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
+import { type IEditorConfig } from '@wangeditor/editor';
+import { useCool } from '/@/cool';
+import { parsePx } from '/@/cool/utils';
+import { isArray } from 'lodash-es';
+import '@wangeditor/editor/dist/css/style.css';
 
 export default defineComponent({
-	name: "cl-editor-wang",
+	name: 'cl-editor-wang',
 
 	components: {
 		Editor,
@@ -62,8 +62,8 @@ export default defineComponent({
 		modelValue: String,
 		// 模式
 		mode: {
-			type: String as PropType<"default" | "simple">,
-			default: "default"
+			type: String as PropType<'default' | 'simple'>,
+			default: 'default'
 		},
 		// 高度
 		height: {
@@ -81,7 +81,7 @@ export default defineComponent({
 		}
 	},
 
-	emits: ["update:modelValue", "change", "focus", "blur"],
+	emits: ['update:modelValue', 'change', 'focus', 'blur'],
 
 	setup(props, { emit }) {
 		const { refs, setRefs } = useCool();
@@ -94,8 +94,8 @@ export default defineComponent({
 
 		watch(
 			() => props.modelValue,
-			(val) => {
-				value.value = val || "";
+			val => {
+				value.value = val || '';
 			},
 			{
 				immediate: true
@@ -109,7 +109,7 @@ export default defineComponent({
 
 		// 配置
 		const editorConfig: Partial<IEditorConfig> = {
-			placeholder: "请输入",
+			placeholder: '请输入',
 			MENU_CONF: {
 				uploadImage: {},
 				uploadVideo: {
@@ -144,22 +144,22 @@ export default defineComponent({
 
 		// 聚焦
 		function onFocus(editor: any) {
-			emit("focus", editor);
+			emit('focus', editor);
 		}
 
 		// 失焦
 		function onBlur(editor: any) {
-			emit("blur", editor);
+			emit('blur', editor);
 		}
 
 		// 值改变
 		function onChange() {
-			if (value.value == "<p><br></p>") {
-				value.value = "";
+			if (value.value == '<p><br></p>') {
+				value.value = '';
 			}
 
-			emit("update:modelValue", value.value);
-			emit("change", value.value);
+			emit('update:modelValue', value.value);
+			emit('change', value.value);
 		}
 
 		// 文件选择
@@ -169,7 +169,7 @@ export default defineComponent({
 			}
 
 			if (files.length > 0) {
-				files.forEach((file) => {
+				files.forEach(file => {
 					if (temp.insertFn) {
 						temp.insertFn(file.url);
 					}

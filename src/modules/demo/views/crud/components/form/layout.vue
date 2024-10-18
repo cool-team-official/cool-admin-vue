@@ -20,30 +20,30 @@
 </template>
 
 <script setup lang="ts">
-import { useForm } from "@cool-vue/crud";
+import { useForm } from '@cool-vue/crud';
 
 const Form = useForm();
 
 function open() {
 	Form.value?.open({
-		title: "布局",
+		title: '布局',
 		items: [
 			{
 				//【span】参考文档：https://element-plus.gitee.io/zh-CN/component/layout.html
 				// 使用 1/24 分栏，默认 24
 				span: 12,
-				label: "昵称",
-				prop: "nickname",
+				label: '昵称',
+				prop: 'nickname',
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				}
 			},
 			{
 				span: 12,
-				label: "手机号",
-				prop: "phone",
+				label: '手机号',
+				prop: 'phone',
 				component: {
-					name: "el-input",
+					name: 'el-input',
 					props: {
 						maxlength: 11
 					}
@@ -52,37 +52,37 @@ function open() {
 			{
 				//【flex】使宽度不填充满
 				flex: false,
-				label: "标签",
-				prop: "label",
+				label: '标签',
+				prop: 'label',
 				component: {
-					name: "el-input"
+					name: 'el-input'
 				}
 			},
 			{
-				label: "状态",
-				prop: "status",
+				label: '状态',
+				prop: 'status',
 				value: 1,
 				component: {
-					name: "el-radio-group",
+					name: 'el-radio-group',
 					options: [
 						{
-							label: "开启",
+							label: '开启',
 							value: 1
 						},
 						{
-							label: "关闭",
+							label: '关闭',
 							value: 0
 						}
 					]
 				}
 			},
 			{
-				label: "备注",
-				prop: "remark",
+				label: '备注',
+				prop: 'remark',
 				component: {
-					name: "el-input",
+					name: 'el-input',
 					props: {
-						type: "textarea",
+						type: 'textarea',
 						rows: 4
 					}
 				}

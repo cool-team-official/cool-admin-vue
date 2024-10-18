@@ -1,11 +1,11 @@
-import { useStore } from "../store";
-import { isObject } from "lodash-es";
+import { useStore } from '../store';
+import { isObject } from 'lodash-es';
 
 function parse(value: any) {
 	const { menu } = useStore();
 
-	if (typeof value == "string") {
-		return value ? menu.perms.some((e: any) => e.includes(value.replace(/\s/g, ""))) : false;
+	if (typeof value == 'string') {
+		return value ? menu.perms.some((e: any) => e.includes(value.replace(/\s/g, ''))) : false;
 	} else {
 		return Boolean(value);
 	}

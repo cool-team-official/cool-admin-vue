@@ -8,15 +8,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from "vue";
-import { isArray, isString, last } from "lodash-es";
-import { Link } from "@element-plus/icons-vue";
+import { defineComponent, computed } from 'vue';
+import { isArray, isString, last } from 'lodash-es';
+import { Link } from '@element-plus/icons-vue';
 
 export default defineComponent({
-	name: "cl-link",
+	name: 'cl-link',
 
 	components: {
-		"icon-link": Link
+		'icon-link': Link
 	},
 
 	props: {
@@ -25,7 +25,7 @@ export default defineComponent({
 		text: String,
 		target: {
 			type: String,
-			default: "_blank"
+			default: '_blank'
 		}
 	},
 
@@ -38,14 +38,14 @@ export default defineComponent({
 			}
 
 			if (isString(urls)) {
-				return (urls || "").split(",").filter(Boolean);
+				return (urls || '').split(',').filter(Boolean);
 			}
 
 			return [];
 		});
 
 		function filename(url: string) {
-			return last(url.split("/"));
+			return last(url.split('/'));
 		}
 
 		return {

@@ -5,8 +5,8 @@
 </template>
 
 <script lang="ts" setup>
-import { useCool } from "/@/cool";
-import DictList from "/$/dict/views/list.vue";
+import { useCool } from '/@/cool';
+import DictList from '/$/dict/views/list.vue';
 
 const { service } = useCool();
 </script>

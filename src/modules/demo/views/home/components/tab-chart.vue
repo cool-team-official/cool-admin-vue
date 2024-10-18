@@ -16,19 +16,19 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
+import { reactive } from 'vue';
 
 const barWidth = 15;
 
 const chartOption = reactive<any>({
 	grid: {
-		top: "20px",
-		bottom: "30px",
-		right: "10px",
+		top: '20px',
+		bottom: '30px',
+		right: '10px',
 		containLabel: true
 	},
 	xAxis: {
-		type: "category",
+		type: 'category',
 		data: [],
 		offset: 5,
 		axisLine: {
@@ -39,7 +39,7 @@ const chartOption = reactive<any>({
 		}
 	},
 	yAxis: {
-		type: "value",
+		type: 'value',
 		offset: 20,
 		splitLine: {
 			show: false
@@ -52,7 +52,7 @@ const chartOption = reactive<any>({
 		}
 	},
 	tooltip: {
-		trigger: "axis",
+		trigger: 'axis',
 		formatter: (comp: any) => {
 			const [serie] = comp;
 
@@ -60,37 +60,37 @@ const chartOption = reactive<any>({
 		},
 		axisPointer: {
 			show: true,
-			status: "shadow",
+			status: 'shadow',
 			z: -1,
-			type: "shadow"
+			type: 'shadow'
 		},
-		extraCssText: "width:120px; white-space:pre-wrap"
+		extraCssText: 'width:120px; white-space:pre-wrap'
 	},
 	series: [
 		{
 			barWidth,
-			name: "付款笔数",
-			type: "bar",
+			name: '付款笔数',
+			type: 'bar',
 			data: [],
 			itemStyle: {
-				color: "#4165d7"
+				color: '#4165d7'
 			}
 		},
 		{
-			type: "bar",
+			type: 'bar',
 			barWidth,
 			xAxisIndex: 0,
-			barGap: "-100%",
+			barGap: '-100%',
 			data: [],
 			itemStyle: {
-				color: "#f1f1f9"
+				color: '#f1f1f9'
 			},
 			zlevel: -1
 		}
 	]
 });
 
-chartOption.xAxis.data = new Array(12).fill(1).map((e, i) => i + 1 + "月");
+chartOption.xAxis.data = new Array(12).fill(1).map((e, i) => i + 1 + '月');
 chartOption.series[0].data = new Array(12).fill(1).map(() => parseInt(String(Math.random() * 100)));
 chartOption.series[1].data = new Array(12).fill(100);
 </script>
@@ -127,7 +127,7 @@ chartOption.series[1].data = new Array(12).fill(100);
 
 		&::before {
 			display: block;
-			content: "";
+			content: '';
 			height: 8px;
 			width: 8px;
 			border-radius: 8px;

@@ -33,9 +33,9 @@
 </template>
 
 <script setup lang="ts">
-import { useCrud, useTable } from "@cool-vue/crud";
-import { ref } from "vue";
-import { useDict } from "/$/dict";
+import { useCrud, useTable } from '@cool-vue/crud';
+import { ref } from 'vue';
+import { useDict } from '/$/dict';
 
 const { dict } = useDict();
 
@@ -43,9 +43,9 @@ const { dict } = useDict();
 const Crud = useCrud(
 	{
 		// 测试数据，移步到 cl-crud 例子查看
-		service: "test"
+		service: 'test'
 	},
-	(app) => {
+	app => {
 		app.refresh();
 	}
 );
@@ -57,46 +57,46 @@ const Table = useTable({
 	autoHeight: false,
 
 	// 右键菜单，移步到右键菜单示例中查看
-	contextMenu: ["refresh"],
+	contextMenu: ['refresh'],
 
 	// 列配置，点击 columns 查看描述
 	// 更多配置查看 el-table-column 文档，https://element-plus.org/zh-CN/component/table.html#table-column-%E5%B1%9E%E6%80%A7
 	columns: [
 		{
 			// 是否为多选框操作列
-			type: "selection"
+			type: 'selection'
 
 			// 是否为序号列
 			// type: "index"
 		},
 		{
 			// 表头标题
-			label: "姓名",
+			label: '姓名',
 
 			// 绑定值
-			prop: "name",
+			prop: 'name',
 
 			// 最小宽度
 			minWidth: 140
 		},
 		{
-			label: "手机号",
-			prop: "phone",
+			label: '手机号',
+			prop: 'phone',
 			minWidth: 140
 		},
 		{
-			label: "工作",
-			prop: "occupation",
+			label: '工作',
+			prop: 'occupation',
 			// 字典匹配，移步到字典示例中查看
-			dict: dict.get("occupation"),
+			dict: dict.get('occupation'),
 			minWidth: 140
 		},
 		{
-			label: "创建时间",
-			prop: "createTime",
+			label: '创建时间',
+			prop: 'createTime',
 			minWidth: 170,
 			// 是否排序，desc, asc
-			sortable: "desc"
+			sortable: 'desc'
 		}
 	]
 });

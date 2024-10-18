@@ -1,8 +1,8 @@
-import { module } from "/@/cool";
-import { useBase } from "/$/base";
+import { module } from '/@/cool';
+import { useBase } from '/$/base';
 
 export function useAi() {
-	const { host } = module.config("helper");
+	const { host } = module.config('helper');
 	const { user } = useBase();
 
 	// 调用流程
@@ -13,14 +13,14 @@ export function useAi() {
 	): Promise<any> {
 		const stream = !!streamCb;
 
-		let cacheText = "";
+		let cacheText = '';
 
 		return new Promise((resolve, reject) => {
-			fetch(host + "/open/code/gen/data", {
-				method: "POST",
+			fetch(host + '/open/code/gen/data', {
+				method: 'POST',
 				headers: {
 					Authorization: user.token,
-					"Content-Type": "application/json"
+					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
 					params,
@@ -28,11 +28,11 @@ export function useAi() {
 					stream
 				})
 			})
-				.then((res) => {
+				.then(res => {
 					if (res.body) {
 						if (stream) {
 							const reader = res.body.getReader();
-							const decoder = new TextDecoder("utf-8");
+							const decoder = new TextDecoder('utf-8');
 							const stream = new ReadableStream({
 								start(controller) {
 									function push() {
@@ -49,19 +49,19 @@ export function useAi() {
 													text = cacheText + text;
 												}
 
-												if (text.indexOf("data:") == 0) {
-													text = "\n\n" + text;
+												if (text.indexOf('data:') == 0) {
+													text = '\n\n' + text;
 												}
 
 												try {
 													const arr = text
 														.split(/\n\ndata:/g)
 														.filter(Boolean)
-														.map((e) => JSON.parse(e));
+														.map(e => JSON.parse(e));
 
 													arr.forEach(streamCb);
 
-													cacheText = "";
+													cacheText = '';
 												} catch (err) {
 													cacheText = text;
 												}
@@ -81,7 +81,7 @@ export function useAi() {
 						}
 					}
 				})
-				.then((res) => {
+				.then(res => {
 					if (stream) {
 						return res;
 					}

@@ -17,12 +17,12 @@
 </template>
 
 <script lang="ts" setup>
-import { Upload } from "@element-plus/icons-vue";
-import { ElMessage } from "element-plus";
-import { useCool } from "/@/cool";
-import { useCrud, useForm } from "@cool-vue/crud";
-import { orderBy } from "lodash-es";
-import { ref } from "vue";
+import { Upload } from '@element-plus/icons-vue';
+import { ElMessage } from 'element-plus';
+import { useCool } from '/@/cool';
+import { useCrud, useForm } from '@cool-vue/crud';
+import { orderBy } from 'lodash-es';
+import { ref } from 'vue';
 
 const { service } = useCool();
 const Form = useForm();
@@ -46,39 +46,39 @@ function onUpload(_: any, file: File) {
 
 			// 打开表单
 			Form.value?.open({
-				title: "菜单导入",
-				height: "400px",
-				width: "600px",
+				title: '菜单导入',
+				height: '400px',
+				width: '600px',
 				props: {
-					labelWidth: "0px"
+					labelWidth: '0px'
 				},
 				op: {
-					saveButtonText: "添加"
+					saveButtonText: '添加'
 				},
 				items: [
 					{
 						component: {
-							name: "slot-tips"
+							name: 'slot-tips'
 						}
 					},
 					{
 						component: {
-							name: "el-tree",
+							name: 'el-tree',
 							props: {
-								data: orderBy(data, "orderNum", "asc"),
-								nodeKey: "name",
+								data: orderBy(data, 'orderNum', 'asc'),
+								nodeKey: 'name',
 								props: {
-									label: "name",
-									children: "childMenus"
+									label: 'name',
+									children: 'childMenus'
 								},
 								renderContent(_: any, { data }: any) {
 									return data.name;
 								}
 							},
 							style: {
-								padding: "5px",
-								borderRadius: "var(--el-border-radius-base)",
-								border: "1px solid var(--el-border-color)"
+								padding: '5px',
+								borderRadius: 'var(--el-border-radius-base)',
+								border: '1px solid var(--el-border-color)'
 							}
 						}
 					}
@@ -90,11 +90,11 @@ function onUpload(_: any, file: File) {
 								menus: data
 							})
 							.then(() => {
-								ElMessage.success("导入成功");
+								ElMessage.success('导入成功');
 								Crud.value?.refresh();
 								close();
 							})
-							.catch((err) => {
+							.catch(err => {
 								ElMessage.error(err.message);
 								done();
 							});

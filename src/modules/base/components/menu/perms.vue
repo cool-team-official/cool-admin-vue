@@ -16,19 +16,19 @@
 </template>
 
 <script lang="ts" name="cl-menu-perms" setup>
-import { onMounted, ref, watch, reactive } from "vue";
-import { useCool } from "/@/cool";
-import { deepPaths } from "/@/cool/utils";
+import { onMounted, ref, watch, reactive } from 'vue';
+import { useCool } from '/@/cool';
+import { deepPaths } from '/@/cool/utils';
 
 const props = defineProps({
 	modelValue: {
 		type: String,
-		default: ""
+		default: ''
 	},
 	disabled: Boolean
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue']);
 
 const { service } = useCool();
 
@@ -43,14 +43,14 @@ const cascaderProps = reactive({ multiple: true });
 
 // 监听改变
 function onChange(arr: any) {
-	emit("update:modelValue", arr.map((e: string[]) => e.join(":")).join(","));
+	emit('update:modelValue', arr.map((e: string[]) => e.join(':')).join(','));
 }
 
 // 监听值
 watch(
 	() => props.modelValue,
-	(val) => {
-		value.value = val ? val.split(",").map((e) => e.split(":")) : [];
+	val => {
+		value.value = val ? val.split(',').map(e => e.split(':')) : [];
 	},
 	{
 		immediate: true
@@ -61,7 +61,7 @@ onMounted(() => {
 	const list: any[] = [];
 
 	function deep(s: any) {
-		if (typeof s == "object") {
+		if (typeof s == 'object') {
 			for (const i in s) {
 				const { permission } = s[i];
 
@@ -76,7 +76,7 @@ onMounted(() => {
 
 	deep(service);
 
-	data.value = deepPaths(list, ":");
+	data.value = deepPaths(list, ':');
 });
 </script>
 

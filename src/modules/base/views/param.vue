@@ -25,10 +25,10 @@
 </template>
 
 <script lang="ts" name="sys-param" setup>
-import { useCrud, useTable, useUpsert } from "@cool-vue/crud";
-import { Document } from "@element-plus/icons-vue";
-import { reactive } from "vue";
-import { useCool } from "/@/cool";
+import { useCrud, useTable, useUpsert } from '@cool-vue/crud';
+import { Document } from '@element-plus/icons-vue';
+import { reactive } from 'vue';
+import { useCool } from '/@/cool';
 
 const { service } = useCool();
 
@@ -36,24 +36,24 @@ const { service } = useCool();
 const options = reactive({
 	dataType: [
 		{
-			label: "字符串",
+			label: '字符串',
 			value: 0,
-			type: "info"
+			type: 'info'
 		},
 		{
-			label: "富文本",
+			label: '富文本',
 			value: 1,
-			type: "success"
+			type: 'success'
 		},
 		{
-			label: "文件",
+			label: '文件',
 			value: 2
 		}
 	]
 });
 
 // cl-crud
-const Crud = useCrud({ service: service.base.sys.param }, (app) => {
+const Crud = useCrud({ service: service.base.sys.param }, app => {
 	app.refresh();
 });
 
@@ -61,34 +61,34 @@ const Crud = useCrud({ service: service.base.sys.param }, (app) => {
 const Table = useTable({
 	columns: [
 		{
-			type: "selection",
+			type: 'selection',
 			width: 60
 		},
 		{
-			label: "名称",
-			prop: "name",
+			label: '名称',
+			prop: 'name',
 			minWidth: 150
 		},
 		{
-			label: "keyName",
-			prop: "keyName",
+			label: 'keyName',
+			prop: 'keyName',
 			minWidth: 150
 		},
 		{
-			label: "数据类型",
-			prop: "dataType",
+			label: '数据类型',
+			prop: 'dataType',
 			minWidth: 150,
 			dict: options.dataType
 		},
 		{
-			label: "备注",
-			prop: "remark",
+			label: '备注',
+			prop: 'remark',
 			minWidth: 200,
 			showOverflowTooltip: true
 		},
 		{
-			label: "操作",
-			type: "op"
+			label: '操作',
+			type: 'op'
 		}
 	]
 });
@@ -96,95 +96,95 @@ const Table = useTable({
 // cl-upsert
 const Upsert = useUpsert({
 	dialog: {
-		width: "1000px"
+		width: '1000px'
 	},
 
 	items: [
 		{
-			prop: "name",
-			label: "名称",
+			prop: 'name',
+			label: '名称',
 			span: 12,
 			required: true,
 			component: {
-				name: "el-input"
+				name: 'el-input'
 			}
 		},
 		{
-			prop: "keyName",
-			label: "keyName",
+			prop: 'keyName',
+			label: 'keyName',
 			span: 12,
 			required: true,
 			component: {
-				name: "el-input",
+				name: 'el-input',
 				props: {
-					placeholder: "请输入Key"
+					placeholder: '请输入Key'
 				}
 			}
 		},
 		{
-			prop: "dataType",
-			label: "类型",
+			prop: 'dataType',
+			label: '类型',
 			value: 0,
 			required: true,
 			component: {
-				name: "el-radio-group",
+				name: 'el-radio-group',
 				options: options.dataType
 			}
 		},
 		{
-			prop: "data_0",
-			label: "数据",
+			prop: 'data_0',
+			label: '数据',
 			hidden({ scope }) {
 				return scope.dataType != 0;
 			},
 			required: true,
 			component: {
-				name: "el-input",
+				name: 'el-input',
 				props: {
 					rows: 12,
-					type: "textarea"
+					type: 'textarea'
 				}
 			}
 		},
 		{
-			prop: "data_1",
-			label: "数据",
+			prop: 'data_1',
+			label: '数据',
 			hidden({ scope }) {
 				return scope.dataType != 1;
 			},
 			required: true,
 			component: {
-				name: "cl-editor",
+				name: 'cl-editor',
 				props: {
-					name: "cl-editor-wang"
+					name: 'cl-editor-wang'
 				}
 			}
 		},
 		{
-			prop: "data_2",
-			label: "数据",
+			prop: 'data_2',
+			label: '数据',
 			required: true,
 			hidden({ scope }) {
 				return scope.dataType != 2;
 			},
 			component: {
-				name: "cl-upload",
+				name: 'cl-upload',
 				props: {
 					icon: Document,
 					multiple: true,
-					type: "file"
+					type: 'file'
 				}
 			}
 		},
 		{
-			prop: "remark",
-			label: "备注",
+			prop: 'remark',
+			label: '备注',
 			component: {
-				name: "el-input",
+				name: 'el-input',
 				props: {
-					placeholder: "请输入备注",
+					placeholder: '请输入备注',
 					rows: 3,
-					type: "textarea"
+					type: 'textarea'
 				}
 			}
 		}

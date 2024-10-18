@@ -1,4 +1,4 @@
-import { useDictStore } from "./dict";
+import { useDictStore } from './dict';
 
 export function useStore() {
 	const dict = useDictStore();

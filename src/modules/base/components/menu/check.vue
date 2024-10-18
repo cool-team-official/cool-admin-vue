@@ -22,10 +22,10 @@
 </template>
 
 <script lang="ts" name="cl-menu-check" setup>
-import { ref, watch } from "vue";
-import { deepTree } from "/@/cool/utils";
-import { useCool } from "/@/cool";
-import { useUpsert } from "@cool-vue/crud";
+import { ref, watch } from 'vue';
+import { deepTree } from '/@/cool/utils';
+import { useCool } from '/@/cool';
+import { useUpsert } from '@cool-vue/crud';
 
 const props = defineProps({
 	modelValue: {
@@ -34,7 +34,7 @@ const props = defineProps({
 	}
 });
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(['update:modelValue']);
 
 const { service } = useCool();
 
@@ -45,11 +45,11 @@ const Tree = ref();
 const list = ref();
 
 // 搜索关键字
-const keyword = ref("");
+const keyword = ref('');
 
 // 刷新列表
 async function refresh() {
-	return service.base.sys.menu.list().then((res) => {
+	return service.base.sys.menu.list().then(res => {
 		list.value = deepTree(res);
 	});
 }
@@ -62,7 +62,7 @@ function filterNode(val: string, data: any) {
 
 // 值改变
 function onCheckChange(_: any, { checkedKeys, halfCheckedKeys }: any) {
-	emit("update:modelValue", [...checkedKeys, ...halfCheckedKeys]);
+	emit('update:modelValue', [...checkedKeys, ...halfCheckedKeys]);
 }
 
 // 过滤监听
@@ -74,7 +74,7 @@ useUpsert({
 	async onOpened() {
 		await refresh();
 		Tree.value?.setCheckedKeys(
-			(props.modelValue || []).filter((e) => Tree.value.getNode(e)?.isLeaf)
+			(props.modelValue || []).filter(e => Tree.value.getNode(e)?.isLeaf)
 		);
 	}
 });

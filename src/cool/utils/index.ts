@@ -1,6 +1,6 @@
-import { isArray, isNumber, isString, orderBy } from "lodash-es";
-import { resolveComponent } from "vue";
-import storage from "./storage";
+import { isArray, isNumber, isString, orderBy } from 'lodash-es';
+import { resolveComponent } from 'vue';
+import storage from './storage';
 
 // 首字母大写
 export function firstUpperCase(value: string): string {
@@ -16,7 +16,7 @@ export function getNames(value: any) {
 
 // 获取地址栏参数
 export function getUrlParam(name: string): string | null {
-	const reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+	const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
 	const r = window.location.search.substr(1).match(reg);
 	if (r != null) return decodeURIComponent(r[2]);
 	return null;
@@ -24,13 +24,13 @@ export function getUrlParam(name: string): string | null {
 
 // 文件名
 export function filename(path: string): string {
-	return basename(path.substring(0, path.lastIndexOf(".")));
+	return basename(path.substring(0, path.lastIndexOf('.')));
 }
 
 // 路径名称
 export function basename(path: string): string {
-	let index = path.lastIndexOf("/");
-	index = index > -1 ? index : path.lastIndexOf("\\");
+	let index = path.lastIndexOf('/');
+	index = index > -1 ? index : path.lastIndexOf('\\');
 	if (index < 0) {
 		return path;
 	}
@@ -39,7 +39,7 @@ export function basename(path: string): string {
 
 // 文件扩展名
 export function extname(path: string): string {
-	return path.substring(path.lastIndexOf(".") + 1).split(/(\?|&)/)[0];
+	return path.substring(path.lastIndexOf('.') + 1).split(/(\?|&)/)[0];
 }
 
 // 横杠转驼峰
@@ -50,17 +50,17 @@ export function toCamel(str: string): string {
 }
 
 // uuid
-export function uuid(separator = "-"): string {
+export function uuid(separator = '-'): string {
 	const s: any[] = [];
-	const hexDigits = "0123456789abcdef";
+	const hexDigits = '0123456789abcdef';
 	for (let i = 0; i < 36; i++) {
 		s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
 	}
-	s[14] = "4";
+	s[14] = '4';
 	s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
 	s[8] = s[13] = s[18] = s[23] = separator;
 
-	return s.join("");
+	return s.join('');
 }
 
 // 浏览器信息
@@ -71,83 +71,83 @@ export function getBrowser() {
 	const ua = navigator.userAgent.toLowerCase();
 
 	// 浏览器类型
-	let type = (ua.match(/firefox|chrome|safari|opera/g) || "other")[0];
+	let type = (ua.match(/firefox|chrome|safari|opera/g) || 'other')[0];
 
 	if ((ua.match(/msie|trident/g) || [])[0]) {
-		type = "msie";
+		type = 'msie';
 	}
 
 	// 平台标签
-	let tag = "";
+	let tag = '';
 
 	const isTocuh =
-		"ontouchstart" in window || ua.indexOf("touch") !== -1 || ua.indexOf("mobile") !== -1;
+		'ontouchstart' in window || ua.indexOf('touch') !== -1 || ua.indexOf('mobile') !== -1;
 	if (isTocuh) {
-		if (ua.indexOf("ipad") !== -1) {
-			tag = "pad";
-		} else if (ua.indexOf("mobile") !== -1) {
-			tag = "mobile";
-		} else if (ua.indexOf("android") !== -1) {
-			tag = "androidPad";
+		if (ua.indexOf('ipad') !== -1) {
+			tag = 'pad';
+		} else if (ua.indexOf('mobile') !== -1) {
+			tag = 'mobile';
+		} else if (ua.indexOf('android') !== -1) {
+			tag = 'androidPad';
 		} else {
-			tag = "pc";
+			tag = 'pc';
 		}
 	} else {
-		tag = "pc";
+		tag = 'pc';
 	}
 
 	// 浏览器内核
-	let prefix = "";
+	let prefix = '';
 
 	switch (type) {
-		case "chrome":
-		case "safari":
-		case "mobile":
-			prefix = "webkit";
+		case 'chrome':
+		case 'safari':
+		case 'mobile':
+			prefix = 'webkit';
 			break;
-		case "msie":
-			prefix = "ms";
+		case 'msie':
+			prefix = 'ms';
 			break;
-		case "firefox":
-			prefix = "Moz";
+		case 'firefox':
+			prefix = 'Moz';
 			break;
-		case "opera":
-			prefix = "O";
+		case 'opera':
+			prefix = 'O';
 			break;
 		default:
-			prefix = "webkit";
+			prefix = 'webkit';
 			break;
 	}
 
 	// 操作平台
-	const plat = ua.indexOf("android") > 0 ? "android" : navigator.platform.toLowerCase();
+	const plat = ua.indexOf('android') > 0 ? 'android' : navigator.platform.toLowerCase();
 
 	// 屏幕信息
-	let screen = "full";
+	let screen = 'full';
 
 	if (clientWidth < 768) {
-		screen = "xs";
+		screen = 'xs';
 	} else if (clientWidth < 992) {
-		screen = "sm";
+		screen = 'sm';
 	} else if (clientWidth < 1200) {
-		screen = "md";
+		screen = 'md';
 	} else if (clientWidth < 1920) {
-		screen = "xl";
+		screen = 'xl';
 	} else {
-		screen = "full";
+		screen = 'full';
 	}
 
 	// 是否 ios
 	const isIOS = !!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
 	// 是否 PC 端
-	const isPC = tag === "pc";
+	const isPC = tag === 'pc';
 
 	// 是否移动端
 	const isMobile = isPC ? false : true;
 
 	// 是否移动端 + 屏幕宽过小
-	const isMini = screen === "xs" || isMobile;
+	const isMini = screen === 'xs' || isMobile;
 
 	return {
 		height: clientHeight,
@@ -168,13 +168,13 @@ export function getBrowser() {
 export function deepPaths(paths: string[], splitor?: string) {
 	const list: any[] = [];
 
-	paths.forEach((e) => {
-		const arr: string[] = e.split(splitor || "/").filter(Boolean);
+	paths.forEach(e => {
+		const arr: string[] = e.split(splitor || '/').filter(Boolean);
 
 		let c = list;
 
 		arr.forEach((a, i) => {
-			let d = c.find((e) => e.label == a);
+			let d = c.find(e => e.label == a);
 
 			if (!d) {
 				d = {
@@ -196,16 +196,16 @@ export function deepPaths(paths: string[], splitor?: string) {
 }
 
 // 列表转树形
-export function deepTree(list: any[], sort?: "desc" | "asc"): any[] {
+export function deepTree(list: any[], sort?: 'desc' | 'asc'): any[] {
 	const newList: any[] = [];
 	const map: any = {};
 
-	orderBy(list, "orderNum", sort)
-		.map((e) => {
+	orderBy(list, 'orderNum', sort)
+		.map(e => {
 			map[e.id] = e;
 			return e;
 		})
-		.forEach((e) => {
+		.forEach(e => {
 			const parent = map[e.parentId];
 
 			if (parent) {
@@ -224,7 +224,7 @@ export function revDeepTree(list: any[]) {
 	let id = 0;
 
 	function deep(list: any[], parentId: number) {
-		list.forEach((e) => {
+		list.forEach(e => {
 			if (!e.id) {
 				e.id = ++id;
 			}
@@ -252,13 +252,13 @@ export function path2Obj(list: any[]) {
 
 	list.forEach(({ path, value }) => {
 		if (path) {
-			const arr: string[] = path.split("/");
+			const arr: string[] = path.split('/');
 			const parents = arr.slice(0, arr.length - 1);
-			const name = basename(path).replace(".ts", "");
+			const name = basename(path).replace('.ts', '');
 
 			let curr = data;
 
-			parents.forEach((k) => {
+			parents.forEach(k => {
 				if (!curr[k]) {
 					curr[k] = {};
 				}
@@ -280,7 +280,7 @@ export function isComponent(name: string) {
 
 // 是否Promise
 export function isPromise(val: any) {
-	return val && Object.prototype.toString.call(val) === "[object Promise]";
+	return val && Object.prototype.toString.call(val) === '[object Promise]';
 }
 
 // 单位转换
@@ -290,7 +290,7 @@ export function parsePx(val: string | number) {
 
 // 延迟
 export function sleep(duration: number) {
-	return new Promise((resolve) => {
+	return new Promise(resolve => {
 		setTimeout(() => {
 			resolve(true);
 		}, duration);
@@ -298,4 +298,4 @@ export function sleep(duration: number) {
 }
 
 export { storage };
-export * from "./loading";
+export * from './loading';
