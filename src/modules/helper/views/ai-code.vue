@@ -379,7 +379,7 @@ const lang = reactive({
 		code.active = lang.value.toLocaleLowerCase() + '-entity';
 	},
 
-	tpl() {
+	get tpl() {
 		const d = {
 			Node: 'typescript',
 			Java: 'java',
