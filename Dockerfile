@@ -7,7 +7,7 @@ RUN npm install
 COPY ./ /build
 RUN npm run build
 
-FROM nginx
+FROM nginx:alpine
 RUN mkdir /app
 COPY --from=0 /build/dist /app
 COPY --from=0 /build/nginx.conf /etc/nginx/nginx.conf
