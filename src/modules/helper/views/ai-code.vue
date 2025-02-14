@@ -1416,7 +1416,7 @@ $color: #41d1ff;
 		}
 
 		.form {
-			transform: translateY(50vh);
+			transform: translateY(100vh);
 			width: calc(100% - 40px);
 			transition: all 0.3s ease;
 			margin: 0 auto;
