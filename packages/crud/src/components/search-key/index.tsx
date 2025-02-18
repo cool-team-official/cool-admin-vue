@@ -73,14 +73,14 @@ export default defineComponent({
 				props.fieldList.forEach((e) => {
 					params[e.value] = undefined;
 				});
-
+				params[selectField.value] = value.value || undefined;
+				
 				async function next(newParams?: obj) {
 					loading.value = true;
 
 					await crud.refresh({
 						page: 1,
 						...params,
-						[selectField.value]: value.value || undefined,
 						...newParams
 					})
 						.catch(err => {
