@@ -288,11 +288,13 @@ export default defineComponent({
 						});
 
 						// 表单验证
+						e.rules ??= [];
+						e.rules = !Array.isArray(e.rules) ? [e.rules] : e.rules;
 						if (e.required) {
-							e.rules = {
+							e.rules.push({
 								required: true,
 								message: `${e.label}${dict.label.nonEmpty}`
-							};
+							});
 						}
 					}
 
