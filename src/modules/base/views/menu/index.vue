@@ -276,7 +276,7 @@ const Upsert = useUpsert({
 		{
 			prop: 'router',
 			label: t('节点路由'),
-			hidden: ({ scope }) => scope.type != 1,
+			hidden: ({ scope }) => scope.type == 2,
 			component: {
 				name: 'el-input',
 				props: {
