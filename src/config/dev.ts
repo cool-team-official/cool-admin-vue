@@ -5,5 +5,5 @@ export default {
 	host,
 
 	// 请求地址
-	baseUrl: `/${value}`
+	baseUrl: `${host}`
 };
