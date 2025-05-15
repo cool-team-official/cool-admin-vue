@@ -11,7 +11,7 @@ export default {
 		if (mode == 'static') {
 			return location.origin;
 		} else {
-			return '/api';
+			return proxy['/prod/'].target;
 		}
 	}
 };
