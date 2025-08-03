@@ -133,6 +133,7 @@
 			align-items: center;
 			justify-content: center;
 			gap: 5px;
+			height: 32px;
 		}
 
 		&:hover {
@@ -144,6 +145,7 @@
 
 			& > div {
 				width: 100%;
+				height: 32px;
 
 				.el-date-editor {
 					margin-right: 0;
