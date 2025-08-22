@@ -18,7 +18,25 @@
 
 				<cl-row>
 					<!-- 数据表格 -->
-					<cl-table ref="Table" />
+					<cl-table ref="Table">
+						<template #column-type="{ scope }">
+							<el-tag v-if="scope.row.type" :type="scope.row.type" size="small">
+							</el-tag>
+						</template>
+						<template #column-color="{ scope }">
+							<div
+								v-if="scope.row.color"
+								:style="{
+									width: '20px',
+									height: '20px',
+									backgroundColor: scope.row.color,
+									border: '1px solid #ddd',
+									borderRadius: '4px',
+									display: 'inline-block'
+								}"
+							></div>
+						</template>
+					</cl-table>
 				</cl-row>
 
 				<cl-row>
@@ -149,6 +167,35 @@ const Upsert = useUpsert({
 			component: { name: 'slot-value' }
 		},
 		{
+			label: t('类型'),
+			prop: 'type',
+			component: {
+				name: 'el-select',
+				props: {
+					clearable: true,
+					placeholder: '请选择类型'
+				},
+				options: [
+					{ label: t('成功'), value: 'success' },
+					{ label: t('警告'), value: 'warning' },
+					{ label: t('危险'), value: 'danger' },
+					{ label: t('信息'), value: 'info' }
+				]
+			}
+		},
+		{
+			label: t('颜色'),
+			prop: 'color',
+			component: {
+				name: 'el-color-picker',
+				props: {
+					showAlpha: false,
+					colorFormat: 'hex',
+					size: 'default'
+				}
+			}
+		},
+		{
 			label: t('排序'),
 			prop: 'orderNum',
 			value: 1,
@@ -166,7 +213,10 @@ const Upsert = useUpsert({
 	onSubmit(data, { next }) {
 		next({
 			...data,
-			typeId: ViewGroup.value?.selected?.id
+			typeId: ViewGroup.value?.selected?.id,
+			// 确保type和color字段为空时传递空字符串而不是null或undefined
+			type: data.type || '',
+			color: data.color || ''
 		});
 	},
 	plugins: [Plugins.Form.setFocus('name')]
@@ -202,6 +252,28 @@ const Table = useTable({
 			prop: 'value',
 			minWidth: 200,
 			showOverflowTooltip: true
+		},
+		{
+			label: t('类型'),
+			prop: 'type',
+			width: 120,
+			formatter: (row, column, cellValue) => {
+				if (!cellValue) {
+					return '';
+				}
+				const typeMap = {
+					success: t('成功'),
+					warning: t('警告'),
+					danger: t('危险'),
+					info: t('信息')
+				};
+				return typeMap[cellValue] || cellValue;
+			}
+		},
+		{
+			label: t('颜色'),
+			prop: 'color',
+			width: 100
 		},
 		{
 			label: t('备注'),
