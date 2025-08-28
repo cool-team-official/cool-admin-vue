@@ -265,11 +265,10 @@ $color: #2c3142;
 					&__inner {
 						height: 45px;
 						color: #333;
-					}
-
-					&:-webkit-autofill {
+						&:-webkit-autofill {
 						-webkit-box-shadow: 0 0 0 1000px #f8f8f8 inset;
 						box-shadow: 0 0 0 1000px #f8f8f8 inset;
+					}
 					}
 				}
 			}
