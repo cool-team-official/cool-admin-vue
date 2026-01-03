@@ -181,6 +181,14 @@ function open() {
 	});
 }
 
+import { ref } from 'vue';
+
+// 菜单列表
+const menuList = ref<any[]>([]);
+service.base.sys.menu.list().then(res => {
+	menuList.value = res.filter( item => item.type==0 );
+});
+
 // 实体切换
 function onEntityChange(val: any) {
 	const item = list.find(e => e.value == val?.join('/'));
@@ -188,6 +196,18 @@ function onEntityChange(val: any) {
 	if (item) {
 		Form.value?.setForm('router', `/${item.value}`);
 		Form.value?.setForm('module', item.module);
+
+		if ( item.menu ){
+			Form.value?.setForm('name', item.menu + '管理' );
+		}
+
+		const module = `/${item.module}`
+		menuList.value.forEach( menuItem => {
+			if (menuItem.router == module ) {
+				Form.value?.setForm('parentId', menuItem.id );
+			}
+		})
+
 	}
 }
 

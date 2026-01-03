@@ -57,6 +57,10 @@ const options = reactive({
 		{
 			label: t('文件'),
 			value: 2
+		},
+		{
+			label: t('JSON'),
+			value: 3
 		}
 	]
 });
@@ -192,6 +196,20 @@ const Upsert = useUpsert({
 					icon: Document,
 					multiple: true,
 					type: 'file'
+				}
+			}
+		},
+		{
+			prop: 'data_3',
+			label: '数据',
+			required: true,
+			hidden({ scope }) {
+				return scope.dataType != 3;
+			},
+			component: {
+				name: 'cl-editor',
+				props: {
+					name: 'cl-editor-monaco',
 				}
 			}
 		},

@@ -22,7 +22,7 @@ export const config = {
 		// 路由
 		router: {
 			// 模式
-			mode: import.meta.env.MODE == 'static' ? 'hash' : 'history',
+			mode: 'hash',
 			// 转场动画
 			transition: 'slide'
 		}
