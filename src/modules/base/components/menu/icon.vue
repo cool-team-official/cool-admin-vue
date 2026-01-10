@@ -4,7 +4,7 @@
 			<cl-svg :name="modelValue" />
 		</div>
 
-		<el-select v-model="value" filterable fit-input-width clearable>
+		<el-select v-model="value" filterable fit-input-width clearable @clear="onClear">
 			<div class="cl-menu-icon__list">
 				<el-option v-for="item in list" :key="item" :value="item">
 					<cl-svg :name="item" />
@@ -37,6 +37,11 @@ const list = ref(svgIcons.filter(e => e.indexOf('icon-') === 0));
 
 // 已选图标
 const value = useModel(props, 'modelValue');
+
+// 处理清空事件
+function onClear() {
+	value.value = '';
+}
 </script>
 
 <style lang="scss" scoped>
