@@ -1,6 +1,6 @@
 import { h, useSlots } from "vue";
 import { useCore, useBrowser, useConfig } from "../../../hooks";
-import { assign, cloneDeep, isArray, isEmpty, isObject, isString, orderBy } from "lodash-es";
+import { assign, cloneDeep, get, isArray, isEmpty, isObject, isString, orderBy } from "lodash-es";
 import { deepFind, getValue } from "../../../utils";
 import { renderNode } from "../../../utils/vnode";
 import { renderHeader } from "./header";
@@ -95,7 +95,7 @@ export function useRender() {
 									});
 								} else {
 									// 绑定值
-									let value = scope.row[item.prop];
+									let value = get(scope.row, item.prop as string);
 
 									// 格式化
 									if (item.formatter) {
